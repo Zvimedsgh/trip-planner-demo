@@ -8,12 +8,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
-import { ArrowRight, Bus, Calendar, Clock, DollarSign, Edit, Loader2, Plane, Plus, Ship, Train, Trash2 } from "lucide-react";
-import { useRef, useState } from "react";
+import { ArrowRight, Bus, Calendar, Clock, DollarSign, Edit, Loader2, Plane, Plus, RotateCcw, Ship, Train, Trash2 } from "lucide-react";
+import { useRef, useState, useEffect } from "react";
 import { toast } from "sonner";
 
 interface TransportationTabProps {
   tripId: number;
+  tripEndDate?: number;
 }
 
 const transportIcons = {
@@ -34,7 +35,7 @@ const transportColors = {
 
 type TransportType = "flight" | "train" | "bus" | "ferry" | "other";
 
-export default function TransportationTab({ tripId }: TransportationTabProps) {
+export default function TransportationTab({ tripId, tripEndDate }: TransportationTabProps) {
   const { t, language, isRTL } = useLanguage();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -59,10 +60,11 @@ export default function TransportationTab({ tripId }: TransportationTabProps) {
   const [formCurrency, setFormCurrency] = useState("USD");
   
   // Force re-render trigger
-  const [, forceUpdate] = useState({});
+  const [formKey, setFormKey] = useState(0);
 
   const utils = trpc.useUtils();
   const { data: transports, isLoading } = trpc.transportation.list.useQuery({ tripId });
+  const { data: trip } = trpc.trips.get.useQuery({ id: tripId });
 
   const resetForm = () => {
     formRefs.type.current = "flight";
@@ -78,7 +80,35 @@ export default function TransportationTab({ tripId }: TransportationTabProps) {
     formRefs.notes.current = "";
     setFormType("flight");
     setFormCurrency("USD");
-    forceUpdate({});
+    setFormKey(k => k + 1);
+  };
+
+  // Function to suggest return flight based on last outbound flight
+  const suggestReturnFlight = () => {
+    // Find the last flight (outbound) to get origin/destination
+    const lastFlight = transports?.find(t => t.type === "flight");
+    
+    if (lastFlight) {
+      // Reverse origin and destination
+      formRefs.origin.current = lastFlight.destination;
+      formRefs.destination.current = lastFlight.origin;
+    }
+    
+    // Set departure date to trip end date
+    if (trip?.endDate) {
+      formRefs.departureDate.current = format(new Date(trip.endDate), "yyyy-MM-dd");
+    }
+    
+    formRefs.type.current = "flight";
+    setFormType("flight");
+    setFormKey(k => k + 1);
+    setIsCreateOpen(true);
+    
+    toast.info(
+      language === "he" 
+        ? "פרטי טיסת החזור הוזנו - ניתן לערוך לפני השמירה" 
+        : "Return flight details filled - you can edit before saving"
+    );
   };
 
   const createMutation = trpc.transportation.create.useMutation({
@@ -213,6 +243,7 @@ export default function TransportationTab({ tripId }: TransportationTabProps) {
     
     setFormType(transport.type);
     setFormCurrency(transport.currency || "USD");
+    setFormKey(k => k + 1);
     setEditingId(transport.id);
   };
 
@@ -224,8 +255,11 @@ export default function TransportationTab({ tripId }: TransportationTabProps) {
     );
   }
 
+  // Check if there's an outbound flight to show return flight button
+  const hasOutboundFlight = transports?.some(t => t.type === "flight");
+
   const FormFields = ({ isEdit = false }: { isEdit?: boolean }) => (
-    <div className="grid gap-4 py-4">
+    <div className="grid gap-4 py-4" key={formKey}>
       <div className="grid gap-2">
         <Label>{t("transportType")} *</Label>
         <Select value={formType} onValueChange={(v) => {
@@ -373,37 +407,51 @@ export default function TransportationTab({ tripId }: TransportationTabProps) {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
         <h2 className="text-xl font-semibold">{t("transportation")}</h2>
-        <Dialog open={isCreateOpen} onOpenChange={(open) => {
-          setIsCreateOpen(open);
-          if (!open) resetForm();
-        }}>
-          <DialogTrigger asChild>
-            <Button className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg" onClick={resetForm}>
-              <Plus className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-              {t("newTransportation")}
+        <div className="flex gap-2 flex-wrap">
+          {/* Return Flight Button - only show if there's an outbound flight */}
+          {hasOutboundFlight && (
+            <Button 
+              variant="outline"
+              onClick={suggestReturnFlight}
+              className="border-blue-300 text-blue-600 hover:bg-blue-50 hover:text-blue-700"
+            >
+              <RotateCcw className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+              {language === "he" ? "הוסף טיסת חזור" : "Add Return Flight"}
             </Button>
-          </DialogTrigger>
-          <DialogContent className="max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>{t("newTransportation")}</DialogTitle>
-              <DialogDescription>
-                {language === "he" ? "הוסף פרטי הסעה חדשה" : "Add new transportation details"}
-              </DialogDescription>
-            </DialogHeader>
-            
-            <FormFields />
-            
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setIsCreateOpen(false)}>{t("cancel")}</Button>
-              <Button onClick={handleCreate} disabled={createMutation.isPending}>
-                {createMutation.isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-                {t("add")}
+          )}
+          
+          <Dialog open={isCreateOpen} onOpenChange={(open) => {
+            setIsCreateOpen(open);
+            if (!open) resetForm();
+          }}>
+            <DialogTrigger asChild>
+              <Button className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg" onClick={resetForm}>
+                <Plus className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                {t("newTransportation")}
               </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+            </DialogTrigger>
+            <DialogContent className="max-h-[90vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>{t("newTransportation")}</DialogTitle>
+                <DialogDescription>
+                  {language === "he" ? "הוסף פרטי הסעה חדשה" : "Add new transportation details"}
+                </DialogDescription>
+              </DialogHeader>
+              
+              <FormFields />
+              
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setIsCreateOpen(false)}>{t("cancel")}</Button>
+                <Button onClick={handleCreate} disabled={createMutation.isPending}>
+                  {createMutation.isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+                  {t("add")}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
 
       {/* Edit Dialog */}

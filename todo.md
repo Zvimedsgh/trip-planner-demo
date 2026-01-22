@@ -41,3 +41,7 @@
 - [x] Transportation form - fix validation error even when all fields are filled
 
 - [x] Transportation form - validation fails even when all fields are filled (mobile issue with date inputs)
+
+## New Features
+- [x] Add "Return Flight" button that auto-fills reversed airports and trip end date
+- [x] Allow editing the auto-filled values before saving
