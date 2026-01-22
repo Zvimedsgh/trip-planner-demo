@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
-import { Download, Edit, ExternalLink, File, FileText, Loader2, Plus, Shield, Ticket, Trash2, Upload } from "lucide-react";
+import { Edit, ExternalLink, File, FileText, Loader2, Plus, Shield, Ticket, Trash2, Upload } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 
@@ -34,24 +34,22 @@ const categoryColors = {
   other: "from-gray-500 to-slate-600",
 };
 
+type CategoryType = "passport" | "visa" | "insurance" | "booking" | "ticket" | "other";
+
 export default function DocumentsTab({ tripId }: DocumentsTabProps) {
   const { t, language, isRTL } = useLanguage();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const formRef = useRef<HTMLDivElement>(null);
   
-  const [formData, setFormData] = useState({
-    name: "",
-    category: "other" as "passport" | "visa" | "insurance" | "booking" | "ticket" | "other",
-    tags: "",
-    notes: "",
-    file: null as File | null,
-  });
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [createCategory, setCreateCategory] = useState<CategoryType>("other");
+  const [editCategory, setEditCategory] = useState<CategoryType>("other");
 
-  const [editFormData, setEditFormData] = useState({
+  const [editDefaults, setEditDefaults] = useState({
     name: "",
-    category: "other" as "passport" | "visa" | "insurance" | "booking" | "ticket" | "other",
     tags: "",
     notes: "",
   });
@@ -63,7 +61,9 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
     onSuccess: () => {
       utils.documents.list.invalidate({ tripId });
       setIsCreateOpen(false);
-      resetForm();
+      setSelectedFile(null);
+      setCreateCategory("other");
+      if (fileInputRef.current) fileInputRef.current.value = "";
       setIsUploading(false);
       toast.success(language === "he" ? "המסמך הועלה בהצלחה" : "Document uploaded successfully");
     },
@@ -88,69 +88,72 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
     },
   });
 
-  const resetForm = () => {
-    setFormData({
-      name: "",
-      category: "other",
-      tags: "",
-      notes: "",
-      file: null,
-    });
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-  };
-
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setFormData({ ...formData, file, name: formData.name || file.name });
+      setSelectedFile(file);
+      // Auto-fill name if empty
+      const nameInput = formRef.current?.querySelector('[name="name"]') as HTMLInputElement;
+      if (nameInput && !nameInput.value) {
+        nameInput.value = file.name;
+      }
     }
   };
 
+  const getFormValue = (name: string) => {
+    const el = formRef.current?.querySelector(`[name="${name}"]`) as HTMLInputElement | HTMLTextAreaElement | null;
+    return el?.value || "";
+  };
+
   const handleUpload = async () => {
-    if (!formData.file || !formData.name) {
+    const name = getFormValue("name");
+    
+    if (!selectedFile || !name) {
       toast.error(language === "he" ? "נא לבחור קובץ ולהזין שם" : "Please select a file and enter a name");
       return;
     }
 
     setIsUploading(true);
     
-    // Convert file to base64
     const reader = new FileReader();
     reader.onload = () => {
       const base64 = (reader.result as string).split(",")[1];
       uploadMutation.mutate({
         tripId,
-        fileName: formData.name,
+        fileName: name,
         fileData: base64,
-        mimeType: formData.file!.type,
-        category: formData.category,
-        tags: formData.tags || undefined,
-        notes: formData.notes || undefined,
+        mimeType: selectedFile.type,
+        category: createCategory,
+        tags: getFormValue("tags") || undefined,
+        notes: getFormValue("notes") || undefined,
       });
     };
-    reader.readAsDataURL(formData.file);
+    reader.readAsDataURL(selectedFile);
   };
 
   const handleUpdate = () => {
-    if (!editingId || !editFormData.name) return;
+    const name = getFormValue("editName");
+    
+    if (!editingId || !name) {
+      toast.error(language === "he" ? "נא להזין שם" : "Please enter a name");
+      return;
+    }
     updateMutation.mutate({
       id: editingId,
-      name: editFormData.name,
-      category: editFormData.category,
-      tags: editFormData.tags || undefined,
-      notes: editFormData.notes || undefined,
+      name: name,
+      category: editCategory,
+      tags: getFormValue("editTags") || undefined,
+      notes: getFormValue("editNotes") || undefined,
     });
   };
 
   const openEdit = (doc: NonNullable<typeof documents>[0]) => {
-    setEditFormData({
+    setEditDefaults({
       name: doc.name,
-      category: doc.category,
       tags: doc.tags || "",
       notes: doc.notes || "",
     });
+    setEditCategory(doc.category);
     setEditingId(doc.id);
   };
 
@@ -166,9 +169,16 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-semibold">{t("documents")}</h2>
-        <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+        <Dialog open={isCreateOpen} onOpenChange={(open) => {
+          setIsCreateOpen(open);
+          if (!open) {
+            setSelectedFile(null);
+            setCreateCategory("other");
+            if (fileInputRef.current) fileInputRef.current.value = "";
+          }
+        }}>
           <DialogTrigger asChild>
-            <Button className="btn-elegant" onClick={resetForm}>
+            <Button className="btn-elegant">
               <Upload className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
               {t("uploadDocument")}
             </Button>
@@ -177,7 +187,7 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
             <DialogHeader>
               <DialogTitle>{t("uploadDocument")}</DialogTitle>
             </DialogHeader>
-            <div className="grid gap-4 py-4">
+            <div className="grid gap-4 py-4" ref={formRef}>
               <div className="grid gap-2">
                 <Label>{language === "he" ? "קובץ" : "File"} *</Label>
                 <Input
@@ -190,15 +200,15 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
               <div className="grid gap-2">
                 <Label>{t("documentName")} *</Label>
                 <Input
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  name="name"
+                  defaultValue=""
                 />
               </div>
               <div className="grid gap-2">
                 <Label>{t("category")} *</Label>
                 <Select 
-                  value={formData.category} 
-                  onValueChange={(v: typeof formData.category) => setFormData({ ...formData, category: v })}
+                  value={createCategory} 
+                  onValueChange={(v: CategoryType) => setCreateCategory(v)}
                 >
                   <SelectTrigger>
                     <SelectValue />
@@ -216,16 +226,16 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
               <div className="grid gap-2">
                 <Label>{t("tags")}</Label>
                 <Input
-                  value={formData.tags}
-                  onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
+                  name="tags"
+                  defaultValue=""
                   placeholder={language === "he" ? "תג1, תג2, תג3" : "tag1, tag2, tag3"}
                 />
               </div>
               <div className="grid gap-2">
                 <Label>{t("notes")}</Label>
                 <Textarea
-                  value={formData.notes}
-                  onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                  name="notes"
+                  defaultValue=""
                   rows={2}
                 />
               </div>
@@ -314,19 +324,20 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
           <DialogHeader>
             <DialogTitle>{t("edit")}</DialogTitle>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
+          <div className="grid gap-4 py-4" ref={formRef}>
             <div className="grid gap-2">
               <Label>{t("documentName")} *</Label>
               <Input
-                value={editFormData.name}
-                onChange={(e) => setEditFormData({ ...editFormData, name: e.target.value })}
+                name="editName"
+                key={`edit-name-${editingId}`}
+                defaultValue={editDefaults.name}
               />
             </div>
             <div className="grid gap-2">
               <Label>{t("category")} *</Label>
               <Select 
-                value={editFormData.category} 
-                onValueChange={(v: typeof editFormData.category) => setEditFormData({ ...editFormData, category: v })}
+                value={editCategory} 
+                onValueChange={(v: CategoryType) => setEditCategory(v)}
               >
                 <SelectTrigger>
                   <SelectValue />
@@ -344,15 +355,17 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
             <div className="grid gap-2">
               <Label>{t("tags")}</Label>
               <Input
-                value={editFormData.tags}
-                onChange={(e) => setEditFormData({ ...editFormData, tags: e.target.value })}
+                name="editTags"
+                key={`edit-tags-${editingId}`}
+                defaultValue={editDefaults.tags}
               />
             </div>
             <div className="grid gap-2">
               <Label>{t("notes")}</Label>
               <Textarea
-                value={editFormData.notes}
-                onChange={(e) => setEditFormData({ ...editFormData, notes: e.target.value })}
+                name="editNotes"
+                key={`edit-notes-${editingId}`}
+                defaultValue={editDefaults.notes}
                 rows={2}
               />
             </div>

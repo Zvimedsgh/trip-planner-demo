@@ -45,3 +45,9 @@
 ## New Features
 - [x] Add "Return Flight" button that auto-fills reversed airports and trip end date
 - [x] Allow editing the auto-filled values before saving
+
+- [x] Fix keyboard disappearing issue in Hotels form
+- [x] Fix keyboard disappearing issue in Tourist Sites form
+- [x] Fix keyboard disappearing issue in Car Rentals form
+- [x] Fix keyboard disappearing issue in Restaurants form
+- [x] Fix keyboard disappearing issue in Documents form

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,7 +8,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
 import { Calendar, Clock, Edit, Loader2, MapPin, Plus, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 
 interface TouristSitesTabProps {
@@ -19,15 +19,7 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
   const { t, language, isRTL } = useLanguage();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
-  
-  const [formData, setFormData] = useState({
-    name: "",
-    address: "",
-    description: "",
-    openingHours: "",
-    plannedVisitDate: "",
-    notes: "",
-  });
+  const formRef = useRef<HTMLDivElement>(null);
 
   const utils = trpc.useUtils();
   const { data: sites, isLoading } = trpc.touristSites.list.useQuery({ tripId });
@@ -36,7 +28,6 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
     onSuccess: () => {
       utils.touristSites.list.invalidate({ tripId });
       setIsCreateOpen(false);
-      resetForm();
       toast.success(language === "he" ? "האתר נוסף בהצלחה" : "Site added successfully");
     },
   });
@@ -45,7 +36,6 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
     onSuccess: () => {
       utils.touristSites.list.invalidate({ tripId });
       setEditingId(null);
-      resetForm();
       toast.success(language === "he" ? "האתר עודכן בהצלחה" : "Site updated successfully");
     },
   });
@@ -57,48 +47,71 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
     },
   });
 
-  const resetForm = () => {
-    setFormData({
-      name: "",
-      address: "",
-      description: "",
-      openingHours: "",
-      plannedVisitDate: "",
-      notes: "",
-    });
+  const getFormValues = () => {
+    if (!formRef.current) return null;
+    const getValue = (name: string) => {
+      const el = formRef.current?.querySelector(`[name="${name}"]`) as HTMLInputElement | HTMLTextAreaElement | null;
+      return el?.value || "";
+    };
+    return {
+      name: getValue("name"),
+      address: getValue("address"),
+      description: getValue("description"),
+      openingHours: getValue("openingHours"),
+      plannedVisitDate: getValue("plannedVisitDate"),
+      notes: getValue("notes"),
+    };
   };
 
   const handleCreate = () => {
-    if (!formData.name) {
+    const values = getFormValues();
+    if (!values) return;
+    
+    if (!values.name) {
       toast.error(language === "he" ? "נא להזין שם" : "Please enter a name");
       return;
     }
     createMutation.mutate({
       tripId,
-      name: formData.name,
-      address: formData.address || undefined,
-      description: formData.description || undefined,
-      openingHours: formData.openingHours || undefined,
-      plannedVisitDate: formData.plannedVisitDate ? new Date(formData.plannedVisitDate).getTime() : undefined,
-      notes: formData.notes || undefined,
+      name: values.name,
+      address: values.address || undefined,
+      description: values.description || undefined,
+      openingHours: values.openingHours || undefined,
+      plannedVisitDate: values.plannedVisitDate ? new Date(values.plannedVisitDate).getTime() : undefined,
+      notes: values.notes || undefined,
     });
   };
 
   const handleUpdate = () => {
-    if (!editingId || !formData.name) return;
+    const values = getFormValues();
+    if (!values || !editingId) return;
+    
+    if (!values.name) {
+      toast.error(language === "he" ? "נא להזין שם" : "Please enter a name");
+      return;
+    }
     updateMutation.mutate({
       id: editingId,
-      name: formData.name,
-      address: formData.address || undefined,
-      description: formData.description || undefined,
-      openingHours: formData.openingHours || undefined,
-      plannedVisitDate: formData.plannedVisitDate ? new Date(formData.plannedVisitDate).getTime() : undefined,
-      notes: formData.notes || undefined,
+      name: values.name,
+      address: values.address || undefined,
+      description: values.description || undefined,
+      openingHours: values.openingHours || undefined,
+      plannedVisitDate: values.plannedVisitDate ? new Date(values.plannedVisitDate).getTime() : undefined,
+      notes: values.notes || undefined,
     });
   };
 
+  const [editDefaults, setEditDefaults] = useState({
+    name: "",
+    address: "",
+    description: "",
+    openingHours: "",
+    plannedVisitDate: "",
+    notes: "",
+  });
+
   const openEdit = (site: NonNullable<typeof sites>[0]) => {
-    setFormData({
+    setEditDefaults({
       name: site.name,
       address: site.address || "",
       description: site.description || "",
@@ -117,13 +130,67 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
     );
   }
 
+  const FormFields = ({ defaults }: { defaults?: typeof editDefaults }) => (
+    <div className="grid gap-4 py-4" ref={formRef}>
+      <div className="grid gap-2">
+        <Label>{t("siteName")} *</Label>
+        <Input
+          name="name"
+          defaultValue={defaults?.name || ""}
+          placeholder={language === "he" ? "מגדל אייפל" : "Eiffel Tower"}
+        />
+      </div>
+      <div className="grid gap-2">
+        <Label>{t("address")}</Label>
+        <Input
+          name="address"
+          defaultValue={defaults?.address || ""}
+        />
+      </div>
+      <div className="grid gap-2">
+        <Label>{t("description")}</Label>
+        <Textarea
+          name="description"
+          defaultValue={defaults?.description || ""}
+          rows={2}
+        />
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        <div className="grid gap-2">
+          <Label>{t("openingHours")}</Label>
+          <Input
+            name="openingHours"
+            defaultValue={defaults?.openingHours || ""}
+            placeholder="9:00 - 18:00"
+          />
+        </div>
+        <div className="grid gap-2">
+          <Label>{t("plannedVisitDate")}</Label>
+          <Input
+            name="plannedVisitDate"
+            type="date"
+            defaultValue={defaults?.plannedVisitDate || ""}
+          />
+        </div>
+      </div>
+      <div className="grid gap-2">
+        <Label>{t("notes")}</Label>
+        <Textarea
+          name="notes"
+          defaultValue={defaults?.notes || ""}
+          rows={2}
+        />
+      </div>
+    </div>
+  );
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-semibold">{t("touristSites")}</h2>
         <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
           <DialogTrigger asChild>
-            <Button className="btn-elegant" onClick={resetForm}>
+            <Button className="btn-elegant">
               <Plus className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
               {t("newSite")}
             </Button>
@@ -132,57 +199,7 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
             <DialogHeader>
               <DialogTitle>{t("newSite")}</DialogTitle>
             </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid gap-2">
-                <Label>{t("siteName")} *</Label>
-                <Input
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder={language === "he" ? "מגדל אייפל" : "Eiffel Tower"}
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label>{t("address")}</Label>
-                <Input
-                  value={formData.address}
-                  onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label>{t("description")}</Label>
-                <Textarea
-                  value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  rows={2}
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="grid gap-2">
-                  <Label>{t("openingHours")}</Label>
-                  <Input
-                    value={formData.openingHours}
-                    onChange={(e) => setFormData({ ...formData, openingHours: e.target.value })}
-                    placeholder="9:00 - 18:00"
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label>{t("plannedVisitDate")}</Label>
-                  <Input
-                    type="date"
-                    value={formData.plannedVisitDate}
-                    onChange={(e) => setFormData({ ...formData, plannedVisitDate: e.target.value })}
-                  />
-                </div>
-              </div>
-              <div className="grid gap-2">
-                <Label>{t("notes")}</Label>
-                <Textarea
-                  value={formData.notes}
-                  onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                  rows={2}
-                />
-              </div>
-            </div>
+            <FormFields />
             <DialogFooter>
               <Button variant="outline" onClick={() => setIsCreateOpen(false)}>{t("cancel")}</Button>
               <Button onClick={handleCreate} disabled={createMutation.isPending}>
@@ -257,55 +274,7 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
           <DialogHeader>
             <DialogTitle>{t("edit")}</DialogTitle>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label>{t("siteName")} *</Label>
-              <Input
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label>{t("address")}</Label>
-              <Input
-                value={formData.address}
-                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label>{t("description")}</Label>
-              <Textarea
-                value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                rows={2}
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="grid gap-2">
-                <Label>{t("openingHours")}</Label>
-                <Input
-                  value={formData.openingHours}
-                  onChange={(e) => setFormData({ ...formData, openingHours: e.target.value })}
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label>{t("plannedVisitDate")}</Label>
-                <Input
-                  type="date"
-                  value={formData.plannedVisitDate}
-                  onChange={(e) => setFormData({ ...formData, plannedVisitDate: e.target.value })}
-                />
-              </div>
-            </div>
-            <div className="grid gap-2">
-              <Label>{t("notes")}</Label>
-              <Textarea
-                value={formData.notes}
-                onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                rows={2}
-              />
-            </div>
-          </div>
+          <FormFields defaults={editDefaults} />
           <DialogFooter>
             <Button variant="outline" onClick={() => setEditingId(null)}>{t("cancel")}</Button>
             <Button onClick={handleUpdate} disabled={updateMutation.isPending}>

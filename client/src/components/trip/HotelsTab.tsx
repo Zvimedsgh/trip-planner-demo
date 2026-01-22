@@ -8,7 +8,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
 import { Calendar, DollarSign, Edit, Hotel, Loader2, MapPin, Plus, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 
 interface HotelsTabProps {
@@ -19,17 +19,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
   const { t, language, isRTL } = useLanguage();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
-  
-  const [formData, setFormData] = useState({
-    name: "",
-    address: "",
-    checkInDate: "",
-    checkOutDate: "",
-    confirmationNumber: "",
-    price: "",
-    currency: "USD",
-    notes: "",
-  });
+  const formRef = useRef<HTMLDivElement>(null);
 
   const utils = trpc.useUtils();
   const { data: hotels, isLoading } = trpc.hotels.list.useQuery({ tripId });
@@ -39,7 +29,6 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
       utils.hotels.list.invalidate({ tripId });
       utils.budget.get.invalidate({ tripId });
       setIsCreateOpen(false);
-      resetForm();
       toast.success(language === "he" ? "המלון נוסף בהצלחה" : "Hotel added successfully");
     },
   });
@@ -49,7 +38,6 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
       utils.hotels.list.invalidate({ tripId });
       utils.budget.get.invalidate({ tripId });
       setEditingId(null);
-      resetForm();
       toast.success(language === "he" ? "המלון עודכן בהצלחה" : "Hotel updated successfully");
     },
   });
@@ -62,54 +50,79 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
     },
   });
 
-  const resetForm = () => {
-    setFormData({
-      name: "",
-      address: "",
-      checkInDate: "",
-      checkOutDate: "",
-      confirmationNumber: "",
-      price: "",
-      currency: "USD",
-      notes: "",
-    });
+  const getFormValues = () => {
+    if (!formRef.current) return null;
+    const getValue = (name: string) => {
+      const el = formRef.current?.querySelector(`[name="${name}"]`) as HTMLInputElement | HTMLTextAreaElement | null;
+      return el?.value || "";
+    };
+    return {
+      name: getValue("name"),
+      address: getValue("address"),
+      checkInDate: getValue("checkInDate"),
+      checkOutDate: getValue("checkOutDate"),
+      confirmationNumber: getValue("confirmationNumber"),
+      price: getValue("price"),
+      currency: getValue("currency"),
+      notes: getValue("notes"),
+    };
   };
 
   const handleCreate = () => {
-    if (!formData.name || !formData.checkInDate || !formData.checkOutDate) {
-      toast.error(language === "he" ? "נא למלא שדות חובה" : "Please fill required fields");
+    const values = getFormValues();
+    if (!values) return;
+    
+    if (!values.name || !values.checkInDate || !values.checkOutDate) {
+      toast.error(language === "he" ? "נא למלא: שם מלון, תאריך צ'ק-אין ותאריך צ'ק-אאוט" : "Please fill: hotel name, check-in and check-out dates");
       return;
     }
     createMutation.mutate({
       tripId,
-      name: formData.name,
-      address: formData.address || undefined,
-      checkInDate: new Date(formData.checkInDate).getTime(),
-      checkOutDate: new Date(formData.checkOutDate).getTime(),
-      confirmationNumber: formData.confirmationNumber || undefined,
-      price: formData.price || undefined,
-      currency: formData.currency || undefined,
-      notes: formData.notes || undefined,
+      name: values.name,
+      address: values.address || undefined,
+      checkInDate: new Date(values.checkInDate).getTime(),
+      checkOutDate: new Date(values.checkOutDate).getTime(),
+      confirmationNumber: values.confirmationNumber || undefined,
+      price: values.price || undefined,
+      currency: values.currency || undefined,
+      notes: values.notes || undefined,
     });
   };
 
   const handleUpdate = () => {
-    if (!editingId || !formData.name || !formData.checkInDate || !formData.checkOutDate) return;
+    const values = getFormValues();
+    if (!values || !editingId) return;
+    
+    if (!values.name || !values.checkInDate || !values.checkOutDate) {
+      toast.error(language === "he" ? "נא למלא: שם מלון, תאריך צ'ק-אין ותאריך צ'ק-אאוט" : "Please fill: hotel name, check-in and check-out dates");
+      return;
+    }
     updateMutation.mutate({
       id: editingId,
-      name: formData.name,
-      address: formData.address || undefined,
-      checkInDate: new Date(formData.checkInDate).getTime(),
-      checkOutDate: new Date(formData.checkOutDate).getTime(),
-      confirmationNumber: formData.confirmationNumber || undefined,
-      price: formData.price || undefined,
-      currency: formData.currency || undefined,
-      notes: formData.notes || undefined,
+      name: values.name,
+      address: values.address || undefined,
+      checkInDate: new Date(values.checkInDate).getTime(),
+      checkOutDate: new Date(values.checkOutDate).getTime(),
+      confirmationNumber: values.confirmationNumber || undefined,
+      price: values.price || undefined,
+      currency: values.currency || undefined,
+      notes: values.notes || undefined,
     });
   };
 
+  const [editDefaults, setEditDefaults] = useState({
+    name: "",
+    address: "",
+    checkInDate: "",
+    checkOutDate: "",
+    confirmationNumber: "",
+    price: "",
+    currency: "USD",
+    notes: "",
+  });
+
   const openEdit = (hotel: NonNullable<typeof hotels>[0]) => {
-    setFormData({
+    setEditDefaults({
       name: hotel.name,
       address: hotel.address || "",
       checkInDate: format(new Date(hotel.checkInDate), "yyyy-MM-dd"),
@@ -134,70 +147,71 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
     );
   }
 
-  const FormFields = () => (
-    <div className="grid gap-4 py-4">
+  const FormFields = ({ defaults }: { defaults?: typeof editDefaults }) => (
+    <div className="grid gap-4 py-4" ref={formRef}>
       <div className="grid gap-2">
         <Label>{t("hotelName")} *</Label>
         <Input
-          value={formData.name}
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          name="name"
+          defaultValue={defaults?.name || ""}
           placeholder={language === "he" ? "מלון הילטון" : "Hilton Hotel"}
         />
       </div>
       <div className="grid gap-2">
         <Label>{t("address")}</Label>
         <Input
-          value={formData.address}
-          onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+          name="address"
+          defaultValue={defaults?.address || ""}
         />
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div className="grid gap-2">
           <Label>{t("checkIn")} *</Label>
           <Input
+            name="checkInDate"
             type="date"
-            value={formData.checkInDate}
-            onChange={(e) => setFormData({ ...formData, checkInDate: e.target.value })}
+            defaultValue={defaults?.checkInDate || ""}
           />
         </div>
         <div className="grid gap-2">
           <Label>{t("checkOut")} *</Label>
           <Input
+            name="checkOutDate"
             type="date"
-            value={formData.checkOutDate}
-            onChange={(e) => setFormData({ ...formData, checkOutDate: e.target.value })}
+            defaultValue={defaults?.checkOutDate || ""}
           />
         </div>
       </div>
       <div className="grid gap-2">
         <Label>{t("confirmationNumber")}</Label>
         <Input
-          value={formData.confirmationNumber}
-          onChange={(e) => setFormData({ ...formData, confirmationNumber: e.target.value })}
+          name="confirmationNumber"
+          defaultValue={defaults?.confirmationNumber || ""}
         />
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div className="grid gap-2">
           <Label>{t("price")}</Label>
           <Input
+            name="price"
             type="number"
-            value={formData.price}
-            onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+            defaultValue={defaults?.price || ""}
+            placeholder="0.00"
           />
         </div>
         <div className="grid gap-2">
           <Label>{t("currency")}</Label>
           <Input
-            value={formData.currency}
-            onChange={(e) => setFormData({ ...formData, currency: e.target.value })}
+            name="currency"
+            defaultValue={defaults?.currency || "USD"}
           />
         </div>
       </div>
       <div className="grid gap-2">
         <Label>{t("notes")}</Label>
         <Textarea
-          value={formData.notes}
-          onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+          name="notes"
+          defaultValue={defaults?.notes || ""}
           rows={2}
         />
       </div>
@@ -210,7 +224,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
         <h2 className="text-xl font-semibold">{t("hotels")}</h2>
         <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
           <DialogTrigger asChild>
-            <Button className="btn-elegant" onClick={resetForm}>
+            <Button className="btn-elegant">
               <Plus className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
               {t("newHotel")}
             </Button>
@@ -306,7 +320,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
           <DialogHeader>
             <DialogTitle>{t("edit")}</DialogTitle>
           </DialogHeader>
-          <FormFields />
+          <FormFields defaults={editDefaults} />
           <DialogFooter>
             <Button variant="outline" onClick={() => setEditingId(null)}>{t("cancel")}</Button>
             <Button onClick={handleUpdate} disabled={updateMutation.isPending}>

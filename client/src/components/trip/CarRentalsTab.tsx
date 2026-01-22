@@ -8,7 +8,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
 import { Calendar, Car, DollarSign, Edit, Loader2, MapPin, Plus, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 
 interface CarRentalsTabProps {
@@ -19,19 +19,7 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
   const { t, language, isRTL } = useLanguage();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
-  
-  const [formData, setFormData] = useState({
-    company: "",
-    carModel: "",
-    pickupDate: "",
-    returnDate: "",
-    pickupLocation: "",
-    returnLocation: "",
-    confirmationNumber: "",
-    price: "",
-    currency: "USD",
-    notes: "",
-  });
+  const formRef = useRef<HTMLDivElement>(null);
 
   const utils = trpc.useUtils();
   const { data: rentals, isLoading } = trpc.carRentals.list.useQuery({ tripId });
@@ -41,7 +29,6 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
       utils.carRentals.list.invalidate({ tripId });
       utils.budget.get.invalidate({ tripId });
       setIsCreateOpen(false);
-      resetForm();
       toast.success(language === "he" ? "השכרת הרכב נוספה בהצלחה" : "Car rental added successfully");
     },
   });
@@ -51,7 +38,6 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
       utils.carRentals.list.invalidate({ tripId });
       utils.budget.get.invalidate({ tripId });
       setEditingId(null);
-      resetForm();
       toast.success(language === "he" ? "השכרת הרכב עודכנה בהצלחה" : "Car rental updated successfully");
     },
   });
@@ -64,60 +50,87 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
     },
   });
 
-  const resetForm = () => {
-    setFormData({
-      company: "",
-      carModel: "",
-      pickupDate: "",
-      returnDate: "",
-      pickupLocation: "",
-      returnLocation: "",
-      confirmationNumber: "",
-      price: "",
-      currency: "USD",
-      notes: "",
-    });
+  const getFormValues = () => {
+    if (!formRef.current) return null;
+    const getValue = (name: string) => {
+      const el = formRef.current?.querySelector(`[name="${name}"]`) as HTMLInputElement | HTMLTextAreaElement | null;
+      return el?.value || "";
+    };
+    return {
+      company: getValue("company"),
+      carModel: getValue("carModel"),
+      pickupDate: getValue("pickupDate"),
+      returnDate: getValue("returnDate"),
+      pickupLocation: getValue("pickupLocation"),
+      returnLocation: getValue("returnLocation"),
+      confirmationNumber: getValue("confirmationNumber"),
+      price: getValue("price"),
+      currency: getValue("currency"),
+      notes: getValue("notes"),
+    };
   };
 
   const handleCreate = () => {
-    if (!formData.company || !formData.pickupDate || !formData.returnDate) {
+    const values = getFormValues();
+    if (!values) return;
+    
+    if (!values.company || !values.pickupDate || !values.returnDate) {
       toast.error(language === "he" ? "נא למלא שדות חובה" : "Please fill required fields");
       return;
     }
     createMutation.mutate({
       tripId,
-      company: formData.company,
-      carModel: formData.carModel || undefined,
-      pickupDate: new Date(formData.pickupDate).getTime(),
-      returnDate: new Date(formData.returnDate).getTime(),
-      pickupLocation: formData.pickupLocation || undefined,
-      returnLocation: formData.returnLocation || undefined,
-      confirmationNumber: formData.confirmationNumber || undefined,
-      price: formData.price || undefined,
-      currency: formData.currency || undefined,
-      notes: formData.notes || undefined,
+      company: values.company,
+      carModel: values.carModel || undefined,
+      pickupDate: new Date(values.pickupDate).getTime(),
+      returnDate: new Date(values.returnDate).getTime(),
+      pickupLocation: values.pickupLocation || undefined,
+      returnLocation: values.returnLocation || undefined,
+      confirmationNumber: values.confirmationNumber || undefined,
+      price: values.price || undefined,
+      currency: values.currency || undefined,
+      notes: values.notes || undefined,
     });
   };
 
   const handleUpdate = () => {
-    if (!editingId || !formData.company || !formData.pickupDate || !formData.returnDate) return;
+    const values = getFormValues();
+    if (!values || !editingId) return;
+    
+    if (!values.company || !values.pickupDate || !values.returnDate) {
+      toast.error(language === "he" ? "נא למלא שדות חובה" : "Please fill required fields");
+      return;
+    }
     updateMutation.mutate({
       id: editingId,
-      company: formData.company,
-      carModel: formData.carModel || undefined,
-      pickupDate: new Date(formData.pickupDate).getTime(),
-      returnDate: new Date(formData.returnDate).getTime(),
-      pickupLocation: formData.pickupLocation || undefined,
-      returnLocation: formData.returnLocation || undefined,
-      confirmationNumber: formData.confirmationNumber || undefined,
-      price: formData.price || undefined,
-      currency: formData.currency || undefined,
-      notes: formData.notes || undefined,
+      company: values.company,
+      carModel: values.carModel || undefined,
+      pickupDate: new Date(values.pickupDate).getTime(),
+      returnDate: new Date(values.returnDate).getTime(),
+      pickupLocation: values.pickupLocation || undefined,
+      returnLocation: values.returnLocation || undefined,
+      confirmationNumber: values.confirmationNumber || undefined,
+      price: values.price || undefined,
+      currency: values.currency || undefined,
+      notes: values.notes || undefined,
     });
   };
 
+  const [editDefaults, setEditDefaults] = useState({
+    company: "",
+    carModel: "",
+    pickupDate: "",
+    returnDate: "",
+    pickupLocation: "",
+    returnLocation: "",
+    confirmationNumber: "",
+    price: "",
+    currency: "USD",
+    notes: "",
+  });
+
   const openEdit = (rental: NonNullable<typeof rentals>[0]) => {
-    setFormData({
+    setEditDefaults({
       company: rental.company,
       carModel: rental.carModel || "",
       pickupDate: format(new Date(rental.pickupDate), "yyyy-MM-dd"),
@@ -144,22 +157,22 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
     );
   }
 
-  const FormFields = () => (
-    <div className="grid gap-4 py-4">
+  const FormFields = ({ defaults }: { defaults?: typeof editDefaults }) => (
+    <div className="grid gap-4 py-4" ref={formRef}>
       <div className="grid grid-cols-2 gap-4">
         <div className="grid gap-2">
           <Label>{t("company")} *</Label>
           <Input
-            value={formData.company}
-            onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+            name="company"
+            defaultValue={defaults?.company || ""}
             placeholder="Hertz, Avis..."
           />
         </div>
         <div className="grid gap-2">
           <Label>{t("carModel")}</Label>
           <Input
-            value={formData.carModel}
-            onChange={(e) => setFormData({ ...formData, carModel: e.target.value })}
+            name="carModel"
+            defaultValue={defaults?.carModel || ""}
             placeholder="Toyota Corolla"
           />
         </div>
@@ -168,17 +181,17 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
         <div className="grid gap-2">
           <Label>{t("pickupDate")} *</Label>
           <Input
+            name="pickupDate"
             type="date"
-            value={formData.pickupDate}
-            onChange={(e) => setFormData({ ...formData, pickupDate: e.target.value })}
+            defaultValue={defaults?.pickupDate || ""}
           />
         </div>
         <div className="grid gap-2">
           <Label>{t("returnDate")} *</Label>
           <Input
+            name="returnDate"
             type="date"
-            value={formData.returnDate}
-            onChange={(e) => setFormData({ ...formData, returnDate: e.target.value })}
+            defaultValue={defaults?.returnDate || ""}
           />
         </div>
       </div>
@@ -186,47 +199,47 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
         <div className="grid gap-2">
           <Label>{t("pickupLocation")}</Label>
           <Input
-            value={formData.pickupLocation}
-            onChange={(e) => setFormData({ ...formData, pickupLocation: e.target.value })}
+            name="pickupLocation"
+            defaultValue={defaults?.pickupLocation || ""}
           />
         </div>
         <div className="grid gap-2">
           <Label>{t("returnLocation")}</Label>
           <Input
-            value={formData.returnLocation}
-            onChange={(e) => setFormData({ ...formData, returnLocation: e.target.value })}
+            name="returnLocation"
+            defaultValue={defaults?.returnLocation || ""}
           />
         </div>
       </div>
       <div className="grid gap-2">
         <Label>{t("confirmationNumber")}</Label>
         <Input
-          value={formData.confirmationNumber}
-          onChange={(e) => setFormData({ ...formData, confirmationNumber: e.target.value })}
+          name="confirmationNumber"
+          defaultValue={defaults?.confirmationNumber || ""}
         />
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div className="grid gap-2">
           <Label>{t("price")}</Label>
           <Input
+            name="price"
             type="number"
-            value={formData.price}
-            onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+            defaultValue={defaults?.price || ""}
           />
         </div>
         <div className="grid gap-2">
           <Label>{t("currency")}</Label>
           <Input
-            value={formData.currency}
-            onChange={(e) => setFormData({ ...formData, currency: e.target.value })}
+            name="currency"
+            defaultValue={defaults?.currency || "USD"}
           />
         </div>
       </div>
       <div className="grid gap-2">
         <Label>{t("notes")}</Label>
         <Textarea
-          value={formData.notes}
-          onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+          name="notes"
+          defaultValue={defaults?.notes || ""}
           rows={2}
         />
       </div>
@@ -239,7 +252,7 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
         <h2 className="text-xl font-semibold">{t("carRentals")}</h2>
         <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
           <DialogTrigger asChild>
-            <Button className="btn-elegant" onClick={resetForm}>
+            <Button className="btn-elegant">
               <Plus className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
               {t("newCarRental")}
             </Button>
@@ -338,7 +351,7 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
           <DialogHeader>
             <DialogTitle>{t("edit")}</DialogTitle>
           </DialogHeader>
-          <FormFields />
+          <FormFields defaults={editDefaults} />
           <DialogFooter>
             <Button variant="outline" onClick={() => setEditingId(null)}>{t("cancel")}</Button>
             <Button onClick={handleUpdate} disabled={updateMutation.isPending}>

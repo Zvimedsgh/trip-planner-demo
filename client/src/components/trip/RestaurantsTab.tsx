@@ -8,7 +8,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
 import { Calendar, Edit, Loader2, MapPin, Plus, Trash2, Users, Utensils } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 
 interface RestaurantsTabProps {
@@ -19,15 +19,7 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
   const { t, language, isRTL } = useLanguage();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
-  
-  const [formData, setFormData] = useState({
-    name: "",
-    address: "",
-    cuisineType: "",
-    reservationDate: "",
-    numberOfDiners: "",
-    notes: "",
-  });
+  const formRef = useRef<HTMLDivElement>(null);
 
   const utils = trpc.useUtils();
   const { data: restaurants, isLoading } = trpc.restaurants.list.useQuery({ tripId });
@@ -36,7 +28,6 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
     onSuccess: () => {
       utils.restaurants.list.invalidate({ tripId });
       setIsCreateOpen(false);
-      resetForm();
       toast.success(language === "he" ? "המסעדה נוספה בהצלחה" : "Restaurant added successfully");
     },
   });
@@ -45,7 +36,6 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
     onSuccess: () => {
       utils.restaurants.list.invalidate({ tripId });
       setEditingId(null);
-      resetForm();
       toast.success(language === "he" ? "המסעדה עודכנה בהצלחה" : "Restaurant updated successfully");
     },
   });
@@ -57,48 +47,71 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
     },
   });
 
-  const resetForm = () => {
-    setFormData({
-      name: "",
-      address: "",
-      cuisineType: "",
-      reservationDate: "",
-      numberOfDiners: "",
-      notes: "",
-    });
+  const getFormValues = () => {
+    if (!formRef.current) return null;
+    const getValue = (name: string) => {
+      const el = formRef.current?.querySelector(`[name="${name}"]`) as HTMLInputElement | HTMLTextAreaElement | null;
+      return el?.value || "";
+    };
+    return {
+      name: getValue("name"),
+      address: getValue("address"),
+      cuisineType: getValue("cuisineType"),
+      reservationDate: getValue("reservationDate"),
+      numberOfDiners: getValue("numberOfDiners"),
+      notes: getValue("notes"),
+    };
   };
 
   const handleCreate = () => {
-    if (!formData.name) {
+    const values = getFormValues();
+    if (!values) return;
+    
+    if (!values.name) {
       toast.error(language === "he" ? "נא להזין שם" : "Please enter a name");
       return;
     }
     createMutation.mutate({
       tripId,
-      name: formData.name,
-      address: formData.address || undefined,
-      cuisineType: formData.cuisineType || undefined,
-      reservationDate: formData.reservationDate ? new Date(formData.reservationDate).getTime() : undefined,
-      numberOfDiners: formData.numberOfDiners ? parseInt(formData.numberOfDiners) : undefined,
-      notes: formData.notes || undefined,
+      name: values.name,
+      address: values.address || undefined,
+      cuisineType: values.cuisineType || undefined,
+      reservationDate: values.reservationDate ? new Date(values.reservationDate).getTime() : undefined,
+      numberOfDiners: values.numberOfDiners ? parseInt(values.numberOfDiners) : undefined,
+      notes: values.notes || undefined,
     });
   };
 
   const handleUpdate = () => {
-    if (!editingId || !formData.name) return;
+    const values = getFormValues();
+    if (!values || !editingId) return;
+    
+    if (!values.name) {
+      toast.error(language === "he" ? "נא להזין שם" : "Please enter a name");
+      return;
+    }
     updateMutation.mutate({
       id: editingId,
-      name: formData.name,
-      address: formData.address || undefined,
-      cuisineType: formData.cuisineType || undefined,
-      reservationDate: formData.reservationDate ? new Date(formData.reservationDate).getTime() : undefined,
-      numberOfDiners: formData.numberOfDiners ? parseInt(formData.numberOfDiners) : undefined,
-      notes: formData.notes || undefined,
+      name: values.name,
+      address: values.address || undefined,
+      cuisineType: values.cuisineType || undefined,
+      reservationDate: values.reservationDate ? new Date(values.reservationDate).getTime() : undefined,
+      numberOfDiners: values.numberOfDiners ? parseInt(values.numberOfDiners) : undefined,
+      notes: values.notes || undefined,
     });
   };
 
+  const [editDefaults, setEditDefaults] = useState({
+    name: "",
+    address: "",
+    cuisineType: "",
+    reservationDate: "",
+    numberOfDiners: "",
+    notes: "",
+  });
+
   const openEdit = (restaurant: NonNullable<typeof restaurants>[0]) => {
-    setFormData({
+    setEditDefaults({
       name: restaurant.name,
       address: restaurant.address || "",
       cuisineType: restaurant.cuisineType || "",
@@ -117,28 +130,28 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
     );
   }
 
-  const FormFields = () => (
-    <div className="grid gap-4 py-4">
+  const FormFields = ({ defaults }: { defaults?: typeof editDefaults }) => (
+    <div className="grid gap-4 py-4" ref={formRef}>
       <div className="grid gap-2">
         <Label>{t("restaurantName")} *</Label>
         <Input
-          value={formData.name}
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          name="name"
+          defaultValue={defaults?.name || ""}
           placeholder={language === "he" ? "לה פטיט ביסטרו" : "Le Petit Bistro"}
         />
       </div>
       <div className="grid gap-2">
         <Label>{t("address")}</Label>
         <Input
-          value={formData.address}
-          onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+          name="address"
+          defaultValue={defaults?.address || ""}
         />
       </div>
       <div className="grid gap-2">
         <Label>{t("cuisineType")}</Label>
         <Input
-          value={formData.cuisineType}
-          onChange={(e) => setFormData({ ...formData, cuisineType: e.target.value })}
+          name="cuisineType"
+          defaultValue={defaults?.cuisineType || ""}
           placeholder={language === "he" ? "צרפתית, איטלקית..." : "French, Italian..."}
         />
       </div>
@@ -146,26 +159,26 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
         <div className="grid gap-2">
           <Label>{t("reservationDate")}</Label>
           <Input
+            name="reservationDate"
             type="datetime-local"
-            value={formData.reservationDate}
-            onChange={(e) => setFormData({ ...formData, reservationDate: e.target.value })}
+            defaultValue={defaults?.reservationDate || ""}
           />
         </div>
         <div className="grid gap-2">
           <Label>{t("numberOfDiners")}</Label>
           <Input
+            name="numberOfDiners"
             type="number"
             min="1"
-            value={formData.numberOfDiners}
-            onChange={(e) => setFormData({ ...formData, numberOfDiners: e.target.value })}
+            defaultValue={defaults?.numberOfDiners || ""}
           />
         </div>
       </div>
       <div className="grid gap-2">
         <Label>{t("notes")}</Label>
         <Textarea
-          value={formData.notes}
-          onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+          name="notes"
+          defaultValue={defaults?.notes || ""}
           rows={2}
         />
       </div>
@@ -178,7 +191,7 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
         <h2 className="text-xl font-semibold">{t("restaurants")}</h2>
         <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
           <DialogTrigger asChild>
-            <Button className="btn-elegant" onClick={resetForm}>
+            <Button className="btn-elegant">
               <Plus className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
               {t("newRestaurant")}
             </Button>
@@ -269,7 +282,7 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
           <DialogHeader>
             <DialogTitle>{t("edit")}</DialogTitle>
           </DialogHeader>
-          <FormFields />
+          <FormFields defaults={editDefaults} />
           <DialogFooter>
             <Button variant="outline" onClick={() => setEditingId(null)}>{t("cancel")}</Button>
             <Button onClick={handleUpdate} disabled={updateMutation.isPending}>
