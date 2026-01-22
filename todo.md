@@ -39,3 +39,5 @@
 - [x] Transportation form - add departure and arrival time fields
 - [x] Transportation form - fix keyboard disappearing after each character
 - [x] Transportation form - fix validation error even when all fields are filled
+
+- [x] Transportation form - validation fails even when all fields are filled (mobile issue with date inputs)

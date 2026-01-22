@@ -9,7 +9,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
 import { ArrowRight, Bus, Calendar, Clock, DollarSign, Edit, Loader2, Plane, Plus, Ship, Train, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 
 interface TransportationTabProps {
@@ -39,34 +39,46 @@ export default function TransportationTab({ tripId }: TransportationTabProps) {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   
-  // Form fields as individual state
+  // Use refs to store form values to avoid re-render issues on mobile
+  const formRefs = {
+    type: useRef<TransportType>("flight"),
+    origin: useRef<string>(""),
+    destination: useRef<string>(""),
+    departureDate: useRef<string>(""),
+    departureTime: useRef<string>(""),
+    arrivalDate: useRef<string>(""),
+    arrivalTime: useRef<string>(""),
+    confirmation: useRef<string>(""),
+    price: useRef<string>(""),
+    currency: useRef<string>("USD"),
+    notes: useRef<string>(""),
+  };
+  
+  // State for controlled selects only (they need re-render)
   const [formType, setFormType] = useState<TransportType>("flight");
-  const [formOrigin, setFormOrigin] = useState("");
-  const [formDestination, setFormDestination] = useState("");
-  const [formDepartureDate, setFormDepartureDate] = useState("");
-  const [formDepartureTime, setFormDepartureTime] = useState("");
-  const [formArrivalDate, setFormArrivalDate] = useState("");
-  const [formArrivalTime, setFormArrivalTime] = useState("");
-  const [formConfirmation, setFormConfirmation] = useState("");
-  const [formPrice, setFormPrice] = useState("");
   const [formCurrency, setFormCurrency] = useState("USD");
-  const [formNotes, setFormNotes] = useState("");
+  
+  // Force re-render trigger
+  const [, forceUpdate] = useState({});
 
   const utils = trpc.useUtils();
   const { data: transports, isLoading } = trpc.transportation.list.useQuery({ tripId });
 
   const resetForm = () => {
+    formRefs.type.current = "flight";
+    formRefs.origin.current = "";
+    formRefs.destination.current = "";
+    formRefs.departureDate.current = "";
+    formRefs.departureTime.current = "";
+    formRefs.arrivalDate.current = "";
+    formRefs.arrivalTime.current = "";
+    formRefs.confirmation.current = "";
+    formRefs.price.current = "";
+    formRefs.currency.current = "USD";
+    formRefs.notes.current = "";
     setFormType("flight");
-    setFormOrigin("");
-    setFormDestination("");
-    setFormDepartureDate("");
-    setFormDepartureTime("");
-    setFormArrivalDate("");
-    setFormArrivalTime("");
-    setFormConfirmation("");
-    setFormPrice("");
     setFormCurrency("USD");
-    setFormNotes("");
+    forceUpdate({});
   };
 
   const createMutation = trpc.transportation.create.useMutation({
@@ -111,49 +123,75 @@ export default function TransportationTab({ tripId }: TransportationTabProps) {
     return new Date(dateTimeStr).getTime();
   };
 
+  const getFormValues = () => {
+    // Get values directly from DOM inputs to ensure we have the latest values
+    const getInputValue = (name: string): string => {
+      const input = document.querySelector(`[data-field="${name}"]`) as HTMLInputElement | HTMLTextAreaElement;
+      return input?.value || "";
+    };
+    
+    return {
+      type: formType,
+      origin: getInputValue("origin") || formRefs.origin.current,
+      destination: getInputValue("destination") || formRefs.destination.current,
+      departureDate: getInputValue("departureDate") || formRefs.departureDate.current,
+      departureTime: getInputValue("departureTime") || formRefs.departureTime.current,
+      arrivalDate: getInputValue("arrivalDate") || formRefs.arrivalDate.current,
+      arrivalTime: getInputValue("arrivalTime") || formRefs.arrivalTime.current,
+      confirmation: getInputValue("confirmation") || formRefs.confirmation.current,
+      price: getInputValue("price") || formRefs.price.current,
+      currency: formCurrency,
+      notes: getInputValue("notes") || formRefs.notes.current,
+    };
+  };
+
   const handleCreate = () => {
-    if (!formOrigin.trim() || !formDestination.trim() || !formDepartureDate) {
+    const values = getFormValues();
+    
+    if (!values.origin.trim() || !values.destination.trim() || !values.departureDate) {
       toast.error(language === "he" ? "נא למלא: מוצא, יעד ותאריך יציאה" : "Please fill: origin, destination and departure date");
       return;
     }
     
-    const departureTimestamp = combineDateAndTime(formDepartureDate, formDepartureTime);
-    const arrivalTimestamp = combineDateAndTime(formArrivalDate, formArrivalTime);
+    const departureTimestamp = combineDateAndTime(values.departureDate, values.departureTime);
+    const arrivalTimestamp = combineDateAndTime(values.arrivalDate, values.arrivalTime);
     
     createMutation.mutate({
       tripId,
-      type: formType,
-      origin: formOrigin.trim(),
-      destination: formDestination.trim(),
+      type: values.type,
+      origin: values.origin.trim(),
+      destination: values.destination.trim(),
       departureDate: departureTimestamp!,
       arrivalDate: arrivalTimestamp,
-      confirmationNumber: formConfirmation.trim() || undefined,
-      price: formPrice || undefined,
-      currency: formCurrency || undefined,
-      notes: formNotes.trim() || undefined,
+      confirmationNumber: values.confirmation.trim() || undefined,
+      price: values.price || undefined,
+      currency: values.currency || undefined,
+      notes: values.notes.trim() || undefined,
     });
   };
 
   const handleUpdate = () => {
-    if (!editingId || !formOrigin.trim() || !formDestination.trim() || !formDepartureDate) {
+    const values = getFormValues();
+    
+    if (!editingId || !values.origin.trim() || !values.destination.trim() || !values.departureDate) {
       toast.error(language === "he" ? "נא למלא: מוצא, יעד ותאריך יציאה" : "Please fill: origin, destination and departure date");
       return;
     }
     
-    const departureTimestamp = combineDateAndTime(formDepartureDate, formDepartureTime);
-    const arrivalTimestamp = combineDateAndTime(formArrivalDate, formArrivalTime);
+    const departureTimestamp = combineDateAndTime(values.departureDate, values.departureTime);
+    const arrivalTimestamp = combineDateAndTime(values.arrivalDate, values.arrivalTime);
     
     updateMutation.mutate({
       id: editingId,
-      type: formType,
-      origin: formOrigin.trim(),
-      destination: formDestination.trim(),
+      type: values.type,
+      origin: values.origin.trim(),
+      destination: values.destination.trim(),
       departureDate: departureTimestamp!,
       arrivalDate: arrivalTimestamp,
-      confirmationNumber: formConfirmation.trim() || undefined,
-      price: formPrice || undefined,
-      currency: formCurrency || undefined,
-      notes: formNotes.trim() || undefined,
+      confirmationNumber: values.confirmation.trim() || undefined,
+      price: values.price || undefined,
+      currency: values.currency || undefined,
+      notes: values.notes.trim() || undefined,
     });
   };
 
@@ -161,17 +199,20 @@ export default function TransportationTab({ tripId }: TransportationTabProps) {
     const depDate = new Date(transport.departureDate);
     const arrDate = transport.arrivalDate ? new Date(transport.arrivalDate) : null;
     
+    formRefs.type.current = transport.type;
+    formRefs.origin.current = transport.origin;
+    formRefs.destination.current = transport.destination;
+    formRefs.departureDate.current = format(depDate, "yyyy-MM-dd");
+    formRefs.departureTime.current = format(depDate, "HH:mm");
+    formRefs.arrivalDate.current = arrDate ? format(arrDate, "yyyy-MM-dd") : "";
+    formRefs.arrivalTime.current = arrDate ? format(arrDate, "HH:mm") : "";
+    formRefs.confirmation.current = transport.confirmationNumber || "";
+    formRefs.price.current = transport.price || "";
+    formRefs.currency.current = transport.currency || "USD";
+    formRefs.notes.current = transport.notes || "";
+    
     setFormType(transport.type);
-    setFormOrigin(transport.origin);
-    setFormDestination(transport.destination);
-    setFormDepartureDate(format(depDate, "yyyy-MM-dd"));
-    setFormDepartureTime(format(depDate, "HH:mm"));
-    setFormArrivalDate(arrDate ? format(arrDate, "yyyy-MM-dd") : "");
-    setFormArrivalTime(arrDate ? format(arrDate, "HH:mm") : "");
-    setFormConfirmation(transport.confirmationNumber || "");
-    setFormPrice(transport.price || "");
     setFormCurrency(transport.currency || "USD");
-    setFormNotes(transport.notes || "");
     setEditingId(transport.id);
   };
 
@@ -183,6 +224,153 @@ export default function TransportationTab({ tripId }: TransportationTabProps) {
     );
   }
 
+  const FormFields = ({ isEdit = false }: { isEdit?: boolean }) => (
+    <div className="grid gap-4 py-4">
+      <div className="grid gap-2">
+        <Label>{t("transportType")} *</Label>
+        <Select value={formType} onValueChange={(v) => {
+          setFormType(v as TransportType);
+          formRefs.type.current = v as TransportType;
+        }}>
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="flight">{t("flight")}</SelectItem>
+            <SelectItem value="train">{t("train")}</SelectItem>
+            <SelectItem value="bus">{t("bus")}</SelectItem>
+            <SelectItem value="ferry">{t("ferry")}</SelectItem>
+            <SelectItem value="other">{t("other")}</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      
+      <div className="grid grid-cols-2 gap-4">
+        <div className="grid gap-2">
+          <Label>{t("origin")} *</Label>
+          <Input
+            data-field="origin"
+            defaultValue={formRefs.origin.current}
+            onChange={(e) => { formRefs.origin.current = e.target.value; }}
+            placeholder={language === "he" ? "תל אביב" : "Tel Aviv"}
+          />
+        </div>
+        <div className="grid gap-2">
+          <Label>{t("destination")} *</Label>
+          <Input
+            data-field="destination"
+            defaultValue={formRefs.destination.current}
+            onChange={(e) => { formRefs.destination.current = e.target.value; }}
+            placeholder={language === "he" ? "פריז" : "Paris"}
+          />
+        </div>
+      </div>
+      
+      <div className="grid gap-2">
+        <Label className="flex items-center gap-2">
+          <Calendar className="w-4 h-4" />
+          {language === "he" ? "תאריך ושעת יציאה" : "Departure Date & Time"} *
+        </Label>
+        <div className="grid grid-cols-2 gap-2">
+          <Input
+            type="date"
+            data-field="departureDate"
+            defaultValue={formRefs.departureDate.current}
+            onChange={(e) => { formRefs.departureDate.current = e.target.value; }}
+          />
+          <div className="relative">
+            <Clock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+            <Input
+              type="time"
+              data-field="departureTime"
+              defaultValue={formRefs.departureTime.current}
+              onChange={(e) => { formRefs.departureTime.current = e.target.value; }}
+              className="pl-10"
+            />
+          </div>
+        </div>
+      </div>
+      
+      <div className="grid gap-2">
+        <Label className="flex items-center gap-2">
+          <Calendar className="w-4 h-4" />
+          {language === "he" ? "תאריך ושעת הגעה" : "Arrival Date & Time"}
+        </Label>
+        <div className="grid grid-cols-2 gap-2">
+          <Input
+            type="date"
+            data-field="arrivalDate"
+            defaultValue={formRefs.arrivalDate.current}
+            onChange={(e) => { formRefs.arrivalDate.current = e.target.value; }}
+          />
+          <div className="relative">
+            <Clock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+            <Input
+              type="time"
+              data-field="arrivalTime"
+              defaultValue={formRefs.arrivalTime.current}
+              onChange={(e) => { formRefs.arrivalTime.current = e.target.value; }}
+              className="pl-10"
+            />
+          </div>
+        </div>
+      </div>
+      
+      <div className="grid gap-2">
+        <Label>{t("confirmationNumber")}</Label>
+        <Input
+          data-field="confirmation"
+          defaultValue={formRefs.confirmation.current}
+          onChange={(e) => { formRefs.confirmation.current = e.target.value; }}
+          placeholder={language === "he" ? "מספר אישור" : "Confirmation #"}
+        />
+      </div>
+      
+      <div className="grid grid-cols-2 gap-4">
+        <div className="grid gap-2">
+          <Label>{t("price")}</Label>
+          <Input
+            type="number"
+            min="0"
+            step="0.01"
+            data-field="price"
+            defaultValue={formRefs.price.current}
+            onChange={(e) => { formRefs.price.current = e.target.value; }}
+            placeholder="0.00"
+          />
+        </div>
+        <div className="grid gap-2">
+          <Label>{t("currency")}</Label>
+          <Select value={formCurrency} onValueChange={(v) => {
+            setFormCurrency(v);
+            formRefs.currency.current = v;
+          }}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="USD">USD ($)</SelectItem>
+              <SelectItem value="EUR">EUR (€)</SelectItem>
+              <SelectItem value="ILS">ILS (₪)</SelectItem>
+              <SelectItem value="GBP">GBP (£)</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+      
+      <div className="grid gap-2">
+        <Label>{t("notes")}</Label>
+        <Textarea
+          data-field="notes"
+          defaultValue={formRefs.notes.current}
+          onChange={(e) => { formRefs.notes.current = e.target.value; }}
+          rows={2}
+          placeholder={language === "he" ? "הערות נוספות..." : "Additional notes..."}
+        />
+      </div>
+    </div>
+  );
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
@@ -192,7 +380,7 @@ export default function TransportationTab({ tripId }: TransportationTabProps) {
           if (!open) resetForm();
         }}>
           <DialogTrigger asChild>
-            <Button className="btn-elegant" onClick={resetForm}>
+            <Button className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg" onClick={resetForm}>
               <Plus className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
               {t("newTransportation")}
             </Button>
@@ -205,135 +393,7 @@ export default function TransportationTab({ tripId }: TransportationTabProps) {
               </DialogDescription>
             </DialogHeader>
             
-            <div className="grid gap-4 py-4">
-              <div className="grid gap-2">
-                <Label>{t("transportType")} *</Label>
-                <Select value={formType} onValueChange={(v) => setFormType(v as TransportType)}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="flight">{t("flight")}</SelectItem>
-                    <SelectItem value="train">{t("train")}</SelectItem>
-                    <SelectItem value="bus">{t("bus")}</SelectItem>
-                    <SelectItem value="ferry">{t("ferry")}</SelectItem>
-                    <SelectItem value="other">{t("other")}</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                <div className="grid gap-2">
-                  <Label>{t("origin")} *</Label>
-                  <Input
-                    value={formOrigin}
-                    onChange={(e) => setFormOrigin(e.target.value)}
-                    placeholder={language === "he" ? "תל אביב" : "Tel Aviv"}
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label>{t("destination")} *</Label>
-                  <Input
-                    value={formDestination}
-                    onChange={(e) => setFormDestination(e.target.value)}
-                    placeholder={language === "he" ? "פריז" : "Paris"}
-                  />
-                </div>
-              </div>
-              
-              <div className="grid gap-2">
-                <Label className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4" />
-                  {language === "he" ? "תאריך ושעת יציאה" : "Departure Date & Time"} *
-                </Label>
-                <div className="grid grid-cols-2 gap-2">
-                  <Input
-                    type="date"
-                    value={formDepartureDate}
-                    onChange={(e) => setFormDepartureDate(e.target.value)}
-                  />
-                  <div className="relative">
-                    <Clock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
-                    <Input
-                      type="time"
-                      value={formDepartureTime}
-                      onChange={(e) => setFormDepartureTime(e.target.value)}
-                      className="pl-10"
-                    />
-                  </div>
-                </div>
-              </div>
-              
-              <div className="grid gap-2">
-                <Label className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4" />
-                  {language === "he" ? "תאריך ושעת הגעה" : "Arrival Date & Time"}
-                </Label>
-                <div className="grid grid-cols-2 gap-2">
-                  <Input
-                    type="date"
-                    value={formArrivalDate}
-                    onChange={(e) => setFormArrivalDate(e.target.value)}
-                  />
-                  <div className="relative">
-                    <Clock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
-                    <Input
-                      type="time"
-                      value={formArrivalTime}
-                      onChange={(e) => setFormArrivalTime(e.target.value)}
-                      className="pl-10"
-                    />
-                  </div>
-                </div>
-              </div>
-              
-              <div className="grid gap-2">
-                <Label>{t("confirmationNumber")}</Label>
-                <Input
-                  value={formConfirmation}
-                  onChange={(e) => setFormConfirmation(e.target.value)}
-                  placeholder={language === "he" ? "מספר אישור" : "Confirmation #"}
-                />
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                <div className="grid gap-2">
-                  <Label>{t("price")}</Label>
-                  <Input
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    value={formPrice}
-                    onChange={(e) => setFormPrice(e.target.value)}
-                    placeholder="0.00"
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label>{t("currency")}</Label>
-                  <Select value={formCurrency} onValueChange={setFormCurrency}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="USD">USD ($)</SelectItem>
-                      <SelectItem value="EUR">EUR (€)</SelectItem>
-                      <SelectItem value="ILS">ILS (₪)</SelectItem>
-                      <SelectItem value="GBP">GBP (£)</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              
-              <div className="grid gap-2">
-                <Label>{t("notes")}</Label>
-                <Textarea
-                  value={formNotes}
-                  onChange={(e) => setFormNotes(e.target.value)}
-                  rows={2}
-                  placeholder={language === "he" ? "הערות נוספות..." : "Additional notes..."}
-                />
-              </div>
-            </div>
+            <FormFields />
             
             <DialogFooter>
               <Button variant="outline" onClick={() => setIsCreateOpen(false)}>{t("cancel")}</Button>
@@ -361,135 +421,7 @@ export default function TransportationTab({ tripId }: TransportationTabProps) {
             </DialogDescription>
           </DialogHeader>
           
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label>{t("transportType")} *</Label>
-              <Select value={formType} onValueChange={(v) => setFormType(v as TransportType)}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="flight">{t("flight")}</SelectItem>
-                  <SelectItem value="train">{t("train")}</SelectItem>
-                  <SelectItem value="bus">{t("bus")}</SelectItem>
-                  <SelectItem value="ferry">{t("ferry")}</SelectItem>
-                  <SelectItem value="other">{t("other")}</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            
-            <div className="grid grid-cols-2 gap-4">
-              <div className="grid gap-2">
-                <Label>{t("origin")} *</Label>
-                <Input
-                  value={formOrigin}
-                  onChange={(e) => setFormOrigin(e.target.value)}
-                  placeholder={language === "he" ? "תל אביב" : "Tel Aviv"}
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label>{t("destination")} *</Label>
-                <Input
-                  value={formDestination}
-                  onChange={(e) => setFormDestination(e.target.value)}
-                  placeholder={language === "he" ? "פריז" : "Paris"}
-                />
-              </div>
-            </div>
-            
-            <div className="grid gap-2">
-              <Label className="flex items-center gap-2">
-                <Calendar className="w-4 h-4" />
-                {language === "he" ? "תאריך ושעת יציאה" : "Departure Date & Time"} *
-              </Label>
-              <div className="grid grid-cols-2 gap-2">
-                <Input
-                  type="date"
-                  value={formDepartureDate}
-                  onChange={(e) => setFormDepartureDate(e.target.value)}
-                />
-                <div className="relative">
-                  <Clock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
-                  <Input
-                    type="time"
-                    value={formDepartureTime}
-                    onChange={(e) => setFormDepartureTime(e.target.value)}
-                    className="pl-10"
-                  />
-                </div>
-              </div>
-            </div>
-            
-            <div className="grid gap-2">
-              <Label className="flex items-center gap-2">
-                <Calendar className="w-4 h-4" />
-                {language === "he" ? "תאריך ושעת הגעה" : "Arrival Date & Time"}
-              </Label>
-              <div className="grid grid-cols-2 gap-2">
-                <Input
-                  type="date"
-                  value={formArrivalDate}
-                  onChange={(e) => setFormArrivalDate(e.target.value)}
-                />
-                <div className="relative">
-                  <Clock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
-                  <Input
-                    type="time"
-                    value={formArrivalTime}
-                    onChange={(e) => setFormArrivalTime(e.target.value)}
-                    className="pl-10"
-                  />
-                </div>
-              </div>
-            </div>
-            
-            <div className="grid gap-2">
-              <Label>{t("confirmationNumber")}</Label>
-              <Input
-                value={formConfirmation}
-                onChange={(e) => setFormConfirmation(e.target.value)}
-                placeholder={language === "he" ? "מספר אישור" : "Confirmation #"}
-              />
-            </div>
-            
-            <div className="grid grid-cols-2 gap-4">
-              <div className="grid gap-2">
-                <Label>{t("price")}</Label>
-                <Input
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  value={formPrice}
-                  onChange={(e) => setFormPrice(e.target.value)}
-                  placeholder="0.00"
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label>{t("currency")}</Label>
-                <Select value={formCurrency} onValueChange={setFormCurrency}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="USD">USD ($)</SelectItem>
-                    <SelectItem value="EUR">EUR (€)</SelectItem>
-                    <SelectItem value="ILS">ILS (₪)</SelectItem>
-                    <SelectItem value="GBP">GBP (£)</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-            
-            <div className="grid gap-2">
-              <Label>{t("notes")}</Label>
-              <Textarea
-                value={formNotes}
-                onChange={(e) => setFormNotes(e.target.value)}
-                rows={2}
-                placeholder={language === "he" ? "הערות נוספות..." : "Additional notes..."}
-              />
-            </div>
-          </div>
+          <FormFields isEdit />
           
           <DialogFooter>
             <Button variant="outline" onClick={() => setEditingId(null)}>{t("cancel")}</Button>
@@ -501,69 +433,66 @@ export default function TransportationTab({ tripId }: TransportationTabProps) {
         </DialogContent>
       </Dialog>
 
+      {/* Transport List */}
       {transports && transports.length > 0 ? (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="space-y-4">
           {transports.map((transport) => {
-            const Icon = transportIcons[transport.type];
-            const colorClass = transportColors[transport.type];
+            const Icon = transportIcons[transport.type] || ArrowRight;
+            const colorClass = transportColors[transport.type] || transportColors.other;
             const depDate = new Date(transport.departureDate);
             const arrDate = transport.arrivalDate ? new Date(transport.arrivalDate) : null;
             
             return (
-              <Card key={transport.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader className="pb-2">
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-2">
-                      <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClass} flex items-center justify-center`}>
-                        <Icon className="w-5 h-5 text-white" />
-                      </div>
-                      <div>
-                        <CardTitle className="text-sm font-medium capitalize">{t(transport.type)}</CardTitle>
-                        <CardDescription className="flex items-center gap-1 text-xs">
-                          {transport.origin} → {transport.destination}
-                        </CardDescription>
-                      </div>
+              <Card key={transport.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                <CardContent className="p-0">
+                  <div className="flex items-stretch">
+                    <div className={`w-16 bg-gradient-to-br ${colorClass} flex items-center justify-center`}>
+                      <Icon className="w-8 h-8 text-white" />
                     </div>
-                    <div className="flex gap-1">
-                      <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => openEdit(transport)}>
-                        <Edit className="w-4 h-4" />
-                      </Button>
-                      <Button 
-                        size="icon" 
-                        variant="ghost" 
-                        className="h-8 w-8 text-destructive"
-                        onClick={() => deleteMutation.mutate({ id: transport.id })}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
+                    <div className="flex-1 p-4">
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <h3 className="font-semibold text-lg">{t(transport.type)}</h3>
+                          <p className="text-sm text-muted-foreground flex items-center gap-1">
+                            {transport.origin} <ArrowRight className="w-3 h-3" /> {transport.destination}
+                          </p>
+                        </div>
+                        <div className="flex gap-1">
+                          <Button variant="ghost" size="icon" onClick={() => openEdit(transport)}>
+                            <Edit className="w-4 h-4" />
+                          </Button>
+                          <Button variant="ghost" size="icon" onClick={() => deleteMutation.mutate({ id: transport.id })}>
+                            <Trash2 className="w-4 h-4 text-destructive" />
+                          </Button>
+                        </div>
+                      </div>
+                      <div className="mt-2 flex flex-wrap gap-4 text-sm">
+                        <span className="flex items-center gap-1">
+                          <Calendar className="w-4 h-4 text-muted-foreground" />
+                          {format(depDate, "MMM d, yyyy")}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Clock className="w-4 h-4 text-muted-foreground" />
+                          {format(depDate, "HH:mm")}
+                        </span>
+                        {transport.price && (
+                          <span className="flex items-center gap-1">
+                            <DollarSign className="w-4 h-4 text-muted-foreground" />
+                            {transport.price} {transport.currency}
+                          </span>
+                        )}
+                      </div>
+                      {arrDate && (
+                        <p className="text-sm text-muted-foreground mt-1">
+                          {language === "he" ? "הגעה:" : "Arrival:"} {format(arrDate, "MMM d, yyyy HH:mm")}
+                        </p>
+                      )}
+                      {transport.confirmationNumber && (
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {t("confirmationNumber")}: {transport.confirmationNumber}
+                        </p>
+                      )}
                     </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="pt-2">
-                  <div className="space-y-2 text-sm">
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                      <Calendar className="w-4 h-4" />
-                      <span>{format(depDate, "MMM d, yyyy")}</span>
-                      <Clock className="w-4 h-4 ml-2" />
-                      <span>{format(depDate, "HH:mm")}</span>
-                    </div>
-                    {arrDate && (
-                      <div className="flex items-center gap-2 text-muted-foreground">
-                        <span className="text-xs">{language === "he" ? "הגעה:" : "Arrival:"}</span>
-                        <span>{format(arrDate, "MMM d, yyyy HH:mm")}</span>
-                      </div>
-                    )}
-                    {transport.confirmationNumber && (
-                      <div className="text-xs text-muted-foreground">
-                        #{transport.confirmationNumber}
-                      </div>
-                    )}
-                    {transport.price && (
-                      <div className="flex items-center gap-1 font-medium text-primary">
-                        <DollarSign className="w-4 h-4" />
-                        {transport.price} {transport.currency}
-                      </div>
-                    )}
                   </div>
                 </CardContent>
               </Card>
@@ -571,12 +500,14 @@ export default function TransportationTab({ tripId }: TransportationTabProps) {
           })}
         </div>
       ) : (
-        <div className="rounded-xl border bg-card p-12 text-center">
-          <Plane className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
-          <p className="text-muted-foreground">
-            {language === "he" ? "לא נוספו הסעות עדיין" : "No transportation added yet"}
-          </p>
-        </div>
+        <Card className="border-dashed">
+          <CardContent className="flex flex-col items-center justify-center py-12">
+            <Plane className="w-12 h-12 text-muted-foreground/50 mb-4" />
+            <p className="text-muted-foreground">
+              {language === "he" ? "אין הסעות עדיין" : "No transportation added yet"}
+            </p>
+          </CardContent>
+        </Card>
       )}
     </div>
   );
