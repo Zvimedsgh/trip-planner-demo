@@ -33,3 +33,9 @@
 - [x] Typography setup
 - [x] Responsive layout
 - [x] Card-based interface with gradients
+
+
+## Bug Fixes
+- [x] Transportation form - add departure and arrival time fields
+- [x] Transportation form - fix keyboard disappearing after each character
+- [x] Transportation form - fix validation error even when all fields are filled
