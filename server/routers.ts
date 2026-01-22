@@ -1,28 +1,347 @@
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
-import { publicProcedure, router } from "./_core/trpc";
+import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
+import { z } from "zod";
+import * as db from "./db";
+import { storagePut } from "./storage";
+import { nanoid } from "nanoid";
 
 export const appRouter = router({
-    // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
   system: systemRouter,
+  
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
     logout: publicProcedure.mutation(({ ctx }) => {
       const cookieOptions = getSessionCookieOptions(ctx.req);
       ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
-      return {
-        success: true,
-      } as const;
+      return { success: true } as const;
     }),
+    updateLanguage: protectedProcedure
+      .input(z.object({ language: z.enum(["en", "he"]) }))
+      .mutation(async ({ ctx, input }) => {
+        await db.updateUserLanguage(ctx.user.id, input.language);
+        return { success: true };
+      }),
   }),
 
-  // TODO: add feature routers here, e.g.
-  // todo: router({
-  //   list: protectedProcedure.query(({ ctx }) =>
-  //     db.getUserTodos(ctx.user.id)
-  //   ),
-  // }),
+  // ============ TRIPS ============
+  trips: router({
+    list: protectedProcedure.query(({ ctx }) => db.getUserTrips(ctx.user.id)),
+    
+    get: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .query(({ ctx, input }) => db.getTripById(input.id, ctx.user.id)),
+    
+    create: protectedProcedure
+      .input(z.object({
+        name: z.string().min(1),
+        destination: z.string().min(1),
+        startDate: z.number(),
+        endDate: z.number(),
+        description: z.string().optional(),
+        coverImage: z.string().optional(),
+      }))
+      .mutation(({ ctx, input }) => db.createTrip({ ...input, userId: ctx.user.id })),
+    
+    update: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        name: z.string().min(1).optional(),
+        destination: z.string().min(1).optional(),
+        startDate: z.number().optional(),
+        endDate: z.number().optional(),
+        description: z.string().optional(),
+        coverImage: z.string().optional(),
+      }))
+      .mutation(({ ctx, input }) => {
+        const { id, ...data } = input;
+        return db.updateTrip(id, ctx.user.id, data);
+      }),
+    
+    delete: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(({ ctx, input }) => db.deleteTrip(input.id, ctx.user.id)),
+  }),
+
+  // ============ TOURIST SITES ============
+  touristSites: router({
+    list: protectedProcedure
+      .input(z.object({ tripId: z.number() }))
+      .query(({ input }) => db.getTripTouristSites(input.tripId)),
+    
+    create: protectedProcedure
+      .input(z.object({
+        tripId: z.number(),
+        name: z.string().min(1),
+        address: z.string().optional(),
+        description: z.string().optional(),
+        openingHours: z.string().optional(),
+        plannedVisitDate: z.number().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(({ input }) => db.createTouristSite(input)),
+    
+    update: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        name: z.string().min(1).optional(),
+        address: z.string().optional(),
+        description: z.string().optional(),
+        openingHours: z.string().optional(),
+        plannedVisitDate: z.number().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(({ input }) => {
+        const { id, ...data } = input;
+        return db.updateTouristSite(id, data);
+      }),
+    
+    delete: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(({ input }) => db.deleteTouristSite(input.id)),
+  }),
+
+  // ============ HOTELS ============
+  hotels: router({
+    list: protectedProcedure
+      .input(z.object({ tripId: z.number() }))
+      .query(({ input }) => db.getTripHotels(input.tripId)),
+    
+    create: protectedProcedure
+      .input(z.object({
+        tripId: z.number(),
+        name: z.string().min(1),
+        address: z.string().optional(),
+        checkInDate: z.number(),
+        checkOutDate: z.number(),
+        confirmationNumber: z.string().optional(),
+        price: z.string().optional(),
+        currency: z.string().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(({ input }) => db.createHotel(input)),
+    
+    update: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        name: z.string().min(1).optional(),
+        address: z.string().optional(),
+        checkInDate: z.number().optional(),
+        checkOutDate: z.number().optional(),
+        confirmationNumber: z.string().optional(),
+        price: z.string().optional(),
+        currency: z.string().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(({ input }) => {
+        const { id, ...data } = input;
+        return db.updateHotel(id, data);
+      }),
+    
+    delete: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(({ input }) => db.deleteHotel(input.id)),
+  }),
+
+  // ============ TRANSPORTATION ============
+  transportation: router({
+    list: protectedProcedure
+      .input(z.object({ tripId: z.number() }))
+      .query(({ input }) => db.getTripTransportation(input.tripId)),
+    
+    create: protectedProcedure
+      .input(z.object({
+        tripId: z.number(),
+        type: z.enum(["flight", "train", "bus", "ferry", "other"]),
+        origin: z.string().min(1),
+        destination: z.string().min(1),
+        departureDate: z.number(),
+        arrivalDate: z.number().optional(),
+        confirmationNumber: z.string().optional(),
+        price: z.string().optional(),
+        currency: z.string().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(({ input }) => db.createTransportation(input)),
+    
+    update: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        type: z.enum(["flight", "train", "bus", "ferry", "other"]).optional(),
+        origin: z.string().min(1).optional(),
+        destination: z.string().min(1).optional(),
+        departureDate: z.number().optional(),
+        arrivalDate: z.number().optional(),
+        confirmationNumber: z.string().optional(),
+        price: z.string().optional(),
+        currency: z.string().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(({ input }) => {
+        const { id, ...data } = input;
+        return db.updateTransportation(id, data);
+      }),
+    
+    delete: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(({ input }) => db.deleteTransportation(input.id)),
+  }),
+
+  // ============ CAR RENTALS ============
+  carRentals: router({
+    list: protectedProcedure
+      .input(z.object({ tripId: z.number() }))
+      .query(({ input }) => db.getTripCarRentals(input.tripId)),
+    
+    create: protectedProcedure
+      .input(z.object({
+        tripId: z.number(),
+        company: z.string().min(1),
+        carModel: z.string().optional(),
+        pickupDate: z.number(),
+        returnDate: z.number(),
+        pickupLocation: z.string().optional(),
+        returnLocation: z.string().optional(),
+        confirmationNumber: z.string().optional(),
+        price: z.string().optional(),
+        currency: z.string().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(({ input }) => db.createCarRental(input)),
+    
+    update: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        company: z.string().min(1).optional(),
+        carModel: z.string().optional(),
+        pickupDate: z.number().optional(),
+        returnDate: z.number().optional(),
+        pickupLocation: z.string().optional(),
+        returnLocation: z.string().optional(),
+        confirmationNumber: z.string().optional(),
+        price: z.string().optional(),
+        currency: z.string().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(({ input }) => {
+        const { id, ...data } = input;
+        return db.updateCarRental(id, data);
+      }),
+    
+    delete: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(({ input }) => db.deleteCarRental(input.id)),
+  }),
+
+  // ============ RESTAURANTS ============
+  restaurants: router({
+    list: protectedProcedure
+      .input(z.object({ tripId: z.number() }))
+      .query(({ input }) => db.getTripRestaurants(input.tripId)),
+    
+    create: protectedProcedure
+      .input(z.object({
+        tripId: z.number(),
+        name: z.string().min(1),
+        address: z.string().optional(),
+        cuisineType: z.string().optional(),
+        reservationDate: z.number().optional(),
+        numberOfDiners: z.number().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(({ input }) => db.createRestaurant(input)),
+    
+    update: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        name: z.string().min(1).optional(),
+        address: z.string().optional(),
+        cuisineType: z.string().optional(),
+        reservationDate: z.number().optional(),
+        numberOfDiners: z.number().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(({ input }) => {
+        const { id, ...data } = input;
+        return db.updateRestaurant(id, data);
+      }),
+    
+    delete: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(({ input }) => db.deleteRestaurant(input.id)),
+  }),
+
+  // ============ DOCUMENTS ============
+  documents: router({
+    list: protectedProcedure
+      .input(z.object({ tripId: z.number() }))
+      .query(({ input }) => db.getTripDocuments(input.tripId)),
+    
+    create: protectedProcedure
+      .input(z.object({
+        tripId: z.number(),
+        name: z.string().min(1),
+        category: z.enum(["passport", "visa", "insurance", "booking", "ticket", "other"]),
+        fileUrl: z.string(),
+        fileKey: z.string(),
+        mimeType: z.string().optional(),
+        tags: z.string().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(({ input }) => db.createDocument(input)),
+    
+    update: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        name: z.string().min(1).optional(),
+        category: z.enum(["passport", "visa", "insurance", "booking", "ticket", "other"]).optional(),
+        tags: z.string().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(({ input }) => {
+        const { id, ...data } = input;
+        return db.updateDocument(id, data);
+      }),
+    
+    delete: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(({ input }) => db.deleteDocument(input.id)),
+    
+    upload: protectedProcedure
+      .input(z.object({
+        tripId: z.number(),
+        fileName: z.string(),
+        fileData: z.string(), // base64
+        mimeType: z.string(),
+        category: z.enum(["passport", "visa", "insurance", "booking", "ticket", "other"]),
+        tags: z.string().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const buffer = Buffer.from(input.fileData, "base64");
+        const fileKey = `documents/${ctx.user.id}/${input.tripId}/${nanoid()}-${input.fileName}`;
+        const { url } = await storagePut(fileKey, buffer, input.mimeType);
+        
+        return db.createDocument({
+          tripId: input.tripId,
+          name: input.fileName,
+          category: input.category,
+          fileUrl: url,
+          fileKey: fileKey,
+          mimeType: input.mimeType,
+          tags: input.tags,
+          notes: input.notes,
+        });
+      }),
+  }),
+
+  // ============ BUDGET ============
+  budget: router({
+    get: protectedProcedure
+      .input(z.object({ tripId: z.number() }))
+      .query(({ input }) => db.getTripBudget(input.tripId)),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

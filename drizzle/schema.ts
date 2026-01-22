@@ -1,22 +1,16 @@
-import { int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { int, mysqlEnum, mysqlTable, text, timestamp, varchar, decimal, bigint } from "drizzle-orm/mysql-core";
 
 /**
  * Core user table backing auth flow.
- * Extend this file with additional tables as your product grows.
- * Columns use camelCase to match both database fields and generated types.
  */
 export const users = mysqlTable("users", {
-  /**
-   * Surrogate primary key. Auto-incremented numeric value managed by the database.
-   * Use this for relations between tables.
-   */
   id: int("id").autoincrement().primaryKey(),
-  /** Manus OAuth identifier (openId) returned from the OAuth callback. Unique per user. */
   openId: varchar("openId", { length: 64 }).notNull().unique(),
   name: text("name"),
   email: varchar("email", { length: 320 }),
   loginMethod: varchar("loginMethod", { length: 64 }),
   role: mysqlEnum("role", ["user", "admin"]).default("user").notNull(),
+  preferredLanguage: mysqlEnum("preferredLanguage", ["en", "he"]).default("en").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
   lastSignedIn: timestamp("lastSignedIn").defaultNow().notNull(),
@@ -25,4 +19,145 @@ export const users = mysqlTable("users", {
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
-// TODO: Add your tables here
+/**
+ * Trips table - main entity for travel planning
+ */
+export const trips = mysqlTable("trips", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  destination: varchar("destination", { length: 255 }).notNull(),
+  startDate: bigint("startDate", { mode: "number" }).notNull(), // UTC timestamp in ms
+  endDate: bigint("endDate", { mode: "number" }).notNull(), // UTC timestamp in ms
+  description: text("description"),
+  coverImage: varchar("coverImage", { length: 500 }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Trip = typeof trips.$inferSelect;
+export type InsertTrip = typeof trips.$inferInsert;
+
+/**
+ * Tourist sites table
+ */
+export const touristSites = mysqlTable("tourist_sites", {
+  id: int("id").autoincrement().primaryKey(),
+  tripId: int("tripId").notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  address: varchar("address", { length: 500 }),
+  description: text("description"),
+  openingHours: varchar("openingHours", { length: 255 }),
+  plannedVisitDate: bigint("plannedVisitDate", { mode: "number" }), // UTC timestamp in ms
+  notes: text("notes"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type TouristSite = typeof touristSites.$inferSelect;
+export type InsertTouristSite = typeof touristSites.$inferInsert;
+
+/**
+ * Hotels table
+ */
+export const hotels = mysqlTable("hotels", {
+  id: int("id").autoincrement().primaryKey(),
+  tripId: int("tripId").notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  address: varchar("address", { length: 500 }),
+  checkInDate: bigint("checkInDate", { mode: "number" }).notNull(), // UTC timestamp in ms
+  checkOutDate: bigint("checkOutDate", { mode: "number" }).notNull(), // UTC timestamp in ms
+  confirmationNumber: varchar("confirmationNumber", { length: 100 }),
+  price: decimal("price", { precision: 10, scale: 2 }),
+  currency: varchar("currency", { length: 10 }).default("USD"),
+  notes: text("notes"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Hotel = typeof hotels.$inferSelect;
+export type InsertHotel = typeof hotels.$inferInsert;
+
+/**
+ * Transportation table (flights, trains, buses)
+ */
+export const transportation = mysqlTable("transportation", {
+  id: int("id").autoincrement().primaryKey(),
+  tripId: int("tripId").notNull(),
+  type: mysqlEnum("type", ["flight", "train", "bus", "ferry", "other"]).notNull(),
+  origin: varchar("origin", { length: 255 }).notNull(),
+  destination: varchar("destination", { length: 255 }).notNull(),
+  departureDate: bigint("departureDate", { mode: "number" }).notNull(), // UTC timestamp in ms
+  arrivalDate: bigint("arrivalDate", { mode: "number" }),
+  confirmationNumber: varchar("confirmationNumber", { length: 100 }),
+  price: decimal("price", { precision: 10, scale: 2 }),
+  currency: varchar("currency", { length: 10 }).default("USD"),
+  notes: text("notes"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Transportation = typeof transportation.$inferSelect;
+export type InsertTransportation = typeof transportation.$inferInsert;
+
+/**
+ * Car rentals table
+ */
+export const carRentals = mysqlTable("car_rentals", {
+  id: int("id").autoincrement().primaryKey(),
+  tripId: int("tripId").notNull(),
+  company: varchar("company", { length: 255 }).notNull(),
+  carModel: varchar("carModel", { length: 255 }),
+  pickupDate: bigint("pickupDate", { mode: "number" }).notNull(), // UTC timestamp in ms
+  returnDate: bigint("returnDate", { mode: "number" }).notNull(), // UTC timestamp in ms
+  pickupLocation: varchar("pickupLocation", { length: 500 }),
+  returnLocation: varchar("returnLocation", { length: 500 }),
+  confirmationNumber: varchar("confirmationNumber", { length: 100 }),
+  price: decimal("price", { precision: 10, scale: 2 }),
+  currency: varchar("currency", { length: 10 }).default("USD"),
+  notes: text("notes"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type CarRental = typeof carRentals.$inferSelect;
+export type InsertCarRental = typeof carRentals.$inferInsert;
+
+/**
+ * Restaurants table
+ */
+export const restaurants = mysqlTable("restaurants", {
+  id: int("id").autoincrement().primaryKey(),
+  tripId: int("tripId").notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  address: varchar("address", { length: 500 }),
+  cuisineType: varchar("cuisineType", { length: 100 }),
+  reservationDate: bigint("reservationDate", { mode: "number" }), // UTC timestamp in ms
+  numberOfDiners: int("numberOfDiners"),
+  notes: text("notes"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Restaurant = typeof restaurants.$inferSelect;
+export type InsertRestaurant = typeof restaurants.$inferInsert;
+
+/**
+ * Documents table
+ */
+export const documents = mysqlTable("documents", {
+  id: int("id").autoincrement().primaryKey(),
+  tripId: int("tripId").notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  category: mysqlEnum("category", ["passport", "visa", "insurance", "booking", "ticket", "other"]).notNull(),
+  fileUrl: varchar("fileUrl", { length: 500 }).notNull(),
+  fileKey: varchar("fileKey", { length: 500 }).notNull(),
+  mimeType: varchar("mimeType", { length: 100 }),
+  tags: text("tags"), // JSON array of tags
+  notes: text("notes"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Document = typeof documents.$inferSelect;
+export type InsertDocument = typeof documents.$inferInsert;

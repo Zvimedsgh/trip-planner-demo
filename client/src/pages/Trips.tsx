@@ -1,0 +1,410 @@
+import { useAuth } from "@/_core/hooks/useAuth";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { trpc } from "@/lib/trpc";
+import { format } from "date-fns";
+import { Calendar, Globe, MapPin, Plane, Plus, Trash2, Edit, ArrowRight, Loader2 } from "lucide-react";
+import { useState } from "react";
+import { Link, useLocation } from "wouter";
+import { toast } from "sonner";
+
+export default function Trips() {
+  const { user, loading: authLoading } = useAuth();
+  const { t, language, setLanguage, isRTL } = useLanguage();
+  const [, navigate] = useLocation();
+  
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [editingTrip, setEditingTrip] = useState<number | null>(null);
+  
+  const [formData, setFormData] = useState({
+    name: "",
+    destination: "",
+    startDate: "",
+    endDate: "",
+    description: "",
+  });
+
+  const utils = trpc.useUtils();
+  const { data: trips, isLoading } = trpc.trips.list.useQuery();
+  
+  const createMutation = trpc.trips.create.useMutation({
+    onSuccess: () => {
+      utils.trips.list.invalidate();
+      setIsCreateOpen(false);
+      resetForm();
+      toast.success(language === "he" ? "הטיול נוצר בהצלחה" : "Trip created successfully");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  const updateMutation = trpc.trips.update.useMutation({
+    onSuccess: () => {
+      utils.trips.list.invalidate();
+      setEditingTrip(null);
+      resetForm();
+      toast.success(language === "he" ? "הטיול עודכן בהצלחה" : "Trip updated successfully");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  const deleteMutation = trpc.trips.delete.useMutation({
+    onSuccess: () => {
+      utils.trips.list.invalidate();
+      toast.success(language === "he" ? "הטיול נמחק בהצלחה" : "Trip deleted successfully");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  const resetForm = () => {
+    setFormData({
+      name: "",
+      destination: "",
+      startDate: "",
+      endDate: "",
+      description: "",
+    });
+  };
+
+  const handleCreate = () => {
+    if (!formData.name || !formData.destination || !formData.startDate || !formData.endDate) {
+      toast.error(language === "he" ? "נא למלא את כל השדות החובה" : "Please fill in all required fields");
+      return;
+    }
+    
+    createMutation.mutate({
+      name: formData.name,
+      destination: formData.destination,
+      startDate: new Date(formData.startDate).getTime(),
+      endDate: new Date(formData.endDate).getTime(),
+      description: formData.description || undefined,
+    });
+  };
+
+  const handleUpdate = () => {
+    if (!editingTrip || !formData.name || !formData.destination || !formData.startDate || !formData.endDate) {
+      toast.error(language === "he" ? "נא למלא את כל השדות החובה" : "Please fill in all required fields");
+      return;
+    }
+    
+    updateMutation.mutate({
+      id: editingTrip,
+      name: formData.name,
+      destination: formData.destination,
+      startDate: new Date(formData.startDate).getTime(),
+      endDate: new Date(formData.endDate).getTime(),
+      description: formData.description || undefined,
+    });
+  };
+
+  const handleDelete = (id: number) => {
+    if (confirm(t("confirmDelete"))) {
+      deleteMutation.mutate({ id });
+    }
+  };
+
+  const openEditDialog = (trip: NonNullable<typeof trips>[0]) => {
+    setFormData({
+      name: trip.name,
+      destination: trip.destination,
+      startDate: format(new Date(trip.startDate), "yyyy-MM-dd"),
+      endDate: format(new Date(trip.endDate), "yyyy-MM-dd"),
+      description: trip.description || "",
+    });
+    setEditingTrip(trip.id);
+  };
+
+  const getDaysCount = (start: number, end: number) => {
+    return Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+  };
+
+  if (authLoading || isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/20">
+      {/* Header */}
+      <header className="sticky top-0 z-50 glass border-b border-white/10">
+        <div className="container flex items-center justify-between h-16">
+          <Link href="/">
+            <div className="flex items-center gap-2 cursor-pointer">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center">
+                <Plane className="w-5 h-5 text-white" />
+              </div>
+              <span className="font-bold text-xl">{t("appName")}</span>
+            </div>
+          </Link>
+          
+          <div className="flex items-center gap-4">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setLanguage(language === "en" ? "he" : "en")}
+              className="flex items-center gap-2"
+            >
+              <Globe className="w-4 h-4" />
+              <span>{language === "en" ? "עברית" : "English"}</span>
+            </Button>
+            
+            <span className="text-sm text-muted-foreground">
+              {t("welcome")}, {user?.name || "Traveler"}
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <main className="container py-8">
+        {/* Page Header */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+          <div>
+            <h1 className="text-3xl font-bold mb-2">{t("myTrips")}</h1>
+            <p className="text-muted-foreground">
+              {trips?.length || 0} {language === "he" ? "טיולים" : "trips"}
+            </p>
+          </div>
+          
+          <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+            <DialogTrigger asChild>
+              <Button className="btn-elegant" onClick={resetForm}>
+                <Plus className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                {t("newTrip")}
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[500px]">
+              <DialogHeader>
+                <DialogTitle>{t("newTrip")}</DialogTitle>
+                <DialogDescription>
+                  {language === "he" ? "צור טיול חדש ותתחיל לתכנן את ההרפתקה שלך" : "Create a new trip and start planning your adventure"}
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="name">{t("tripName")} *</Label>
+                  <Input
+                    id="name"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    placeholder={language === "he" ? "הרפתקה בפריז" : "Paris Adventure"}
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="destination">{t("destination")} *</Label>
+                  <Input
+                    id="destination"
+                    value={formData.destination}
+                    onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
+                    placeholder={language === "he" ? "פריז, צרפת" : "Paris, France"}
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="grid gap-2">
+                    <Label htmlFor="startDate">{t("startDate")} *</Label>
+                    <Input
+                      id="startDate"
+                      type="date"
+                      value={formData.startDate}
+                      onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="endDate">{t("endDate")} *</Label>
+                    <Input
+                      id="endDate"
+                      type="date"
+                      value={formData.endDate}
+                      onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
+                    />
+                  </div>
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="description">{t("description")}</Label>
+                  <Textarea
+                    id="description"
+                    value={formData.description}
+                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                    placeholder={language === "he" ? "תיאור קצר של הטיול..." : "Brief description of your trip..."}
+                    rows={3}
+                  />
+                </div>
+              </div>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setIsCreateOpen(false)}>
+                  {t("cancel")}
+                </Button>
+                <Button onClick={handleCreate} disabled={createMutation.isPending}>
+                  {createMutation.isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+                  {t("create")}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
+
+        {/* Trips Grid */}
+        {trips && trips.length > 0 ? (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {trips.map((trip) => (
+              <Card key={trip.id} className="elegant-card-hover overflow-hidden group">
+                <div className="h-32 bg-gradient-to-br from-primary/20 via-purple-500/20 to-pink-500/20 relative">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <MapPin className="w-12 h-12 text-primary/30" />
+                  </div>
+                  <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Button
+                      size="icon"
+                      variant="secondary"
+                      className="h-8 w-8"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        openEditDialog(trip);
+                      }}
+                    >
+                      <Edit className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      size="icon"
+                      variant="destructive"
+                      className="h-8 w-8"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleDelete(trip.id);
+                      }}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-lg">{trip.name}</CardTitle>
+                  <CardDescription className="flex items-center gap-1">
+                    <MapPin className="w-3 h-3" />
+                    {trip.destination}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
+                    <Calendar className="w-4 h-4" />
+                    <span>
+                      {format(new Date(trip.startDate), "MMM d")} - {format(new Date(trip.endDate), "MMM d, yyyy")}
+                    </span>
+                    <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full">
+                      {getDaysCount(trip.startDate, trip.endDate)} {t("days")}
+                    </span>
+                  </div>
+                  {trip.description && (
+                    <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
+                      {trip.description}
+                    </p>
+                  )}
+                  <Link href={`/trip/${trip.id}`}>
+                    <Button variant="outline" className="w-full group/btn">
+                      {t("tripDetails")}
+                      <ArrowRight className={`w-4 h-4 ${isRTL ? 'mr-2 rotate-180' : 'ml-2'} group-hover/btn:translate-x-1 transition-transform`} />
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <div className="elegant-card p-12 text-center">
+            <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
+              <Plane className="w-10 h-10 text-primary" />
+            </div>
+            <h3 className="text-xl font-semibold mb-2">{t("noTrips")}</h3>
+            <p className="text-muted-foreground mb-6">
+              {language === "he" ? "התחל לתכנן את ההרפתקה הבאה שלך" : "Start planning your next adventure"}
+            </p>
+            <Button className="btn-elegant" onClick={() => setIsCreateOpen(true)}>
+              <Plus className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+              {t("newTrip")}
+            </Button>
+          </div>
+        )}
+
+        {/* Edit Dialog */}
+        <Dialog open={editingTrip !== null} onOpenChange={(open) => !open && setEditingTrip(null)}>
+          <DialogContent className="sm:max-w-[500px]">
+            <DialogHeader>
+              <DialogTitle>{t("editTrip")}</DialogTitle>
+              <DialogDescription>
+                {language === "he" ? "עדכן את פרטי הטיול" : "Update your trip details"}
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="grid gap-2">
+                <Label htmlFor="edit-name">{t("tripName")} *</Label>
+                <Input
+                  id="edit-name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="edit-destination">{t("destination")} *</Label>
+                <Input
+                  id="edit-destination"
+                  value={formData.destination}
+                  onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="edit-startDate">{t("startDate")} *</Label>
+                  <Input
+                    id="edit-startDate"
+                    type="date"
+                    value={formData.startDate}
+                    onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="edit-endDate">{t("endDate")} *</Label>
+                  <Input
+                    id="edit-endDate"
+                    type="date"
+                    value={formData.endDate}
+                    onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
+                  />
+                </div>
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="edit-description">{t("description")}</Label>
+                <Textarea
+                  id="edit-description"
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  rows={3}
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setEditingTrip(null)}>
+                {t("cancel")}
+              </Button>
+              <Button onClick={handleUpdate} disabled={updateMutation.isPending}>
+                {updateMutation.isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+                {t("save")}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </main>
+    </div>
+  );
+}

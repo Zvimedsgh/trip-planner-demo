@@ -1,11 +1,19 @@
-import { eq } from "drizzle-orm";
+import { eq, and, desc } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users } from "../drizzle/schema";
+import { 
+  InsertUser, users, 
+  trips, InsertTrip, Trip,
+  touristSites, InsertTouristSite, TouristSite,
+  hotels, InsertHotel, Hotel,
+  transportation, InsertTransportation, Transportation,
+  carRentals, InsertCarRental, CarRental,
+  restaurants, InsertRestaurant, Restaurant,
+  documents, InsertDocument, Document
+} from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
-// Lazily create the drizzle instance so local tooling can run without a DB.
 export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
@@ -17,6 +25,8 @@ export async function getDb() {
   }
   return _db;
 }
+
+// ============ USER QUERIES ============
 
 export async function upsertUser(user: InsertUser): Promise<void> {
   if (!user.openId) {
@@ -89,4 +99,292 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-// TODO: add feature queries here as your schema grows.
+export async function updateUserLanguage(userId: number, language: "en" | "he") {
+  const db = await getDb();
+  if (!db) return;
+  await db.update(users).set({ preferredLanguage: language }).where(eq(users.id, userId));
+}
+
+// ============ TRIP QUERIES ============
+
+export async function createTrip(data: InsertTrip): Promise<Trip> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.insert(trips).values(data);
+  const inserted = await db.select().from(trips).where(eq(trips.id, Number(result[0].insertId))).limit(1);
+  return inserted[0];
+}
+
+export async function getUserTrips(userId: number): Promise<Trip[]> {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return db.select().from(trips).where(eq(trips.userId, userId)).orderBy(desc(trips.startDate));
+}
+
+export async function getTripById(tripId: number, userId: number): Promise<Trip | undefined> {
+  const db = await getDb();
+  if (!db) return undefined;
+  
+  const result = await db.select().from(trips)
+    .where(and(eq(trips.id, tripId), eq(trips.userId, userId)))
+    .limit(1);
+  return result[0];
+}
+
+export async function updateTrip(tripId: number, userId: number, data: Partial<InsertTrip>): Promise<Trip | undefined> {
+  const db = await getDb();
+  if (!db) return undefined;
+  
+  await db.update(trips).set(data).where(and(eq(trips.id, tripId), eq(trips.userId, userId)));
+  return getTripById(tripId, userId);
+}
+
+export async function deleteTrip(tripId: number, userId: number): Promise<boolean> {
+  const db = await getDb();
+  if (!db) return false;
+  
+  // Delete all related data first
+  await db.delete(touristSites).where(eq(touristSites.tripId, tripId));
+  await db.delete(hotels).where(eq(hotels.tripId, tripId));
+  await db.delete(transportation).where(eq(transportation.tripId, tripId));
+  await db.delete(carRentals).where(eq(carRentals.tripId, tripId));
+  await db.delete(restaurants).where(eq(restaurants.tripId, tripId));
+  await db.delete(documents).where(eq(documents.tripId, tripId));
+  
+  const result = await db.delete(trips).where(and(eq(trips.id, tripId), eq(trips.userId, userId)));
+  return true;
+}
+
+// ============ TOURIST SITES QUERIES ============
+
+export async function createTouristSite(data: InsertTouristSite): Promise<TouristSite> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.insert(touristSites).values(data);
+  const inserted = await db.select().from(touristSites).where(eq(touristSites.id, Number(result[0].insertId))).limit(1);
+  return inserted[0];
+}
+
+export async function getTripTouristSites(tripId: number): Promise<TouristSite[]> {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return db.select().from(touristSites).where(eq(touristSites.tripId, tripId)).orderBy(touristSites.plannedVisitDate);
+}
+
+export async function updateTouristSite(id: number, data: Partial<InsertTouristSite>): Promise<TouristSite | undefined> {
+  const db = await getDb();
+  if (!db) return undefined;
+  
+  await db.update(touristSites).set(data).where(eq(touristSites.id, id));
+  const result = await db.select().from(touristSites).where(eq(touristSites.id, id)).limit(1);
+  return result[0];
+}
+
+export async function deleteTouristSite(id: number): Promise<boolean> {
+  const db = await getDb();
+  if (!db) return false;
+  
+  await db.delete(touristSites).where(eq(touristSites.id, id));
+  return true;
+}
+
+// ============ HOTEL QUERIES ============
+
+export async function createHotel(data: InsertHotel): Promise<Hotel> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.insert(hotels).values(data);
+  const inserted = await db.select().from(hotels).where(eq(hotels.id, Number(result[0].insertId))).limit(1);
+  return inserted[0];
+}
+
+export async function getTripHotels(tripId: number): Promise<Hotel[]> {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return db.select().from(hotels).where(eq(hotels.tripId, tripId)).orderBy(hotels.checkInDate);
+}
+
+export async function updateHotel(id: number, data: Partial<InsertHotel>): Promise<Hotel | undefined> {
+  const db = await getDb();
+  if (!db) return undefined;
+  
+  await db.update(hotels).set(data).where(eq(hotels.id, id));
+  const result = await db.select().from(hotels).where(eq(hotels.id, id)).limit(1);
+  return result[0];
+}
+
+export async function deleteHotel(id: number): Promise<boolean> {
+  const db = await getDb();
+  if (!db) return false;
+  
+  await db.delete(hotels).where(eq(hotels.id, id));
+  return true;
+}
+
+// ============ TRANSPORTATION QUERIES ============
+
+export async function createTransportation(data: InsertTransportation): Promise<Transportation> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.insert(transportation).values(data);
+  const inserted = await db.select().from(transportation).where(eq(transportation.id, Number(result[0].insertId))).limit(1);
+  return inserted[0];
+}
+
+export async function getTripTransportation(tripId: number): Promise<Transportation[]> {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return db.select().from(transportation).where(eq(transportation.tripId, tripId)).orderBy(transportation.departureDate);
+}
+
+export async function updateTransportation(id: number, data: Partial<InsertTransportation>): Promise<Transportation | undefined> {
+  const db = await getDb();
+  if (!db) return undefined;
+  
+  await db.update(transportation).set(data).where(eq(transportation.id, id));
+  const result = await db.select().from(transportation).where(eq(transportation.id, id)).limit(1);
+  return result[0];
+}
+
+export async function deleteTransportation(id: number): Promise<boolean> {
+  const db = await getDb();
+  if (!db) return false;
+  
+  await db.delete(transportation).where(eq(transportation.id, id));
+  return true;
+}
+
+// ============ CAR RENTAL QUERIES ============
+
+export async function createCarRental(data: InsertCarRental): Promise<CarRental> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.insert(carRentals).values(data);
+  const inserted = await db.select().from(carRentals).where(eq(carRentals.id, Number(result[0].insertId))).limit(1);
+  return inserted[0];
+}
+
+export async function getTripCarRentals(tripId: number): Promise<CarRental[]> {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return db.select().from(carRentals).where(eq(carRentals.tripId, tripId)).orderBy(carRentals.pickupDate);
+}
+
+export async function updateCarRental(id: number, data: Partial<InsertCarRental>): Promise<CarRental | undefined> {
+  const db = await getDb();
+  if (!db) return undefined;
+  
+  await db.update(carRentals).set(data).where(eq(carRentals.id, id));
+  const result = await db.select().from(carRentals).where(eq(carRentals.id, id)).limit(1);
+  return result[0];
+}
+
+export async function deleteCarRental(id: number): Promise<boolean> {
+  const db = await getDb();
+  if (!db) return false;
+  
+  await db.delete(carRentals).where(eq(carRentals.id, id));
+  return true;
+}
+
+// ============ RESTAURANT QUERIES ============
+
+export async function createRestaurant(data: InsertRestaurant): Promise<Restaurant> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.insert(restaurants).values(data);
+  const inserted = await db.select().from(restaurants).where(eq(restaurants.id, Number(result[0].insertId))).limit(1);
+  return inserted[0];
+}
+
+export async function getTripRestaurants(tripId: number): Promise<Restaurant[]> {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return db.select().from(restaurants).where(eq(restaurants.tripId, tripId)).orderBy(restaurants.reservationDate);
+}
+
+export async function updateRestaurant(id: number, data: Partial<InsertRestaurant>): Promise<Restaurant | undefined> {
+  const db = await getDb();
+  if (!db) return undefined;
+  
+  await db.update(restaurants).set(data).where(eq(restaurants.id, id));
+  const result = await db.select().from(restaurants).where(eq(restaurants.id, id)).limit(1);
+  return result[0];
+}
+
+export async function deleteRestaurant(id: number): Promise<boolean> {
+  const db = await getDb();
+  if (!db) return false;
+  
+  await db.delete(restaurants).where(eq(restaurants.id, id));
+  return true;
+}
+
+// ============ DOCUMENT QUERIES ============
+
+export async function createDocument(data: InsertDocument): Promise<Document> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.insert(documents).values(data);
+  const inserted = await db.select().from(documents).where(eq(documents.id, Number(result[0].insertId))).limit(1);
+  return inserted[0];
+}
+
+export async function getTripDocuments(tripId: number): Promise<Document[]> {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return db.select().from(documents).where(eq(documents.tripId, tripId)).orderBy(desc(documents.createdAt));
+}
+
+export async function updateDocument(id: number, data: Partial<InsertDocument>): Promise<Document | undefined> {
+  const db = await getDb();
+  if (!db) return undefined;
+  
+  await db.update(documents).set(data).where(eq(documents.id, id));
+  const result = await db.select().from(documents).where(eq(documents.id, id)).limit(1);
+  return result[0];
+}
+
+export async function deleteDocument(id: number): Promise<boolean> {
+  const db = await getDb();
+  if (!db) return false;
+  
+  await db.delete(documents).where(eq(documents.id, id));
+  return true;
+}
+
+// ============ BUDGET CALCULATION ============
+
+export async function getTripBudget(tripId: number) {
+  const db = await getDb();
+  if (!db) return { hotels: 0, transportation: 0, carRentals: 0, total: 0 };
+  
+  const tripHotels = await getTripHotels(tripId);
+  const tripTransport = await getTripTransportation(tripId);
+  const tripCars = await getTripCarRentals(tripId);
+  
+  const hotelsTotal = tripHotels.reduce((sum, h) => sum + (parseFloat(h.price || "0")), 0);
+  const transportTotal = tripTransport.reduce((sum, t) => sum + (parseFloat(t.price || "0")), 0);
+  const carsTotal = tripCars.reduce((sum, c) => sum + (parseFloat(c.price || "0")), 0);
+  
+  return {
+    hotels: hotelsTotal,
+    transportation: transportTotal,
+    carRentals: carsTotal,
+    total: hotelsTotal + transportTotal + carsTotal
+  };
+}
