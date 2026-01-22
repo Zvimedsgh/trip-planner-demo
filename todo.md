@@ -118,3 +118,7 @@
 ## Shared Trip Page Improvements
 - [x] Redesign shared trip page with modern, attractive styling similar to main app
 - [x] Add Timeline view to shared trip page
+
+## Home Page Improvements
+- [x] Remove fictional trip cards (Paris Adventure, Hotel Booked, Budget Tracking)
+- [x] Add beautiful travel destination images instead

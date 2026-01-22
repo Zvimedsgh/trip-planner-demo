@@ -23,6 +23,24 @@ export default function Home() {
     { icon: DollarSign, title: t("featureBudget"), desc: t("featureBudgetDesc"), color: "from-green-500 to-emerald-600" },
   ];
 
+  const destinations = [
+    { 
+      image: "/travel-1.jpg", 
+      title: "Discover Amazing Places",
+      subtitle: "From mountains to beaches"
+    },
+    { 
+      image: "/travel-2.jpg", 
+      title: "Explore the World",
+      subtitle: "Natural wonders await"
+    },
+    { 
+      image: "/travel-3.jpg", 
+      title: "Create Memories",
+      subtitle: "Adventures of a lifetime"
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/20">
       {/* Navigation */}
@@ -104,51 +122,32 @@ export default function Home() {
             </div>
           </div>
           
-          {/* Floating Elements */}
-          <div className="relative mt-20 max-w-5xl mx-auto">
+          {/* Travel Destination Images */}
+          <div className="relative mt-20 max-w-6xl mx-auto">
             <div className="absolute -top-10 -left-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl animate-float" />
             <div className="absolute -bottom-10 -right-10 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: "2s" }} />
             
-            {/* Preview Card */}
-            <div className="relative elegant-card p-8 overflow-hidden">
-              <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent" />
-              
-              <div className="grid md:grid-cols-3 gap-6">
-                <div className="elegant-card p-6 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mb-4">
-                    <Plane className="w-6 h-6 text-white" />
+            {/* Image Gallery */}
+            <div className="relative grid md:grid-cols-3 gap-6">
+              {destinations.map((dest, index) => (
+                <div 
+                  key={index}
+                  className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+                >
+                  <div className="aspect-[4/3] overflow-hidden">
+                    <img 
+                      src={dest.image} 
+                      alt={dest.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
                   </div>
-                  <h3 className="font-semibold mb-2">Paris Adventure</h3>
-                  <p className="text-sm text-muted-foreground">Jun 15 - Jun 22, 2026</p>
-                  <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
-                    <MapPin className="w-4 h-4" />
-                    <span>5 sites planned</span>
-                  </div>
-                </div>
-                
-                <div className="elegant-card p-6 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center mb-4">
-                    <Hotel className="w-6 h-6 text-white" />
-                  </div>
-                  <h3 className="font-semibold mb-2">Hotel Booked</h3>
-                  <p className="text-sm text-muted-foreground">Le Marais Boutique</p>
-                  <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
-                    <Calendar className="w-4 h-4" />
-                    <span>7 nights</span>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                    <h3 className="text-xl font-bold mb-1">{dest.title}</h3>
+                    <p className="text-white/80 text-sm">{dest.subtitle}</p>
                   </div>
                 </div>
-                
-                <div className="elegant-card p-6 bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center mb-4">
-                    <DollarSign className="w-6 h-6 text-white" />
-                  </div>
-                  <h3 className="font-semibold mb-2">Budget Tracking</h3>
-                  <p className="text-sm text-muted-foreground">$2,450 / $3,000</p>
-                  <div className="mt-4 w-full bg-muted rounded-full h-2">
-                    <div className="bg-gradient-to-r from-amber-500 to-orange-600 h-2 rounded-full" style={{ width: "82%" }} />
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
