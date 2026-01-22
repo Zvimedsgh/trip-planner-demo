@@ -122,3 +122,6 @@
 ## Home Page Improvements
 - [x] Remove fictional trip cards (Paris Adventure, Hotel Booked, Budget Tracking)
 - [x] Add beautiful travel destination images instead
+
+## Trip Cards Background Images
+- [x] Add background image to trip cards in My Trips page based on destination (Slovakia/Bratislava)

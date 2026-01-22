@@ -258,12 +258,37 @@ export default function Trips() {
         {/* Trips Grid */}
         {trips && trips.length > 0 ? (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {trips.map((trip) => (
+            {trips.map((trip) => {
+              // Get background image based on destination
+              const getDestinationImage = (destination: string) => {
+                const dest = destination.toLowerCase();
+                if (dest.includes('slovakia') || dest.includes('bratislava') || dest.includes('kosice') || dest.includes('tatra')) {
+                  return '/slovakia.jpg';
+                }
+                // Default gradient for other destinations
+                return null;
+              };
+              const bgImage = getDestinationImage(trip.destination);
+              
+              return (
               <Card key={trip.id} className="elegant-card-hover overflow-hidden group">
-                <div className="h-32 bg-gradient-to-br from-primary/20 via-purple-500/20 to-pink-500/20 relative">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <MapPin className="w-12 h-12 text-primary/30" />
-                  </div>
+                <div className="h-32 relative">
+                  {bgImage ? (
+                    <>
+                      <img 
+                        src={bgImage} 
+                        alt={trip.destination}
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                    </>
+                  ) : (
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-purple-500/20 to-pink-500/20">
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <MapPin className="w-12 h-12 text-primary/30" />
+                      </div>
+                    </div>
+                  )}
                   <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                     <Button
                       size="icon"
@@ -319,7 +344,7 @@ export default function Trips() {
                   </Link>
                 </CardContent>
               </Card>
-            ))}
+            );})}
           </div>
         ) : (
           <div className="elegant-card p-12 text-center">
