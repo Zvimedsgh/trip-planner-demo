@@ -134,6 +134,8 @@ export const restaurants = mysqlTable("restaurants", {
   cuisineType: varchar("cuisineType", { length: 100 }),
   reservationDate: bigint("reservationDate", { mode: "number" }), // UTC timestamp in ms
   numberOfDiners: int("numberOfDiners"),
+  price: decimal("price", { precision: 10, scale: 2 }),
+  currency: varchar("currency", { length: 10 }).default("USD"),
   notes: text("notes"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),

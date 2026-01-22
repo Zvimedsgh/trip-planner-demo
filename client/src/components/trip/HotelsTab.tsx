@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
@@ -10,6 +11,21 @@ import { format } from "date-fns";
 import { Calendar, DollarSign, Edit, Hotel, Loader2, MapPin, Plus, Trash2 } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
+
+const CURRENCIES = [
+  { code: "USD", symbol: "$", name: "US Dollar" },
+  { code: "EUR", symbol: "€", name: "Euro" },
+  { code: "GBP", symbol: "£", name: "British Pound" },
+  { code: "ILS", symbol: "₪", name: "Israeli Shekel" },
+  { code: "JPY", symbol: "¥", name: "Japanese Yen" },
+  { code: "CHF", symbol: "Fr", name: "Swiss Franc" },
+  { code: "CAD", symbol: "C$", name: "Canadian Dollar" },
+  { code: "AUD", symbol: "A$", name: "Australian Dollar" },
+  { code: "CNY", symbol: "¥", name: "Chinese Yuan" },
+  { code: "INR", symbol: "₹", name: "Indian Rupee" },
+  { code: "THB", symbol: "฿", name: "Thai Baht" },
+  { code: "TRY", symbol: "₺", name: "Turkish Lira" },
+];
 
 interface HotelsTabProps {
   tripId: number;
@@ -19,6 +35,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
   const { t, language, isRTL } = useLanguage();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
+  const [selectedCurrency, setSelectedCurrency] = useState("USD");
   const formRef = useRef<HTMLDivElement>(null);
 
   const utils = trpc.useUtils();
@@ -29,6 +46,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
       utils.hotels.list.invalidate({ tripId });
       utils.budget.get.invalidate({ tripId });
       setIsCreateOpen(false);
+      setSelectedCurrency("USD");
       toast.success(language === "he" ? "המלון נוסף בהצלחה" : "Hotel added successfully");
     },
   });
@@ -63,7 +81,6 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
       checkOutDate: getValue("checkOutDate"),
       confirmationNumber: getValue("confirmationNumber"),
       price: getValue("price"),
-      currency: getValue("currency"),
       notes: getValue("notes"),
     };
   };
@@ -84,7 +101,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
       checkOutDate: new Date(values.checkOutDate).getTime(),
       confirmationNumber: values.confirmationNumber || undefined,
       price: values.price || undefined,
-      currency: values.currency || undefined,
+      currency: selectedCurrency,
       notes: values.notes || undefined,
     });
   };
@@ -105,7 +122,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
       checkOutDate: new Date(values.checkOutDate).getTime(),
       confirmationNumber: values.confirmationNumber || undefined,
       price: values.price || undefined,
-      currency: values.currency || undefined,
+      currency: selectedCurrency,
       notes: values.notes || undefined,
     });
   };
@@ -132,11 +149,16 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
       currency: hotel.currency || "USD",
       notes: hotel.notes || "",
     });
+    setSelectedCurrency(hotel.currency || "USD");
     setEditingId(hotel.id);
   };
 
   const getNights = (checkIn: number, checkOut: number) => {
     return Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+  };
+
+  const getCurrencySymbol = (code: string) => {
+    return CURRENCIES.find(c => c.code === code)?.symbol || code;
   };
 
   if (isLoading) {
@@ -201,10 +223,18 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
         </div>
         <div className="grid gap-2">
           <Label>{t("currency")}</Label>
-          <Input
-            name="currency"
-            defaultValue={defaults?.currency || "USD"}
-          />
+          <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {CURRENCIES.map((currency) => (
+                <SelectItem key={currency.code} value={currency.code}>
+                  {currency.symbol} {currency.code}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </div>
       <div className="grid gap-2">
@@ -222,7 +252,10 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-semibold">{t("hotels")}</h2>
-        <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+        <Dialog open={isCreateOpen} onOpenChange={(open) => {
+          setIsCreateOpen(open);
+          if (open) setSelectedCurrency("USD");
+        }}>
           <DialogTrigger asChild>
             <Button className="btn-elegant">
               <Plus className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
@@ -298,8 +331,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
                   )}
                   {hotel.price && (
                     <span className="flex items-center gap-1 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-2 py-1 rounded">
-                      <DollarSign className="w-3 h-3" />
-                      {hotel.price} {hotel.currency}
+                      {getCurrencySymbol(hotel.currency || "USD")} {hotel.price} {hotel.currency}
                     </span>
                   )}
                 </div>

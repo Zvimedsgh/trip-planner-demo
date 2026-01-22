@@ -383,10 +383,18 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="USD">USD ($)</SelectItem>
-              <SelectItem value="EUR">EUR (€)</SelectItem>
-              <SelectItem value="ILS">ILS (₪)</SelectItem>
-              <SelectItem value="GBP">GBP (£)</SelectItem>
+              <SelectItem value="USD">$ USD</SelectItem>
+              <SelectItem value="EUR">€ EUR</SelectItem>
+              <SelectItem value="GBP">£ GBP</SelectItem>
+              <SelectItem value="ILS">₪ ILS</SelectItem>
+              <SelectItem value="JPY">¥ JPY</SelectItem>
+              <SelectItem value="CHF">Fr CHF</SelectItem>
+              <SelectItem value="CAD">C$ CAD</SelectItem>
+              <SelectItem value="AUD">A$ AUD</SelectItem>
+              <SelectItem value="CNY">¥ CNY</SelectItem>
+              <SelectItem value="INR">₹ INR</SelectItem>
+              <SelectItem value="THB">฿ THB</SelectItem>
+              <SelectItem value="TRY">₺ TRY</SelectItem>
             </SelectContent>
           </Select>
         </div>

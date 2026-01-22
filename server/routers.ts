@@ -248,6 +248,8 @@ export const appRouter = router({
         cuisineType: z.string().optional(),
         reservationDate: z.number().optional(),
         numberOfDiners: z.number().optional(),
+        price: z.string().optional(),
+        currency: z.string().optional(),
         notes: z.string().optional(),
       }))
       .mutation(({ input }) => db.createRestaurant(input)),
@@ -260,6 +262,8 @@ export const appRouter = router({
         cuisineType: z.string().optional(),
         reservationDate: z.number().optional(),
         numberOfDiners: z.number().optional(),
+        price: z.string().optional(),
+        currency: z.string().optional(),
         notes: z.string().optional(),
       }))
       .mutation(({ input }) => {

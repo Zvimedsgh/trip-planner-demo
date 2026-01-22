@@ -3,13 +3,29 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
-import { Calendar, Edit, Loader2, MapPin, Plus, Trash2, Users, Utensils } from "lucide-react";
+import { Calendar, DollarSign, Edit, Loader2, MapPin, Plus, Trash2, Users, Utensils } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
+
+const CURRENCIES = [
+  { code: "USD", symbol: "$" },
+  { code: "EUR", symbol: "€" },
+  { code: "GBP", symbol: "£" },
+  { code: "ILS", symbol: "₪" },
+  { code: "JPY", symbol: "¥" },
+  { code: "CHF", symbol: "Fr" },
+  { code: "CAD", symbol: "C$" },
+  { code: "AUD", symbol: "A$" },
+  { code: "CNY", symbol: "¥" },
+  { code: "INR", symbol: "₹" },
+  { code: "THB", symbol: "฿" },
+  { code: "TRY", symbol: "₺" },
+];
 
 interface RestaurantsTabProps {
   tripId: number;
@@ -19,6 +35,7 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
   const { t, language, isRTL } = useLanguage();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
+  const [selectedCurrency, setSelectedCurrency] = useState("USD");
   const formRef = useRef<HTMLDivElement>(null);
 
   const utils = trpc.useUtils();
@@ -27,7 +44,9 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
   const createMutation = trpc.restaurants.create.useMutation({
     onSuccess: () => {
       utils.restaurants.list.invalidate({ tripId });
+      utils.budget.get.invalidate({ tripId });
       setIsCreateOpen(false);
+      setSelectedCurrency("USD");
       toast.success(language === "he" ? "המסעדה נוספה בהצלחה" : "Restaurant added successfully");
     },
   });
@@ -35,6 +54,7 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
   const updateMutation = trpc.restaurants.update.useMutation({
     onSuccess: () => {
       utils.restaurants.list.invalidate({ tripId });
+      utils.budget.get.invalidate({ tripId });
       setEditingId(null);
       toast.success(language === "he" ? "המסעדה עודכנה בהצלחה" : "Restaurant updated successfully");
     },
@@ -43,6 +63,7 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
   const deleteMutation = trpc.restaurants.delete.useMutation({
     onSuccess: () => {
       utils.restaurants.list.invalidate({ tripId });
+      utils.budget.get.invalidate({ tripId });
       toast.success(language === "he" ? "המסעדה נמחקה בהצלחה" : "Restaurant deleted successfully");
     },
   });
@@ -59,6 +80,7 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
       cuisineType: getValue("cuisineType"),
       reservationDate: getValue("reservationDate"),
       numberOfDiners: getValue("numberOfDiners"),
+      price: getValue("price"),
       notes: getValue("notes"),
     };
   };
@@ -78,6 +100,8 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
       cuisineType: values.cuisineType || undefined,
       reservationDate: values.reservationDate ? new Date(values.reservationDate).getTime() : undefined,
       numberOfDiners: values.numberOfDiners ? parseInt(values.numberOfDiners) : undefined,
+      price: values.price || undefined,
+      currency: selectedCurrency,
       notes: values.notes || undefined,
     });
   };
@@ -97,6 +121,8 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
       cuisineType: values.cuisineType || undefined,
       reservationDate: values.reservationDate ? new Date(values.reservationDate).getTime() : undefined,
       numberOfDiners: values.numberOfDiners ? parseInt(values.numberOfDiners) : undefined,
+      price: values.price || undefined,
+      currency: selectedCurrency,
       notes: values.notes || undefined,
     });
   };
@@ -107,6 +133,8 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
     cuisineType: "",
     reservationDate: "",
     numberOfDiners: "",
+    price: "",
+    currency: "USD",
     notes: "",
   });
 
@@ -117,9 +145,16 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
       cuisineType: restaurant.cuisineType || "",
       reservationDate: restaurant.reservationDate ? format(new Date(restaurant.reservationDate), "yyyy-MM-dd'T'HH:mm") : "",
       numberOfDiners: restaurant.numberOfDiners?.toString() || "",
+      price: restaurant.price || "",
+      currency: restaurant.currency || "USD",
       notes: restaurant.notes || "",
     });
+    setSelectedCurrency(restaurant.currency || "USD");
     setEditingId(restaurant.id);
+  };
+
+  const getCurrencySymbol = (code: string) => {
+    return CURRENCIES.find(c => c.code === code)?.symbol || code;
   };
 
   if (isLoading) {
@@ -172,6 +207,32 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
             min="1"
             defaultValue={defaults?.numberOfDiners || ""}
           />
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        <div className="grid gap-2">
+          <Label>{t("price")}</Label>
+          <Input
+            name="price"
+            type="number"
+            defaultValue={defaults?.price || ""}
+            placeholder={language === "he" ? "עלות משוערת" : "Estimated cost"}
+          />
+        </div>
+        <div className="grid gap-2">
+          <Label>{t("currency")}</Label>
+          <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {CURRENCIES.map((currency) => (
+                <SelectItem key={currency.code} value={currency.code}>
+                  {currency.symbol} {currency.code}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </div>
       <div className="grid gap-2">
@@ -262,6 +323,12 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
                     <span className="flex items-center gap-1 bg-muted px-2 py-1 rounded">
                       <Users className="w-3 h-3" />
                       {restaurant.numberOfDiners}
+                    </span>
+                  )}
+                  {restaurant.price && (
+                    <span className="flex items-center gap-1 bg-emerald-100 text-emerald-700 px-2 py-1 rounded">
+                      <DollarSign className="w-3 h-3" />
+                      {getCurrencySymbol(restaurant.currency || "USD")}{restaurant.price}
                     </span>
                   )}
                 </div>

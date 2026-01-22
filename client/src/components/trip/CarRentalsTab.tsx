@@ -3,7 +3,23 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+
+const CURRENCIES = [
+  { code: "USD", symbol: "$" },
+  { code: "EUR", symbol: "€" },
+  { code: "GBP", symbol: "£" },
+  { code: "ILS", symbol: "₪" },
+  { code: "JPY", symbol: "¥" },
+  { code: "CHF", symbol: "Fr" },
+  { code: "CAD", symbol: "C$" },
+  { code: "AUD", symbol: "A$" },
+  { code: "CNY", symbol: "¥" },
+  { code: "INR", symbol: "₹" },
+  { code: "THB", symbol: "฿" },
+  { code: "TRY", symbol: "₺" },
+];
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
@@ -19,6 +35,7 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
   const { t, language, isRTL } = useLanguage();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
+  const [selectedCurrency, setSelectedCurrency] = useState("USD");
   const formRef = useRef<HTMLDivElement>(null);
 
   const utils = trpc.useUtils();
@@ -29,6 +46,7 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
       utils.carRentals.list.invalidate({ tripId });
       utils.budget.get.invalidate({ tripId });
       setIsCreateOpen(false);
+      setSelectedCurrency("USD");
       toast.success(language === "he" ? "השכרת הרכב נוספה בהצלחה" : "Car rental added successfully");
     },
   });
@@ -88,7 +106,7 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
       returnLocation: values.returnLocation || undefined,
       confirmationNumber: values.confirmationNumber || undefined,
       price: values.price || undefined,
-      currency: values.currency || undefined,
+      currency: selectedCurrency,
       notes: values.notes || undefined,
     });
   };
@@ -111,7 +129,7 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
       returnLocation: values.returnLocation || undefined,
       confirmationNumber: values.confirmationNumber || undefined,
       price: values.price || undefined,
-      currency: values.currency || undefined,
+      currency: selectedCurrency,
       notes: values.notes || undefined,
     });
   };
@@ -142,7 +160,12 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
       currency: rental.currency || "USD",
       notes: rental.notes || "",
     });
+    setSelectedCurrency(rental.currency || "USD");
     setEditingId(rental.id);
+  };
+
+  const getCurrencySymbol = (code: string) => {
+    return CURRENCIES.find(c => c.code === code)?.symbol || code;
   };
 
   const getDays = (pickup: number, returnDate: number) => {
@@ -229,10 +252,18 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
         </div>
         <div className="grid gap-2">
           <Label>{t("currency")}</Label>
-          <Input
-            name="currency"
-            defaultValue={defaults?.currency || "USD"}
-          />
+          <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {CURRENCIES.map((currency) => (
+                <SelectItem key={currency.code} value={currency.code}>
+                  {currency.symbol} {currency.code}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </div>
       <div className="grid gap-2">

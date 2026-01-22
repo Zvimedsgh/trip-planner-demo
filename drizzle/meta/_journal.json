@@ -15,6 +15,13 @@
       "when": 1769063383860,
       "tag": "0001_slim_silver_centurion",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1769078740811,
+      "tag": "0002_dizzy_squadron_sinister",
+      "breakpoints": true
     }
   ]
 }

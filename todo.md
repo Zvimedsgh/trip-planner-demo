@@ -51,3 +51,10 @@
 - [x] Fix keyboard disappearing issue in Car Rentals form
 - [x] Fix keyboard disappearing issue in Restaurants form
 - [x] Fix keyboard disappearing issue in Documents form
+
+## Currency Support
+- [x] Add currency selector dropdown in Hotels form (USD, EUR, GBP, JPY, ILS, CHF, etc.)
+- [x] Add currency selector dropdown in Transportation form
+- [x] Add currency selector dropdown in Car Rentals form
+- [x] Add currency selector dropdown in Restaurants form (with price field)
+- [ ] Update Budget tab to show amounts with their currencies
