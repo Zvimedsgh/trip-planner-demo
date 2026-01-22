@@ -86,11 +86,20 @@
 - [x] Fix Tab order in Transportation form
 
 ## Budget Display Improvements
-- [ ] Make currency cards smaller (square boxes)
-- [ ] Add total in ILS card with real-time exchange rates
+- [x] Make currency cards smaller (square boxes)
+- [x] Add total in ILS card with real-time exchange rates
 
 ## Bug Fixes - Hotels Currency
 - [x] Fix currency selector in Hotels form clearing other fields when changed (verified working)
 
 ## Timeline Improvements
 - [x] Show check-in time for hotels in Timeline view
+
+## Bug - Timeline Missing Check-out
+- [x] Fixed: Check-out date was incorrectly set to year 20206 instead of 2026 - corrected via UI
+
+## Time Format
+- [x] Change time display from AM/PM to 24-hour format in Timeline
+
+## Hotel Order
+- [x] Fix hotel order - sort by check-in date AND time (Bratislava 02:30 before Mikulash 15:00)

@@ -2,6 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format, isSameDay } from "date-fns";
+import { formatTime24 } from "@/lib/timeFormat";
 import { Bus, Calendar, Car, Hotel, Loader2, MapPin, Plane, Ship, Train, Utensils } from "lucide-react";
 
 interface TimelineTabProps {
@@ -214,7 +215,7 @@ export default function TimelineTab({ tripId }: TimelineTabProps) {
                             <p className="text-sm text-muted-foreground">{event.subtitle}</p>
                           )}
                           <p className="text-xs text-muted-foreground mt-1">
-                            {event.time || format(new Date(event.date), "HH:mm")}
+                            {event.time ? formatTime24(event.time) : format(new Date(event.date), "HH:mm")}
                           </p>
                         </div>
                       </div>

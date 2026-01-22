@@ -207,7 +207,7 @@ export async function getTripHotels(tripId: number): Promise<Hotel[]> {
   const db = await getDb();
   if (!db) return [];
   
-  return db.select().from(hotels).where(eq(hotels.tripId, tripId)).orderBy(hotels.checkInDate);
+  return db.select().from(hotels).where(eq(hotels.tripId, tripId)).orderBy(hotels.checkInDate, hotels.checkInTime);
 }
 
 export async function updateHotel(id: number, data: Partial<InsertHotel>): Promise<Hotel | undefined> {
