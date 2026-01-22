@@ -31,6 +31,7 @@ export const trips = mysqlTable("trips", {
   endDate: bigint("endDate", { mode: "number" }).notNull(), // UTC timestamp in ms
   description: text("description"),
   coverImage: varchar("coverImage", { length: 500 }),
+  shareToken: varchar("shareToken", { length: 32 }).unique(), // Public share link token
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });

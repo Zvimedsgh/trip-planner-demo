@@ -157,6 +157,37 @@ export async function deleteTrip(tripId: number, userId: number): Promise<boolea
   return true;
 }
 
+// ============ TRIP SHARING ============
+
+export async function generateShareToken(tripId: number, userId: number): Promise<string | null> {
+  const db = await getDb();
+  if (!db) return null;
+  
+  // Generate a random 16-character token
+  const token = Array.from({ length: 16 }, () => 
+    'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'[Math.floor(Math.random() * 62)]
+  ).join('');
+  
+  await db.update(trips).set({ shareToken: token }).where(and(eq(trips.id, tripId), eq(trips.userId, userId)));
+  return token;
+}
+
+export async function revokeShareToken(tripId: number, userId: number): Promise<boolean> {
+  const db = await getDb();
+  if (!db) return false;
+  
+  await db.update(trips).set({ shareToken: null }).where(and(eq(trips.id, tripId), eq(trips.userId, userId)));
+  return true;
+}
+
+export async function getTripByShareToken(shareToken: string): Promise<Trip | undefined> {
+  const db = await getDb();
+  if (!db) return undefined;
+  
+  const result = await db.select().from(trips).where(eq(trips.shareToken, shareToken)).limit(1);
+  return result[0];
+}
+
 // ============ TOURIST SITES QUERIES ============
 
 export async function createTouristSite(data: InsertTouristSite): Promise<TouristSite> {

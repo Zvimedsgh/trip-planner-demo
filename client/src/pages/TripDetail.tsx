@@ -7,8 +7,18 @@ import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
 import { 
   ArrowLeft, Calendar, Car, DollarSign, FileText, Globe, 
-  Hotel, Loader2, MapPin, Plane, Utensils, Clock, ArrowRight
+  Hotel, Loader2, MapPin, Plane, Utensils, Clock, ArrowRight, Share2, Copy, Check, X
 } from "lucide-react";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 import { Link, useParams, useLocation } from "wouter";
 import TouristSitesTab from "@/components/trip/TouristSitesTab";
 import HotelsTab from "@/components/trip/HotelsTab";
@@ -26,7 +36,36 @@ export default function TripDetail() {
   const { t, language, setLanguage, isRTL } = useLanguage();
   const { user } = useAuth();
 
-  const { data: trip, isLoading } = trpc.trips.get.useQuery({ id: tripId });
+  const { data: trip, isLoading, refetch } = trpc.trips.get.useQuery({ id: tripId });
+  const [shareDialogOpen, setShareDialogOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
+  
+  const generateShareLink = trpc.trips.generateShareLink.useMutation({
+    onSuccess: () => {
+      refetch();
+      toast.success(language === "he" ? "קישור שיתוף נוצר" : "Share link created");
+    },
+  });
+  
+  const revokeShareLink = trpc.trips.revokeShareLink.useMutation({
+    onSuccess: () => {
+      refetch();
+      toast.success(language === "he" ? "קישור שיתוף בוטל" : "Share link revoked");
+    },
+  });
+  
+  const shareUrl = trip?.shareToken 
+    ? `${window.location.origin}/shared/${trip.shareToken}`
+    : null;
+  
+  const copyToClipboard = async () => {
+    if (shareUrl) {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      toast.success(language === "he" ? "הקישור הועתק" : "Link copied to clipboard");
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -88,6 +127,15 @@ export default function TripDetail() {
           </div>
           
           <div className="flex items-center gap-4">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShareDialogOpen(true)}
+              className="flex items-center gap-2"
+            >
+              <Share2 className="w-4 h-4" />
+              <span className="hidden sm:inline">{language === "he" ? "שתף" : "Share"}</span>
+            </Button>
             <Button
               variant="ghost"
               size="sm"
@@ -177,6 +225,63 @@ export default function TripDetail() {
           </TabsContent>
         </Tabs>
       </main>
+
+      {/* Share Dialog */}
+      <Dialog open={shareDialogOpen} onOpenChange={setShareDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Share2 className="w-5 h-5" />
+              {language === "he" ? "שתף טיול" : "Share Trip"}
+            </DialogTitle>
+            <DialogDescription>
+              {language === "he" 
+                ? "צור קישור ציבורי לצפייה בטיול. כל מי שיש לו את הקישור יוכל לראות את הטיול (ללא אפשרות עריכה)."
+                : "Create a public link to view this trip. Anyone with the link can see the trip (read-only)."
+              }
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            {shareUrl ? (
+              <>
+                <div className="flex items-center gap-2">
+                  <Input
+                    value={shareUrl}
+                    readOnly
+                    className="flex-1 text-sm"
+                  />
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    onClick={copyToClipboard}
+                  >
+                    {copied ? <Check className="w-4 h-4 text-green-600" /> : <Copy className="w-4 h-4" />}
+                  </Button>
+                </div>
+                <Button
+                  variant="destructive"
+                  className="w-full"
+                  onClick={() => revokeShareLink.mutate({ id: tripId })}
+                  disabled={revokeShareLink.isPending}
+                >
+                  <X className="w-4 h-4 mr-2" />
+                  {language === "he" ? "בטל קישור שיתוף" : "Revoke Share Link"}
+                </Button>
+              </>
+            ) : (
+              <Button
+                className="w-full"
+                onClick={() => generateShareLink.mutate({ id: tripId })}
+                disabled={generateShareLink.isPending}
+              >
+                <Share2 className="w-4 h-4 mr-2" />
+                {language === "he" ? "צור קישור שיתוף" : "Create Share Link"}
+              </Button>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

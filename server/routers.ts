@@ -62,6 +62,63 @@ export const appRouter = router({
     delete: protectedProcedure
       .input(z.object({ id: z.number() }))
       .mutation(({ ctx, input }) => db.deleteTrip(input.id, ctx.user.id)),
+    
+    // Sharing endpoints
+    generateShareLink: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(({ ctx, input }) => db.generateShareToken(input.id, ctx.user.id)),
+    
+    revokeShareLink: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(({ ctx, input }) => db.revokeShareToken(input.id, ctx.user.id)),
+    
+    // Public endpoint - no auth required
+    getByShareToken: publicProcedure
+      .input(z.object({ token: z.string() }))
+      .query(({ input }) => db.getTripByShareToken(input.token)),
+  }),
+
+  // ============ PUBLIC SHARED TRIP DATA ============
+  sharedTrip: router({
+    getHotels: publicProcedure
+      .input(z.object({ token: z.string() }))
+      .query(async ({ input }) => {
+        const trip = await db.getTripByShareToken(input.token);
+        if (!trip) return [];
+        return db.getTripHotels(trip.id);
+      }),
+    
+    getTransportation: publicProcedure
+      .input(z.object({ token: z.string() }))
+      .query(async ({ input }) => {
+        const trip = await db.getTripByShareToken(input.token);
+        if (!trip) return [];
+        return db.getTripTransportation(trip.id);
+      }),
+    
+    getCarRentals: publicProcedure
+      .input(z.object({ token: z.string() }))
+      .query(async ({ input }) => {
+        const trip = await db.getTripByShareToken(input.token);
+        if (!trip) return [];
+        return db.getTripCarRentals(trip.id);
+      }),
+    
+    getRestaurants: publicProcedure
+      .input(z.object({ token: z.string() }))
+      .query(async ({ input }) => {
+        const trip = await db.getTripByShareToken(input.token);
+        if (!trip) return [];
+        return db.getTripRestaurants(trip.id);
+      }),
+    
+    getTouristSites: publicProcedure
+      .input(z.object({ token: z.string() }))
+      .query(async ({ input }) => {
+        const trip = await db.getTripByShareToken(input.token);
+        if (!trip) return [];
+        return db.getTripTouristSites(trip.id);
+      }),
   }),
 
   // ============ TOURIST SITES ============

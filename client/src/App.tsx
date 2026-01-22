@@ -8,6 +8,7 @@ import { LanguageProvider } from "./contexts/LanguageContext";
 import Home from "./pages/Home";
 import Trips from "./pages/Trips";
 import TripDetail from "./pages/TripDetail";
+import SharedTrip from "./pages/SharedTrip";
 
 function Router() {
   return (
@@ -15,6 +16,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/trips" component={Trips} />
       <Route path="/trip/:id" component={TripDetail} />
+      <Route path="/shared/:token" component={SharedTrip} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>

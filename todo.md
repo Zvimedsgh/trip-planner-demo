@@ -103,3 +103,11 @@
 
 ## Hotel Order
 - [x] Fix hotel order - sort by check-in date AND time (Bratislava 02:30 before Mikulash 15:00)
+
+## Public Trip Sharing (View-only)
+- [x] Add shareToken field to trips table in database
+- [x] Create API endpoint to generate/revoke share link
+- [x] Create public view page for shared trips (no login required)
+- [x] Add "Share" button and dialog in trip detail page
+- [x] Show share link with copy button
+- [x] Option to disable/revoke share link

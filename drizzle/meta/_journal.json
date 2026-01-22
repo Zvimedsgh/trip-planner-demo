@@ -36,6 +36,13 @@
       "when": 1769083071904,
       "tag": "0004_lively_thanos",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1769090614828,
+      "tag": "0005_mature_adam_warlock",
+      "breakpoints": true
     }
   ]
 }
