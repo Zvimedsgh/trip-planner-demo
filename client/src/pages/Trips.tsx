@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
-import { Calendar, Globe, MapPin, Plane, Plus, Trash2, Edit, ArrowRight, Loader2 } from "lucide-react";
+import { Calendar, Globe, MapPin, Plane, Plus, Trash2, Edit, ArrowRight, Loader2, Camera } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { toast } from "sonner";
@@ -28,6 +28,7 @@ export default function Trips() {
     endDate: "",
     description: "",
   });
+  const [uploadingImage, setUploadingImage] = useState<number | null>(null);
 
   const utils = trpc.useUtils();
   const { data: trips, isLoading } = trpc.trips.list.useQuery();
@@ -126,6 +127,36 @@ export default function Trips() {
 
   const getDaysCount = (start: number, end: number) => {
     return Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+  };
+
+  const uploadImageMutation = trpc.trips.uploadCoverImage.useMutation({
+    onSuccess: () => {
+      utils.trips.list.invalidate();
+      setUploadingImage(null);
+      toast.success(language === "he" ? "התמונה הועלתה בהצלחה" : "Image uploaded successfully");
+    },
+    onError: (error) => {
+      setUploadingImage(null);
+      toast.error(error.message);
+    },
+  });
+
+  const handleImageUpload = (tripId: number, file: File) => {
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error(language === "he" ? "הקובץ גדול מדי (max 5MB)" : "File too large (max 5MB)");
+      return;
+    }
+    setUploadingImage(tripId);
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64 = (reader.result as string).split(',')[1];
+      uploadImageMutation.mutate({
+        tripId,
+        imageData: base64,
+        mimeType: file.type,
+      });
+    };
+    reader.readAsDataURL(file);
   };
 
   if (authLoading || isLoading) {
@@ -262,13 +293,25 @@ export default function Trips() {
               // Get background image based on destination
               const getDestinationImage = (destination: string) => {
                 const dest = destination.toLowerCase();
-                if (dest.includes('slovakia') || dest.includes('bratislava') || dest.includes('kosice') || dest.includes('tatra')) {
+                if (dest.includes('slovakia') || dest.includes('bratislava') || dest.includes('kosice') || dest.includes('tatra') || dest.includes('סלובקיה')) {
                   return '/slovakia.jpg';
+                }
+                if (dest.includes('paris') || dest.includes('france') || dest.includes('פריז') || dest.includes('צרפת')) {
+                  return '/images/dest-paris.jpg';
+                }
+                if (dest.includes('rome') || dest.includes('italy') || dest.includes('roma') || dest.includes('רומא') || dest.includes('איטליה')) {
+                  return '/images/dest-rome.jpg';
+                }
+                if (dest.includes('new york') || dest.includes('nyc') || dest.includes('manhattan') || dest.includes('ניו יורק')) {
+                  return '/images/dest-newyork.jpg';
+                }
+                if (dest.includes('vienna') || dest.includes('wien') || dest.includes('austria') || dest.includes('וינה') || dest.includes('אוסטריה')) {
+                  return '/images/site-bratislava.jpg'; // Using Bratislava castle as fallback for Vienna area
                 }
                 // Default gradient for other destinations
                 return null;
               };
-              const bgImage = getDestinationImage(trip.destination);
+              const bgImage = trip.coverImage || getDestinationImage(trip.destination);
               
               return (
               <Card key={trip.id} className="elegant-card-hover overflow-hidden group">
@@ -289,7 +332,27 @@ export default function Trips() {
                       </div>
                     </div>
                   )}
+                  {uploadingImage === trip.id && (
+                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                      <Loader2 className="w-8 h-8 animate-spin text-white" />
+                    </div>
+                  )}
                   <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <label className="cursor-pointer">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => {
+                          e.preventDefault();
+                          const file = e.target.files?.[0];
+                          if (file) handleImageUpload(trip.id, file);
+                        }}
+                      />
+                      <div className="h-8 w-8 rounded-md bg-secondary flex items-center justify-center hover:bg-secondary/80 transition-colors">
+                        <Camera className="w-4 h-4" />
+                      </div>
+                    </label>
                     <Button
                       size="icon"
                       variant="secondary"

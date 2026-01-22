@@ -76,6 +76,27 @@ export const appRouter = router({
     getByShareToken: publicProcedure
       .input(z.object({ token: z.string() }))
       .query(({ input }) => db.getTripByShareToken(input.token)),
+    
+    // Upload cover image
+    uploadCoverImage: protectedProcedure
+      .input(z.object({
+        tripId: z.number(),
+        imageData: z.string(), // Base64 encoded image
+        mimeType: z.string(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        // Convert base64 to buffer
+        const buffer = Buffer.from(input.imageData, 'base64');
+        const extension = input.mimeType.split('/')[1] || 'jpg';
+        const fileKey = `trip-covers/${ctx.user.id}/${input.tripId}-${nanoid(8)}.${extension}`;
+        
+        const { url } = await storagePut(fileKey, buffer, input.mimeType);
+        
+        // Update trip with cover image URL
+        await db.updateTrip(input.tripId, ctx.user.id, { coverImage: url });
+        
+        return { url };
+      }),
   }),
 
   // ============ PUBLIC SHARED TRIP DATA ============

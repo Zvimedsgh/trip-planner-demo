@@ -213,53 +213,93 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
 
       {sites && sites.length > 0 ? (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {sites.map((site) => (
-            <Card key={site.id} className="elegant-card-hover">
-              <CardHeader className="pb-2">
-                <div className="flex items-start justify-between">
-                  <CardTitle className="text-lg">{site.name}</CardTitle>
-                  <div className="flex gap-1">
-                    <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => openEdit(site)}>
-                      <Edit className="w-4 h-4" />
-                    </Button>
-                    <Button 
-                      size="icon" 
-                      variant="ghost" 
-                      className="h-8 w-8 text-destructive"
-                      onClick={() => deleteMutation.mutate({ id: site.id })}
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
+          {sites.map((site, index) => {
+            // Determine background image based on site name/address
+            const getBackgroundImage = () => {
+              const name = (site.name + " " + (site.address || "")).toLowerCase();
+              if (name.includes("castle") || name.includes("טירה") || name.includes("hrad")) {
+                return "/images/site-castle.jpg";
+              }
+              if (name.includes("bratislava") || name.includes("ברטיסלבה")) {
+                return "/images/site-bratislava.jpg";
+              }
+              if (name.includes("tatra") || name.includes("mountain") || name.includes("הר") || name.includes("hory")) {
+                return "/images/site-mountains.jpg";
+              }
+              return null;
+            };
+            
+            const bgImage = getBackgroundImage();
+            const gradients = [
+              "from-rose-500 to-pink-600",
+              "from-violet-500 to-purple-600",
+              "from-blue-500 to-indigo-600",
+              "from-emerald-500 to-teal-600",
+              "from-amber-500 to-orange-600",
+            ];
+            const gradient = gradients[index % gradients.length];
+            
+            return (
+              <Card key={site.id} className="elegant-card-hover overflow-hidden">
+                {/* Header with image or gradient */}
+                <div 
+                  className={`h-24 relative ${!bgImage ? `bg-gradient-to-r ${gradient}` : ''}`}
+                  style={bgImage ? {
+                    backgroundImage: `url(${bgImage})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                  } : {}}
+                >
+                  <div className="absolute inset-0 bg-black/30" />
+                  <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-10 h-10 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                        <MapPin className="w-5 h-5 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-white text-shadow line-clamp-1">{site.name}</h3>
+                        {site.address && (
+                          <p className="text-xs text-white/80 line-clamp-1">{site.address}</p>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex gap-0.5">
+                      <Button size="icon" variant="ghost" className="h-7 w-7 text-white hover:bg-white/20" onClick={() => openEdit(site)}>
+                        <Edit className="w-3 h-3" />
+                      </Button>
+                      <Button 
+                        size="icon" 
+                        variant="ghost" 
+                        className="h-7 w-7 text-white hover:bg-white/20"
+                        onClick={() => deleteMutation.mutate({ id: site.id })}
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </Button>
+                    </div>
                   </div>
                 </div>
-                {site.address && (
-                  <CardDescription className="flex items-center gap-1">
-                    <MapPin className="w-3 h-3" />
-                    {site.address}
-                  </CardDescription>
-                )}
-              </CardHeader>
-              <CardContent>
-                {site.description && (
-                  <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{site.description}</p>
-                )}
-                <div className="flex flex-wrap gap-2 text-xs">
-                  {site.openingHours && (
-                    <span className="flex items-center gap-1 bg-muted px-2 py-1 rounded">
-                      <Clock className="w-3 h-3" />
-                      {site.openingHours}
-                    </span>
+                <CardContent className="pt-3">
+                  {site.description && (
+                    <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{site.description}</p>
                   )}
-                  {site.plannedVisitDate && (
-                    <span className="flex items-center gap-1 bg-primary/10 text-primary px-2 py-1 rounded">
-                      <Calendar className="w-3 h-3" />
-                      {format(new Date(site.plannedVisitDate), "MMM d")}
-                    </span>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                  <div className="flex flex-wrap gap-2 text-xs">
+                    {site.openingHours && (
+                      <span className="flex items-center gap-1 bg-muted px-2 py-1 rounded">
+                        <Clock className="w-3 h-3" />
+                        {site.openingHours}
+                      </span>
+                    )}
+                    {site.plannedVisitDate && (
+                      <span className="flex items-center gap-1 bg-primary/10 text-primary px-2 py-1 rounded">
+                        <Calendar className="w-3 h-3" />
+                        {format(new Date(site.plannedVisitDate), "MMM d")}
+                      </span>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       ) : (
         <div className="elegant-card p-12 text-center">

@@ -514,9 +514,9 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
         </DialogContent>
       </Dialog>
 
-      {/* Transport List */}
+      {/* Transport List - Grid of compact cards */}
       {transports && transports.length > 0 ? (
-        <div className="space-y-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {transports.map((transport) => {
             const Icon = transportIcons[transport.type] || ArrowRight;
             const colorClass = transportColors[transport.type] || transportColors.other;
@@ -524,57 +524,58 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
             const arrDate = transport.arrivalDate ? new Date(transport.arrivalDate) : null;
             
             return (
-              <Card key={transport.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-                <CardContent className="p-0">
-                  <div className="flex items-stretch">
-                    <div className={`w-16 bg-gradient-to-br ${colorClass} flex items-center justify-center`}>
-                      <Icon className="w-8 h-8 text-white" />
+              <Card key={transport.id} className="elegant-card-hover overflow-hidden">
+                {/* Colorful header */}
+                <div className={`h-16 bg-gradient-to-r ${colorClass} relative`}>
+                  <div className="absolute inset-0 bg-black/10" />
+                  <div className="absolute bottom-2 left-3 right-3 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                        <Icon className="w-4 h-4 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-white text-sm">{t(transport.type)}</h3>
+                        <p className="text-xs text-white/80 flex items-center gap-1">
+                          {transport.origin} <ArrowRight className="w-2 h-2" /> {transport.destination}
+                        </p>
+                      </div>
                     </div>
-                    <div className="flex-1 p-4">
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <h3 className="font-semibold text-lg">{t(transport.type)}</h3>
-                          <p className="text-sm text-muted-foreground flex items-center gap-1">
-                            {transport.origin} <ArrowRight className="w-3 h-3" /> {transport.destination}
-                          </p>
-                        </div>
-                        <div className="flex gap-1">
-                          <Button variant="ghost" size="icon" onClick={() => openEdit(transport)}>
-                            <Edit className="w-4 h-4" />
-                          </Button>
-                          <Button variant="ghost" size="icon" onClick={() => deleteMutation.mutate({ id: transport.id })}>
-                            <Trash2 className="w-4 h-4 text-destructive" />
-                          </Button>
-                        </div>
-                      </div>
-                      <div className="mt-2 flex flex-wrap gap-4 text-sm">
-                        <span className="flex items-center gap-1">
-                          <Calendar className="w-4 h-4 text-muted-foreground" />
-                          {format(depDate, "MMM d, yyyy")}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Clock className="w-4 h-4 text-muted-foreground" />
-                          {format(depDate, "HH:mm")}
-                        </span>
-                        {transport.price && (
-                          <span className="flex items-center gap-1">
-                            <DollarSign className="w-4 h-4 text-muted-foreground" />
-                            {transport.price} {transport.currency}
-                          </span>
-                        )}
-                      </div>
-                      {arrDate && (
-                        <p className="text-sm text-muted-foreground mt-1">
-                          {language === "he" ? "הגעה:" : "Arrival:"} {format(arrDate, "MMM d, yyyy HH:mm")}
-                        </p>
-                      )}
-                      {transport.confirmationNumber && (
-                        <p className="text-xs text-muted-foreground mt-1">
-                          {t("confirmationNumber")}: {transport.confirmationNumber}
-                        </p>
-                      )}
+                    <div className="flex gap-0.5">
+                      <Button size="icon" variant="ghost" className="h-7 w-7 text-white hover:bg-white/20" onClick={() => openEdit(transport)}>
+                        <Edit className="w-3 h-3" />
+                      </Button>
+                      <Button size="icon" variant="ghost" className="h-7 w-7 text-white hover:bg-white/20" onClick={() => deleteMutation.mutate({ id: transport.id })}>
+                        <Trash2 className="w-3 h-3" />
+                      </Button>
                     </div>
                   </div>
+                </div>
+                <CardContent className="pt-3 pb-3 px-3">
+                  <div className="flex flex-wrap gap-2 text-xs">
+                    <span className="flex items-center gap-1 bg-muted px-2 py-1 rounded">
+                      <Calendar className="w-3 h-3" />
+                      {format(depDate, "MMM d")}
+                    </span>
+                    <span className="flex items-center gap-1 bg-muted px-2 py-1 rounded">
+                      <Clock className="w-3 h-3" />
+                      {format(depDate, "HH:mm")}
+                    </span>
+                    {transport.price && (
+                      <span className="flex items-center gap-1 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-2 py-1 rounded">
+                        {transport.price} {transport.currency}
+                      </span>
+                    )}
+                  </div>
+                  {transport.flightNumber && (
+                    <p className="text-xs text-muted-foreground mt-2">
+                      {language === "he" ? "מס' טיסה:" : "Flight:"} {transport.flightNumber}
+                    </p>
+                  )}
+                  {arrDate && (
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {language === "he" ? "הגעה:" : "Arr:"} {format(arrDate, "MMM d, HH:mm")}
+                    </p>
+                  )}
                 </CardContent>
               </Card>
             );

@@ -339,40 +339,54 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
 
       {hotels && hotels.length > 0 ? (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {hotels.map((hotel) => (
-            <Card key={hotel.id} className="elegant-card-hover">
-              <CardHeader className="pb-2">
-                <div className="flex items-start justify-between">
+          {hotels.map((hotel, index) => {
+            // Colorful gradients for hotel cards
+            const gradients = [
+              "from-amber-500 via-orange-500 to-red-500",
+              "from-blue-500 via-indigo-500 to-purple-500",
+              "from-emerald-500 via-teal-500 to-cyan-500",
+              "from-pink-500 via-rose-500 to-red-500",
+              "from-violet-500 via-purple-500 to-fuchsia-500",
+              "from-sky-500 via-blue-500 to-indigo-500",
+            ];
+            const gradient = gradients[index % gradients.length];
+            
+            return (
+            <Card key={hotel.id} className="elegant-card-hover overflow-hidden">
+              {/* Colorful header */}
+              <div className={`h-20 bg-gradient-to-r ${gradient} relative`}>
+                <div className="absolute inset-0 bg-black/10" />
+                <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
                       <Hotel className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <CardTitle className="text-lg">{hotel.name}</CardTitle>
+                      <h3 className="font-semibold text-white text-shadow">{hotel.name}</h3>
                       {hotel.address && (
-                        <CardDescription className="flex items-center gap-1 text-xs">
+                        <p className="flex items-center gap-1 text-xs text-white/80">
                           <MapPin className="w-3 h-3" />
                           {hotel.address}
-                        </CardDescription>
+                        </p>
                       )}
                     </div>
                   </div>
                   <div className="flex gap-1">
-                    <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => openEdit(hotel)}>
+                    <Button size="icon" variant="ghost" className="h-8 w-8 text-white hover:bg-white/20" onClick={() => openEdit(hotel)}>
                       <Edit className="w-4 h-4" />
                     </Button>
                     <Button 
                       size="icon" 
                       variant="ghost" 
-                      className="h-8 w-8 text-destructive"
+                      className="h-8 w-8 text-white hover:bg-white/20"
                       onClick={() => deleteMutation.mutate({ id: hotel.id })}
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>
                 </div>
-              </CardHeader>
-              <CardContent>
+              </div>
+              <CardContent className="pt-4">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
                   <Calendar className="w-4 h-4" />
                   <span>
@@ -402,7 +416,8 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
                 </div>
               </CardContent>
             </Card>
-          ))}
+          );
+        })}
         </div>
       ) : (
         <div className="elegant-card p-12 text-center">

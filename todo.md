@@ -125,3 +125,22 @@
 
 ## Trip Cards Background Images
 - [x] Add background image to trip cards in My Trips page based on destination (Slovakia/Bratislava)
+
+## Hotels Cards Design
+- [x] Add colorful background to hotel cards
+
+## Transportation Cards Design
+- [x] Make Transportation cards smaller (cube style like others)
+- [x] Add colorful background to Transportation cards
+
+## Budget Mobile Fix
+- [x] Fix budget display on iPhone (responsive design issue)
+
+## Tourist Sites Images
+- [x] Add images to tourist sites based on destination
+
+## More Destination Images
+- [x] Add background images for more destinations (Paris, Rome, New York, etc.)
+
+## Custom Trip Image Upload
+- [x] Allow users to upload custom image for each trip
