@@ -84,3 +84,7 @@
 - [x] Fix Tab order in Car Rentals form
 - [x] Fix Tab order in Restaurants form
 - [x] Fix Tab order in Transportation form
+
+## Budget Display Improvements
+- [ ] Make currency cards smaller (square boxes)
+- [ ] Add total in ILS card with real-time exchange rates
