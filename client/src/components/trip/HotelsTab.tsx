@@ -78,7 +78,9 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
       name: getValue("name"),
       address: getValue("address"),
       checkInDate: getValue("checkInDate"),
+      checkInTime: getValue("checkInTime"),
       checkOutDate: getValue("checkOutDate"),
+      checkOutTime: getValue("checkOutTime"),
       confirmationNumber: getValue("confirmationNumber"),
       price: getValue("price"),
       notes: getValue("notes"),
@@ -98,7 +100,9 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
       name: values.name,
       address: values.address || undefined,
       checkInDate: new Date(values.checkInDate).getTime(),
+      checkInTime: values.checkInTime || undefined,
       checkOutDate: new Date(values.checkOutDate).getTime(),
+      checkOutTime: values.checkOutTime || undefined,
       confirmationNumber: values.confirmationNumber || undefined,
       price: values.price || undefined,
       currency: selectedCurrency,
@@ -119,7 +123,9 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
       name: values.name,
       address: values.address || undefined,
       checkInDate: new Date(values.checkInDate).getTime(),
+      checkInTime: values.checkInTime || undefined,
       checkOutDate: new Date(values.checkOutDate).getTime(),
+      checkOutTime: values.checkOutTime || undefined,
       confirmationNumber: values.confirmationNumber || undefined,
       price: values.price || undefined,
       currency: selectedCurrency,
@@ -131,7 +137,9 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
     name: "",
     address: "",
     checkInDate: "",
+    checkInTime: "",
     checkOutDate: "",
+    checkOutTime: "",
     confirmationNumber: "",
     price: "",
     currency: "USD",
@@ -143,7 +151,9 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
       name: hotel.name,
       address: hotel.address || "",
       checkInDate: format(new Date(hotel.checkInDate), "yyyy-MM-dd"),
+      checkInTime: hotel.checkInTime || "",
       checkOutDate: format(new Date(hotel.checkOutDate), "yyyy-MM-dd"),
+      checkOutTime: hotel.checkOutTime || "",
       confirmationNumber: hotel.confirmationNumber || "",
       price: hotel.price || "",
       currency: hotel.currency || "USD",
@@ -196,11 +206,29 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
           />
         </div>
         <div className="grid gap-2">
+          <Label>{language === "he" ? "שעת צ'ק-אין" : "Check-in Time"}</Label>
+          <Input
+            name="checkInTime"
+            type="time"
+            defaultValue={defaults?.checkInTime || ""}
+          />
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        <div className="grid gap-2">
           <Label>{t("checkOut")} *</Label>
           <Input
             name="checkOutDate"
             type="date"
             defaultValue={defaults?.checkOutDate || ""}
+          />
+        </div>
+        <div className="grid gap-2">
+          <Label>{language === "he" ? "שעת צ'ק-אאוט" : "Check-out Time"}</Label>
+          <Input
+            name="checkOutTime"
+            type="time"
+            defaultValue={defaults?.checkOutTime || ""}
           />
         </div>
       </div>
@@ -223,7 +251,12 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
         </div>
         <div className="grid gap-2">
           <Label>{t("currency")}</Label>
-          <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
+          <Select 
+            value={selectedCurrency} 
+            onValueChange={(value) => {
+              setSelectedCurrency(value);
+            }}
+          >
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>

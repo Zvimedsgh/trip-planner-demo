@@ -58,3 +58,10 @@
 - [x] Add currency selector dropdown in Car Rentals form
 - [x] Add currency selector dropdown in Restaurants form (with price field)
 - [ ] Update Budget tab to show amounts with their currencies
+
+## Bug Fixes - Currency
+- [x] Fix currency selector clearing form content when changed (Hotels, Transportation, Car Rentals, Restaurants)
+
+## Check-in/Check-out Times
+- [x] Add check-in and check-out time fields to Hotels form
+- [x] Add pickup and return time fields to Car Rentals form

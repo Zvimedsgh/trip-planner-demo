@@ -78,7 +78,9 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
       company: getValue("company"),
       carModel: getValue("carModel"),
       pickupDate: getValue("pickupDate"),
+      pickupTime: getValue("pickupTime"),
       returnDate: getValue("returnDate"),
+      returnTime: getValue("returnTime"),
       pickupLocation: getValue("pickupLocation"),
       returnLocation: getValue("returnLocation"),
       confirmationNumber: getValue("confirmationNumber"),
@@ -101,7 +103,9 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
       company: values.company,
       carModel: values.carModel || undefined,
       pickupDate: new Date(values.pickupDate).getTime(),
+      pickupTime: values.pickupTime || undefined,
       returnDate: new Date(values.returnDate).getTime(),
+      returnTime: values.returnTime || undefined,
       pickupLocation: values.pickupLocation || undefined,
       returnLocation: values.returnLocation || undefined,
       confirmationNumber: values.confirmationNumber || undefined,
@@ -124,7 +128,9 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
       company: values.company,
       carModel: values.carModel || undefined,
       pickupDate: new Date(values.pickupDate).getTime(),
+      pickupTime: values.pickupTime || undefined,
       returnDate: new Date(values.returnDate).getTime(),
+      returnTime: values.returnTime || undefined,
       pickupLocation: values.pickupLocation || undefined,
       returnLocation: values.returnLocation || undefined,
       confirmationNumber: values.confirmationNumber || undefined,
@@ -138,7 +144,9 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
     company: "",
     carModel: "",
     pickupDate: "",
+    pickupTime: "",
     returnDate: "",
+    returnTime: "",
     pickupLocation: "",
     returnLocation: "",
     confirmationNumber: "",
@@ -152,7 +160,9 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
       company: rental.company,
       carModel: rental.carModel || "",
       pickupDate: format(new Date(rental.pickupDate), "yyyy-MM-dd"),
+      pickupTime: rental.pickupTime || "",
       returnDate: format(new Date(rental.returnDate), "yyyy-MM-dd"),
+      returnTime: rental.returnTime || "",
       pickupLocation: rental.pickupLocation || "",
       returnLocation: rental.returnLocation || "",
       confirmationNumber: rental.confirmationNumber || "",
@@ -210,11 +220,29 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
           />
         </div>
         <div className="grid gap-2">
+          <Label>{language === "he" ? "שעת איסוף" : "Pickup Time"}</Label>
+          <Input
+            name="pickupTime"
+            type="time"
+            defaultValue={defaults?.pickupTime || ""}
+          />
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        <div className="grid gap-2">
           <Label>{t("returnDate")} *</Label>
           <Input
             name="returnDate"
             type="date"
             defaultValue={defaults?.returnDate || ""}
+          />
+        </div>
+        <div className="grid gap-2">
+          <Label>{language === "he" ? "שעת החזרה" : "Return Time"}</Label>
+          <Input
+            name="returnTime"
+            type="time"
+            defaultValue={defaults?.returnTime || ""}
           />
         </div>
       </div>
