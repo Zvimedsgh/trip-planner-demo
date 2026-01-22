@@ -169,7 +169,7 @@ export default function BudgetTab({ tripId }: BudgetTabProps) {
       {hasExpenses && (
         <>
           {/* Currency Cards Grid - Responsive for mobile */}
-          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
+          <div className="grid gap-3 mb-6" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))' }}>
             {currencies.map((currencyData) => (
               <Card key={currencyData.currency} className="elegant-card overflow-hidden">
                 <div className="bg-gradient-to-br from-primary/10 via-purple-500/10 to-pink-500/10 p-4">
@@ -249,7 +249,7 @@ export default function BudgetTab({ tripId }: BudgetTabProps) {
 
       {/* Detailed Lists - Responsive for mobile */}
       {hasExpenses && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <div className="grid gap-3" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))' }}>
           {/* Hotels Detail */}
           {hotels && hotels.filter(h => h.price).length > 0 && (
             <Card className="elegant-card">

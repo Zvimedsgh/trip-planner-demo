@@ -144,3 +144,9 @@
 
 ## Custom Trip Image Upload
 - [x] Allow users to upload custom image for each trip
+
+
+## Bug Fixes - Current Session
+- [x] תיקון תצוגת תקציב באייפון - שימוש ב-auto-fill grid
+- [x] כרטיסי מלונות - רקע צבעוני מלא לכל הקוביה
+- [x] צביעת כפתור Trip Details בצבע גרדיאנט בולט

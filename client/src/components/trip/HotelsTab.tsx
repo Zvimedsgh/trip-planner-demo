@@ -352,17 +352,16 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
             const gradient = gradients[index % gradients.length];
             
             return (
-            <Card key={hotel.id} className="elegant-card-hover overflow-hidden">
-              {/* Colorful header */}
-              <div className={`h-20 bg-gradient-to-r ${gradient} relative`}>
-                <div className="absolute inset-0 bg-black/10" />
-                <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between">
+            <Card key={hotel.id} className={`overflow-hidden bg-gradient-to-br ${gradient} text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1`}>
+              <CardContent className="p-4">
+                {/* Header with name and actions */}
+                <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-2">
                     <div className="w-10 h-10 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
                       <Hotel className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-white text-shadow">{hotel.name}</h3>
+                      <h3 className="font-semibold text-white">{hotel.name}</h3>
                       {hotel.address && (
                         <p className="flex items-center gap-1 text-xs text-white/80">
                           <MapPin className="w-3 h-3" />
@@ -385,30 +384,32 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
                     </Button>
                   </div>
                 </div>
-              </div>
-              <CardContent className="pt-4">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
+                
+                {/* Dates */}
+                <div className="flex items-center gap-2 text-sm text-white/90 mb-3">
                   <Calendar className="w-4 h-4" />
                   <span>
                     {format(new Date(hotel.checkInDate), "MMM d")} - {format(new Date(hotel.checkOutDate), "MMM d")}
                   </span>
-                  <span className="bg-primary/10 text-primary px-2 py-0.5 rounded text-xs">
+                  <span className="bg-white/20 px-2 py-0.5 rounded text-xs">
                     {getNights(hotel.checkInDate, hotel.checkOutDate)} nights
                   </span>
                 </div>
+                
+                {/* Details */}
                 <div className="flex flex-wrap gap-2 text-xs">
                   {hotel.confirmationNumber && (
-                    <span className="bg-muted px-2 py-1 rounded">
+                    <span className="bg-white/20 px-2 py-1 rounded">
                       #{hotel.confirmationNumber}
                     </span>
                   )}
                   {hotel.price && (
-                    <span className="flex items-center gap-1 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-2 py-1 rounded">
+                    <span className="flex items-center gap-1 bg-white/30 px-2 py-1 rounded font-medium">
                       {getCurrencySymbol(hotel.currency || "USD")} {hotel.price} {hotel.currency}
                     </span>
                   )}
                   {hotel.phone && (
-                    <span className="flex items-center gap-1 bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 px-2 py-1 rounded">
+                    <span className="flex items-center gap-1 bg-white/20 px-2 py-1 rounded">
                       <Phone className="w-3 h-3" />
                       {hotel.phone}
                     </span>
