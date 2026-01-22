@@ -114,3 +114,7 @@
 
 ## Bug - Shared Trip Page Requires Login
 - [x] Fix shared trip page (/shared/:token) to not require authentication
+
+## Shared Trip Page Improvements
+- [x] Redesign shared trip page with modern, attractive styling similar to main app
+- [x] Add Timeline view to shared trip page
