@@ -88,3 +88,9 @@
 ## Budget Display Improvements
 - [ ] Make currency cards smaller (square boxes)
 - [ ] Add total in ILS card with real-time exchange rates
+
+## Bug Fixes - Hotels Currency
+- [x] Fix currency selector in Hotels form clearing other fields when changed (verified working)
+
+## Timeline Improvements
+- [x] Show check-in time for hotels in Timeline view

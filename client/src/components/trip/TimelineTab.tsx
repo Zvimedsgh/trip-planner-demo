@@ -12,6 +12,7 @@ interface TimelineEvent {
   id: string;
   type: "site" | "hotel_checkin" | "hotel_checkout" | "transport" | "car_pickup" | "car_return" | "restaurant";
   date: number;
+  time?: string;
   title: string;
   subtitle?: string;
   icon: React.ElementType;
@@ -69,6 +70,7 @@ export default function TimelineTab({ tripId }: TimelineTabProps) {
       id: `hotel-checkin-${hotel.id}`,
       type: "hotel_checkin",
       date: hotel.checkInDate,
+      time: hotel.checkInTime || undefined,
       title: `${t("checkIn")}: ${hotel.name}`,
       subtitle: hotel.address || undefined,
       icon: Hotel,
@@ -78,6 +80,7 @@ export default function TimelineTab({ tripId }: TimelineTabProps) {
       id: `hotel-checkout-${hotel.id}`,
       type: "hotel_checkout",
       date: hotel.checkOutDate,
+      time: hotel.checkOutTime || undefined,
       title: `${t("checkOut")}: ${hotel.name}`,
       subtitle: hotel.address || undefined,
       icon: Hotel,
@@ -104,6 +107,7 @@ export default function TimelineTab({ tripId }: TimelineTabProps) {
       id: `car-pickup-${rental.id}`,
       type: "car_pickup",
       date: rental.pickupDate,
+      time: rental.pickupTime || undefined,
       title: `${language === "he" ? "איסוף רכב" : "Car Pickup"}: ${rental.company}`,
       subtitle: rental.pickupLocation || undefined,
       icon: Car,
@@ -113,6 +117,7 @@ export default function TimelineTab({ tripId }: TimelineTabProps) {
       id: `car-return-${rental.id}`,
       type: "car_return",
       date: rental.returnDate,
+      time: rental.returnTime || undefined,
       title: `${language === "he" ? "החזרת רכב" : "Car Return"}: ${rental.company}`,
       subtitle: rental.returnLocation || undefined,
       icon: Car,
@@ -209,7 +214,7 @@ export default function TimelineTab({ tripId }: TimelineTabProps) {
                             <p className="text-sm text-muted-foreground">{event.subtitle}</p>
                           )}
                           <p className="text-xs text-muted-foreground mt-1">
-                            {format(new Date(event.date), "HH:mm")}
+                            {event.time || format(new Date(event.date), "HH:mm")}
                           </p>
                         </div>
                       </div>
