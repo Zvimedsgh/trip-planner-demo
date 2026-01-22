@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
-import { Calendar, DollarSign, Edit, Loader2, MapPin, Plus, Trash2, Users, Utensils } from "lucide-react";
+import { Calendar, DollarSign, Edit, Loader2, MapPin, Phone, Plus, Trash2, Users, Utensils } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 
@@ -80,6 +80,7 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
       cuisineType: getValue("cuisineType"),
       reservationDate: getValue("reservationDate"),
       numberOfDiners: getValue("numberOfDiners"),
+      phone: getValue("phone"),
       price: getValue("price"),
       notes: getValue("notes"),
     };
@@ -100,6 +101,7 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
       cuisineType: values.cuisineType || undefined,
       reservationDate: values.reservationDate ? new Date(values.reservationDate).getTime() : undefined,
       numberOfDiners: values.numberOfDiners ? parseInt(values.numberOfDiners) : undefined,
+      phone: values.phone || undefined,
       price: values.price || undefined,
       currency: selectedCurrency,
       notes: values.notes || undefined,
@@ -121,6 +123,7 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
       cuisineType: values.cuisineType || undefined,
       reservationDate: values.reservationDate ? new Date(values.reservationDate).getTime() : undefined,
       numberOfDiners: values.numberOfDiners ? parseInt(values.numberOfDiners) : undefined,
+      phone: values.phone || undefined,
       price: values.price || undefined,
       currency: selectedCurrency,
       notes: values.notes || undefined,
@@ -133,6 +136,7 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
     cuisineType: "",
     reservationDate: "",
     numberOfDiners: "",
+    phone: "",
     price: "",
     currency: "USD",
     notes: "",
@@ -145,6 +149,7 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
       cuisineType: restaurant.cuisineType || "",
       reservationDate: restaurant.reservationDate ? format(new Date(restaurant.reservationDate), "yyyy-MM-dd'T'HH:mm") : "",
       numberOfDiners: restaurant.numberOfDiners?.toString() || "",
+      phone: restaurant.phone || "",
       price: restaurant.price || "",
       currency: restaurant.currency || "USD",
       notes: restaurant.notes || "",
@@ -171,30 +176,46 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
         <Label>{t("restaurantName")} *</Label>
         <Input
           name="name"
+          tabIndex={1}
           defaultValue={defaults?.name || ""}
-          placeholder={language === "he" ? "לה פטיט ביסטרו" : "Le Petit Bistro"}
+          placeholder={language === "he" ? "לה פטית ביסטרו" : "Le Petit Bistro"}
         />
       </div>
       <div className="grid gap-2">
         <Label>{t("address")}</Label>
         <Input
           name="address"
+          tabIndex={2}
           defaultValue={defaults?.address || ""}
         />
       </div>
-      <div className="grid gap-2">
-        <Label>{t("cuisineType")}</Label>
-        <Input
-          name="cuisineType"
-          defaultValue={defaults?.cuisineType || ""}
-          placeholder={language === "he" ? "צרפתית, איטלקית..." : "French, Italian..."}
-        />
+      <div className="grid grid-cols-2 gap-4">
+        <div className="grid gap-2">
+          <Label>{t("cuisineType")}</Label>
+          <Input
+            name="cuisineType"
+            tabIndex={3}
+            defaultValue={defaults?.cuisineType || ""}
+            placeholder={language === "he" ? "צרפתית, איטלקית..." : "French, Italian..."}
+          />
+        </div>
+        <div className="grid gap-2">
+          <Label>{language === "he" ? "טלפון" : "Phone"}</Label>
+          <Input
+            name="phone"
+            tabIndex={4}
+            type="tel"
+            defaultValue={defaults?.phone || ""}
+            placeholder={language === "he" ? "+972-XX-XXX-XXXX" : "+1-XXX-XXX-XXXX"}
+          />
+        </div>
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div className="grid gap-2">
           <Label>{t("reservationDate")}</Label>
           <Input
             name="reservationDate"
+            tabIndex={5}
             type="datetime-local"
             defaultValue={defaults?.reservationDate || ""}
           />
@@ -203,6 +224,7 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
           <Label>{t("numberOfDiners")}</Label>
           <Input
             name="numberOfDiners"
+            tabIndex={6}
             type="number"
             min="1"
             defaultValue={defaults?.numberOfDiners || ""}
@@ -214,6 +236,7 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
           <Label>{t("price")}</Label>
           <Input
             name="price"
+            tabIndex={7}
             type="number"
             defaultValue={defaults?.price || ""}
             placeholder={language === "he" ? "עלות משוערת" : "Estimated cost"}
@@ -222,7 +245,7 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
         <div className="grid gap-2">
           <Label>{t("currency")}</Label>
           <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
-            <SelectTrigger>
+            <SelectTrigger tabIndex={8}>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -239,6 +262,7 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
         <Label>{t("notes")}</Label>
         <Textarea
           name="notes"
+          tabIndex={9}
           defaultValue={defaults?.notes || ""}
           rows={2}
         />

@@ -70,6 +70,7 @@ export const hotels = mysqlTable("hotels", {
   checkOutDate: bigint("checkOutDate", { mode: "number" }).notNull(), // UTC timestamp in ms
   checkOutTime: varchar("checkOutTime", { length: 10 }), // HH:MM format
   confirmationNumber: varchar("confirmationNumber", { length: 100 }),
+  phone: varchar("phone", { length: 50 }),
   price: decimal("price", { precision: 10, scale: 2 }),
   currency: varchar("currency", { length: 10 }).default("USD"),
   notes: text("notes"),
@@ -87,6 +88,7 @@ export const transportation = mysqlTable("transportation", {
   id: int("id").autoincrement().primaryKey(),
   tripId: int("tripId").notNull(),
   type: mysqlEnum("type", ["flight", "train", "bus", "ferry", "other"]).notNull(),
+  flightNumber: varchar("flightNumber", { length: 50 }),
   origin: varchar("origin", { length: 255 }).notNull(),
   destination: varchar("destination", { length: 255 }).notNull(),
   departureDate: bigint("departureDate", { mode: "number" }).notNull(), // UTC timestamp in ms
@@ -117,6 +119,7 @@ export const carRentals = mysqlTable("car_rentals", {
   pickupLocation: varchar("pickupLocation", { length: 500 }),
   returnLocation: varchar("returnLocation", { length: 500 }),
   confirmationNumber: varchar("confirmationNumber", { length: 100 }),
+  phone: varchar("phone", { length: 50 }),
   price: decimal("price", { precision: 10, scale: 2 }),
   currency: varchar("currency", { length: 10 }).default("USD"),
   notes: text("notes"),
@@ -138,6 +141,7 @@ export const restaurants = mysqlTable("restaurants", {
   cuisineType: varchar("cuisineType", { length: 100 }),
   reservationDate: bigint("reservationDate", { mode: "number" }), // UTC timestamp in ms
   numberOfDiners: int("numberOfDiners"),
+  phone: varchar("phone", { length: 50 }),
   price: decimal("price", { precision: 10, scale: 2 }),
   currency: varchar("currency", { length: 10 }).default("USD"),
   notes: text("notes"),

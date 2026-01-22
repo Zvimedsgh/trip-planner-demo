@@ -49,6 +49,7 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
     departureTime: useRef<string>(""),
     arrivalDate: useRef<string>(""),
     arrivalTime: useRef<string>(""),
+    flightNumber: useRef<string>(""),
     confirmation: useRef<string>(""),
     price: useRef<string>(""),
     currency: useRef<string>("USD"),
@@ -74,6 +75,7 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
     formRefs.departureTime.current = "";
     formRefs.arrivalDate.current = "";
     formRefs.arrivalTime.current = "";
+    formRefs.flightNumber.current = "";
     formRefs.confirmation.current = "";
     formRefs.price.current = "";
     formRefs.currency.current = "USD";
@@ -168,6 +170,7 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
       departureTime: getInputValue("departureTime") || formRefs.departureTime.current,
       arrivalDate: getInputValue("arrivalDate") || formRefs.arrivalDate.current,
       arrivalTime: getInputValue("arrivalTime") || formRefs.arrivalTime.current,
+      flightNumber: getInputValue("flightNumber") || formRefs.flightNumber.current,
       confirmation: getInputValue("confirmation") || formRefs.confirmation.current,
       price: getInputValue("price") || formRefs.price.current,
       currency: formCurrency,
@@ -193,6 +196,7 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
       destination: values.destination.trim(),
       departureDate: departureTimestamp!,
       arrivalDate: arrivalTimestamp,
+      flightNumber: values.flightNumber.trim() || undefined,
       confirmationNumber: values.confirmation.trim() || undefined,
       price: values.price || undefined,
       currency: values.currency || undefined,
@@ -218,6 +222,7 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
       destination: values.destination.trim(),
       departureDate: departureTimestamp!,
       arrivalDate: arrivalTimestamp,
+      flightNumber: values.flightNumber.trim() || undefined,
       confirmationNumber: values.confirmation.trim() || undefined,
       price: values.price || undefined,
       currency: values.currency || undefined,
@@ -236,6 +241,7 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
     formRefs.departureTime.current = format(depDate, "HH:mm");
     formRefs.arrivalDate.current = arrDate ? format(arrDate, "yyyy-MM-dd") : "";
     formRefs.arrivalTime.current = arrDate ? format(arrDate, "HH:mm") : "";
+    formRefs.flightNumber.current = transport.flightNumber || "";
     formRefs.confirmation.current = transport.confirmationNumber || "";
     formRefs.price.current = transport.price || "";
     formRefs.currency.current = transport.currency || "USD";
@@ -284,21 +290,34 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
           <Label>{t("origin")} *</Label>
           <Input
             data-field="origin"
+            tabIndex={2}
             defaultValue={formRefs.origin.current}
             onChange={(e) => { formRefs.origin.current = e.target.value; }}
-            placeholder={language === "he" ? "תל אביב" : "Tel Aviv"}
           />
         </div>
         <div className="grid gap-2">
           <Label>{t("destination")} *</Label>
           <Input
             data-field="destination"
+            tabIndex={3}
             defaultValue={formRefs.destination.current}
             onChange={(e) => { formRefs.destination.current = e.target.value; }}
-            placeholder={language === "he" ? "פריז" : "Paris"}
           />
         </div>
       </div>
+      
+      {formType === "flight" && (
+        <div className="grid gap-2">
+          <Label>{language === "he" ? "מספר טיסה" : "Flight Number"}</Label>
+          <Input
+            data-field="flightNumber"
+            tabIndex={4}
+            defaultValue={formRefs.flightNumber.current}
+            onChange={(e) => { formRefs.flightNumber.current = e.target.value; }}
+            placeholder="LY001"
+          />
+        </div>
+      )}
       
       <div className="grid gap-2">
         <Label className="flex items-center gap-2">
@@ -308,6 +327,7 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
         <div className="grid grid-cols-2 gap-2">
           <Input
             type="date"
+            tabIndex={5}
             data-field="departureDate"
             defaultValue={formRefs.departureDate.current}
             onChange={(e) => { formRefs.departureDate.current = e.target.value; }}
@@ -316,6 +336,7 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
             <Clock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
             <Input
               type="time"
+              tabIndex={6}
               data-field="departureTime"
               defaultValue={formRefs.departureTime.current}
               onChange={(e) => { formRefs.departureTime.current = e.target.value; }}
@@ -333,6 +354,7 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
         <div className="grid grid-cols-2 gap-2">
           <Input
             type="date"
+            tabIndex={7}
             data-field="arrivalDate"
             defaultValue={formRefs.arrivalDate.current}
             onChange={(e) => { formRefs.arrivalDate.current = e.target.value; }}
@@ -341,6 +363,7 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
             <Clock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
             <Input
               type="time"
+              tabIndex={8}
               data-field="arrivalTime"
               defaultValue={formRefs.arrivalTime.current}
               onChange={(e) => { formRefs.arrivalTime.current = e.target.value; }}
@@ -354,6 +377,7 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
         <Label>{t("confirmationNumber")}</Label>
         <Input
           data-field="confirmation"
+          tabIndex={9}
           defaultValue={formRefs.confirmation.current}
           onChange={(e) => { formRefs.confirmation.current = e.target.value; }}
           placeholder={language === "he" ? "מספר אישור" : "Confirmation #"}
@@ -367,6 +391,7 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
             type="number"
             min="0"
             step="0.01"
+            tabIndex={10}
             data-field="price"
             defaultValue={formRefs.price.current}
             onChange={(e) => { formRefs.price.current = e.target.value; }}
@@ -379,7 +404,7 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
             setFormCurrency(v);
             formRefs.currency.current = v;
           }}>
-            <SelectTrigger>
+            <SelectTrigger tabIndex={11}>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

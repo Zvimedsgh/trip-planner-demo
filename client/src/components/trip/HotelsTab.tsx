@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
-import { Calendar, DollarSign, Edit, Hotel, Loader2, MapPin, Plus, Trash2 } from "lucide-react";
+import { Calendar, DollarSign, Edit, Hotel, Loader2, MapPin, Phone, Plus, Trash2 } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 
@@ -82,6 +82,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
       checkOutDate: getValue("checkOutDate"),
       checkOutTime: getValue("checkOutTime"),
       confirmationNumber: getValue("confirmationNumber"),
+      phone: getValue("phone"),
       price: getValue("price"),
       notes: getValue("notes"),
     };
@@ -104,6 +105,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
       checkOutDate: new Date(values.checkOutDate).getTime(),
       checkOutTime: values.checkOutTime || undefined,
       confirmationNumber: values.confirmationNumber || undefined,
+      phone: values.phone || undefined,
       price: values.price || undefined,
       currency: selectedCurrency,
       notes: values.notes || undefined,
@@ -127,6 +129,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
       checkOutDate: new Date(values.checkOutDate).getTime(),
       checkOutTime: values.checkOutTime || undefined,
       confirmationNumber: values.confirmationNumber || undefined,
+      phone: values.phone || undefined,
       price: values.price || undefined,
       currency: selectedCurrency,
       notes: values.notes || undefined,
@@ -141,6 +144,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
     checkOutDate: "",
     checkOutTime: "",
     confirmationNumber: "",
+    phone: "",
     price: "",
     currency: "USD",
     notes: "",
@@ -155,6 +159,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
       checkOutDate: format(new Date(hotel.checkOutDate), "yyyy-MM-dd"),
       checkOutTime: hotel.checkOutTime || "",
       confirmationNumber: hotel.confirmationNumber || "",
+      phone: hotel.phone || "",
       price: hotel.price || "",
       currency: hotel.currency || "USD",
       notes: hotel.notes || "",
@@ -185,6 +190,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
         <Label>{t("hotelName")} *</Label>
         <Input
           name="name"
+          tabIndex={1}
           defaultValue={defaults?.name || ""}
           placeholder={language === "he" ? "מלון הילטון" : "Hilton Hotel"}
         />
@@ -193,6 +199,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
         <Label>{t("address")}</Label>
         <Input
           name="address"
+          tabIndex={2}
           defaultValue={defaults?.address || ""}
         />
       </div>
@@ -201,6 +208,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
           <Label>{t("checkIn")} *</Label>
           <Input
             name="checkInDate"
+            tabIndex={3}
             type="date"
             defaultValue={defaults?.checkInDate || ""}
           />
@@ -209,6 +217,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
           <Label>{language === "he" ? "שעת צ'ק-אין" : "Check-in Time"}</Label>
           <Input
             name="checkInTime"
+            tabIndex={4}
             type="time"
             defaultValue={defaults?.checkInTime || ""}
           />
@@ -219,6 +228,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
           <Label>{t("checkOut")} *</Label>
           <Input
             name="checkOutDate"
+            tabIndex={5}
             type="date"
             defaultValue={defaults?.checkOutDate || ""}
           />
@@ -227,23 +237,38 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
           <Label>{language === "he" ? "שעת צ'ק-אאוט" : "Check-out Time"}</Label>
           <Input
             name="checkOutTime"
+            tabIndex={6}
             type="time"
             defaultValue={defaults?.checkOutTime || ""}
           />
         </div>
       </div>
-      <div className="grid gap-2">
-        <Label>{t("confirmationNumber")}</Label>
-        <Input
-          name="confirmationNumber"
-          defaultValue={defaults?.confirmationNumber || ""}
-        />
+      <div className="grid grid-cols-2 gap-4">
+        <div className="grid gap-2">
+          <Label>{t("confirmationNumber")}</Label>
+          <Input
+            name="confirmationNumber"
+            tabIndex={7}
+            defaultValue={defaults?.confirmationNumber || ""}
+          />
+        </div>
+        <div className="grid gap-2">
+          <Label>{language === "he" ? "טלפון" : "Phone"}</Label>
+          <Input
+            name="phone"
+            tabIndex={8}
+            type="tel"
+            defaultValue={defaults?.phone || ""}
+            placeholder={language === "he" ? "+972-XX-XXX-XXXX" : "+1-XXX-XXX-XXXX"}
+          />
+        </div>
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div className="grid gap-2">
           <Label>{t("price")}</Label>
           <Input
             name="price"
+            tabIndex={9}
             type="number"
             defaultValue={defaults?.price || ""}
             placeholder="0.00"
@@ -257,7 +282,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
               setSelectedCurrency(value);
             }}
           >
-            <SelectTrigger>
+            <SelectTrigger tabIndex={10}>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -274,6 +299,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
         <Label>{t("notes")}</Label>
         <Textarea
           name="notes"
+          tabIndex={11}
           defaultValue={defaults?.notes || ""}
           rows={2}
         />
@@ -365,6 +391,12 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
                   {hotel.price && (
                     <span className="flex items-center gap-1 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-2 py-1 rounded">
                       {getCurrencySymbol(hotel.currency || "USD")} {hotel.price} {hotel.currency}
+                    </span>
+                  )}
+                  {hotel.phone && (
+                    <span className="flex items-center gap-1 bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 px-2 py-1 rounded">
+                      <Phone className="w-3 h-3" />
+                      {hotel.phone}
                     </span>
                   )}
                 </div>

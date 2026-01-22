@@ -57,7 +57,7 @@
 - [x] Add currency selector dropdown in Transportation form
 - [x] Add currency selector dropdown in Car Rentals form
 - [x] Add currency selector dropdown in Restaurants form (with price field)
-- [ ] Update Budget tab to show amounts with their currencies
+- [x] Update Budget tab to show amounts with their currencies
 
 ## Bug Fixes - Currency
 - [x] Fix currency selector clearing form content when changed (Hotels, Transportation, Car Rentals, Restaurants)
@@ -65,3 +65,22 @@
 ## Check-in/Check-out Times
 - [x] Add check-in and check-out time fields to Hotels form
 - [x] Add pickup and return time fields to Car Rentals form
+
+## Phone Numbers
+- [x] Add phone number field to Hotels form
+- [x] Add phone number field to Car Rentals form
+- [x] Add phone number field to Restaurants form
+
+## Transportation Improvements
+- [x] Add flight number field to Transportation form
+- [x] Make origin and destination fields empty (no placeholder values)
+- [x] Add "Suggest Return Flight" button that swaps origin/destination and uses trip end date
+
+## Budget Display
+- [x] Fix budget to show totals per currency (don't mix currencies)
+
+## Form UX
+- [x] Fix Tab order in Hotels form
+- [x] Fix Tab order in Car Rentals form
+- [x] Fix Tab order in Restaurants form
+- [x] Fix Tab order in Transportation form

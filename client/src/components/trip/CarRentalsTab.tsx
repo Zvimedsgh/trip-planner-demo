@@ -23,7 +23,7 @@ const CURRENCIES = [
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
-import { Calendar, Car, DollarSign, Edit, Loader2, MapPin, Plus, Trash2 } from "lucide-react";
+import { Calendar, Car, DollarSign, Edit, Loader2, MapPin, Phone, Plus, Trash2 } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 
@@ -84,6 +84,7 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
       pickupLocation: getValue("pickupLocation"),
       returnLocation: getValue("returnLocation"),
       confirmationNumber: getValue("confirmationNumber"),
+      phone: getValue("phone"),
       price: getValue("price"),
       currency: getValue("currency"),
       notes: getValue("notes"),
@@ -109,6 +110,7 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
       pickupLocation: values.pickupLocation || undefined,
       returnLocation: values.returnLocation || undefined,
       confirmationNumber: values.confirmationNumber || undefined,
+      phone: values.phone || undefined,
       price: values.price || undefined,
       currency: selectedCurrency,
       notes: values.notes || undefined,
@@ -134,6 +136,7 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
       pickupLocation: values.pickupLocation || undefined,
       returnLocation: values.returnLocation || undefined,
       confirmationNumber: values.confirmationNumber || undefined,
+      phone: values.phone || undefined,
       price: values.price || undefined,
       currency: selectedCurrency,
       notes: values.notes || undefined,
@@ -150,6 +153,7 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
     pickupLocation: "",
     returnLocation: "",
     confirmationNumber: "",
+    phone: "",
     price: "",
     currency: "USD",
     notes: "",
@@ -166,6 +170,7 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
       pickupLocation: rental.pickupLocation || "",
       returnLocation: rental.returnLocation || "",
       confirmationNumber: rental.confirmationNumber || "",
+      phone: rental.phone || "",
       price: rental.price || "",
       currency: rental.currency || "USD",
       notes: rental.notes || "",
@@ -197,6 +202,7 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
           <Label>{t("company")} *</Label>
           <Input
             name="company"
+            tabIndex={1}
             defaultValue={defaults?.company || ""}
             placeholder="Hertz, Avis..."
           />
@@ -205,6 +211,7 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
           <Label>{t("carModel")}</Label>
           <Input
             name="carModel"
+            tabIndex={2}
             defaultValue={defaults?.carModel || ""}
             placeholder="Toyota Corolla"
           />
@@ -215,6 +222,7 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
           <Label>{t("pickupDate")} *</Label>
           <Input
             name="pickupDate"
+            tabIndex={3}
             type="date"
             defaultValue={defaults?.pickupDate || ""}
           />
@@ -223,6 +231,7 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
           <Label>{language === "he" ? "שעת איסוף" : "Pickup Time"}</Label>
           <Input
             name="pickupTime"
+            tabIndex={4}
             type="time"
             defaultValue={defaults?.pickupTime || ""}
           />
@@ -233,6 +242,7 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
           <Label>{t("returnDate")} *</Label>
           <Input
             name="returnDate"
+            tabIndex={5}
             type="date"
             defaultValue={defaults?.returnDate || ""}
           />
@@ -241,6 +251,7 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
           <Label>{language === "he" ? "שעת החזרה" : "Return Time"}</Label>
           <Input
             name="returnTime"
+            tabIndex={6}
             type="time"
             defaultValue={defaults?.returnTime || ""}
           />
@@ -251,6 +262,7 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
           <Label>{t("pickupLocation")}</Label>
           <Input
             name="pickupLocation"
+            tabIndex={7}
             defaultValue={defaults?.pickupLocation || ""}
           />
         </div>
@@ -258,22 +270,37 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
           <Label>{t("returnLocation")}</Label>
           <Input
             name="returnLocation"
+            tabIndex={8}
             defaultValue={defaults?.returnLocation || ""}
           />
         </div>
       </div>
-      <div className="grid gap-2">
-        <Label>{t("confirmationNumber")}</Label>
-        <Input
-          name="confirmationNumber"
-          defaultValue={defaults?.confirmationNumber || ""}
-        />
+      <div className="grid grid-cols-2 gap-4">
+        <div className="grid gap-2">
+          <Label>{t("confirmationNumber")}</Label>
+          <Input
+            name="confirmationNumber"
+            tabIndex={9}
+            defaultValue={defaults?.confirmationNumber || ""}
+          />
+        </div>
+        <div className="grid gap-2">
+          <Label>{language === "he" ? "טלפון" : "Phone"}</Label>
+          <Input
+            name="phone"
+            tabIndex={10}
+            type="tel"
+            defaultValue={defaults?.phone || ""}
+            placeholder={language === "he" ? "+972-XX-XXX-XXXX" : "+1-XXX-XXX-XXXX"}
+          />
+        </div>
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div className="grid gap-2">
           <Label>{t("price")}</Label>
           <Input
             name="price"
+            tabIndex={11}
             type="number"
             defaultValue={defaults?.price || ""}
           />
@@ -281,7 +308,7 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
         <div className="grid gap-2">
           <Label>{t("currency")}</Label>
           <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
-            <SelectTrigger>
+            <SelectTrigger tabIndex={12}>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -298,6 +325,7 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
         <Label>{t("notes")}</Label>
         <Textarea
           name="notes"
+          tabIndex={13}
           defaultValue={defaults?.notes || ""}
           rows={2}
         />
