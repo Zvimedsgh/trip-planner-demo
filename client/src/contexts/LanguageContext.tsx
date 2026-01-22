@@ -27,7 +27,10 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("language", lang);
     document.documentElement.dir = lang === "he" ? "rtl" : "ltr";
     document.documentElement.lang = lang;
-    updateLanguageMutation.mutate({ language: lang });
+    // Don't update language on server for public pages (shared trips)
+    if (!window.location.pathname.startsWith('/shared/')) {
+      updateLanguageMutation.mutate({ language: lang });
+    }
   }, [updateLanguageMutation]);
 
   const t = useCallback((key: TranslationKey) => translate(key, language), [language]);

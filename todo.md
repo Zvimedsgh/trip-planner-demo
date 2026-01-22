@@ -111,3 +111,6 @@
 - [x] Add "Share" button and dialog in trip detail page
 - [x] Show share link with copy button
 - [x] Option to disable/revoke share link
+
+## Bug - Shared Trip Page Requires Login
+- [x] Fix shared trip page (/shared/:token) to not require authentication

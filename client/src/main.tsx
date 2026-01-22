@@ -18,6 +18,9 @@ const redirectToLoginIfUnauthorized = (error: unknown) => {
 
   if (!isUnauthorized) return;
 
+  // Don't redirect to login on shared trip pages - they are public
+  if (window.location.pathname.startsWith('/shared/')) return;
+
   window.location.href = getLoginUrl();
 };
 
