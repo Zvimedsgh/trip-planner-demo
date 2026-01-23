@@ -183,3 +183,6 @@
 - [x] Add Route Map tab to trip detail page with clickable points
 - [ ] Add Daily Planner with drag-and-drop activities
 - [ ] Add Packing List / Shopping List tab
+
+## Timeline Enhancement
+- [x] Add drive from Bratislava to Liptovský Mikuláš (Sep 2, 14:00-19:00) to Timeline with all stops

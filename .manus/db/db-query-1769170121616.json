@@ -1,0 +1,9 @@
+{
+  "query": "INSERT INTO transportation (tripId, type, origin, destination, departureDate, arrivalDate, notes, createdAt, updatedAt)\nVALUES (\n  30001,\n  'other',\n  'Bratislava',\n  'Liptovský Mikuláš',\n  1725282000000,\n  1725300000000,\n  'Drive 14:00-19:00. Stops: Bojnice Castle, Nitra Castle, Banská Štiavnica, Vlkolínec. Gas: OMV (Trnava), Shell (Trenčín), Slovnaft (Ružomberok)',\n  NOW(),\n  NOW()\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute INSERT INTO transportation (tripId, type, origin, destination, departureDate, arrivalDate, notes, createdAt, updatedAt)\nVALUES (\n  30001,\n  'other',\n  'Bratislava',\n  'Liptovský Mikuláš',\n  1725282000000,\n  1725300000000,\n  'Drive 14:00-19:00. Stops: Bojnice Castle, Nitra Castle, Banská Štiavnica, Vlkolínec. Gas: OMV (Trnava), Shell (Trenčín), Slovnaft (Ružomberok)',\n  NOW(),\n  NOW()\n);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1545
+}
