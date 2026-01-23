@@ -40,6 +40,21 @@ export type Trip = typeof trips.$inferSelect;
 export type InsertTrip = typeof trips.$inferInsert;
 
 /**
+ * Trip collaborators table - for sharing trips with other users
+ */
+export const tripCollaborators = mysqlTable("trip_collaborators", {
+  id: int("id").autoincrement().primaryKey(),
+  tripId: int("tripId").notNull(),
+  userId: int("userId").notNull(), // User who has access
+  permission: mysqlEnum("permission", ["view", "edit"]).default("edit").notNull(),
+  invitedBy: int("invitedBy").notNull(), // User who sent the invitation
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type TripCollaborator = typeof tripCollaborators.$inferSelect;
+export type InsertTripCollaborator = typeof tripCollaborators.$inferInsert;
+
+/**
  * Tourist sites table
  */
 export const touristSites = mysqlTable("tourist_sites", {

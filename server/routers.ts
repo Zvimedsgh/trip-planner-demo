@@ -97,6 +97,26 @@ export const appRouter = router({
         
         return { url };
       }),
+    
+    // Collaboration endpoints
+    addCollaborator: protectedProcedure
+      .input(z.object({
+        tripId: z.number(),
+        userEmail: z.string().email(),
+        permission: z.enum(["view", "edit"]).default("edit"),
+      }))
+      .mutation(({ ctx, input }) => db.addTripCollaborator(input.tripId, ctx.user.id, input.userEmail, input.permission)),
+    
+    removeCollaborator: protectedProcedure
+      .input(z.object({
+        tripId: z.number(),
+        userId: z.number(),
+      }))
+      .mutation(({ ctx, input }) => db.removeTripCollaborator(input.tripId, ctx.user.id, input.userId)),
+    
+    listCollaborators: protectedProcedure
+      .input(z.object({ tripId: z.number() }))
+      .query(({ ctx, input }) => db.getTripCollaborators(input.tripId, ctx.user.id)),
   }),
 
   // ============ PUBLIC SHARED TRIP DATA ============

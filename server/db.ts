@@ -3,6 +3,7 @@ import { drizzle } from "drizzle-orm/mysql2";
 import { 
   InsertUser, users, 
   trips, InsertTrip, Trip,
+  tripCollaborators, InsertTripCollaborator, TripCollaborator,
   touristSites, InsertTouristSite, TouristSite,
   hotels, InsertHotel, Hotel,
   transportation, InsertTransportation, Transportation,
@@ -97,6 +98,17 @@ export async function getUserByOpenId(openId: string) {
 
   const result = await db.select().from(users).where(eq(users.openId, openId)).limit(1);
 
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function getUserByEmail(email: string) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get user: database not available");
+    return undefined;
+  }
+
+  const result = await db.select().from(users).where(eq(users.email, email)).limit(1);
   return result.length > 0 ? result[0] : undefined;
 }
 
@@ -454,4 +466,126 @@ export async function deleteDayTrip(id: number): Promise<boolean> {
   
   await db.delete(dayTrips).where(eq(dayTrips.id, id));
   return true;
+}
+
+// ============ TRIP COLLABORATORS ============
+
+export async function addTripCollaborator(
+  tripId: number, 
+  ownerId: number, 
+  userEmail: string, 
+  permission: "view" | "edit"
+): Promise<TripCollaborator | null> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  // Verify the requester owns the trip
+  const trip = await db.select().from(trips).where(eq(trips.id, tripId)).limit(1);
+  if (!trip[0] || trip[0].userId !== ownerId) {
+    throw new Error("Unauthorized: Only trip owner can add collaborators");
+  }
+  
+  // Find user by email
+  const targetUser = await db.select().from(users).where(eq(users.email, userEmail)).limit(1);
+  if (!targetUser[0]) {
+    throw new Error(`User with email ${userEmail} not found`);
+  }
+  
+  // Check if already a collaborator
+  const existing = await db.select().from(tripCollaborators)
+    .where(and(eq(tripCollaborators.tripId, tripId), eq(tripCollaborators.userId, targetUser[0].id)))
+    .limit(1);
+  
+  if (existing[0]) {
+    throw new Error("User is already a collaborator on this trip");
+  }
+  
+  // Add collaborator
+  await db.insert(tripCollaborators).values({
+    tripId,
+    userId: targetUser[0].id,
+    permission,
+    invitedBy: ownerId,
+  });
+  
+  // Retrieve the newly added collaborator
+  const newCollaborator = await db.select().from(tripCollaborators)
+    .where(and(eq(tripCollaborators.tripId, tripId), eq(tripCollaborators.userId, targetUser[0].id)))
+    .limit(1);
+  
+  return newCollaborator[0] || null;
+}
+
+export async function removeTripCollaborator(
+  tripId: number, 
+  ownerId: number, 
+  collaboratorUserId: number
+): Promise<boolean> {
+  const db = await getDb();
+  if (!db) return false;
+  
+  // Verify the requester owns the trip
+  const trip = await db.select().from(trips).where(eq(trips.id, tripId)).limit(1);
+  if (!trip[0] || trip[0].userId !== ownerId) {
+    throw new Error("Unauthorized: Only trip owner can remove collaborators");
+  }
+  
+  await db.delete(tripCollaborators)
+    .where(and(eq(tripCollaborators.tripId, tripId), eq(tripCollaborators.userId, collaboratorUserId)));
+  
+  return true;
+}
+
+export async function getTripCollaborators(tripId: number, requesterId: number): Promise<Array<TripCollaborator & { userName: string | null, userEmail: string | null }>> {
+  const db = await getDb();
+  if (!db) return [];
+  
+  // Verify the requester owns the trip or is a collaborator
+  const trip = await db.select().from(trips).where(eq(trips.id, tripId)).limit(1);
+  if (!trip[0]) return [];
+  
+  const isOwner = trip[0].userId === requesterId;
+  const isCollaborator = await db.select().from(tripCollaborators)
+    .where(and(eq(tripCollaborators.tripId, tripId), eq(tripCollaborators.userId, requesterId)))
+    .limit(1);
+  
+  if (!isOwner && !isCollaborator[0]) {
+    throw new Error("Unauthorized: Only trip owner or collaborators can view collaborators list");
+  }
+  
+  // Get all collaborators with user details
+  const collaborators = await db.select({
+    id: tripCollaborators.id,
+    tripId: tripCollaborators.tripId,
+    userId: tripCollaborators.userId,
+    permission: tripCollaborators.permission,
+    invitedBy: tripCollaborators.invitedBy,
+    createdAt: tripCollaborators.createdAt,
+    userName: users.name,
+    userEmail: users.email,
+  })
+  .from(tripCollaborators)
+  .leftJoin(users, eq(tripCollaborators.userId, users.id))
+  .where(eq(tripCollaborators.tripId, tripId));
+  
+  return collaborators;
+}
+
+// Check if user has access to a trip (owner or collaborator)
+export async function canAccessTrip(tripId: number, userId: number): Promise<boolean> {
+  const db = await getDb();
+  if (!db) return false;
+  
+  const trip = await db.select().from(trips).where(eq(trips.id, tripId)).limit(1);
+  if (!trip[0]) return false;
+  
+  // Check if owner
+  if (trip[0].userId === userId) return true;
+  
+  // Check if collaborator
+  const collaborator = await db.select().from(tripCollaborators)
+    .where(and(eq(tripCollaborators.tripId, tripId), eq(tripCollaborators.userId, userId)))
+    .limit(1);
+  
+  return !!collaborator[0];
 }

@@ -1,0 +1,24 @@
+{
+  "query": "SELECT id, name, category, tags, notes FROM documents WHERE name LIKE '%parking%' OR tags LIKE '%parking%';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, category, tags, notes FROM documents WHERE name LIKE '%parking%' OR tags LIKE '%parking%';",
+  "rows": [
+    {
+      "id": "120001",
+      "name": "Vienna parking confirmation",
+      "category": "booking",
+      "tags": "NULL",
+      "notes": "NULL"
+    },
+    {
+      "id": "150001",
+      "name": "Vienna Hotel Parking",
+      "category": "other",
+      "tags": "[\"parking\",\"vienna\",\"hotel\",\"myNext\"]",
+      "notes": "Parking entrance at myNext - Johannesgasse Apartments in Vienna. Height limit: 2.0m"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tcategory\ttags\tnotes\n120001\tVienna parking confirmation\tbooking\tNULL\tNULL\n150001\tVienna Hotel Parking\tother\t[\"parking\",\"vienna\",\"hotel\",\"myNext\"]\tParking entrance at myNext - Johannesgasse Apartments in Vienna. Height limit: 2.0m\n",
+  "stderr": "",
+  "execution_time_ms": 1569
+}
