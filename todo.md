@@ -171,3 +171,8 @@
 
 ## Bug - Hotel Pictures
 - [x] Fix hotel pictures not displaying - Added coverImage field to schema, uploaded images to CDN, updated database
+
+## Route Planning - Bratislava to Liptovský Mikuláš
+- [x] Research attractions and restaurants on the route from Bratislava to Liptovský Mikuláš
+- [x] Find restaurants near accommodation in Liptovský Mikuláš area
+- [x] Add recommendations to the trip itinerary
