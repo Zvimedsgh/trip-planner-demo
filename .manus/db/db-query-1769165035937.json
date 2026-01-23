@@ -1,0 +1,30 @@
+{
+  "query": "\nUPDATE hotels \nSET coverImage = 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/KUIfkFmbljLccMLs.jpeg'\nWHERE name LIKE '%Charming%Ambiente%';\n\nUPDATE hotels \nSET coverImage = 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/SlvFPmORunPIChCz.webp'\nWHERE name LIKE '%Bankov%Kosice%';\n\nUPDATE hotels \nSET coverImage = 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/yjNYGyTWmWDxuBRo.jpg'\nWHERE name LIKE '%Johannesgasse%';\n\nUPDATE hotels \nSET coverImage = 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/mWKolexVXpdGJhnL.jpg'\nWHERE name LIKE '%Vivendi%';\n\nSELECT id, name, coverImage FROM hotels;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute \nUPDATE hotels \nSET coverImage = 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/KUIfkFmbljLccMLs.jpeg'\nWHERE name LIKE '%Charming%Ambiente%';\n\nUPDATE hotels \nSET coverImage = 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/SlvFPmORunPIChCz.webp'\nWHERE name LIKE '%Bankov%Kosice%';\n\nUPDATE hotels \nSET coverImage = 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/yjNYGyTWmWDxuBRo.jpg'\nWHERE name LIKE '%Johannesgasse%';\n\nUPDATE hotels \nSET coverImage = 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/mWKolexVXpdGJhnL.jpg'\nWHERE name LIKE '%Vivendi%';\n\nSELECT id, name, coverImage FROM hotels;\n",
+  "rows": [
+    {
+      "id": "2",
+      "name": "Hotel Bankov Košice",
+      "coverImage": "NULL"
+    },
+    {
+      "id": "30001",
+      "name": "myNext - Johannesgasse Apartments",
+      "coverImage": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/yjNYGyTWmWDxuBRo.jpg"
+    },
+    {
+      "id": "30002",
+      "name": "Private holiday house Vivendi",
+      "coverImage": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/mWKolexVXpdGJhnL.jpg"
+    },
+    {
+      "id": "30003",
+      "name": "Charming & Cozy Ambiente Apartments",
+      "coverImage": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/KUIfkFmbljLccMLs.jpeg"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tcoverImage\n2\tHotel Bankov Košice\tNULL\n30001\tmyNext - Johannesgasse Apartments\thttps://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/yjNYGyTWmWDxuBRo.jpg\n30002\tPrivate holiday house Vivendi\thttps://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/mWKolexVXpdGJhnL.jpg\n30003\tCharming & Cozy Ambiente Apartments\thttps://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/KUIfkFmbljLccMLs.jpeg\n",
+  "stderr": "",
+  "execution_time_ms": 2440
+}

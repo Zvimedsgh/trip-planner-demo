@@ -168,3 +168,6 @@
 ## New Features - Animations and Quick Actions
 - [x] Add parallax scroll effect to homepage trip cards
 - [x] Add floating action button (FAB) on trips page with quick actions menu
+
+## Bug - Hotel Pictures
+- [x] Fix hotel pictures not displaying - Added coverImage field to schema, uploaded images to CDN, updated database

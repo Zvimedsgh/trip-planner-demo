@@ -74,6 +74,7 @@ export const hotels = mysqlTable("hotels", {
   phone: varchar("phone", { length: 50 }),
   price: decimal("price", { precision: 10, scale: 2 }),
   currency: varchar("currency", { length: 10 }).default("USD"),
+  coverImage: varchar("coverImage", { length: 500 }),
   notes: text("notes"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
