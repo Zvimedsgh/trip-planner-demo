@@ -186,3 +186,6 @@
 
 ## Timeline Enhancement
 - [x] Add drive from Bratislava to Liptovský Mikuláš (Sep 2, 14:00-19:00) to Timeline with all stops
+
+## Bug Fix - Date Error
+- [x] Fix drive date from 2024 to 2026 (September 2, 2026) - Now shows correctly as Wednesday, September 2, 2026
