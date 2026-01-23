@@ -434,6 +434,47 @@ export const appRouter = router({
       }),
   }),
 
+  // ============ DAY TRIPS ============
+  dayTrips: router({    list: protectedProcedure
+      .input(z.object({ tripId: z.number() }))
+      .query(({ input }) => db.getTripDayTrips(input.tripId)),
+    
+    create: protectedProcedure
+      .input(z.object({
+        tripId: z.number(),
+        name: z.string().min(1),
+        description: z.string().optional(),
+        startLocation: z.string().min(1),
+        endLocation: z.string().min(1),
+        startTime: z.number(),
+        endTime: z.number(),
+        stops: z.string().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(({ input }) => db.createDayTrip(input)),
+    
+    update: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        name: z.string().min(1).optional(),
+        description: z.string().optional(),
+        startLocation: z.string().optional(),
+        endLocation: z.string().optional(),
+        startTime: z.number().optional(),
+        endTime: z.number().optional(),
+        stops: z.string().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(({ input }) => {
+        const { id, ...data } = input;
+        return db.updateDayTrip(id, data);
+      }),
+    
+    delete: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(({ input }) => db.deleteDayTrip(input.id)),
+  }),
+
   // ============ BUDGET ============
   budget: router({
     get: protectedProcedure

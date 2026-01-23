@@ -195,7 +195,12 @@
 
 ## New Features - User Requests
 - [x] Add Vienna parking photo as background to Vienna hotel card - Added parkingImage field and display logic
-- [ ] Create Day Trips tab for managing day trips (like Bratislava to Mikuláš) - Schema and component created, needs router completion
-- [ ] Add parking details/photos for other hotels (Bratislava, Košice)
-- [ ] Expand document links in hotel cards to include "other" category (not just booking)
+- [x] Create Day Trips tab for managing day trips (like Bratislava to Mikuláš)
+  - [x] Database schema created
+  - [x] Database helpers (CRUD operations)
+  - [x] tRPC router with create/list/update/delete
+  - [x] Frontend component with forms and display
+  - [x] Added to TripDetail tabs with translations
+- [ ] Add parking details/photos for other hotels (Bratislava, Košice) - Skipped, no photos available yet
+- [x] Expand document links in hotel cards to include "other" category (not just booking) - Now includes parking and other docs
 - [ ] Create Pre-Trip Checklist tab (passport, insurance, bookings, car keys)

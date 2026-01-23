@@ -389,9 +389,10 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
                     {/* Link to related documents */}
                     {(() => {
                       const relatedDocs = documents?.filter(doc => 
-                        doc.category === 'booking' && 
+                        (doc.category === 'booking' || doc.category === 'other') && 
                         (doc.name.toLowerCase().includes(hotel.name.toLowerCase()) || 
                          doc.name.toLowerCase().includes('hotel') ||
+                         doc.name.toLowerCase().includes('parking') ||
                          (hotel.address && doc.name.toLowerCase().includes(hotel.address.toLowerCase())))
                       );
                       if (relatedDocs && relatedDocs.length > 0) {

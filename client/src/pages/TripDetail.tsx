@@ -29,6 +29,7 @@ import DocumentsTab from "@/components/trip/DocumentsTab";
 import TimelineTab from "@/components/trip/TimelineTab";
 import BudgetTab from "@/components/trip/BudgetTab";
 import { RouteMapTab } from "@/components/trip/RouteMapTab";
+import DayTripsTab from "@/components/trip/DayTripsTab";
 
 export default function TripDetail() {
   const params = useParams<{ id: string }>();
@@ -105,6 +106,7 @@ export default function TripDetail() {
     { id: "timeline", label: t("timeline"), icon: Clock },
     { id: "budget", label: t("budget"), icon: DollarSign },
     { id: "route", label: language === "he" ? "מפת מסלול" : "Route Map", icon: Map },
+    { id: "daytrips", label: t("dayTrips"), icon: ArrowRight },
   ];
 
   return (
@@ -228,6 +230,10 @@ export default function TripDetail() {
 
           <TabsContent value="route">
             <RouteMapTab tripId={tripId} />
+          </TabsContent>
+
+          <TabsContent value="daytrips">
+            <DayTripsTab tripId={tripId} />
           </TabsContent>
         </Tabs>
       </main>

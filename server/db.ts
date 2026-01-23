@@ -8,7 +8,8 @@ import {
   transportation, InsertTransportation, Transportation,
   carRentals, InsertCarRental, CarRental,
   restaurants, InsertRestaurant, Restaurant,
-  documents, InsertDocument, Document
+  documents, InsertDocument, Document,
+  dayTrips, InsertDayTrip, DayTrip
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -418,4 +419,39 @@ export async function getTripBudget(tripId: number) {
     carRentals: carsTotal,
     total: hotelsTotal + transportTotal + carsTotal
   };
+}
+
+// ============ DAY TRIPS QUERIES ============
+
+export async function createDayTrip(data: InsertDayTrip): Promise<DayTrip> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.insert(dayTrips).values(data);
+  const inserted = await db.select().from(dayTrips).where(eq(dayTrips.id, Number(result[0].insertId))).limit(1);
+  return inserted[0];
+}
+
+export async function getTripDayTrips(tripId: number): Promise<DayTrip[]> {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return db.select().from(dayTrips).where(eq(dayTrips.tripId, tripId)).orderBy(desc(dayTrips.startTime));
+}
+
+export async function updateDayTrip(id: number, data: Partial<InsertDayTrip>): Promise<DayTrip | undefined> {
+  const db = await getDb();
+  if (!db) return undefined;
+  
+  await db.update(dayTrips).set(data).where(eq(dayTrips.id, id));
+  const result = await db.select().from(dayTrips).where(eq(dayTrips.id, id)).limit(1);
+  return result[0];
+}
+
+export async function deleteDayTrip(id: number): Promise<boolean> {
+  const db = await getDb();
+  if (!db) return false;
+  
+  await db.delete(dayTrips).where(eq(dayTrips.id, id));
+  return true;
 }

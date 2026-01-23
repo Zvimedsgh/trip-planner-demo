@@ -111,6 +111,25 @@ export const translations = {
     tags: "Tags",
     noDocuments: "No documents uploaded yet",
     
+    // Day Trips
+    dayTrips: "Day Trips",
+    newDayTrip: "New Day Trip",
+    createDayTrip: "Create Day Trip",
+    dayTripCreated: "Day trip created successfully",
+    dayTripDeleted: "Day trip deleted successfully",
+    dayTripNamePlaceholder: "e.g., Bratislava to Liptovský Mikuláš",
+    dayTripDescriptionPlaceholder: "Brief description of the day trip",
+    startLocation: "Start Location",
+    endLocation: "End Location",
+    startLocationPlaceholder: "e.g., Bratislava",
+    endLocationPlaceholder: "e.g., Liptovský Mikuláš",
+    startTime: "Start Time",
+    endTime: "End Time",
+    stops: "Stops & Attractions",
+    stopsPlaceholder: "List stops, attractions, restaurants, gas stations (one per line)",
+    notesPlaceholder: "Additional notes or recommendations",
+    noDayTrips: "No day trips yet. Create one to get started!",
+    
     // Budget
     totalBudget: "Total Budget",
     hotelsCost: "Hotels",
@@ -265,6 +284,25 @@ export const translations = {
     ticket: "כרטיס",
     tags: "תגיות",
     noDocuments: "לא הועלו מסמכים עדיין",
+    
+    // Day Trips
+    dayTrips: "טיולי יום",
+    newDayTrip: "טיול יום חדש",
+    createDayTrip: "יצירת טיול יום",
+    dayTripCreated: "טיול היום נוצר בהצלחה",
+    dayTripDeleted: "טיול היום נמחק בהצלחה",
+    dayTripNamePlaceholder: "לדוגמה, ברטיסלבה לליפטובסקי מיקולש",
+    dayTripDescriptionPlaceholder: "תיאור קצר של טיול היום",
+    startLocation: "מיקום התחלה",
+    endLocation: "יעד",
+    startLocationPlaceholder: "לדוגמה, ברטיסלבה",
+    endLocationPlaceholder: "לדוגמה, ליפטובסקי מיקולש",
+    startTime: "שעת התחלה",
+    endTime: "שעת סיום",
+    stops: "תחנות ואתרים",
+    stopsPlaceholder: "רשימת תחנות, אתרים, מסעדות, תחנות דלק (אחד בכל שורה)",
+    notesPlaceholder: "הערות או המלצות נוספות",
+    noDayTrips: "אין טיולי יום עדיין. צור אחד כדי להתחיל!",
     
     // Budget
     totalBudget: "סה״כ תקציב",
