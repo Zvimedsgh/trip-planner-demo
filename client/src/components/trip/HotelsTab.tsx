@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
-import { Calendar, DollarSign, Edit, Hotel, Loader2, MapPin, Phone, Plus, Trash2 } from "lucide-react";
+import { Calendar, DollarSign, Edit, FileText, Hotel, Loader2, MapPin, Phone, Plus, Trash2 } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 
@@ -40,6 +40,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
 
   const utils = trpc.useUtils();
   const { data: hotels, isLoading } = trpc.hotels.list.useQuery({ tripId });
+  const { data: documents } = trpc.documents.list.useQuery({ tripId });
 
   const createMutation = trpc.hotels.create.useMutation({
     onSuccess: () => {
@@ -393,6 +394,39 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
                     </div>
                   </div>
                   <div className="flex gap-1">
+                    {/* Link to related documents */}
+                    {(() => {
+                      const relatedDocs = documents?.filter(doc => 
+                        doc.category === 'booking' && 
+                        (doc.name.toLowerCase().includes(hotel.name.toLowerCase()) || 
+                         doc.name.toLowerCase().includes('hotel') ||
+                         (hotel.address && doc.name.toLowerCase().includes(hotel.address.toLowerCase())))
+                      );
+                      if (relatedDocs && relatedDocs.length > 0) {
+                        return (
+                          <Button 
+                            size="icon" 
+                            variant="ghost" 
+                            className="h-8 w-8 text-white hover:bg-white/20"
+                            onClick={() => {
+                              // Scroll to documents tab
+                              const documentsTab = document.querySelector('[id*="trigger-documents"]') as HTMLButtonElement;
+                              if (documentsTab) {
+                                documentsTab.click();
+                                setTimeout(() => {
+                                  const docElement = document.querySelector(`[data-document-id="${relatedDocs[0].id}"]`);
+                                  docElement?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                }, 100);
+                              }
+                            }}
+                            title={language === 'he' ? 'מסמכים קשורים' : 'Related documents'}
+                          >
+                            <FileText className="w-4 h-4" />
+                          </Button>
+                        );
+                      }
+                      return null;
+                    })()}
                     <Button size="icon" variant="ghost" className="h-8 w-8 text-white hover:bg-white/20" onClick={() => openEdit(hotel)}>
                       <Edit className="w-4 h-4" />
                     </Button>

@@ -257,7 +257,7 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
             const Icon = categoryIcons[doc.category];
             const colorClass = categoryColors[doc.category];
             return (
-              <Card key={doc.id} className="elegant-card-hover">
+              <Card key={doc.id} data-document-id={doc.id} className="elegant-card-hover">
                 <CardHeader className="pb-2">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-2">

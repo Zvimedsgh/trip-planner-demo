@@ -153,3 +153,6 @@
 
 ## Hotel Images
 - [x] הוספת תמונה למלון בברטיסלבה (Charming & Cozy Ambiente Apartments)
+
+## Hotel-Document Linking
+- [x] הוספת אייקון קישור בכרטיסי מלונות למסמכים המתאימים - אייקון FileText מוצג כשיש מסמך booking קשור
