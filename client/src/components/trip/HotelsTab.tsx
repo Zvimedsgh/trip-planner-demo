@@ -408,18 +408,15 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
                             size="icon" 
                             variant="ghost" 
                             className="h-8 w-8 text-white hover:bg-white/20"
-                            onClick={() => {
-                              // Scroll to documents tab
-                              const documentsTab = document.querySelector('[id*="trigger-documents"]') as HTMLButtonElement;
-                              if (documentsTab) {
-                                documentsTab.click();
-                                setTimeout(() => {
-                                  const docElement = document.querySelector(`[data-document-id="${relatedDocs[0].id}"]`);
-                                  docElement?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                                }, 100);
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              // Open the document file
+                              if (relatedDocs[0]?.fileUrl) {
+                                window.open(relatedDocs[0].fileUrl, '_blank');
                               }
                             }}
-                            title={language === 'he' ? 'מסמכים קשורים' : 'Related documents'}
+                            title={language === 'he' ? 'פתיחת מסמך' : 'Open document'}
                           >
                             <FileText className="w-4 h-4" />
                           </Button>
