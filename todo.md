@@ -164,3 +164,7 @@
 - [x] Trips page - stretch trip images as full background for each card
 - [x] Homepage - replace My Trips button with Slovakia trip card
 - [x] Homepage - add "My Next Trip" placeholder cards that start new trip on click
+
+## New Features - Animations and Quick Actions
+- [x] Add parallax scroll effect to homepage trip cards
+- [x] Add floating action button (FAB) on trips page with quick actions menu

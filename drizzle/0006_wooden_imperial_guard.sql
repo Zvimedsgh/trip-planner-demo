@@ -1,0 +1,1 @@
+ALTER TABLE `hotels` ADD `coverImage` varchar(500);

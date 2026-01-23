@@ -494,6 +494,33 @@ export default function Trips() {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+        
+        {/* Floating Action Button with Quick Actions */}
+        <div className="fixed bottom-8 right-8 z-50">
+          <div className="relative group">
+            {/* Quick Action Buttons */}
+            <div className="absolute bottom-16 right-0 flex flex-col gap-3 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none group-hover:pointer-events-auto">
+              <Button
+                size="lg"
+                className="rounded-full shadow-lg bg-emerald-500 hover:bg-emerald-600 text-white"
+                onClick={() => {
+                  setIsCreateOpen(true);
+                }}
+              >
+                <Plane className="w-5 h-5 mr-2" />
+                {language === 'he' ? 'טיול חדש' : 'New Trip'}
+              </Button>
+            </div>
+            
+            {/* Main FAB */}
+            <Button
+              size="lg"
+              className="rounded-full w-16 h-16 shadow-2xl bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 transition-all group-hover:rotate-45"
+            >
+              <Plus className="w-8 h-8" />
+            </Button>
+          </div>
+        </div>
       </main>
     </div>
   );

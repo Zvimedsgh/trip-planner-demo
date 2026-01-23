@@ -10,11 +10,19 @@ import {
   Calendar, DollarSign, Globe, ArrowRight, Sparkles, Plus
 } from "lucide-react";
 import { Link, useLocation } from "wouter";
+import { useState, useEffect } from "react";
 
 export default function Home() {
   const { user, loading, isAuthenticated } = useAuth();
   const { t, language, setLanguage, isRTL } = useLanguage();
   const [, navigate] = useLocation();
+  const [scrollY, setScrollY] = useState(0);
+  
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
   
   const { data: trips } = trpc.trips.list.useQuery(undefined, {
     enabled: isAuthenticated,
@@ -151,6 +159,7 @@ export default function Home() {
                 <Card 
                   className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer h-80"
                   onClick={() => navigate(`/trip/${slovakiaTrip.id}`)}
+                  style={{ transform: `translateY(${scrollY * 0.1}px)` }}
                 >
                   <img 
                     src={slovakiaTrip.coverImage || '/slovakia.jpg'} 
@@ -191,6 +200,7 @@ export default function Home() {
                   key={index}
                   className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer h-80"
                   onClick={() => isAuthenticated ? navigate('/trips') : window.location.href = getLoginUrl()}
+                  style={{ transform: `translateY(${scrollY * (0.05 + index * 0.025)}px)` }}
                 >
                   <img 
                     src={index === 1 ? '/travel-2.jpg' : '/travel-3.jpg'} 
