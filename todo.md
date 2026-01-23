@@ -164,3 +164,8 @@
 - [x] Trips page - stretch trip images as full background for each card
 - [x] Homepage - replace My Trips button with Slovakia trip card
 - [x] Homepage - add "My Next Trip" placeholder cards that start new trip on click
+
+## Hotel Images Upload
+- [x] Upload HotelBankovKosice.webp to S3 and update Hotel Bankov Kosice record
+- [x] Upload myNext-JohannesgasseApartments.jpg to S3 and update myNext - Johannesgasse Apartments record
+- [x] Upload PrivateholydayhouseVivendi.jpg to S3 and update Private holiday house Vivendi record
