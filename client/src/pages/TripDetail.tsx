@@ -7,7 +7,7 @@ import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
 import { 
   ArrowLeft, Calendar, Car, DollarSign, FileText, Globe, 
-  Hotel, Loader2, MapPin, Plane, Utensils, Clock, ArrowRight, Share2, Copy, Check, X
+  Hotel, Loader2, MapPin, Plane, Utensils, Clock, ArrowRight, Share2, Copy, Check, X, Map
 } from "lucide-react";
 import { useState } from "react";
 import {
@@ -28,6 +28,7 @@ import RestaurantsTab from "@/components/trip/RestaurantsTab";
 import DocumentsTab from "@/components/trip/DocumentsTab";
 import TimelineTab from "@/components/trip/TimelineTab";
 import BudgetTab from "@/components/trip/BudgetTab";
+import { RouteMapTab } from "@/components/trip/RouteMapTab";
 
 export default function TripDetail() {
   const params = useParams<{ id: string }>();
@@ -103,6 +104,7 @@ export default function TripDetail() {
     { id: "documents", label: t("documents"), icon: FileText },
     { id: "timeline", label: t("timeline"), icon: Clock },
     { id: "budget", label: t("budget"), icon: DollarSign },
+    { id: "route", label: language === "he" ? "מפת מסלול" : "Route Map", icon: Map },
   ];
 
   return (
@@ -222,6 +224,10 @@ export default function TripDetail() {
 
           <TabsContent value="budget">
             <BudgetTab tripId={tripId} />
+          </TabsContent>
+
+          <TabsContent value="route">
+            <RouteMapTab tripId={tripId} />
           </TabsContent>
         </Tabs>
       </main>

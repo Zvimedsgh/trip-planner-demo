@@ -176,3 +176,10 @@
 - [x] Research attractions and restaurants on the route from Bratislava to Liptovský Mikuláš
 - [x] Find restaurants near accommodation in Liptovský Mikuláš area
 - [x] Add recommendations to the trip itinerary
+
+## New Features - Route Planning & Enhancements
+- [x] Create interactive map showing route from Bratislava to Liptovský Mikuláš
+- [x] Add markers for recommended attractions, restaurants, and gas stations
+- [x] Add Route Map tab to trip detail page with clickable points
+- [ ] Add Daily Planner with drag-and-drop activities
+- [ ] Add Packing List / Shopping List tab
