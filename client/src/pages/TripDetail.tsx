@@ -98,8 +98,8 @@ export default function TripDetail() {
   };
 
   const tabs = [
-    { id: "transport", label: t("transportation"), icon: Plane },
     { id: "hotels", label: t("hotels"), icon: Hotel },
+    { id: "transport", label: t("transportation"), icon: Plane },
     { id: "cars", label: t("carRentals"), icon: Car },
     { id: "sites", label: t("touristSites"), icon: MapPin },
     { id: "restaurants", label: t("restaurants"), icon: Utensils },
@@ -184,7 +184,7 @@ export default function TripDetail() {
         </div>
 
         {/* Tabs */}
-        <Tabs defaultValue="sites" className="w-full">
+        <Tabs defaultValue="hotels" className="w-full">
           <TabsList className="w-full flex flex-wrap h-auto gap-2 bg-transparent p-0 mb-6">
             {tabs.map((tab) => (
               <TabsTrigger
