@@ -98,10 +98,10 @@ export default function TripDetail() {
   };
 
   const tabs = [
-    { id: "sites", label: t("touristSites"), icon: MapPin },
-    { id: "hotels", label: t("hotels"), icon: Hotel },
     { id: "transport", label: t("transportation"), icon: Plane },
+    { id: "hotels", label: t("hotels"), icon: Hotel },
     { id: "cars", label: t("carRentals"), icon: Car },
+    { id: "sites", label: t("touristSites"), icon: MapPin },
     { id: "restaurants", label: t("restaurants"), icon: Utensils },
     { id: "documents", label: t("documents"), icon: FileText },
     { id: "timeline", label: t("timeline"), icon: Clock },
