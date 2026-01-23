@@ -1,0 +1,8 @@
+{
+  "query": "INSERT INTO documents (tripId, title, category, fileUrl, tags, notes, createdAt, updatedAt)\nVALUES (\n  30001,\n  'Vienna Hotel Parking',\n  'other',\n  'https://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/SFUxxBPOkCapFHow.jpg',\n  'parking,vienna,hotel',\n  'Parking entrance at myNext - Johannesgasse Apartments in Vienna. Height limit: 2.0m',\n  NOW(),\n  NOW()\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute INSERT INTO documents (tripId, title, category, fileUrl, tags, notes, createdAt, updatedAt)\nVALUES (\n  30001,\n  'Vienna Hotel Parking',\n  'other',\n  'https://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/SFUxxBPOkCapFHow.jpg',\n  'parking,vienna,hotel',\n  'Parking entrance at myNext - Johannesgasse Apartments in Vienna. Height limit: 2.0m',\n  NOW(),\n  NOW()\n);",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1054 (42S22) at line 1: Unknown column 'title' in 'field list'"
+  ]
+}

@@ -189,3 +189,6 @@
 
 ## Bug Fix - Date Error
 - [x] Fix drive date from 2024 to 2026 (September 2, 2026) - Now shows correctly as Wednesday, September 2, 2026
+
+## Vienna Hotel Parking
+- [x] Upload Vienna hotel parking photo and add to documents - Added with tags and height limit note (2.0m)
