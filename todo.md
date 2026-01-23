@@ -150,3 +150,6 @@
 - [x] תיקון תצוגת תקציב באייפון - שימוש ב-auto-fill grid
 - [x] כרטיסי מלונות - רקע צבעוני מלא לכל הקוביה
 - [x] צביעת כפתור Trip Details בצבע גרדיאנט בולט
+
+## Hotel Images
+- [x] הוספת תמונה למלון בברטיסלבה (Charming & Cozy Ambiente Apartments)

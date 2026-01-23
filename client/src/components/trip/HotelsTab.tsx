@@ -351,9 +351,31 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
             ];
             const gradient = gradients[index % gradients.length];
             
+            // Check if hotel has a specific image based on name/address
+            const getHotelImage = (hotelName: string, address: string | null) => {
+              const name = hotelName.toLowerCase();
+              const addr = (address || '').toLowerCase();
+              if (name.includes('charming') || name.includes('cozy') || name.includes('ambiente') || addr.includes('bratislava')) {
+                return '/images/hotel-bratislava.jpg';
+              }
+              return null;
+            };
+            const hotelImage = getHotelImage(hotel.name, hotel.address);
+            
             return (
-            <Card key={hotel.id} className={`overflow-hidden bg-gradient-to-br ${gradient} text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1`}>
-              <CardContent className="p-4">
+            <Card key={hotel.id} className={`overflow-hidden ${!hotelImage ? `bg-gradient-to-br ${gradient}` : ''} text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative group`}>
+              {/* Background image if available */}
+              {hotelImage && (
+                <>
+                  <img 
+                    src={hotelImage} 
+                    alt={hotel.name}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
+                </>
+              )}
+              <CardContent className="p-4 relative z-10">
                 {/* Header with name and actions */}
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-2">
@@ -361,9 +383,9 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
                       <Hotel className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-white">{hotel.name}</h3>
+                      <h3 className="font-semibold text-white drop-shadow-md">{hotel.name}</h3>
                       {hotel.address && (
-                        <p className="flex items-center gap-1 text-xs text-white/80">
+                        <p className="flex items-center gap-1 text-xs text-white/90 drop-shadow">
                           <MapPin className="w-3 h-3" />
                           {hotel.address}
                         </p>
@@ -399,17 +421,17 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
                 {/* Details */}
                 <div className="flex flex-wrap gap-2 text-xs">
                   {hotel.confirmationNumber && (
-                    <span className="bg-white/20 px-2 py-1 rounded">
+                    <span className="bg-white/20 backdrop-blur-sm px-2 py-1 rounded">
                       #{hotel.confirmationNumber}
                     </span>
                   )}
                   {hotel.price && (
-                    <span className="flex items-center gap-1 bg-white/30 px-2 py-1 rounded font-medium">
+                    <span className="flex items-center gap-1 bg-white/30 backdrop-blur-sm px-2 py-1 rounded font-medium">
                       {getCurrencySymbol(hotel.currency || "USD")} {hotel.price} {hotel.currency}
                     </span>
                   )}
                   {hotel.phone && (
-                    <span className="flex items-center gap-1 bg-white/20 px-2 py-1 rounded">
+                    <span className="flex items-center gap-1 bg-white/20 backdrop-blur-sm px-2 py-1 rounded">
                       <Phone className="w-3 h-3" />
                       {hotel.phone}
                     </span>
