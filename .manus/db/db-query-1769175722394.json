@@ -1,0 +1,9 @@
+{
+  "query": "INSERT INTO hotels (tripId, name, address, checkInDate, checkOutDate, price, currency, notes, createdAt, updatedAt) \nVALUES (\n  30001, \n  'Vienna Parking', \n  'Vienna, Austria', \n  1725148800000, \n  1725235200000, \n  98.00, \n  'EUR', \n  'Parking fee for Vienna hotel stay',\n  NOW(),\n  NOW()\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute INSERT INTO hotels (tripId, name, address, checkInDate, checkOutDate, price, currency, notes, createdAt, updatedAt) \nVALUES (\n  30001, \n  'Vienna Parking', \n  'Vienna, Austria', \n  1725148800000, \n  1725235200000, \n  98.00, \n  'EUR', \n  'Parking fee for Vienna hotel stay',\n  NOW(),\n  NOW()\n);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1536
+}
