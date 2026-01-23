@@ -352,16 +352,8 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
             ];
             const gradient = gradients[index % gradients.length];
             
-            // Check if hotel has a specific image based on name/address
-            const getHotelImage = (hotelName: string, address: string | null) => {
-              const name = hotelName.toLowerCase();
-              const addr = (address || '').toLowerCase();
-              if (name.includes('charming') || name.includes('cozy') || name.includes('ambiente') || addr.includes('bratislava')) {
-                return '/images/hotel-bratislava.jpg';
-              }
-              return null;
-            };
-            const hotelImage = getHotelImage(hotel.name, hotel.address);
+            // Use coverImage from database if available
+            const hotelImage = hotel.coverImage;
             
             return (
             <Card key={hotel.id} className={`overflow-hidden ${!hotelImage ? `bg-gradient-to-br ${gradient}` : ''} text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative group`}>
