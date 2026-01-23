@@ -7,7 +7,7 @@ import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
 import { 
   ArrowLeft, Calendar, Car, DollarSign, FileText, Globe, 
-  Hotel, Loader2, MapPin, Plane, Utensils, Clock, ArrowRight, Share2, Copy, Check, X, Map, UserPlus, Users, Trash2
+  Hotel, Loader2, MapPin, Plane, Utensils, Clock, ArrowRight, Share2, Copy, Check, X, Map
 } from "lucide-react";
 import { useState } from "react";
 import {
@@ -41,8 +41,6 @@ export default function TripDetail() {
   const { data: trip, isLoading, refetch } = trpc.trips.get.useQuery({ id: tripId });
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [collaboratorEmail, setCollaboratorEmail] = useState("");
-  const [activeTab, setActiveTab] = useState<"link" | "collaborators">("link");
   
   const generateShareLink = trpc.trips.generateShareLink.useMutation({
     onSuccess: () => {
@@ -55,29 +53,6 @@ export default function TripDetail() {
     onSuccess: () => {
       refetch();
       toast.success(language === "he" ? "קישור שיתוף בוטל" : "Share link revoked");
-    },
-  });
-  
-  const { data: collaborators, refetch: refetchCollaborators } = trpc.trips.listCollaborators.useQuery(
-    { tripId },
-    { enabled: shareDialogOpen }
-  );
-  
-  const addCollaborator = trpc.trips.addCollaborator.useMutation({
-    onSuccess: () => {
-      refetchCollaborators();
-      setCollaboratorEmail("");
-      toast.success(language === "he" ? "משתף נוסף בהצלחה" : "Collaborator added successfully");
-    },
-    onError: (error) => {
-      toast.error(error.message);
-    },
-  });
-  
-  const removeCollaborator = trpc.trips.removeCollaborator.useMutation({
-    onSuccess: () => {
-      refetchCollaborators();
-      toast.success(language === "he" ? "משתף הוסר" : "Collaborator removed");
     },
   });
   
@@ -122,16 +97,16 @@ export default function TripDetail() {
   };
 
   const tabs = [
-    { id: "transport", label: t("transportation"), icon: Plane },
-    { id: "hotels", label: t("hotels"), icon: Hotel },
-    { id: "cars", label: t("carRentals"), icon: Car },
     { id: "sites", label: t("touristSites"), icon: MapPin },
+    { id: "hotels", label: t("hotels"), icon: Hotel },
+    { id: "transport", label: t("transportation"), icon: Plane },
+    { id: "cars", label: t("carRentals"), icon: Car },
     { id: "restaurants", label: t("restaurants"), icon: Utensils },
     { id: "documents", label: t("documents"), icon: FileText },
     { id: "timeline", label: t("timeline"), icon: Clock },
+    { id: "budget", label: t("budget"), icon: DollarSign },
     { id: "route", label: language === "he" ? "מפת מסלול" : "Route Map", icon: Map },
     { id: "daytrips", label: t("dayTrips"), icon: ArrowRight },
-    { id: "budget", label: t("budget"), icon: DollarSign },
   ];
 
   return (
@@ -265,177 +240,56 @@ export default function TripDetail() {
 
       {/* Share Dialog */}
       <Dialog open={shareDialogOpen} onOpenChange={setShareDialogOpen}>
-        <DialogContent className="sm:max-w-lg">
+        <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Share2 className="w-5 h-5" />
               {language === "he" ? "שתף טיול" : "Share Trip"}
             </DialogTitle>
+            <DialogDescription>
+              {language === "he" 
+                ? "צור קישור ציבורי לצפייה בטיול. כל מי שיש לו את הקישור יוכל לראות את הטיול (ללא אפשרות עריכה)."
+                : "Create a public link to view this trip. Anyone with the link can see the trip (read-only)."
+              }
+            </DialogDescription>
           </DialogHeader>
           
-          {/* Tabs for Link vs Collaborators */}
-          <div className="flex gap-2 border-b">
-            <button
-              onClick={() => setActiveTab("link")}
-              className={`px-4 py-2 font-medium transition-colors ${
-                activeTab === "link" 
-                  ? "text-primary border-b-2 border-primary" 
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {language === "he" ? "קישור ציבורי" : "Public Link"}
-            </button>
-            <button
-              onClick={() => setActiveTab("collaborators")}
-              className={`px-4 py-2 font-medium transition-colors flex items-center gap-2 ${
-                activeTab === "collaborators" 
-                  ? "text-primary border-b-2 border-primary" 
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              <Users className="w-4 h-4" />
-              {language === "he" ? "משתפים" : "Collaborators"}
-              {collaborators && collaborators.length > 0 && (
-                <span className="bg-primary/20 text-primary px-2 py-0.5 rounded-full text-xs">
-                  {collaborators.length}
-                </span>
-              )}
-            </button>
-          </div>
-          
           <div className="space-y-4 py-4">
-            {activeTab === "link" ? (
+            {shareUrl ? (
               <>
-                <DialogDescription>
-                  {language === "he" 
-                    ? "צור קישור ציבורי לצפייה בטיול. כל מי שיש לו את הקישור יוכל לראות את הטיול (ללא אפשרות עריכה)."
-                    : "Create a public link to view this trip. Anyone with the link can see the trip (read-only)."
-                  }
-                </DialogDescription>
-                {shareUrl ? (
-                  <>
-                    <div className="flex items-center gap-2">
-                      <Input
-                        value={shareUrl}
-                        readOnly
-                        className="flex-1 text-sm"
-                      />
-                      <Button
-                        size="icon"
-                        variant="outline"
-                        onClick={copyToClipboard}
-                      >
-                        {copied ? <Check className="w-4 h-4 text-green-600" /> : <Copy className="w-4 h-4" />}
-                      </Button>
-                    </div>
-                    <Button
-                      variant="destructive"
-                      className="w-full"
-                      onClick={() => revokeShareLink.mutate({ id: tripId })}
-                      disabled={revokeShareLink.isPending}
-                    >
-                      <X className="w-4 h-4 mr-2" />
-                      {language === "he" ? "בטל קישור שיתוף" : "Revoke Share Link"}
-                    </Button>
-                  </>
-                ) : (
+                <div className="flex items-center gap-2">
+                  <Input
+                    value={shareUrl}
+                    readOnly
+                    className="flex-1 text-sm"
+                  />
                   <Button
-                    className="w-full"
-                    onClick={() => generateShareLink.mutate({ id: tripId })}
-                    disabled={generateShareLink.isPending}
+                    size="icon"
+                    variant="outline"
+                    onClick={copyToClipboard}
                   >
-                    <Share2 className="w-4 h-4 mr-2" />
-                    {language === "he" ? "צור קישור שיתוף" : "Create Share Link"}
+                    {copied ? <Check className="w-4 h-4 text-green-600" /> : <Copy className="w-4 h-4" />}
                   </Button>
-                )}
+                </div>
+                <Button
+                  variant="destructive"
+                  className="w-full"
+                  onClick={() => revokeShareLink.mutate({ id: tripId })}
+                  disabled={revokeShareLink.isPending}
+                >
+                  <X className="w-4 h-4 mr-2" />
+                  {language === "he" ? "בטל קישור שיתוף" : "Revoke Share Link"}
+                </Button>
               </>
             ) : (
-              <>
-                <DialogDescription>
-                  {language === "he" 
-                    ? "הזמן אנשים לערוך את הטיול איתך. הם יוכלו להוסיף ולשנות מלונות, אתרים, מסעדות ועוד."
-                    : "Invite people to edit this trip with you. They can add and modify hotels, sites, restaurants, and more."
-                  }
-                </DialogDescription>
-                
-                {/* Add Collaborator Form */}
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">
-                    {language === "he" ? "הוסף משתף לפי אימייל" : "Add collaborator by email"}
-                  </label>
-                  <div className="flex gap-2">
-                    <Input
-                      type="email"
-                      placeholder={language === "he" ? "example@email.com" : "example@email.com"}
-                      value={collaboratorEmail}
-                      onChange={(e) => setCollaboratorEmail(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter" && collaboratorEmail.trim()) {
-                          addCollaborator.mutate({ 
-                            tripId, 
-                            userEmail: collaboratorEmail.trim(),
-                            permission: "edit"
-                          });
-                        }
-                      }}
-                    />
-                    <Button
-                      onClick={() => {
-                        if (collaboratorEmail.trim()) {
-                          addCollaborator.mutate({ 
-                            tripId, 
-                            userEmail: collaboratorEmail.trim(),
-                            permission: "edit"
-                          });
-                        }
-                      }}
-                      disabled={!collaboratorEmail.trim() || addCollaborator.isPending}
-                    >
-                      <UserPlus className="w-4 h-4" />
-                    </Button>
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    {language === "he" 
-                      ? `ניתן להוסיף עד 3 משתפים. נוספו: ${collaborators?.length || 0}/3`
-                      : `You can add up to 3 collaborators. Added: ${collaborators?.length || 0}/3`
-                    }
-                  </p>
-                </div>
-                
-                {/* Collaborators List */}
-                {collaborators && collaborators.length > 0 && (
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">
-                      {language === "he" ? "משתפים נוכחיים" : "Current collaborators"}
-                    </label>
-                    <div className="space-y-2">
-                      {collaborators.map((collab) => (
-                        <div key={collab.id} className="flex items-center justify-between p-3 rounded-lg border bg-muted/30">
-                          <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center font-medium">
-                              {collab.userName?.charAt(0).toUpperCase() || collab.userEmail?.charAt(0).toUpperCase() || "?"}
-                            </div>
-                            <div>
-                              <p className="text-sm font-medium">{collab.userName || collab.userEmail}</p>
-                              {collab.userName && collab.userEmail && (
-                                <p className="text-xs text-muted-foreground">{collab.userEmail}</p>
-                              )}
-                            </div>
-                          </div>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => removeCollaborator.mutate({ tripId, userId: collab.userId })}
-                            disabled={removeCollaborator.isPending}
-                          >
-                            <Trash2 className="w-4 h-4 text-destructive" />
-                          </Button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </>
+              <Button
+                className="w-full"
+                onClick={() => generateShareLink.mutate({ id: tripId })}
+                disabled={generateShareLink.isPending}
+              >
+                <Share2 className="w-4 h-4 mr-2" />
+                {language === "he" ? "צור קישור שיתוף" : "Create Share Link"}
+              </Button>
             )}
           </div>
         </DialogContent>
