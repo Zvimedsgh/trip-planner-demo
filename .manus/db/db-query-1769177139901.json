@@ -1,0 +1,50 @@
+{
+  "query": "SELECT name, address, checkInDate, checkOutDate, FROM_UNIXTIME(checkInDate/1000) as checkIn, FROM_UNIXTIME(checkOutDate/1000) as checkOut \nFROM hotels \nWHERE tripId = 30001 \nORDER BY checkInDate ASC;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT name, address, checkInDate, checkOutDate, FROM_UNIXTIME(checkInDate/1000) as checkIn, FROM_UNIXTIME(checkOutDate/1000) as checkOut \nFROM hotels \nWHERE tripId = 30001 \nORDER BY checkInDate ASC;",
+  "rows": [
+    {
+      "name": "Private holiday house Vivendi",
+      "address": "J. Žuffu 25, 031 01 Liptovský Mikuláš, Slovakia",
+      "checkInDate": "1788307200000",
+      "checkOutDate": "1788480000000",
+      "checkIn": "2026-09-02 00:00:00.0000",
+      "checkOut": "2026-09-04 00:00:00.0000"
+    },
+    {
+      "name": "Charming & Cozy Ambiente Apartments",
+      "address": "Suché Mýto 4, 811 03 Bratislava, Slovakia",
+      "checkInDate": "1788307200000",
+      "checkOutDate": "1788307200000",
+      "checkIn": "2026-09-02 00:00:00.0000",
+      "checkOut": "2026-09-02 00:00:00.0000"
+    },
+    {
+      "name": "Hotel Bankov Košice",
+      "address": "Bankov 2, 04001 Kosice, Slovakia",
+      "checkInDate": "1788566400000",
+      "checkOutDate": "1788739200000",
+      "checkIn": "2026-09-05 00:00:00.0000",
+      "checkOut": "2026-09-07 00:00:00.0000"
+    },
+    {
+      "name": "myNext - Johannesgasse Apartments",
+      "address": "Johannesgasse 8 01. Innere Stadt 1010 Vienna Austria",
+      "checkInDate": "1788739200000",
+      "checkOutDate": "1788912000000",
+      "checkIn": "2026-09-07 00:00:00.0000",
+      "checkOut": "2026-09-09 00:00:00.0000"
+    },
+    {
+      "name": "Vienna Parking",
+      "address": "Vienna, Austria",
+      "checkInDate": "1788825600000",
+      "checkOutDate": "1788912000000",
+      "checkIn": "2026-09-08 00:00:00.0000",
+      "checkOut": "2026-09-09 00:00:00.0000"
+    }
+  ],
+  "messages": [],
+  "stdout": "name\taddress\tcheckInDate\tcheckOutDate\tcheckIn\tcheckOut\nPrivate holiday house Vivendi\tJ. Žuffu 25, 031 01 Liptovský Mikuláš, Slovakia\t1788307200000\t1788480000000\t2026-09-02 00:00:00.0000\t2026-09-04 00:00:00.0000\nCharming & Cozy Ambiente Apartments\tSuché Mýto 4, 811 03 Bratislava, Slovakia\t1788307200000\t1788307200000\t2026-09-02 00:00:00.0000\t2026-09-02 00:00:00.0000\nHotel Bankov Košice\tBankov 2, 04001 Kosice, Slovakia\t1788566400000\t1788739200000\t2026-09-05 00:00:00.0000\t2026-09-07 00:00:00.0000\nmyNext - Johannesgasse Apartments\tJohannesgasse 8 01. Innere Stadt 1010 Vienna Austria\t1788739200000\t1788912000000\t2026-09-07 00:00:00.0000\t2026-09-09 00:00:00.0000\nVienna Parking\tVienna, Austria\t1788825600000\t1788912000000\t2026-09-08 00:00:00.0000\t2026-09-09 00:00:00.0000\n",
+  "stderr": "",
+  "execution_time_ms": 1536
+}

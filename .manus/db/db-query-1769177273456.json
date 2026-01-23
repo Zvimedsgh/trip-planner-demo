@@ -1,0 +1,9 @@
+{
+  "query": "UPDATE hotels \nSET checkInDate = 1788368400000, checkOutDate = 1788516000000\nWHERE tripId = 30001 AND name LIKE '%Vivendi%';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute UPDATE hotels \nSET checkInDate = 1788368400000, checkOutDate = 1788516000000\nWHERE tripId = 30001 AND name LIKE '%Vivendi%';",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1501
+}

@@ -1,0 +1,18 @@
+{
+  "query": "SELECT company, pickupLocation, pickupDate, FROM_UNIXTIME(pickupDate/1000) as pickup, returnDate, FROM_UNIXTIME(returnDate/1000) as returnTime \nFROM car_rentals \nWHERE tripId = 30001;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT company, pickupLocation, pickupDate, FROM_UNIXTIME(pickupDate/1000) as pickup, returnDate, FROM_UNIXTIME(returnDate/1000) as returnTime \nFROM car_rentals \nWHERE tripId = 30001;",
+  "rows": [
+    {
+      "company": "Surprice",
+      "pickupLocation": "outside the Arrivals area at the airport",
+      "pickupDate": "1788307200000",
+      "pickup": "2026-09-02 00:00:00.0000",
+      "returnDate": "1788912000000",
+      "returnTime": "2026-09-09 00:00:00.0000"
+    }
+  ],
+  "messages": [],
+  "stdout": "company\tpickupLocation\tpickupDate\tpickup\treturnDate\treturnTime\nSurprice\toutside the Arrivals area at the airport\t1788307200000\t2026-09-02 00:00:00.0000\t1788912000000\t2026-09-09 00:00:00.0000\n",
+  "stderr": "",
+  "execution_time_ms": 1525
+}

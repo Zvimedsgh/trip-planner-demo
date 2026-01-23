@@ -1,0 +1,19 @@
+{
+  "query": "SELECT id, name, address, checkInDate, FROM_UNIXTIME(checkInDate/1000) as checkInTime, checkOutDate, FROM_UNIXTIME(checkOutDate/1000) as checkOutTime\nFROM hotels \nWHERE tripId = 30001 AND name LIKE '%Vivendi%';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, address, checkInDate, FROM_UNIXTIME(checkInDate/1000) as checkInTime, checkOutDate, FROM_UNIXTIME(checkOutDate/1000) as checkOutTime\nFROM hotels \nWHERE tripId = 30001 AND name LIKE '%Vivendi%';",
+  "rows": [
+    {
+      "id": "30002",
+      "name": "Private holiday house Vivendi",
+      "address": "J. Žuffu 25, 031 01 Liptovský Mikuláš, Slovakia",
+      "checkInDate": "1788307200000",
+      "checkInTime": "2026-09-02 00:00:00.0000",
+      "checkOutDate": "1788480000000",
+      "checkOutTime": "2026-09-04 00:00:00.0000"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\taddress\tcheckInDate\tcheckInTime\tcheckOutDate\tcheckOutTime\n30002\tPrivate holiday house Vivendi\tJ. Žuffu 25, 031 01 Liptovský Mikuláš, Slovakia\t1788307200000\t2026-09-02 00:00:00.0000\t1788480000000\t2026-09-04 00:00:00.0000\n",
+  "stderr": "",
+  "execution_time_ms": 1538
+}
