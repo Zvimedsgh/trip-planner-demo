@@ -314,24 +314,27 @@ export default function Trips() {
               const bgImage = trip.coverImage || getDestinationImage(trip.destination);
               
               return (
-              <Card key={trip.id} className="elegant-card-hover overflow-hidden group">
-                <div className="h-32 relative">
-                  {bgImage ? (
-                    <>
-                      <img 
-                        src={bgImage} 
-                        alt={trip.destination}
-                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                    </>
-                  ) : (
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-purple-500/20 to-pink-500/20">
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <MapPin className="w-12 h-12 text-primary/30" />
-                      </div>
+              <Card key={trip.id} className="elegant-card-hover overflow-hidden group relative h-64">
+                {/* Full background image */}
+                {bgImage ? (
+                  <>
+                    <img 
+                      src={bgImage} 
+                      alt={trip.destination}
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                  </>
+                ) : (
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-purple-500/20 to-pink-500/20">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <MapPin className="w-12 h-12 text-primary/30" />
                     </div>
-                  )}
+                  </div>
+                )}
+                
+                {/* Content overlay */}
+                <div className="relative h-full flex flex-col justify-between p-6">
                   {uploadingImage === trip.id && (
                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
                       <Loader2 className="w-8 h-8 animate-spin text-white" />
@@ -376,36 +379,35 @@ export default function Trips() {
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>
-                </div>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-lg">{trip.name}</CardTitle>
-                  <CardDescription className="flex items-center gap-1">
-                    <MapPin className="w-3 h-3" />
-                    {trip.destination}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-                    <Calendar className="w-4 h-4" />
-                    <span>
-                      {format(new Date(trip.startDate), "MMM d")} - {format(new Date(trip.endDate), "MMM d, yyyy")}
-                    </span>
-                    <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full">
-                      {getDaysCount(trip.startDate, trip.endDate)} {t("days")}
-                    </span>
+                  
+                  {/* Top section - Title and destination */}
+                  <div className="text-white">
+                    <h3 className="text-xl font-bold mb-1">{trip.name}</h3>
+                    <div className="flex items-center gap-1 text-white/90 text-sm">
+                      <MapPin className="w-4 h-4" />
+                      {trip.destination}
+                    </div>
                   </div>
-                  {trip.description && (
-                    <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
-                      {trip.description}
-                    </p>
-                  )}
-                  <Link href={`/trip/${trip.id}`}>
-                    <Button className="w-full group/btn bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-white shadow-md hover:shadow-lg transition-all">
-                      {t("tripDetails")}
-                      <ArrowRight className={`w-4 h-4 ${isRTL ? 'mr-2 rotate-180' : 'ml-2'} group-hover/btn:translate-x-1 transition-transform`} />
-                    </Button>
-                  </Link>
-                </CardContent>
+                  
+                  {/* Bottom section - Date and button */}
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2 text-sm text-white/90">
+                      <Calendar className="w-4 h-4" />
+                      <span>
+                        {format(new Date(trip.startDate), "MMM d")} - {format(new Date(trip.endDate), "MMM d, yyyy")}
+                      </span>
+                      <span className="text-xs bg-white/20 text-white px-2 py-0.5 rounded-full">
+                        {getDaysCount(trip.startDate, trip.endDate)} {t("days")}
+                      </span>
+                    </div>
+                    <Link href={`/trip/${trip.id}`}>
+                      <Button className="w-full group/btn bg-white text-primary hover:bg-white/90 shadow-md hover:shadow-lg transition-all">
+                        {t("tripDetails")}
+                        <ArrowRight className={`w-4 h-4 ${isRTL ? 'mr-2 rotate-180' : 'ml-2'} group-hover/btn:translate-x-1 transition-transform`} />
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
               </Card>
             );})}
           </div>

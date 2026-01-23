@@ -159,3 +159,8 @@
 
 ## Bug Fixes - Document Links
 - [x] תיקון קישורים למסמכים בכרטיסי מלונות - שינוי לפתיחת המסמך בטאב חדש
+
+## Homepage and Trips Page Redesign
+- [x] Trips page - stretch trip images as full background for each card
+- [x] Homepage - replace My Trips button with Slovakia trip card
+- [x] Homepage - add "My Next Trip" placeholder cards that start new trip on click
