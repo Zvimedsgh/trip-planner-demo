@@ -226,6 +226,26 @@ export const appRouter = router({
     delete: protectedProcedure
       .input(z.object({ id: z.number() }))
       .mutation(({ input }) => db.deleteHotel(input.id)),
+    
+    uploadParkingImage: protectedProcedure
+      .input(z.object({
+        hotelId: z.number(),
+        imageData: z.string(), // Base64 encoded image
+        mimeType: z.string(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        // Convert base64 to buffer
+        const buffer = Buffer.from(input.imageData, 'base64');
+        const extension = input.mimeType.split('/')[1] || 'jpg';
+        const fileKey = `hotel-parking/${ctx.user.id}/${input.hotelId}-${nanoid(8)}.${extension}`;
+        
+        const { url } = await storagePut(fileKey, buffer, input.mimeType);
+        
+        // Update hotel with parking image URL
+        await db.updateHotel(input.hotelId, { parkingImage: url });
+        
+        return { url };
+      }),
   }),
 
   // ============ TRANSPORTATION ============
@@ -473,6 +493,41 @@ export const appRouter = router({
     delete: protectedProcedure
       .input(z.object({ id: z.number() }))
       .mutation(({ input }) => db.deleteDayTrip(input.id)),
+  }),
+
+  // ============ CHECKLIST ============
+  checklist: router({
+    list: protectedProcedure
+      .input(z.object({ tripId: z.number() }))
+      .query(({ input }) => db.getTripChecklist(input.tripId)),
+    
+    create: protectedProcedure
+      .input(z.object({
+        tripId: z.number(),
+        title: z.string().min(1),
+        category: z.enum(["documents", "bookings", "packing", "health", "finance", "other"]),
+        dueDate: z.number().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(({ input }) => db.createChecklistItem(input)),
+    
+    update: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        title: z.string().optional(),
+        category: z.enum(["documents", "bookings", "packing", "health", "finance", "other"]).optional(),
+        completed: z.boolean().optional(),
+        dueDate: z.number().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(({ input }) => {
+        const { id, ...data } = input;
+        return db.updateChecklistItem(id, data);
+      }),
+    
+    delete: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(({ input }) => db.deleteChecklistItem(input.id)),
   }),
 
   // ============ BUDGET ============

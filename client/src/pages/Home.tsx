@@ -128,23 +128,7 @@ export default function Home() {
               {t("heroSubtitle")}
             </p>
             
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              {isAuthenticated ? (
-                <Link href="/trips">
-                  <Button size="lg" className="btn-elegant text-lg px-8 py-6">
-                    {t("myTrips")}
-                    <ArrowRight className={`w-5 h-5 ${isRTL ? 'mr-2 rotate-180' : 'ml-2'}`} />
-                  </Button>
-                </Link>
-              ) : (
-                <a href={getLoginUrl()}>
-                  <Button size="lg" className="btn-elegant text-lg px-8 py-6">
-                    {t("getStarted")}
-                    <ArrowRight className={`w-5 h-5 ${isRTL ? 'mr-2 rotate-180' : 'ml-2'}`} />
-                  </Button>
-                </a>
-              )}
-            </div>
+
           </div>
           
           {/* Travel Destination Images */}
@@ -194,29 +178,7 @@ export default function Home() {
                 </Card>
               ) : null}
               
-              {/* My Next Trip Placeholder Cards */}
-              {[1, 2].map((index) => (
-                <Card 
-                  key={index}
-                  className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer h-80"
-                  onClick={() => isAuthenticated ? navigate('/trips') : window.location.href = getLoginUrl()}
-                  style={{ transform: `translateY(${scrollY * (0.05 + index * 0.025)}px)` }}
-                >
-                  <img 
-                    src={index === 1 ? '/travel-2.jpg' : '/travel-3.jpg'} 
-                    alt="My Next Trip"
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-                  <div className="relative h-full flex flex-col items-center justify-center p-6 text-white">
-                    <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                      <Plus className="w-8 h-8" />
-                    </div>
-                    <h3 className="text-2xl font-bold mb-2">{language === 'he' ? 'הטיול הבא שלי' : 'My Next Trip'}</h3>
-                    <p className="text-white/80 text-sm text-center">{language === 'he' ? 'לחץ להתחלת תכנון טיול חדש' : 'Click to start planning a new trip'}</p>
-                  </div>
-                </Card>
-              ))}
+
             </div>
           </div>
         </div>

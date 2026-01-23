@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
-import { Calendar, DollarSign, Edit, FileText, Hotel, Loader2, MapPin, Phone, Plus, Trash2 } from "lucide-react";
+import { Calendar, DollarSign, Edit, FileText, Hotel, Loader2, MapPin, Phone, Plus, Trash2, Upload, Image as ImageIcon } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 
@@ -37,6 +37,8 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [selectedCurrency, setSelectedCurrency] = useState("USD");
   const formRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploadingHotelId, setUploadingHotelId] = useState<number | null>(null);
 
   const utils = trpc.useUtils();
   const { data: hotels, isLoading } = trpc.hotels.list.useQuery({ tripId });
@@ -65,9 +67,43 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
     onSuccess: () => {
       utils.hotels.list.invalidate({ tripId });
       utils.budget.get.invalidate({ tripId });
-      toast.success(language === "he" ? "המלון נמחק בהצלחה" : "Hotel deleted successfully");
+      toast.success(language === "he" ? "מלון נמחק" : "Hotel deleted");
     },
   });
+  
+  const uploadParkingImageMutation = trpc.hotels.uploadParkingImage.useMutation({
+    onSuccess: () => {
+      utils.hotels.list.invalidate({ tripId });
+      setUploadingHotelId(null);
+      toast.success(language === "he" ? "תמונת חניה הועלתה" : "Parking image uploaded");
+    },
+    onError: () => {
+      setUploadingHotelId(null);
+      toast.error(language === "he" ? "שגיאה בהעלאת תמונה" : "Error uploading image");
+    },
+  });
+  
+  const handleParkingImageUpload = async (hotelId: number, file: File) => {
+    if (!file.type.startsWith('image/')) {
+      toast.error(language === "he" ? "יש לבחור קובץ תמונה" : "Please select an image file");
+      return;
+    }
+    
+    setUploadingHotelId(hotelId);
+    
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      const base64 = e.target?.result as string;
+      const imageData = base64.split(',')[1]; // Remove data:image/...;base64, prefix
+      
+      uploadParkingImageMutation.mutate({
+        hotelId,
+        imageData,
+        mimeType: file.type,
+      });
+    };
+    reader.readAsDataURL(file);
+  };
 
   const getFormValues = () => {
     if (!formRef.current) return null;
@@ -417,6 +453,31 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
                       }
                       return null;
                     })()}
+                    <Button 
+                      size="icon" 
+                      variant="ghost" 
+                      className="h-8 w-8 text-white hover:bg-white/20"
+                      onClick={() => {
+                        const input = document.createElement('input');
+                        input.type = 'file';
+                        input.accept = 'image/*';
+                        input.onchange = (e) => {
+                          const file = (e.target as HTMLInputElement).files?.[0];
+                          if (file) handleParkingImageUpload(hotel.id, file);
+                        };
+                        input.click();
+                      }}
+                      disabled={uploadingHotelId === hotel.id}
+                      title={language === 'he' ? 'העלה תמונת חניה' : 'Upload parking image'}
+                    >
+                      {uploadingHotelId === hotel.id ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : hotel.parkingImage ? (
+                        <ImageIcon className="w-4 h-4" />
+                      ) : (
+                        <Upload className="w-4 h-4" />
+                      )}
+                    </Button>
                     <Button size="icon" variant="ghost" className="h-8 w-8 text-white hover:bg-white/20" onClick={() => openEdit(hotel)}>
                       <Edit className="w-4 h-4" />
                     </Button>

@@ -1,0 +1,1 @@
+ALTER TABLE `hotels` ADD `parkingImage` varchar(500);

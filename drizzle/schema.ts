@@ -1,4 +1,4 @@
-import { int, mysqlEnum, mysqlTable, text, timestamp, varchar, decimal, bigint } from "drizzle-orm/mysql-core";
+import { int, mysqlEnum, mysqlTable, text, timestamp, varchar, decimal, bigint, boolean } from "drizzle-orm/mysql-core";
 
 /**
  * Core user table backing auth flow.
@@ -75,6 +75,7 @@ export const hotels = mysqlTable("hotels", {
   price: decimal("price", { precision: 10, scale: 2 }),
   currency: varchar("currency", { length: 10 }).default("USD"),
   coverImage: varchar("coverImage", { length: 500 }),
+  parkingImage: varchar("parkingImage", { length: 500 }),
   notes: text("notes"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
@@ -126,6 +127,24 @@ export const dayTrips = mysqlTable("day_trips", {
 
 export type DayTrip = typeof dayTrips.$inferSelect;
 export type InsertDayTrip = typeof dayTrips.$inferInsert;
+
+/**
+ * Pre-trip checklist table - for managing tasks before the trip
+ */
+export const checklistItems = mysqlTable("checklist_items", {
+  id: int("id").autoincrement().primaryKey(),
+  tripId: int("tripId").notNull(),
+  title: varchar("title", { length: 255 }).notNull(),
+  category: mysqlEnum("category", ["documents", "bookings", "packing", "health", "finance", "other"]).notNull(),
+  completed: boolean("completed").default(false).notNull(),
+  dueDate: bigint("dueDate", { mode: "number" }), // UTC timestamp in ms, optional
+  notes: text("notes"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type ChecklistItem = typeof checklistItems.$inferSelect;
+export type InsertChecklistItem = typeof checklistItems.$inferInsert;
 
 /**
  * Car rentals table

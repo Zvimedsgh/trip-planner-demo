@@ -7,7 +7,7 @@ import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
 import { 
   ArrowLeft, Calendar, Car, DollarSign, FileText, Globe, 
-  Hotel, Loader2, MapPin, Plane, Utensils, Clock, ArrowRight, Share2, Copy, Check, X, Map
+  Hotel, Loader2, MapPin, Plane, Utensils, Clock, ArrowRight, Share2, Copy, Check, X, Map, CheckSquare
 } from "lucide-react";
 import { useState } from "react";
 import {
@@ -28,6 +28,7 @@ import RestaurantsTab from "@/components/trip/RestaurantsTab";
 import DocumentsTab from "@/components/trip/DocumentsTab";
 import TimelineTab from "@/components/trip/TimelineTab";
 import BudgetTab from "@/components/trip/BudgetTab";
+import ChecklistTab from "@/components/trip/ChecklistTab";
 import { RouteMapTab } from "@/components/trip/RouteMapTab";
 import DayTripsTab from "@/components/trip/DayTripsTab";
 
@@ -104,9 +105,10 @@ export default function TripDetail() {
     { id: "restaurants", label: t("restaurants"), icon: Utensils },
     { id: "documents", label: t("documents"), icon: FileText },
     { id: "timeline", label: t("timeline"), icon: Clock },
-    { id: "budget", label: t("budget"), icon: DollarSign },
     { id: "route", label: language === "he" ? "מפת מסלול" : "Route Map", icon: Map },
     { id: "daytrips", label: t("dayTrips"), icon: ArrowRight },
+    { id: "checklist", label: language === "he" ? "רשימת משימות" : "Checklist", icon: CheckSquare },
+    { id: "budget", label: t("budget"), icon: DollarSign },
   ];
 
   return (
@@ -224,16 +226,20 @@ export default function TripDetail() {
             <TimelineTab tripId={tripId} />
           </TabsContent>
 
-          <TabsContent value="budget">
-            <BudgetTab tripId={tripId} />
-          </TabsContent>
-
           <TabsContent value="route">
             <RouteMapTab tripId={tripId} />
           </TabsContent>
 
           <TabsContent value="daytrips">
             <DayTripsTab tripId={tripId} />
+          </TabsContent>
+
+          <TabsContent value="checklist">
+            <ChecklistTab tripId={tripId} />
+          </TabsContent>
+
+          <TabsContent value="budget">
+            <BudgetTab tripId={tripId} />
           </TabsContent>
         </Tabs>
       </main>

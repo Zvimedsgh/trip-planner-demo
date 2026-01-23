@@ -9,7 +9,8 @@ import {
   carRentals, InsertCarRental, CarRental,
   restaurants, InsertRestaurant, Restaurant,
   documents, InsertDocument, Document,
-  dayTrips, InsertDayTrip, DayTrip
+  dayTrips, InsertDayTrip, DayTrip,
+  checklistItems, InsertChecklistItem, ChecklistItem
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -453,5 +454,39 @@ export async function deleteDayTrip(id: number): Promise<boolean> {
   if (!db) return false;
   
   await db.delete(dayTrips).where(eq(dayTrips.id, id));
+  return true;
+}
+
+// ============ CHECKLIST QUERIES ============
+
+export async function getTripChecklist(tripId: number): Promise<ChecklistItem[]> {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(checklistItems).where(eq(checklistItems.tripId, tripId)).orderBy(checklistItems.createdAt);
+}
+
+export async function createChecklistItem(data: InsertChecklistItem): Promise<ChecklistItem> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.insert(checklistItems).values(data);
+  const inserted = await db.select().from(checklistItems).where(eq(checklistItems.id, Number(result[0].insertId))).limit(1);
+  return inserted[0];
+}
+
+export async function updateChecklistItem(id: number, data: Partial<InsertChecklistItem>): Promise<ChecklistItem | null> {
+  const db = await getDb();
+  if (!db) return null;
+  
+  await db.update(checklistItems).set(data).where(eq(checklistItems.id, id));
+  const updated = await db.select().from(checklistItems).where(eq(checklistItems.id, id)).limit(1);
+  return updated[0] || null;
+}
+
+export async function deleteChecklistItem(id: number): Promise<boolean> {
+  const db = await getDb();
+  if (!db) return false;
+  
+  await db.delete(checklistItems).where(eq(checklistItems.id, id));
   return true;
 }
