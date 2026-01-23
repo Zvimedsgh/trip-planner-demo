@@ -352,8 +352,8 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
             ];
             const gradient = gradients[index % gradients.length];
             
-            // Use coverImage from database if available
-            const hotelImage = hotel.coverImage;
+            // Use coverImage from database if available, or parkingImage for Vienna hotel
+            const hotelImage = hotel.coverImage || (hotel.name.includes('Johannesgasse') ? (hotel as any).parkingImage : null);
             
             return (
             <Card key={hotel.id} className={`overflow-hidden ${!hotelImage ? `bg-gradient-to-br ${gradient}` : ''} text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative group`}>

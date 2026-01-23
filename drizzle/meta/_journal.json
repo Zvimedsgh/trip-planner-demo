@@ -64,6 +64,13 @@
       "when": 1769164966019,
       "tag": "0008_simple_songbird",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1769171718642,
+      "tag": "0009_stiff_cammi",
+      "breakpoints": true
     }
   ]
 }

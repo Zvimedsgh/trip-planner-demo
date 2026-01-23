@@ -192,3 +192,10 @@
 
 ## Vienna Hotel Parking
 - [x] Upload Vienna hotel parking photo and add to documents - Added with tags and height limit note (2.0m)
+
+## New Features - User Requests
+- [x] Add Vienna parking photo as background to Vienna hotel card - Added parkingImage field and display logic
+- [ ] Create Day Trips tab for managing day trips (like Bratislava to Mikuláš) - Schema and component created, needs router completion
+- [ ] Add parking details/photos for other hotels (Bratislava, Košice)
+- [ ] Expand document links in hotel cards to include "other" category (not just booking)
+- [ ] Create Pre-Trip Checklist tab (passport, insurance, bookings, car keys)

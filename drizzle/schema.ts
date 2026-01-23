@@ -107,6 +107,27 @@ export type Transportation = typeof transportation.$inferSelect;
 export type InsertTransportation = typeof transportation.$inferInsert;
 
 /**
+ * Day trips table - for managing day trips and excursions
+ */
+export const dayTrips = mysqlTable("day_trips", {
+  id: int("id").autoincrement().primaryKey(),
+  tripId: int("tripId").notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  description: text("description"),
+  startLocation: varchar("startLocation", { length: 255 }).notNull(),
+  endLocation: varchar("endLocation", { length: 255 }).notNull(),
+  startTime: bigint("startTime", { mode: "number" }).notNull(), // UTC timestamp in ms
+  endTime: bigint("endTime", { mode: "number" }).notNull(), // UTC timestamp in ms
+  stops: text("stops"), // JSON array of stops with details
+  notes: text("notes"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type DayTrip = typeof dayTrips.$inferSelect;
+export type InsertDayTrip = typeof dayTrips.$inferInsert;
+
+/**
  * Car rentals table
  */
 export const carRentals = mysqlTable("car_rentals", {
