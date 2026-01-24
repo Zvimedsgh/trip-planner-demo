@@ -290,3 +290,9 @@
 - [x] Fix "Cannot read a client value during server rendering" error when editing Hilton Košice hotel
 - [x] Root cause: key={formKey} prop on form div causes React to rebuild form on edit, triggering SSR hydration mismatch
 - [x] Solution: Removed key prop from form div
+
+## Critical Bug - SSR Error When Editing ALL Hotels (FIXED)
+- [x] User reports SSR error occurs when editing ALL hotels (not just Košice)
+- [x] Root cause: Select.Item with empty string value="" is not allowed
+- [x] Fixed by changing empty value to "none" and updating logic to convert "none" to undefined when saving
+- [x] All hotels can now be edited without errors

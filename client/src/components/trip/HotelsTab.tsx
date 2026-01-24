@@ -148,7 +148,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
       website: values.website || undefined,
       price: values.price || undefined,
       currency: selectedCurrency,
-      category: values.category || undefined,
+      category: (values.category && values.category !== "none") ? values.category : undefined,
       notes: values.notes || undefined,
     });
   };
@@ -174,7 +174,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
       website: values.website || undefined,
       price: values.price || undefined,
       currency: selectedCurrency,
-      category: values.category || undefined,
+      category: (values.category && values.category !== "none") ? values.category : undefined,
       notes: values.notes || undefined,
     });
   };
@@ -192,7 +192,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
     website: "",
     price: "",
     currency: "USD",
-    category: "",
+    category: "none",
     notes: "",
   });
 
@@ -209,7 +209,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
       website: hotel.website || "",
       price: hotel.price || "",
       currency: hotel.currency || "USD",
-      category: hotel.category || "",
+      category: hotel.category || "none",
       notes: hotel.notes || "",
     });
     setSelectedCurrency(hotel.currency || "USD");
@@ -365,7 +365,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
         <div className="grid gap-2">
           <Label>{language === "he" ? "קטגוריה" : "Category"}</Label>
           <Select 
-            defaultValue={defaults?.category || ""} 
+            defaultValue={defaults?.category || "none"} 
             onValueChange={(value) => {
               // Update the hidden input
               const input = formRef.current?.querySelector('[name="category"]') as HTMLInputElement;
@@ -376,12 +376,12 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
               <SelectValue placeholder={language === "he" ? "בחר קטגוריה" : "Select category"} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">-</SelectItem>
+              <SelectItem value="none">-</SelectItem>
               <SelectItem value="HOTELS TO CHOOSE KOSICE">HOTELS TO CHOOSE KOSICE</SelectItem>
               <SelectItem value="Confirmed">Confirmed</SelectItem>
             </SelectContent>
           </Select>
-          <input type="hidden" name="category" defaultValue={defaults?.category || ""} />
+          <input type="hidden" name="category" defaultValue={defaults?.category || "none"} />
         </div>
       </div>
       <div className="grid gap-2">
