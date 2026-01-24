@@ -378,3 +378,6 @@
 ## Bug Fix - Hotels Not Appearing in Daily Views
 - [x] Debug why hotels with correct 2026 dates are not showing in daily timeline tabs - Fixed isOnDay function
 - [ ] User needs to manually update hotel dates in UI from 2024 to 2026
+
+## Bug Fix - Trip Dates Wrong Year
+- [x] Update trip startDate and endDate from 2024 to 2026 so daily tabs match hotel/activity dates

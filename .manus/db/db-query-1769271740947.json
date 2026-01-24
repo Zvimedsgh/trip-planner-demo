@@ -1,0 +1,16 @@
+{
+  "query": "\nUPDATE trips\nSET \n  startDate = startDate + (2 * 365 * 24 * 60 * 60 * 1000),\n  endDate = endDate + (2 * 365 * 24 * 60 * 60 * 1000)\nWHERE id = 30001;\n\nSELECT id, name, FROM_UNIXTIME(startDate/1000) as start, FROM_UNIXTIME(endDate/1000) as end\nFROM trips WHERE id = 30001;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute \nUPDATE trips\nSET \n  startDate = startDate + (2 * 365 * 24 * 60 * 60 * 1000),\n  endDate = endDate + (2 * 365 * 24 * 60 * 60 * 1000)\nWHERE id = 30001;\n\nSELECT id, name, FROM_UNIXTIME(startDate/1000) as start, FROM_UNIXTIME(endDate/1000) as end\nFROM trips WHERE id = 30001;\n",
+  "rows": [
+    {
+      "id": "30001",
+      "name": "Goren Roots Trip to Slovakia",
+      "start": "2026-09-01 00:00:00.0000",
+      "end": "2026-09-10 00:00:00.0000"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tstart\tend\n30001\tGoren Roots Trip to Slovakia\t2026-09-01 00:00:00.0000\t2026-09-10 00:00:00.0000\n",
+  "stderr": "",
+  "execution_time_ms": 1759
+}
