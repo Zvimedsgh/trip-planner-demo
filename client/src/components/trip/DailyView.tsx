@@ -42,10 +42,18 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
   // Hotels
   hotels?.forEach(h => {
     if (isOnDay(h.checkInDate)) {
+      // Combine date with checkInTime if available
+      let checkInTimestamp = h.checkInDate;
+      if (h.checkInTime) {
+        const [hours, minutes] = h.checkInTime.split(':');
+        const checkInDate = new Date(h.checkInDate);
+        checkInDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+        checkInTimestamp = checkInDate.getTime();
+      }
       activities.push({
         id: h.id,
         type: "hotel-checkin",
-        time: h.checkInDate,
+        time: checkInTimestamp,
         icon: Hotel,
         title: h.name,
         subtitle: language === "he" ? "צ'ק-אין" : "Check-in",
@@ -54,10 +62,18 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
       });
     }
     if (isOnDay(h.checkOutDate)) {
+      // Combine date with checkOutTime if available
+      let checkOutTimestamp = h.checkOutDate;
+      if (h.checkOutTime) {
+        const [hours, minutes] = h.checkOutTime.split(':');
+        const checkOutDate = new Date(h.checkOutDate);
+        checkOutDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+        checkOutTimestamp = checkOutDate.getTime();
+      }
       activities.push({
         id: h.id + 10000,
         type: "hotel-checkout",
-        time: h.checkOutDate,
+        time: checkOutTimestamp,
         icon: Hotel,
         title: h.name,
         subtitle: language === "he" ? "צ'ק-אאוט" : "Check-out",
@@ -90,10 +106,18 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
   // Car Rentals
   carRentals?.forEach(c => {
     if (isOnDay(c.pickupDate)) {
+      // Combine date with pickupTime if available
+      let pickupTimestamp = c.pickupDate;
+      if (c.pickupTime) {
+        const [hours, minutes] = c.pickupTime.split(':');
+        const pickupDate = new Date(c.pickupDate);
+        pickupDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+        pickupTimestamp = pickupDate.getTime();
+      }
       activities.push({
         id: c.id,
         type: "car-pickup",
-        time: c.pickupDate,
+        time: pickupTimestamp,
         icon: Car,
         title: c.company,
         subtitle: language === "he" ? "איסוף רכב" : "Car Pickup",
@@ -102,10 +126,18 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
       });
     }
     if (isOnDay(c.returnDate)) {
+      // Combine date with returnTime if available
+      let returnTimestamp = c.returnDate;
+      if (c.returnTime) {
+        const [hours, minutes] = c.returnTime.split(':');
+        const returnDate = new Date(c.returnDate);
+        returnDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+        returnTimestamp = returnDate.getTime();
+      }
       activities.push({
         id: c.id + 10000,
         type: "car-return",
-        time: c.returnDate,
+        time: returnTimestamp,
         icon: Car,
         title: c.company,
         subtitle: language === "he" ? "החזרת רכב" : "Car Return",

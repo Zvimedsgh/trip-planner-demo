@@ -224,3 +224,8 @@
 - [x] Color active category tab (Hotels, Transportation, etc.)
 - [x] Add pastel background colors to activities in daily view
 - [x] Show departure time in flights displayed in daily view
+
+## Time Display Bug
+- [ ] Fix incorrect time display in daily view (Day 2 activities showing 03:00)
+- [ ] Investigate timezone conversion issue
+- [ ] Ensure times match what user entered
