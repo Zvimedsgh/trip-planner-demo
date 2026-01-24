@@ -187,41 +187,46 @@ export default function TripDetail() {
         {/* Combined Tabs: Activities (Row 1) + Days (Row 2) */}
         <Tabs defaultValue="hotels" className="w-full">
           {/* Row 1: Activity Category Tabs */}
-          <TabsList className="w-full flex flex-wrap h-auto gap-2 bg-transparent p-0 mb-6">
-            {tabs.map((tab) => (
-              <TabsTrigger
-                key={tab.id}
-                value={tab.id}
-                className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-4 py-2 rounded-lg border border-border data-[state=active]:border-primary transition-all"
-              >
-                <tab.icon className="w-4 h-4" />
-                <span className="hidden sm:inline">{tab.label}</span>
-              </TabsTrigger>
-            ))}
-          </TabsList>
-
-          {/* Row 2: Daily Tabs */}
-          <div className="w-full block mb-6" style={{marginTop: '1.5rem'}}>
+          <TabsList className="w-full flex flex-col h-auto gap-4 bg-transparent p-0 mb-6">
+            {/* Row 1: Activity Category Tabs */}
             <div className="flex flex-wrap gap-2">
-            {Array.from({ length: getDaysCount(trip.startDate, trip.endDate) }, (_, i) => {
-              const dayDate = new Date(trip.startDate);
-              dayDate.setDate(dayDate.getDate() + i);
-              const dayTimestamp = dayDate.getTime();
-              return (
+              {tabs.map((tab) => (
                 <TabsTrigger
-                  key={`day-${dayTimestamp}`}
-                  value={`day-${dayTimestamp}`}
-                  className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-3 py-1.5 rounded-md border border-border data-[state=active]:border-primary text-sm transition-all font-medium"
+                  key={tab.id}
+                  value={tab.id}
+                  className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-4 py-2 rounded-lg border border-border data-[state=active]:border-primary transition-all"
                 >
-                  {language === "he" ? `יום ${i + 1}` : `Day ${i + 1}`}
-                  <span className="text-xs hidden sm:inline">
-                    {format(dayDate, "MMM d")}
-                  </span>
+                  <tab.icon className="w-4 h-4" />
+                  <span className="hidden sm:inline">{tab.label}</span>
                 </TabsTrigger>
-              );
-            })}
+              ))}
             </div>
-          </div>
+
+            {/* Row 2: Daily Tabs */}
+            <div className="flex flex-wrap gap-2">
+              {(() => {
+                const daysCount = getDaysCount(trip.startDate, trip.endDate);
+                console.log('Days count:', daysCount, 'Start:', trip.startDate, 'End:', trip.endDate);
+                return Array.from({ length: daysCount }, (_, i) => {
+                  const dayDate = new Date(trip.startDate);
+                  dayDate.setDate(dayDate.getDate() + i);
+                  const dayTimestamp = dayDate.getTime();
+                  return (
+                    <TabsTrigger
+                      key={`day-${dayTimestamp}`}
+                      value={`day-${dayTimestamp}`}
+                      className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-3 py-1.5 rounded-md border border-border data-[state=active]:border-primary text-sm transition-all font-medium"
+                    >
+                      {language === "he" ? `יום ${i + 1}` : `Day ${i + 1}`}
+                      <span className="text-xs hidden sm:inline">
+                        {format(dayDate, "MMM d")}
+                      </span>
+                    </TabsTrigger>
+                  );
+                });
+              })()}
+            </div>
+          </TabsList>
 
           {/* Daily Content */}
           {Array.from({ length: getDaysCount(trip.startDate, trip.endDate) }, (_, i) => {

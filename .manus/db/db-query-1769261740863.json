@@ -1,0 +1,35 @@
+{
+  "query": "SELECT id, name, category FROM hotels WHERE tripId = 30001 AND category IS NOT NULL;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, category FROM hotels WHERE tripId = 30001 AND category IS NOT NULL;",
+  "rows": [
+    {
+      "id": "2",
+      "name": "Hotel Bankov Košice",
+      "category": "HOTELS TO CHOOSE KOSICE"
+    },
+    {
+      "id": "90001",
+      "name": "Villa Regia",
+      "category": "HOTELS TO CHOOSE KOSICE"
+    },
+    {
+      "id": "90002",
+      "name": "Hotel Ambassador",
+      "category": "HOTELS TO CHOOSE KOSICE"
+    },
+    {
+      "id": "90003",
+      "name": "DoubleTree By Hilton Košice",
+      "category": "HOTELS TO CHOOSE KOSICE"
+    },
+    {
+      "id": "90004",
+      "name": "Apart Hotel GOLDEN apartments",
+      "category": "HOTELS TO CHOOSE KOSICE"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tcategory\n2\tHotel Bankov Košice\tHOTELS TO CHOOSE KOSICE\n90001\tVilla Regia\tHOTELS TO CHOOSE KOSICE\n90002\tHotel Ambassador\tHOTELS TO CHOOSE KOSICE\n90003\tDoubleTree By Hilton Košice\tHOTELS TO CHOOSE KOSICE\n90004\tApart Hotel GOLDEN apartments\tHOTELS TO CHOOSE KOSICE\n",
+  "stderr": "",
+  "execution_time_ms": 1498
+}

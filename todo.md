@@ -322,3 +322,7 @@
 - [x] Combine Route 1, Route 2, Route 3 into single "Route Maps" tab
 - [x] Display all three maps as sections within one tab
 - [x] Remove separate route1, route2, route3 tabs from tabs array
+
+## Critical Issues - Current
+- [x] Daily tabs (Day 1-9) still not showing after consolidating route maps - FIXED by correcting swapped dates in database
+- [x] Hotels marked as "for selection" need visual indicator (badge/tag within hotel card) - Added yellow badge next to hotel name
