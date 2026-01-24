@@ -1,0 +1,75 @@
+{
+  "query": "SELECT 'HOTEL' as type, id, name FROM hotels \nUNION ALL \nSELECT 'DOC' as type, id, name FROM documents WHERE (category='other' OR category='booking') AND (fileUrl LIKE '%.jpg' OR fileUrl LIKE '%.jpeg' OR fileUrl LIKE '%.png' OR fileUrl LIKE '%.webp' OR fileUrl LIKE '%.JPG' OR fileUrl LIKE '%.PNG')\nORDER BY type, name;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT 'HOTEL' as type, id, name FROM hotels \nUNION ALL \nSELECT 'DOC' as type, id, name FROM documents WHERE (category='other' OR category='booking') AND (fileUrl LIKE '%.jpg' OR fileUrl LIKE '%.jpeg' OR fileUrl LIKE '%.png' OR fileUrl LIKE '%.webp' OR fileUrl LIKE '%.JPG' OR fileUrl LIKE '%.PNG')\nORDER BY type, name;",
+  "rows": [
+    {
+      "type": "DOC",
+      "id": "210004",
+      "name": "DoubleTree By Hilton Košice.jpg"
+    },
+    {
+      "type": "DOC",
+      "id": "210002",
+      "name": "Hilton Ambassador.jpg"
+    },
+    {
+      "type": "DOC",
+      "id": "150001",
+      "name": "Vienna Hotel Parking"
+    },
+    {
+      "type": "DOC",
+      "id": "210003",
+      "name": "Villa Regia.jpg"
+    },
+    {
+      "type": "HOTEL",
+      "id": "90004",
+      "name": "Apart Hotel GOLDEN apartments"
+    },
+    {
+      "type": "HOTEL",
+      "id": "30003",
+      "name": "Charming & Cozy Ambiente Apartments"
+    },
+    {
+      "type": "HOTEL",
+      "id": "90003",
+      "name": "DoubleTree By Hilton Košice"
+    },
+    {
+      "type": "HOTEL",
+      "id": "90002",
+      "name": "Hotel Ambassador"
+    },
+    {
+      "type": "HOTEL",
+      "id": "2",
+      "name": "Hotel Bankov Košice"
+    },
+    {
+      "type": "HOTEL",
+      "id": "30002",
+      "name": "Private holiday house Vivendi"
+    },
+    {
+      "type": "HOTEL",
+      "id": "60002",
+      "name": "Vienna Parking"
+    },
+    {
+      "type": "HOTEL",
+      "id": "90001",
+      "name": "Villa Regia"
+    },
+    {
+      "type": "HOTEL",
+      "id": "30001",
+      "name": "myNext - Johannesgasse Apartments"
+    }
+  ],
+  "messages": [],
+  "stdout": "type\tid\tname\nDOC\t210004\tDoubleTree By Hilton Košice.jpg\nDOC\t210002\tHilton Ambassador.jpg\nDOC\t150001\tVienna Hotel Parking\nDOC\t210003\tVilla Regia.jpg\nHOTEL\t90004\tApart Hotel GOLDEN apartments\nHOTEL\t30003\tCharming & Cozy Ambiente Apartments\nHOTEL\t90003\tDoubleTree By Hilton Košice\nHOTEL\t90002\tHotel Ambassador\nHOTEL\t2\tHotel Bankov Košice\nHOTEL\t30002\tPrivate holiday house Vivendi\nHOTEL\t60002\tVienna Parking\nHOTEL\t90001\tVilla Regia\nHOTEL\t30001\tmyNext - Johannesgasse Apartments\n",
+  "stderr": "",
+  "execution_time_ms": 1496
+}

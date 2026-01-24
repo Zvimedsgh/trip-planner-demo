@@ -443,14 +443,33 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
             // Use coverImage from database if available, or search for hotel image in documents
             let hotelImage = hotel.coverImage || null;
             if (!hotelImage) {
+              // Normalize hotel name for flexible matching (remove extra spaces, special chars)
+              const normalizeText = (text: string) => 
+                text.toLowerCase().replace(/\s+/g, ' ').trim();
+              
+              const normalizedHotelName = normalizeText(hotel.name);
+              const hotelNameWords = normalizedHotelName.split(' ').filter(w => w.length > 2);
+              
               // Search for hotel image in documents (excluding parking images)
-              const hotelImageDoc = documents?.find(doc => 
-                (doc.category === 'other' || doc.category === 'booking') &&
-                !doc.name.toLowerCase().includes('parking') &&
-                (doc.fileUrl.match(/\.(jpg|jpeg|png|webp|gif)$/i)) &&
-                (doc.name.toLowerCase().includes(hotel.name.toLowerCase()) ||
-                 (hotel.address && doc.name.toLowerCase().includes(hotel.address.toLowerCase())))
-              );
+              const hotelImageDoc = documents?.find(doc => {
+                if ((doc.category !== 'other' && doc.category !== 'booking') ||
+                    doc.name.toLowerCase().includes('parking') ||
+                    !doc.fileUrl.match(/\.(jpg|jpeg|png|webp|gif)$/i)) {
+                  return false;
+                }
+                
+                const normalizedDocName = normalizeText(doc.name);
+                
+                // Check if doc name contains at least 2 significant words from hotel name
+                const matchingWords = hotelNameWords.filter(word => 
+                  normalizedDocName.includes(word)
+                );
+                
+                return matchingWords.length >= 2 || 
+                       normalizedDocName.includes(normalizedHotelName) ||
+                       (hotel.address && normalizedDocName.includes(normalizeText(hotel.address)));
+              });
+              
               hotelImage = hotelImageDoc?.fileUrl || hotel.parkingImage || null;
             }
             

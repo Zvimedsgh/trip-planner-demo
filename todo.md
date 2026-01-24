@@ -296,3 +296,6 @@
 - [x] Root cause: Select.Item with empty string value="" is not allowed
 - [x] Fixed by changing empty value to "none" and updating logic to convert "none" to undefined when saving
 - [x] All hotels can now be edited without errors
+
+## Bug Fix - Hotel Image Matching
+- [x] Fix case-insensitive matching for hotel images (DoubleTree By vs by, Hotel Ambassador not showing) - improved with word-based matching
