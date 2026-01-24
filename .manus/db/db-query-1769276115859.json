@@ -1,0 +1,9 @@
+{
+  "query": "INSERT INTO restaurants (tripId, name, address, cuisineType, reservationDate, reservationTime, notes, createdAt, updatedAt) VALUES\n(30001, 'Lunch at Hlavná Street', 'Hlavná ulica, 040 01 Košice, Slovakia', 'Slovak', 1725613200000, '12:30', 'Many cafes and restaurants on Hlavná Street. Look for \"Menu dňa\" (daily menu) for affordable full meals. Try the local garlic soup served in a bread bowl.', NOW(), NOW()),\n(30001, 'Villa Regia', 'Hlavná 101, 040 01 Košice, Slovakia', 'Slovak', 1725613200000, '19:30', 'Festive dinner at Villa Regia - historic atmosphere with excellent Slovak cuisine. MUST book in advance!', NOW(), NOW());",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute INSERT INTO restaurants (tripId, name, address, cuisineType, reservationDate, reservationTime, notes, createdAt, updatedAt) VALUES\n(30001, 'Lunch at Hlavná Street', 'Hlavná ulica, 040 01 Košice, Slovakia', 'Slovak', 1725613200000, '12:30', 'Many cafes and restaurants on Hlavná Street. Look for \"Menu dňa\" (daily menu) for affordable full meals. Try the local garlic soup served in a bread bowl.', NOW(), NOW()),\n(30001, 'Villa Regia', 'Hlavná 101, 040 01 Košice, Slovakia', 'Slovak', 1725613200000, '19:30', 'Festive dinner at Villa Regia - historic atmosphere with excellent Slovak cuisine. MUST book in advance!', NOW(), NOW());",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1514
+}

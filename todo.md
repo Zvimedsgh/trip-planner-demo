@@ -422,9 +422,9 @@
 - [ ] Add dinner restaurant placeholder (19:00)
 
 ## Day 6 Košice Activities
-- [ ] Add St. Elisabeth's Cathedral tourist site (09:30)
-- [ ] Add State Theatre and Musical Fountain tourist site (11:00)
-- [ ] Add Orthodox Synagogue (Puškinova) tourist site (14:00)
-- [ ] Add Zvonárska Synagogue + Potters Street tourist site (15:30)
-- [ ] Add lunch at Hlavná Street restaurant (12:30)
-- [ ] Add dinner at Villa Regia restaurant (19:30)
+- [x] Add St. Elisabeth's Cathedral tourist site (09:30)
+- [x] Add State Theatre and Musical Fountain tourist site (11:00)
+- [x] Add Orthodox Synagogue (Puškinova) tourist site (14:00)
+- [x] Add Zvonárska Synagogue + Potters Street tourist site (15:30)
+- [x] Add lunch at Hlavná Street restaurant (12:30)
+- [x] Add dinner at Villa Regia restaurant (19:30)

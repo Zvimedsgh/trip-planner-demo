@@ -1,0 +1,18 @@
+{
+  "query": "SELECT name, plannedVisitTime FROM tourist_sites WHERE tripId = 30001 AND plannedVisitDate = 1725613200000 ORDER BY plannedVisitTime;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT name, plannedVisitTime FROM tourist_sites WHERE tripId = 30001 AND plannedVisitDate = 1725613200000 ORDER BY plannedVisitTime;",
+  "rows": [
+    {
+      "name": "Orthodox Synagogue (Puškinova)",
+      "plannedVisitTime": "14:00"
+    },
+    {
+      "name": "Zvonárska Synagogue & Potters Street",
+      "plannedVisitTime": "15:30"
+    }
+  ],
+  "messages": [],
+  "stdout": "name\tplannedVisitTime\nOrthodox Synagogue (Puškinova)\t14:00\nZvonárska Synagogue & Potters Street\t15:30\n",
+  "stderr": "",
+  "execution_time_ms": 1566
+}

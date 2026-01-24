@@ -1,0 +1,18 @@
+{
+  "query": "SELECT name, reservationTime FROM restaurants WHERE tripId = 30001 AND reservationDate = 1725613200000 ORDER BY reservationTime;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT name, reservationTime FROM restaurants WHERE tripId = 30001 AND reservationDate = 1725613200000 ORDER BY reservationTime;",
+  "rows": [
+    {
+      "name": "Lunch at Hlavná Street",
+      "reservationTime": "12:30"
+    },
+    {
+      "name": "Villa Regia",
+      "reservationTime": "19:30"
+    }
+  ],
+  "messages": [],
+  "stdout": "name\treservationTime\nLunch at Hlavná Street\t12:30\nVilla Regia\t19:30\n",
+  "stderr": "",
+  "execution_time_ms": 1496
+}
