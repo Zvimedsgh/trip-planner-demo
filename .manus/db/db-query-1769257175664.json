@@ -1,0 +1,9 @@
+{
+  "query": "UPDATE trips SET endDate = 1757376000000 WHERE id IN (SELECT id FROM trips ORDER BY id LIMIT 1);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute UPDATE trips SET endDate = 1757376000000 WHERE id IN (SELECT id FROM trips ORDER BY id LIMIT 1);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1536
+}

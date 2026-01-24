@@ -1,0 +1,30 @@
+{
+  "query": "SELECT id, name, fileUrl FROM documents WHERE (category='other' OR category='booking') AND (fileUrl LIKE '%.jpg' OR fileUrl LIKE '%.jpeg' OR fileUrl LIKE '%.png' OR fileUrl LIKE '%.webp' OR fileUrl LIKE '%.JPG' OR fileUrl LIKE '%.JPEG' OR fileUrl LIKE '%.PNG') AND name NOT LIKE '%parking%' ORDER BY name;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, fileUrl FROM documents WHERE (category='other' OR category='booking') AND (fileUrl LIKE '%.jpg' OR fileUrl LIKE '%.jpeg' OR fileUrl LIKE '%.png' OR fileUrl LIKE '%.webp' OR fileUrl LIKE '%.JPG' OR fileUrl LIKE '%.JPEG' OR fileUrl LIKE '%.PNG') AND name NOT LIKE '%parking%' ORDER BY name;",
+  "rows": [
+    {
+      "id": "210004",
+      "name": "DoubleTree By Hilton Košice.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/24DL5tHUpMIsJR-oTz4Ud-DoubleTree By Hilton Košice.jpg"
+    },
+    {
+      "id": "210002",
+      "name": "Hilton Ambassador.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/CnTnv4QEiRiZTzZ9NSHk7-Hilton Ambassador.jpg"
+    },
+    {
+      "id": "150001",
+      "name": "Vienna Hotel Parking",
+      "fileUrl": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/SFUxxBPOkCapFHow.jpg"
+    },
+    {
+      "id": "210003",
+      "name": "Villa Regia.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YooHUKhwAaZpVuKJ9Mp1I-Villa Regia.jpg"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tfileUrl\n210004\tDoubleTree By Hilton Košice.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/24DL5tHUpMIsJR-oTz4Ud-DoubleTree By Hilton Košice.jpg\n210002\tHilton Ambassador.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/CnTnv4QEiRiZTzZ9NSHk7-Hilton Ambassador.jpg\n150001\tVienna Hotel Parking\thttps://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/SFUxxBPOkCapFHow.jpg\n210003\tVilla Regia.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YooHUKhwAaZpVuKJ9Mp1I-Villa Regia.jpg\n",
+  "stderr": "",
+  "execution_time_ms": 1516
+}

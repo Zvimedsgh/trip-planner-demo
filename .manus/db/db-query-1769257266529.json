@@ -1,0 +1,88 @@
+{
+  "query": "SELECT id, name, category, fileUrl FROM documents WHERE category='other' OR category='booking' ORDER BY id;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, category, fileUrl FROM documents WHERE category='other' OR category='booking' ORDER BY id;",
+  "rows": [
+    {
+      "id": "30001",
+      "name": "Private holiday house Vivendi",
+      "category": "booking",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/SB_ds8LrLBWCLJZhtMPAG-מלון מיקולש.pdf"
+    },
+    {
+      "id": "30002",
+      "name": "הסעה מהשדה בברטיסלבה למלון בעיר",
+      "category": "other",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/cYWNC1MfiJAL2nOZPCRxW-הסעה מהשדה בברטיסלבה למלון בעיר"
+    },
+    {
+      "id": "30003",
+      "name": "Rental voucher - D012504317 - רכב שכור",
+      "category": "other",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/r4rGuVBztLmwOXarlfUZ1-Rental voucher - D012504317 - רכב שכור"
+    },
+    {
+      "id": "60001",
+      "name": "Charming & Cozy Ambiente Apartments",
+      "category": "booking",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/0UiL-tSVWikghFFgQcaNJ-מלון בברטיסלבה"
+    },
+    {
+      "id": "90001",
+      "name": "myNext - Johannesgasse Apartments",
+      "category": "booking",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/pFrSjQo5wCaqdqoI8HATm-myNext - Johannesse Aparments.pdf"
+    },
+    {
+      "id": "90002",
+      "name": "Hotel Bankov Košice",
+      "category": "booking",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/vFWr84UmWLSs4587uB8wS-Hotel Bankov Košice.pdf"
+    },
+    {
+      "id": "120001",
+      "name": "Vienna parking confirmation",
+      "category": "booking",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx"
+    },
+    {
+      "id": "150001",
+      "name": "Vienna Hotel Parking",
+      "category": "other",
+      "fileUrl": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/SFUxxBPOkCapFHow.jpg"
+    },
+    {
+      "id": "180001",
+      "name": "chatam sofer-memorial",
+      "category": "other",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YTMAOKzATu534yk-nxq1l-chatam sofer-memorial"
+    },
+    {
+      "id": "210001",
+      "name": "Apart Hotel GOLDEN apartments",
+      "category": "booking",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/gAOpxZ_R1gcUM3yeP_3kS-Apart Hotel GOLDEN apartments"
+    },
+    {
+      "id": "210002",
+      "name": "Hilton Ambassador.jpg",
+      "category": "booking",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/CnTnv4QEiRiZTzZ9NSHk7-Hilton Ambassador.jpg"
+    },
+    {
+      "id": "210003",
+      "name": "Villa Regia.jpg",
+      "category": "booking",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YooHUKhwAaZpVuKJ9Mp1I-Villa Regia.jpg"
+    },
+    {
+      "id": "210004",
+      "name": "DoubleTree By Hilton Košice.jpg",
+      "category": "booking",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/24DL5tHUpMIsJR-oTz4Ud-DoubleTree By Hilton Košice.jpg"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tcategory\tfileUrl\n30001\tPrivate holiday house Vivendi\tbooking\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/SB_ds8LrLBWCLJZhtMPAG-מלון מיקולש.pdf\n30002\tהסעה מהשדה בברטיסלבה למלון בעיר\tother\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/cYWNC1MfiJAL2nOZPCRxW-הסעה מהשדה בברטיסלבה למלון בעיר\n30003\tRental voucher - D012504317 - רכב שכור\tother\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/r4rGuVBztLmwOXarlfUZ1-Rental voucher - D012504317 - רכב שכור\n60001\tCharming & Cozy Ambiente Apartments\tbooking\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/0UiL-tSVWikghFFgQcaNJ-מלון בברטיסלבה\n90001\tmyNext - Johannesgasse Apartments\tbooking\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/pFrSjQo5wCaqdqoI8HATm-myNext - Johannesse Aparments.pdf\n90002\tHotel Bankov Košice\tbooking\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/vFWr84UmWLSs4587uB8wS-Hotel Bankov Košice.pdf\n120001\tVienna parking confirmation\tbooking\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\n150001\tVienna Hotel Parking\tother\thttps://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/SFUxxBPOkCapFHow.jpg\n180001\tchatam sofer-memorial\tother\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YTMAOKzATu534yk-nxq1l-chatam sofer-memorial\n210001\tApart Hotel GOLDEN apartments\tbooking\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/gAOpxZ_R1gcUM3yeP_3kS-Apart Hotel GOLDEN apartments\n210002\tHilton Ambassador.jpg\tbooking\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/CnTnv4QEiRiZTzZ9NSHk7-Hilton Ambassador.jpg\n210003\tVilla Regia.jpg\tbooking\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YooHUKhwAaZpVuKJ9Mp1I-Villa Regia.jpg\n210004\tDoubleTree By Hilton Košice.jpg\tbooking\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/24DL5tHUpMIsJR-oTz4Ud-DoubleTree By Hilton Košice.jpg\n",
+  "stderr": "",
+  "execution_time_ms": 1510
+}

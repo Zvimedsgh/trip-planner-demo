@@ -1,0 +1,226 @@
+{
+  "query": "SELECT h.id, h.name as hotel_name, d.name as doc_name, d.fileUrl \nFROM hotels h \nLEFT JOIN documents d ON (d.category='other' OR d.category='booking') \n  AND d.fileUrl LIKE '%.jpg%' OR d.fileUrl LIKE '%.jpeg%' OR d.fileUrl LIKE '%.png%' OR d.fileUrl LIKE '%.webp%'\nORDER BY h.id;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT h.id, h.name as hotel_name, d.name as doc_name, d.fileUrl \nFROM hotels h \nLEFT JOIN documents d ON (d.category='other' OR d.category='booking') \n  AND d.fileUrl LIKE '%.jpg%' OR d.fileUrl LIKE '%.jpeg%' OR d.fileUrl LIKE '%.png%' OR d.fileUrl LIKE '%.webp%'\nORDER BY h.id;",
+  "rows": [
+    {
+      "id": "2",
+      "hotel_name": "Hotel Bankov Košice",
+      "doc_name": "Vienna Hotel Parking",
+      "fileUrl": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/SFUxxBPOkCapFHow.jpg"
+    },
+    {
+      "id": "2",
+      "hotel_name": "Hotel Bankov Košice",
+      "doc_name": "Villa Regia.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YooHUKhwAaZpVuKJ9Mp1I-Villa Regia.jpg"
+    },
+    {
+      "id": "2",
+      "hotel_name": "Hotel Bankov Košice",
+      "doc_name": "Hilton Ambassador.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/CnTnv4QEiRiZTzZ9NSHk7-Hilton Ambassador.jpg"
+    },
+    {
+      "id": "2",
+      "hotel_name": "Hotel Bankov Košice",
+      "doc_name": "DoubleTree By Hilton Košice.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/24DL5tHUpMIsJR-oTz4Ud-DoubleTree By Hilton Košice.jpg"
+    },
+    {
+      "id": "30001",
+      "hotel_name": "myNext - Johannesgasse Apartments",
+      "doc_name": "Hilton Ambassador.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/CnTnv4QEiRiZTzZ9NSHk7-Hilton Ambassador.jpg"
+    },
+    {
+      "id": "30001",
+      "hotel_name": "myNext - Johannesgasse Apartments",
+      "doc_name": "Villa Regia.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YooHUKhwAaZpVuKJ9Mp1I-Villa Regia.jpg"
+    },
+    {
+      "id": "30001",
+      "hotel_name": "myNext - Johannesgasse Apartments",
+      "doc_name": "Vienna Hotel Parking",
+      "fileUrl": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/SFUxxBPOkCapFHow.jpg"
+    },
+    {
+      "id": "30001",
+      "hotel_name": "myNext - Johannesgasse Apartments",
+      "doc_name": "DoubleTree By Hilton Košice.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/24DL5tHUpMIsJR-oTz4Ud-DoubleTree By Hilton Košice.jpg"
+    },
+    {
+      "id": "30002",
+      "hotel_name": "Private holiday house Vivendi",
+      "doc_name": "Vienna Hotel Parking",
+      "fileUrl": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/SFUxxBPOkCapFHow.jpg"
+    },
+    {
+      "id": "30002",
+      "hotel_name": "Private holiday house Vivendi",
+      "doc_name": "DoubleTree By Hilton Košice.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/24DL5tHUpMIsJR-oTz4Ud-DoubleTree By Hilton Košice.jpg"
+    },
+    {
+      "id": "30002",
+      "hotel_name": "Private holiday house Vivendi",
+      "doc_name": "Villa Regia.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YooHUKhwAaZpVuKJ9Mp1I-Villa Regia.jpg"
+    },
+    {
+      "id": "30002",
+      "hotel_name": "Private holiday house Vivendi",
+      "doc_name": "Hilton Ambassador.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/CnTnv4QEiRiZTzZ9NSHk7-Hilton Ambassador.jpg"
+    },
+    {
+      "id": "30003",
+      "hotel_name": "Charming & Cozy Ambiente Apartments",
+      "doc_name": "Hilton Ambassador.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/CnTnv4QEiRiZTzZ9NSHk7-Hilton Ambassador.jpg"
+    },
+    {
+      "id": "30003",
+      "hotel_name": "Charming & Cozy Ambiente Apartments",
+      "doc_name": "Villa Regia.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YooHUKhwAaZpVuKJ9Mp1I-Villa Regia.jpg"
+    },
+    {
+      "id": "30003",
+      "hotel_name": "Charming & Cozy Ambiente Apartments",
+      "doc_name": "Vienna Hotel Parking",
+      "fileUrl": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/SFUxxBPOkCapFHow.jpg"
+    },
+    {
+      "id": "30003",
+      "hotel_name": "Charming & Cozy Ambiente Apartments",
+      "doc_name": "DoubleTree By Hilton Košice.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/24DL5tHUpMIsJR-oTz4Ud-DoubleTree By Hilton Košice.jpg"
+    },
+    {
+      "id": "60002",
+      "hotel_name": "Vienna Parking",
+      "doc_name": "Hilton Ambassador.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/CnTnv4QEiRiZTzZ9NSHk7-Hilton Ambassador.jpg"
+    },
+    {
+      "id": "60002",
+      "hotel_name": "Vienna Parking",
+      "doc_name": "Villa Regia.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YooHUKhwAaZpVuKJ9Mp1I-Villa Regia.jpg"
+    },
+    {
+      "id": "60002",
+      "hotel_name": "Vienna Parking",
+      "doc_name": "DoubleTree By Hilton Košice.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/24DL5tHUpMIsJR-oTz4Ud-DoubleTree By Hilton Košice.jpg"
+    },
+    {
+      "id": "60002",
+      "hotel_name": "Vienna Parking",
+      "doc_name": "Vienna Hotel Parking",
+      "fileUrl": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/SFUxxBPOkCapFHow.jpg"
+    },
+    {
+      "id": "90001",
+      "hotel_name": "Villa Regia",
+      "doc_name": "Vienna Hotel Parking",
+      "fileUrl": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/SFUxxBPOkCapFHow.jpg"
+    },
+    {
+      "id": "90001",
+      "hotel_name": "Villa Regia",
+      "doc_name": "Villa Regia.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YooHUKhwAaZpVuKJ9Mp1I-Villa Regia.jpg"
+    },
+    {
+      "id": "90001",
+      "hotel_name": "Villa Regia",
+      "doc_name": "DoubleTree By Hilton Košice.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/24DL5tHUpMIsJR-oTz4Ud-DoubleTree By Hilton Košice.jpg"
+    },
+    {
+      "id": "90001",
+      "hotel_name": "Villa Regia",
+      "doc_name": "Hilton Ambassador.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/CnTnv4QEiRiZTzZ9NSHk7-Hilton Ambassador.jpg"
+    },
+    {
+      "id": "90002",
+      "hotel_name": "Hotel Ambassador",
+      "doc_name": "Hilton Ambassador.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/CnTnv4QEiRiZTzZ9NSHk7-Hilton Ambassador.jpg"
+    },
+    {
+      "id": "90002",
+      "hotel_name": "Hotel Ambassador",
+      "doc_name": "Villa Regia.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YooHUKhwAaZpVuKJ9Mp1I-Villa Regia.jpg"
+    },
+    {
+      "id": "90002",
+      "hotel_name": "Hotel Ambassador",
+      "doc_name": "DoubleTree By Hilton Košice.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/24DL5tHUpMIsJR-oTz4Ud-DoubleTree By Hilton Košice.jpg"
+    },
+    {
+      "id": "90002",
+      "hotel_name": "Hotel Ambassador",
+      "doc_name": "Vienna Hotel Parking",
+      "fileUrl": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/SFUxxBPOkCapFHow.jpg"
+    },
+    {
+      "id": "90003",
+      "hotel_name": "DoubleTree By Hilton Košice",
+      "doc_name": "Vienna Hotel Parking",
+      "fileUrl": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/SFUxxBPOkCapFHow.jpg"
+    },
+    {
+      "id": "90003",
+      "hotel_name": "DoubleTree By Hilton Košice",
+      "doc_name": "Villa Regia.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YooHUKhwAaZpVuKJ9Mp1I-Villa Regia.jpg"
+    },
+    {
+      "id": "90003",
+      "hotel_name": "DoubleTree By Hilton Košice",
+      "doc_name": "DoubleTree By Hilton Košice.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/24DL5tHUpMIsJR-oTz4Ud-DoubleTree By Hilton Košice.jpg"
+    },
+    {
+      "id": "90003",
+      "hotel_name": "DoubleTree By Hilton Košice",
+      "doc_name": "Hilton Ambassador.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/CnTnv4QEiRiZTzZ9NSHk7-Hilton Ambassador.jpg"
+    },
+    {
+      "id": "90004",
+      "hotel_name": "Apart Hotel GOLDEN apartments",
+      "doc_name": "Villa Regia.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YooHUKhwAaZpVuKJ9Mp1I-Villa Regia.jpg"
+    },
+    {
+      "id": "90004",
+      "hotel_name": "Apart Hotel GOLDEN apartments",
+      "doc_name": "DoubleTree By Hilton Košice.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/24DL5tHUpMIsJR-oTz4Ud-DoubleTree By Hilton Košice.jpg"
+    },
+    {
+      "id": "90004",
+      "hotel_name": "Apart Hotel GOLDEN apartments",
+      "doc_name": "Vienna Hotel Parking",
+      "fileUrl": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/SFUxxBPOkCapFHow.jpg"
+    },
+    {
+      "id": "90004",
+      "hotel_name": "Apart Hotel GOLDEN apartments",
+      "doc_name": "Hilton Ambassador.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/CnTnv4QEiRiZTzZ9NSHk7-Hilton Ambassador.jpg"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\thotel_name\tdoc_name\tfileUrl\n2\tHotel Bankov Košice\tVienna Hotel Parking\thttps://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/SFUxxBPOkCapFHow.jpg\n2\tHotel Bankov Košice\tVilla Regia.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YooHUKhwAaZpVuKJ9Mp1I-Villa Regia.jpg\n2\tHotel Bankov Košice\tHilton Ambassador.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/CnTnv4QEiRiZTzZ9NSHk7-Hilton Ambassador.jpg\n2\tHotel Bankov Košice\tDoubleTree By Hilton Košice.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/24DL5tHUpMIsJR-oTz4Ud-DoubleTree By Hilton Košice.jpg\n30001\tmyNext - Johannesgasse Apartments\tHilton Ambassador.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/CnTnv4QEiRiZTzZ9NSHk7-Hilton Ambassador.jpg\n30001\tmyNext - Johannesgasse Apartments\tVilla Regia.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YooHUKhwAaZpVuKJ9Mp1I-Villa Regia.jpg\n30001\tmyNext - Johannesgasse Apartments\tVienna Hotel Parking\thttps://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/SFUxxBPOkCapFHow.jpg\n30001\tmyNext - Johannesgasse Apartments\tDoubleTree By Hilton Košice.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/24DL5tHUpMIsJR-oTz4Ud-DoubleTree By Hilton Košice.jpg\n30002\tPrivate holiday house Vivendi\tVienna Hotel Parking\thttps://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/SFUxxBPOkCapFHow.jpg\n30002\tPrivate holiday house Vivendi\tDoubleTree By Hilton Košice.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/24DL5tHUpMIsJR-oTz4Ud-DoubleTree By Hilton Košice.jpg\n30002\tPrivate holiday house Vivendi\tVilla Regia.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YooHUKhwAaZpVuKJ9Mp1I-Villa Regia.jpg\n30002\tPrivate holiday house Vivendi\tHilton Ambassador.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/CnTnv4QEiRiZTzZ9NSHk7-Hilton Ambassador.jpg\n30003\tCharming & Cozy Ambiente Apartments\tHilton Ambassador.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/CnTnv4QEiRiZTzZ9NSHk7-Hilton Ambassador.jpg\n30003\tCharming & Cozy Ambiente Apartments\tVilla Regia.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YooHUKhwAaZpVuKJ9Mp1I-Villa Regia.jpg\n30003\tCharming & Cozy Ambiente Apartments\tVienna Hotel Parking\thttps://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/SFUxxBPOkCapFHow.jpg\n30003\tCharming & Cozy Ambiente Apartments\tDoubleTree By Hilton Košice.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/24DL5tHUpMIsJR-oTz4Ud-DoubleTree By Hilton Košice.jpg\n60002\tVienna Parking\tHilton Ambassador.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/CnTnv4QEiRiZTzZ9NSHk7-Hilton Ambassador.jpg\n60002\tVienna Parking\tVilla Regia.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YooHUKhwAaZpVuKJ9Mp1I-Villa Regia.jpg\n60002\tVienna Parking\tDoubleTree By Hilton Košice.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/24DL5tHUpMIsJR-oTz4Ud-DoubleTree By Hilton Košice.jpg\n60002\tVienna Parking\tVienna Hotel Parking\thttps://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/SFUxxBPOkCapFHow.jpg\n90001\tVilla Regia\tVienna Hotel Parking\thttps://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/SFUxxBPOkCapFHow.jpg\n90001\tVilla Regia\tVilla Regia.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YooHUKhwAaZpVuKJ9Mp1I-Villa Regia.jpg\n90001\tVilla Regia\tDoubleTree By Hilton Košice.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/24DL5tHUpMIsJR-oTz4Ud-DoubleTree By Hilton Košice.jpg\n90001\tVilla Regia\tHilton Ambassador.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/CnTnv4QEiRiZTzZ9NSHk7-Hilton Ambassador.jpg\n90002\tHotel Ambassador\tHilton Ambassador.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/CnTnv4QEiRiZTzZ9NSHk7-Hilton Ambassador.jpg\n90002\tHotel Ambassador\tVilla Regia.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YooHUKhwAaZpVuKJ9Mp1I-Villa Regia.jpg\n90002\tHotel Ambassador\tDoubleTree By Hilton Košice.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/24DL5tHUpMIsJR-oTz4Ud-DoubleTree By Hilton Košice.jpg\n90002\tHotel Ambassador\tVienna Hotel Parking\thttps://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/SFUxxBPOkCapFHow.jpg\n90003\tDoubleTree By Hilton Košice\tVienna Hotel Parking\thttps://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/SFUxxBPOkCapFHow.jpg\n90003\tDoubleTree By Hilton Košice\tVilla Regia.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YooHUKhwAaZpVuKJ9Mp1I-Villa Regia.jpg\n90003\tDoubleTree By Hilton Košice\tDoubleTree By Hilton Košice.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/24DL5tHUpMIsJR-oTz4Ud-DoubleTree By Hilton Košice.jpg\n90003\tDoubleTree By Hilton Košice\tHilton Ambassador.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/CnTnv4QEiRiZTzZ9NSHk7-Hilton Ambassador.jpg\n90004\tApart Hotel GOLDEN apartments\tVilla Regia.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YooHUKhwAaZpVuKJ9Mp1I-Villa Regia.jpg\n90004\tApart Hotel GOLDEN apartments\tDoubleTree By Hilton Košice.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/24DL5tHUpMIsJR-oTz4Ud-DoubleTree By Hilton Košice.jpg\n90004\tApart Hotel GOLDEN apartments\tVienna Hotel Parking\thttps://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/SFUxxBPOkCapFHow.jpg\n90004\tApart Hotel GOLDEN apartments\tHilton Ambassador.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/CnTnv4QEiRiZTzZ9NSHk7-Hilton Ambassador.jpg\n",
+  "stderr": "",
+  "execution_time_ms": 1539
+}

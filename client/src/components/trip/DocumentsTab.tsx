@@ -34,6 +34,15 @@ const categoryColors = {
   other: "from-gray-500 to-slate-600",
 };
 
+const categoryPastelBg = {
+  passport: "bg-blue-50",
+  visa: "bg-green-50",
+  insurance: "bg-amber-50",
+  booking: "bg-purple-50",
+  ticket: "bg-rose-50",
+  other: "bg-gray-50",
+};
+
 type CategoryType = "passport" | "visa" | "insurance" | "booking" | "ticket" | "other";
 
 export default function DocumentsTab({ tripId }: DocumentsTabProps) {
@@ -256,8 +265,9 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
           {documents.map((doc) => {
             const Icon = categoryIcons[doc.category];
             const colorClass = categoryColors[doc.category];
+            const pastelBg = categoryPastelBg[doc.category];
             return (
-              <Card key={doc.id} data-document-id={doc.id} className="elegant-card-hover">
+              <Card key={doc.id} data-document-id={doc.id} className={`elegant-card-hover ${pastelBg}`}>
                 <CardHeader className="pb-2">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-2">

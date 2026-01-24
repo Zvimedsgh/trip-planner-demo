@@ -1,0 +1,46 @@
+{
+  "query": "SELECT id, name FROM hotels ORDER BY checkInDate;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name FROM hotels ORDER BY checkInDate;",
+  "rows": [
+    {
+      "id": "30002",
+      "name": "Private holiday house Vivendi"
+    },
+    {
+      "id": "30003",
+      "name": "Charming & Cozy Ambiente Apartments"
+    },
+    {
+      "id": "2",
+      "name": "Hotel Bankov Košice"
+    },
+    {
+      "id": "90001",
+      "name": "Villa Regia"
+    },
+    {
+      "id": "90002",
+      "name": "Hotel Ambassador"
+    },
+    {
+      "id": "90003",
+      "name": "DoubleTree By Hilton Košice"
+    },
+    {
+      "id": "90004",
+      "name": "Apart Hotel GOLDEN apartments"
+    },
+    {
+      "id": "30001",
+      "name": "myNext - Johannesgasse Apartments"
+    },
+    {
+      "id": "60002",
+      "name": "Vienna Parking"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\n30002\tPrivate holiday house Vivendi\n30003\tCharming & Cozy Ambiente Apartments\n2\tHotel Bankov Košice\n90001\tVilla Regia\n90002\tHotel Ambassador\n90003\tDoubleTree By Hilton Košice\n90004\tApart Hotel GOLDEN apartments\n30001\tmyNext - Johannesgasse Apartments\n60002\tVienna Parking\n",
+  "stderr": "",
+  "execution_time_ms": 1565
+}
