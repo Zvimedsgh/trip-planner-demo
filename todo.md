@@ -296,3 +296,9 @@
 - [x] Root cause: Select.Item with empty string value="" is not allowed
 - [x] Fixed by changing empty value to "none" and updating logic to convert "none" to undefined when saving
 - [x] All hotels can now be edited without errors
+
+## UI Improvements - Current Session
+- [x] Add Day 9 (September 9) - check-out from Vienna hotel, visit Vienna, drive to Bratislava airport
+- [x] Add pastel background colors to document cards
+- [x] Reduce card sizes (documents: 4 columns, hotels: 4 columns)
+- [ ] After completing UI improvements, create route maps for remaining segments
