@@ -414,12 +414,12 @@
 - [x] Update dates in DailyView.tsx
 
 ## Day 2 Bratislava Activities
-- [x] Bratislava Castle already exists (09:30)
-- [x] Old Town Walk already exists (11:30)
-- [x] Blue Church already exists (15:00)
-- [x] Eurovea Shopping already exists (15:30)
-- [ ] Add lunch restaurant placeholder (13:30)
-- [ ] Add dinner restaurant placeholder (19:00)
+- [x] Update Bratislava Castle with time 09:30 and full description
+- [x] Update Old Town & St. Michael's Gate with time 11:30 and full description
+- [x] Update Blue Church with time 15:00 and full description
+- [x] Update Eurovea Shopping with time 15:30 and full description
+- [x] Add lunch restaurant (13:30) - Menu dňa at Old Town
+- [x] Add dinner restaurant (19:00) - Danube riverside
 
 ## Day 6 Košice Activities
 - [x] Add St. Elisabeth's Cathedral tourist site (09:30)

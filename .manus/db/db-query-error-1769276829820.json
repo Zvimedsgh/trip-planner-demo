@@ -1,0 +1,8 @@
+{
+  "query": "INSERT INTO restaurants (tripId, name, address, reservationDate, reservationTime, cuisine, priceRange, notes, createdAt, updatedAt)\nVALUES \n(30001, 'Old Town Lunch - Menu dňa', 'Old Town, Bratislava', 1725224400000, '13:30', 'Slovak', '€€', 'Look for \"Menu dňa\" (daily menu) - full meal at affordable price. Many restaurants in Old Town offer this special.', NOW(), NOW()),\n(30001, 'Danube Riverside Dinner', 'Eurovea Riverfront, Bratislava', 1725224400000, '19:00', 'International', '€€€', 'Exit from back of Eurovea mall directly to river promenade. Dozens of restaurants and bars with great atmosphere.', NOW(), NOW());",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute INSERT INTO restaurants (tripId, name, address, reservationDate, reservationTime, cuisine, priceRange, notes, createdAt, updatedAt)\nVALUES \n(30001, 'Old Town Lunch - Menu dňa', 'Old Town, Bratislava', 1725224400000, '13:30', 'Slovak', '€€', 'Look for \"Menu dňa\" (daily menu) - full meal at affordable price. Many restaurants in Old Town offer this special.', NOW(), NOW()),\n(30001, 'Danube Riverside Dinner', 'Eurovea Riverfront, Bratislava', 1725224400000, '19:00', 'International', '€€€', 'Exit from back of Eurovea mall directly to river promenade. Dozens of restaurants and bars with great atmosphere.', NOW(), NOW());",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1054 (42S22) at line 1: Unknown column 'cuisine' in 'field list'"
+  ]
+}

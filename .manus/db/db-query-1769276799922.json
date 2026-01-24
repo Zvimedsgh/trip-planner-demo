@@ -1,0 +1,45 @@
+{
+  "query": "SELECT id, name, address, plannedVisitDate, plannedVisitTime FROM tourist_sites WHERE tripId = 30001 AND name LIKE '%Bratislava%' OR name LIKE '%Blue Church%' OR name LIKE '%Eurovea%' OR name LIKE '%Old Town%';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, address, plannedVisitDate, plannedVisitTime FROM tourist_sites WHERE tripId = 30001 AND name LIKE '%Bratislava%' OR name LIKE '%Blue Church%' OR name LIKE '%Eurovea%' OR name LIKE '%Old Town%';",
+  "rows": [
+    {
+      "id": "30001",
+      "name": "Bratislava Castle",
+      "address": "NULL",
+      "plannedVisitDate": "1788307200000",
+      "plannedVisitTime": "11:00"
+    },
+    {
+      "id": "90004",
+      "name": "Bratislava Castle",
+      "address": "Hrad, 811 06 Bratislava, Slovakia",
+      "plannedVisitDate": "1725235200000",
+      "plannedVisitTime": "10:00"
+    },
+    {
+      "id": "90005",
+      "name": "Old Town & St. Michael's Gate",
+      "address": "Michalská brána, Bratislava, Slovakia",
+      "plannedVisitDate": "1725235200000",
+      "plannedVisitTime": "12:00"
+    },
+    {
+      "id": "90006",
+      "name": "Blue Church (St. Elizabeth)",
+      "address": "Bezručova 2, 811 09 Bratislava, Slovakia",
+      "plannedVisitDate": "1725235200000",
+      "plannedVisitTime": "14:00"
+    },
+    {
+      "id": "90007",
+      "name": "Eurovea Shopping Center & Primark",
+      "address": "Pribinova 8, 811 09 Bratislava, Slovakia",
+      "plannedVisitDate": "1725235200000",
+      "plannedVisitTime": "16:00"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\taddress\tplannedVisitDate\tplannedVisitTime\n30001\tBratislava Castle\tNULL\t1788307200000\t11:00\n90004\tBratislava Castle\tHrad, 811 06 Bratislava, Slovakia\t1725235200000\t10:00\n90005\tOld Town & St. Michael's Gate\tMichalská brána, Bratislava, Slovakia\t1725235200000\t12:00\n90006\tBlue Church (St. Elizabeth)\tBezručova 2, 811 09 Bratislava, Slovakia\t1725235200000\t14:00\n90007\tEurovea Shopping Center & Primark\tPribinova 8, 811 09 Bratislava, Slovakia\t1725235200000\t16:00\n",
+  "stderr": "",
+  "execution_time_ms": 1522
+}
