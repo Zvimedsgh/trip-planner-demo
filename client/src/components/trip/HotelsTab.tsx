@@ -427,7 +427,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
       </div>
 
       {hotels && hotels.length > 0 ? (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {hotels.map((hotel, index) => {
             // Colorful gradients for hotel cards
             const gradients = [
