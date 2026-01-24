@@ -34,8 +34,7 @@ const routeMaps: RouteMap[] = [
       { location: { lat: 48.7164, lng: 19.1517 }, stopover: true }, // Banská Bystrica
     ],
     pois: [
-      { lat: 48.7164, lng: 19.1517, name: "Banská Bystrica Old Town", type: "attraction" },
-      { lat: 48.7378, lng: 19.1547, name: "SNP Museum", type: "attraction" },
+      { lat: 48.7164, lng: 19.1517, name: "Banská Bystrica", type: "city" },
       { lat: 48.3, lng: 17.5, name: "OMV Gas Station", type: "gas" },
       { lat: 48.7, lng: 19.1, name: "Shell Gas Station", type: "gas" },
       { lat: 48.9, lng: 19.5, name: "MOL Gas Station", type: "gas" },
