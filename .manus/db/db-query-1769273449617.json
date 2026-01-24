@@ -1,0 +1,9 @@
+{
+  "query": "CREATE TABLE IF NOT EXISTS `routes` (\n  `id` int AUTO_INCREMENT PRIMARY KEY,\n  `tripId` int NOT NULL,\n  `name` varchar(255) NOT NULL,\n  `origin` varchar(255) NOT NULL,\n  `destination` varchar(255) NOT NULL,\n  `routeDate` bigint NOT NULL,\n  `departureTime` varchar(10),\n  `distance` varchar(50),\n  `duration` varchar(50),\n  `description` text,\n  `waypoints` text,\n  `notes` text,\n  `createdAt` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,\n  `updatedAt` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute CREATE TABLE IF NOT EXISTS `routes` (\n  `id` int AUTO_INCREMENT PRIMARY KEY,\n  `tripId` int NOT NULL,\n  `name` varchar(255) NOT NULL,\n  `origin` varchar(255) NOT NULL,\n  `destination` varchar(255) NOT NULL,\n  `routeDate` bigint NOT NULL,\n  `departureTime` varchar(10),\n  `distance` varchar(50),\n  `duration` varchar(50),\n  `description` text,\n  `waypoints` text,\n  `notes` text,\n  `createdAt` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,\n  `updatedAt` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL\n);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1646
+}

@@ -350,10 +350,11 @@
 - [x] Update Route 2: Change Liptovský → Košice to pass through Slovenský Raj National Park - Added waypoint and POIs
 
 ## Route Map Dates & Daily Integration
-- [ ] Add date (3/9) to Route 4 (Štrbské Pleso) title and description
-- [ ] Add date (4/9) to Route 5 (Demänovská Dolina) title and description
-- [ ] Confirm Route 2 (Košice) remains at 5/9
-- [ ] Integrate route titles into corresponding daily tabs (Day 3, Day 4, Day 5)
+- [x] Add date (3/9) to Route 4 (Štrbské Pleso) title and description
+- [x] Add date (4/9) to Route 5 (Demänovská Dolina) title and description
+- [x] Confirm Route 2 (Košice) remains at 5/9
+- [x] Integrate route titles into corresponding daily tabs (Day 3, Day 4, Day 5)
+- [x] Fix all route dates - moved each route one day later to match actual trip schedule
 
 ## New Features - Day 6 Košice and Route 6
 - [x] Add Jewish Cemetery to Day 6 Košice tourist sites
@@ -386,3 +387,15 @@
 - [x] Remove route display logic from DailyView component
 - [x] Remove route display logic from TimelineTab component
 - [x] Routes should only appear in Route Maps tab, not in daily timeline
+
+## Bug Fix - Remove Route 3 from Day 6
+- [x] Remove Route 3 (Košice → Vienna) display from Day 6 in DailyView component - Already removed in previous fix
+
+## Feature - Database-Backed Route Management System
+- [ ] Create routes table schema in drizzle/schema.ts
+- [ ] Push database schema changes
+- [ ] Create tRPC procedures for route CRUD (create, list, update, delete)
+- [ ] Update AllRouteMapsTab to fetch routes from database
+- [ ] Create route management UI (add/edit/delete buttons and forms)
+- [ ] Migrate existing 6 hardcoded routes to database
+- [ ] Test route management functionality
