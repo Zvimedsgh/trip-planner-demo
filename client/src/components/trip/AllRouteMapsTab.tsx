@@ -24,8 +24,8 @@ const routeMaps: RouteMap[] = [
       he: "מסלול 1: ברטיסלבה → ליפטובסקי מיקולאש (2 בספטמבר)"
     },
     description: {
-      en: "Day 2: Arrival in Slovakia",
-      he: "יום 2: הגעה לסלובקיה"
+      en: "Day 2: Departure at 19:00 from Bratislava to Liptovský Mikuláš",
+      he: "יום 2: יציאה ב-19:00 מברטיסלבה למיקולאש"
     },
     gradient: "from-blue-500 via-indigo-500 to-purple-500",
     origin: { lat: 48.1486, lng: 17.1077, name: "Bratislava" },

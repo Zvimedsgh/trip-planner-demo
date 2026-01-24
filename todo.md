@@ -428,3 +428,7 @@
 - [x] Add Zvonárska Synagogue + Potters Street tourist site (15:30)
 - [x] Add lunch at Hlavná Street restaurant (12:30)
 - [x] Add dinner at Villa Regia restaurant (19:30)
+
+## Fix Route 1 Start Time
+- [x] Update Route 1 description in AllRouteMapsTab to show 19:00 start time
+- [x] Update Route 1 card in DailyView to show 19:00 start time

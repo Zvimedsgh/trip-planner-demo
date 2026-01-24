@@ -267,7 +267,7 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
       id: 1,
       day: 2, // Sep 2
       title: { en: "Route 1: Bratislava → Liptovský Mikuláš", he: "מסלול 1: ברטיסלבה → ליפטובסקי מיקולאש" },
-      description: { en: "Day 2: Arrival in Slovakia", he: "יום 2: הגעה לסלובקיה" },
+      description: { en: "Day 2: Departure at 19:00 from Bratislava to Liptovský Mikuláš", he: "יום 2: יציאה ב-19:00 מברטיסלבה למיקולאש" },
       gradient: "from-blue-500 via-indigo-500 to-purple-500"
     },
     {
