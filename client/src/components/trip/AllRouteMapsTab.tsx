@@ -46,12 +46,12 @@ const routeMaps: RouteMap[] = [
   {
     id: "route2",
     title: {
-      en: "Route 2: Liptovský Mikuláš → Košice (Sep 6)",
-      he: "מסלול 2: ליפטובסקי מיקולאש → קושיצה (6 בספטמבר)"
+      en: "Route 2: Liptovský Mikuláš → Košice (Sep 5)",
+      he: "מסלול 2: ליפטובסקי מיקולאש → קושיצה (5 בספטמבר)"
     },
     description: {
-      en: "Day 6: Journey to Košice via Slovenský Raj",
-      he: "יום 6: מסע לקושיצה דרך סלובנסקי ראי'"
+      en: "Day 5: Journey to Košice via Slovenský Raj",
+      he: "יום 5: מסע לקושיצה דרך סלובנסקי ראי'"
     },
     gradient: "from-emerald-500 via-teal-500 to-cyan-500",
     origin: { lat: 49.0833, lng: 19.6167, name: "Liptovský Mikuláš" },
@@ -104,12 +104,12 @@ const routeMaps: RouteMap[] = [
   {
     id: "route4",
     title: {
-      en: "Route 4: Liptovský Mikuláš → Štrbské Pleso (Sep 4)",
-      he: "מסלול 4: ליפטובסקי מיקולאש → שטרבסקה פלסו (4 בספטמבר)"
+      en: "Route 4: Liptovský Mikuláš → Štrbské Pleso (Sep 3)",
+      he: "מסלול 4: ליפטובסקי מיקולאש → שטרבסקה פלסו (3 בספטמבר)"
     },
     description: {
-      en: "Day 4: Round trip to High Tatras mountain lake",
-      he: "יום 4: טיול יום לאגם ההרים בטטרה הגבוהה"
+      en: "Day 3: Round trip to High Tatras mountain lake",
+      he: "יום 3: טיול יום לאגם ההרים בטטרה הגבוהה"
     },
     gradient: "from-sky-500 via-blue-500 to-indigo-500",
     origin: { lat: 49.0833, lng: 19.6167, name: "Liptovský Mikuláš" },
@@ -130,12 +130,12 @@ const routeMaps: RouteMap[] = [
   {
     id: "route5",
     title: {
-      en: "Route 5: Liptovský Mikuláš → Jasná – Demänovská Dolina (Sep 5)",
-      he: "מסלול 5: ליפטובסקי מיקולאש → יאסנה – דמנובסקה דולינה (5 בספטמבר)"
+      en: "Route 5: Liptovský Mikuláš → Jasná – Demänovská Dolina (Sep 4)",
+      he: "מסלול 5: ליפטובסקי מיקולאש → יאסנה – דמנובסקה דולינה (4 בספטמבר)"
     },
     description: {
-      en: "Day 5: Round trip to ski resort and caves",
-      he: "יום 5: טיול יום לאתר סקי ומערות"
+      en: "Day 4: Round trip to ski resort and caves",
+      he: "יום 4: טיול יום לאתר סקי ומערות"
     },
     gradient: "from-violet-500 via-purple-500 to-fuchsia-500",
     origin: { lat: 49.0833, lng: 19.6167, name: "Liptovský Mikuláš" },

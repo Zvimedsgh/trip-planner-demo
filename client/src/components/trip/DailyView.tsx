@@ -272,23 +272,23 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
     },
     {
       id: 4,
-      day: 4, // Sep 4
+      day: 3, // Sep 3
       title: { en: "Route 4: Trip to Štrbské Pleso", he: "מסלול 4: טיול לשטרבסקה פלסו" },
-      description: { en: "Day 4: High Tatras mountain lake", he: "יום 4: אגם ההרים בטטרה הגבוהה" },
+      description: { en: "Day 3: High Tatras mountain lake", he: "יום 3: אגם ההרים בטטרה הגבוהה" },
       gradient: "from-sky-500 via-blue-500 to-indigo-500"
     },
     {
       id: 5,
-      day: 5, // Sep 5
+      day: 4, // Sep 4
       title: { en: "Route 5: Trip to Jasná – Demänovská Dolina", he: "מסלול 5: טיול ליאסנה – דמנובסקה דולינה" },
-      description: { en: "Day 5: Ski resort and caves", he: "יום 5: אתר סקי ומערות" },
+      description: { en: "Day 4: Ski resort and caves", he: "יום 4: אתר סקי ומערות" },
       gradient: "from-violet-500 via-purple-500 to-fuchsia-500"
     },
     {
       id: 2,
-      day: 6, // Sep 6
+      day: 5, // Sep 5
       title: { en: "Route 2: Liptovský Mikuláš → Košice", he: "מסלול 2: ליפטובסקי מיקולאש → קושיצה" },
-      description: { en: "Day 6: Journey to Košice via Slovenský Raj", he: "יום 6: מסע לקושיצה דרך סלובנסקי ראי'" },
+      description: { en: "Day 5: Journey to Košice via Slovenský Raj", he: "יום 5: מסע לקושיצה דרך סלובנסקי ראי'" },
       gradient: "from-emerald-500 via-teal-500 to-cyan-500"
     },
     {

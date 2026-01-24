@@ -405,3 +405,10 @@
 - [x] Route cards should appear at top of daily view with map icon
 - [x] Include route title, description, and link to full map in Route Maps tab
 - [x] Routes should appear on correct days: Route 1 (Day 2), Route 4 (Day 4), Route 5 (Day 5), Route 2 (Day 6), Route 3 (Day 7), Route 6 (Day 9)
+
+## Fix Route Dates - Correction
+- [x] Route 4 (Štrbské Pleso) should be Day 3 (not Day 4)
+- [x] Route 5 (Jasná) should be Day 4 (not Day 5)
+- [x] Route 2 (Liptovský → Košice) should be Day 5 (not Day 6)
+- [x] Update dates in AllRouteMapsTab.tsx
+- [x] Update dates in DailyView.tsx
