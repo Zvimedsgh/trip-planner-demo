@@ -210,3 +210,7 @@
 - [x] Create DailyView component to show all activities for a specific day
 - [x] Display hotels, flights, car rentals, sites, restaurants for each day
 - [x] Integrate daily tabs into TripDetail page
+
+## Daily Tabs Fix
+- [x] Separate daily tabs from activity tabs - prevent content mixing
+- [x] Add distinct color to selected day tab for better visibility
