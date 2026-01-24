@@ -35,8 +35,12 @@ const routeMaps: RouteMap[] = [
     ],
     pois: [
       { lat: 48.7164, lng: 19.1517, name: "Banská Bystrica", type: "city" },
-      { lat: 48.8, lng: 19.5, name: "Gas Station", type: "gas" },
-      { lat: 48.9, lng: 19.4, name: "Restaurant", type: "restaurant" },
+      { lat: 48.3, lng: 17.5, name: "OMV Gas Station", type: "gas" },
+      { lat: 48.7, lng: 19.1, name: "Shell Gas Station", type: "gas" },
+      { lat: 48.9, lng: 19.5, name: "MOL Gas Station", type: "gas" },
+      { lat: 48.4, lng: 17.8, name: "Highway Restaurant", type: "restaurant" },
+      { lat: 48.7164, lng: 19.1517, name: "Banská Bystrica Restaurant", type: "restaurant" },
+      { lat: 48.95, lng: 19.45, name: "Mountain View Restaurant", type: "restaurant" },
     ],
   },
   {
@@ -61,9 +65,13 @@ const routeMaps: RouteMap[] = [
       { lat: 48.9167, lng: 20.4, name: "Dobšinská Ice Cave", type: "attraction" },
       { lat: 48.9972, lng: 20.5597, name: "Spiš Castle", type: "attraction" },
       { lat: 49.0, lng: 20.3, name: "Slovak Paradise Gorges", type: "attraction" },
-      { lat: 49.1, lng: 20.1, name: "Gas Station", type: "gas" },
+      { lat: 49.1, lng: 20.1, name: "Shell Gas Station", type: "gas" },
+      { lat: 48.93, lng: 20.5, name: "OMV Gas Station", type: "gas" },
+      { lat: 48.8, lng: 20.8, name: "MOL Gas Station", type: "gas" },
       { lat: 48.95, lng: 20.35, name: "Mountain Restaurant", type: "restaurant" },
-      { lat: 48.85, lng: 21.0, name: "Restaurant", type: "restaurant" },
+      { lat: 48.93, lng: 20.4, name: "Slovenský Raj Restaurant", type: "restaurant" },
+      { lat: 48.85, lng: 21.0, name: "Highway Restaurant", type: "restaurant" },
+      { lat: 48.75, lng: 21.15, name: "Košice Approach Restaurant", type: "restaurant" },
     ],
   },
   {
@@ -85,8 +93,12 @@ const routeMaps: RouteMap[] = [
     pois: [
       { lat: 48.2082, lng: 16.3738, name: "Schönbrunn Palace", type: "attraction" },
       { lat: 48.2085, lng: 16.3794, name: "Belvedere Palace", type: "attraction" },
-      { lat: 48.5, lng: 18.0, name: "Gas Station", type: "gas" },
-      { lat: 48.3, lng: 17.5, name: "Restaurant", type: "restaurant" },
+      { lat: 48.5, lng: 18.0, name: "Shell Gas Station", type: "gas" },
+      { lat: 48.35, lng: 17.2, name: "OMV Gas Station", type: "gas" },
+      { lat: 48.25, lng: 16.8, name: "MOL Gas Station", type: "gas" },
+      { lat: 48.3, lng: 17.5, name: "Highway Restaurant", type: "restaurant" },
+      { lat: 48.4, lng: 17.8, name: "Bratislava Approach Restaurant", type: "restaurant" },
+      { lat: 48.22, lng: 16.5, name: "Vienna Exit Restaurant", type: "restaurant" },
     ],
   },
   {
@@ -108,8 +120,11 @@ const routeMaps: RouteMap[] = [
     pois: [
       { lat: 49.1194, lng: 20.0611, name: "Štrbské Pleso Lake", type: "attraction" },
       { lat: 49.15, lng: 20.15, name: "Lomnický štít Cable Car", type: "attraction" },
-      { lat: 49.1, lng: 19.9, name: "Gas Station", type: "gas" },
-      { lat: 49.12, lng: 20.05, name: "Mountain Restaurant", type: "restaurant" },
+      { lat: 49.1, lng: 19.9, name: "Shell Gas Station", type: "gas" },
+      { lat: 49.08, lng: 19.85, name: "OMV Gas Station", type: "gas" },
+      { lat: 49.12, lng: 20.05, name: "Štrbské Pleso Restaurant", type: "restaurant" },
+      { lat: 49.1194, lng: 20.0611, name: "Lakeside Café", type: "restaurant" },
+      { lat: 49.1, lng: 19.95, name: "Mountain View Restaurant", type: "restaurant" },
     ],
   },
   {
@@ -132,8 +147,37 @@ const routeMaps: RouteMap[] = [
       { lat: 49.0333, lng: 19.5833, name: "Jasná Ski Resort", type: "attraction" },
       { lat: 49.0444, lng: 19.5833, name: "Demänovská Ice Cave", type: "attraction" },
       { lat: 49.0444, lng: 19.5833, name: "Demänovská Cave of Liberty", type: "attraction" },
-      { lat: 49.06, lng: 19.6, name: "Gas Station", type: "gas" },
-      { lat: 49.04, lng: 19.59, name: "Mountain Restaurant", type: "restaurant" },
+      { lat: 49.06, lng: 19.6, name: "Shell Gas Station", type: "gas" },
+      { lat: 49.075, lng: 19.61, name: "OMV Gas Station", type: "gas" },
+      { lat: 49.04, lng: 19.59, name: "Jasná Restaurant", type: "restaurant" },
+      { lat: 49.0333, lng: 19.5833, name: "Ski Resort Restaurant", type: "restaurant" },
+      { lat: 49.05, lng: 19.6, name: "Cave Entrance Café", type: "restaurant" },
+    ],
+  },
+  {
+    id: "route6",
+    title: {
+      en: "Route 6: Vienna → Bratislava Airport (Sep 9)",
+      he: "מסלול 6: וינה → שדה התעופה ברטיסלבה (9 בספטמבר)"
+    },
+    description: {
+      en: "Day 9: Departure - Return to Bratislava Airport",
+      he: "יום 9: יציאה - חזרה לשדה התעופה"
+    },
+    gradient: "from-rose-500 via-pink-500 to-purple-500",
+    origin: { lat: 48.2082, lng: 16.3738, name: "Vienna" },
+    destination: { lat: 48.1702, lng: 17.2127, name: "Bratislava Airport" },
+    waypoints: [
+      { location: { lat: 48.1486, lng: 17.1077 }, stopover: false }, // Bratislava city
+    ],
+    pois: [
+      { lat: 48.1702, lng: 17.2127, name: "Bratislava Airport (BTS)", type: "attraction" },
+      { lat: 48.19, lng: 16.8, name: "Shell Gas Station", type: "gas" },
+      { lat: 48.175, lng: 17.05, name: "OMV Gas Station", type: "gas" },
+      { lat: 48.165, lng: 17.15, name: "MOL Gas Station (Airport)", type: "gas" },
+      { lat: 48.15, lng: 17.0, name: "Highway Restaurant", type: "restaurant" },
+      { lat: 48.18, lng: 16.9, name: "Vienna-Bratislava Border Restaurant", type: "restaurant" },
+      { lat: 48.17, lng: 17.18, name: "Airport Café", type: "restaurant" },
     ],
   },
 ];

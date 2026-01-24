@@ -1,0 +1,52 @@
+{
+  "query": "SELECT * FROM tourist_sites WHERE tripId = 30001 AND plannedVisitDate >= 1757289600000 AND plannedVisitDate <= 1757376000000;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT * FROM tourist_sites WHERE tripId = 30001 AND plannedVisitDate >= 1757289600000 AND plannedVisitDate <= 1757376000000;",
+  "rows": [
+    {
+      "id": "90001",
+      "tripId": "30001",
+      "name": "Jewish Cemetery Košice",
+      "address": "Košice, Slovakia",
+      "description": "Historic Jewish cemetery",
+      "openingHours": "NULL",
+      "plannedVisitDate": "1757289600000",
+      "notes": "NULL",
+      "createdAt": "2026-01-24 14:31:47",
+      "updatedAt": "2026-01-24 14:31:47",
+      "plannedVisitTime": "10:00",
+      "website": "NULL"
+    },
+    {
+      "id": "90002",
+      "tripId": "30001",
+      "name": "HLAVNA Street",
+      "address": "Hlavná ulica, Košice, Slovakia",
+      "description": "Main pedestrian street in Košice old town",
+      "openingHours": "NULL",
+      "plannedVisitDate": "1757296800000",
+      "notes": "NULL",
+      "createdAt": "2026-01-24 14:31:47",
+      "updatedAt": "2026-01-24 14:31:47",
+      "plannedVisitTime": "12:00",
+      "website": "NULL"
+    },
+    {
+      "id": "90003",
+      "tripId": "30001",
+      "name": "Free Time & Lunch",
+      "address": "Košice, Slovakia",
+      "description": "Free time to explore and lunch",
+      "openingHours": "NULL",
+      "plannedVisitDate": "1757300400000",
+      "notes": "NULL",
+      "createdAt": "2026-01-24 14:31:47",
+      "updatedAt": "2026-01-24 14:31:47",
+      "plannedVisitTime": "13:00",
+      "website": "NULL"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttripId\tname\taddress\tdescription\topeningHours\tplannedVisitDate\tnotes\tcreatedAt\tupdatedAt\tplannedVisitTime\twebsite\n90001\t30001\tJewish Cemetery Košice\tKošice, Slovakia\tHistoric Jewish cemetery\tNULL\t1757289600000\tNULL\t2026-01-24 14:31:47\t2026-01-24 14:31:47\t10:00\tNULL\n90002\t30001\tHLAVNA Street\tHlavná ulica, Košice, Slovakia\tMain pedestrian street in Košice old town\tNULL\t1757296800000\tNULL\t2026-01-24 14:31:47\t2026-01-24 14:31:47\t12:00\tNULL\n90003\t30001\tFree Time & Lunch\tKošice, Slovakia\tFree time to explore and lunch\tNULL\t1757300400000\tNULL\t2026-01-24 14:31:47\t2026-01-24 14:31:47\t13:00\tNULL\n",
+  "stderr": "",
+  "execution_time_ms": 1513
+}

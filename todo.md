@@ -354,3 +354,11 @@
 - [ ] Add date (4/9) to Route 5 (Demänovská Dolina) title and description
 - [ ] Confirm Route 2 (Košice) remains at 5/9
 - [ ] Integrate route titles into corresponding daily tabs (Day 3, Day 4, Day 5)
+
+## New Features - Day 6 Košice and Route 6
+- [x] Add Jewish Cemetery to Day 6 Košice tourist sites
+- [x] Add HLAVNA street to Day 6 Košice tourist sites
+- [x] Add free time activity to Day 6 Košice
+- [x] Add dinner with Ava restaurant to Day 6 Košice evening
+- [x] Create Route 6: Vienna → Bratislava Airport (Day 9)
+- [x] Add more POIs to existing route maps (gas stations and restaurants)

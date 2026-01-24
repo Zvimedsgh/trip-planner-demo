@@ -169,6 +169,11 @@ export default function TimelineTab({ tripId }: TimelineTabProps) {
       date: new Date(2026, 8, 6).setHours(9, 0, 0, 0), // September 6, 2026, 9:00 AM
       title: language === "he" ? "מסלול 3: קושיצה → וינה" : "Route 3: Košice → Vienna",
       subtitle: language === "he" ? "נסיעה לווינה" : "Drive to Vienna"
+    },
+    {
+      date: new Date(2026, 8, 9).setHours(9, 0, 0, 0), // September 9, 2026, 9:00 AM
+      title: language === "he" ? "מסלול 6: וינה → שדה התעופה ברטיסלבה" : "Route 6: Vienna → Bratislava Airport",
+      subtitle: language === "he" ? "יציאה וחזרה הביתה" : "Departure and return home"
     }
   ];
 

@@ -265,6 +265,13 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
         subtitle: language === "he" ? "יום 6 - נסיעה לווינה" : "Day 6 - Drive to Vienna"
       };
     }
+    // September 9, 2026 - Day 9
+    if (month === 9 && day === 9) {
+      return {
+        title: language === "he" ? "מסלול 6: וינה → שדה התעופה ברטיסלבה" : "Route 6: Vienna → Bratislava Airport",
+        subtitle: language === "he" ? "יום 9 - יציאה וחזרה הביתה" : "Day 9 - Departure and return home"
+      };
+    }
     return null;
   };
 

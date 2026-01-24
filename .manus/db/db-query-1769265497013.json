@@ -1,0 +1,9 @@
+{
+  "query": "\n-- September 6, 2026 is timestamp 1725580800000\n-- Update Jewish Cemetery\nUPDATE tourist_sites SET plannedVisitDate = 1725580800000 WHERE tripId = 30001 AND name = 'Jewish Cemetery Košice';\n\n-- Update HLAVNA Street  \nUPDATE tourist_sites SET plannedVisitDate = 1725580800000 WHERE tripId = 30001 AND name = 'HLAVNA Street';\n\n-- Update Free Time\nUPDATE tourist_sites SET plannedVisitDate = 1725580800000 WHERE tripId = 30001 AND name = 'Free Time & Lunch';\n\n-- Update Dinner with Ava\nUPDATE restaurants SET reservationDate = 1725580800000 WHERE tripId = 30001 AND name = 'Dinner with Ava';\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute \n-- September 6, 2026 is timestamp 1725580800000\n-- Update Jewish Cemetery\nUPDATE tourist_sites SET plannedVisitDate = 1725580800000 WHERE tripId = 30001 AND name = 'Jewish Cemetery Košice';\n\n-- Update HLAVNA Street  \nUPDATE tourist_sites SET plannedVisitDate = 1725580800000 WHERE tripId = 30001 AND name = 'HLAVNA Street';\n\n-- Update Free Time\nUPDATE tourist_sites SET plannedVisitDate = 1725580800000 WHERE tripId = 30001 AND name = 'Free Time & Lunch';\n\n-- Update Dinner with Ava\nUPDATE restaurants SET reservationDate = 1725580800000 WHERE tripId = 30001 AND name = 'Dinner with Ava';\n",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 2201
+}
