@@ -77,6 +77,7 @@ export const hotels = mysqlTable("hotels", {
   website: varchar("website", { length: 500 }),
   price: decimal("price", { precision: 10, scale: 2 }),
   currency: varchar("currency", { length: 10 }).default("USD"),
+  category: varchar("category", { length: 100 }),
   coverImage: varchar("coverImage", { length: 500 }),
   parkingImage: varchar("parkingImage", { length: 500 }),
   notes: text("notes"),

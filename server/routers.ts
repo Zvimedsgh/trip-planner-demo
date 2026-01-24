@@ -204,6 +204,7 @@ export const appRouter = router({
         website: z.string().optional(),
         price: z.string().optional(),
         currency: z.string().optional(),
+        category: z.string().optional(),
         notes: z.string().optional(),
       }))
       .mutation(({ input }) => db.createHotel(input)),
@@ -222,6 +223,7 @@ export const appRouter = router({
         website: z.string().optional(),
         price: z.string().optional(),
         currency: z.string().optional(),
+        category: z.string().optional(),
         notes: z.string().optional(),
       }))
       .mutation(({ input }) => {

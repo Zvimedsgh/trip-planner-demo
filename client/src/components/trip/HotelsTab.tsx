@@ -122,6 +122,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
       phone: getValue("phone"),
       website: getValue("website"),
       price: getValue("price"),
+      category: getValue("category"),
       notes: getValue("notes"),
     };
   };
@@ -147,6 +148,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
       website: values.website || undefined,
       price: values.price || undefined,
       currency: selectedCurrency,
+      category: values.category || undefined,
       notes: values.notes || undefined,
     });
   };
@@ -172,10 +174,12 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
       website: values.website || undefined,
       price: values.price || undefined,
       currency: selectedCurrency,
+      category: values.category || undefined,
       notes: values.notes || undefined,
     });
   };
 
+  const [formKey, setFormKey] = useState(0);
   const [editDefaults, setEditDefaults] = useState({
     name: "",
     address: "",
@@ -188,6 +192,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
     website: "",
     price: "",
     currency: "USD",
+    category: "",
     notes: "",
   });
 
@@ -204,10 +209,12 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
       website: hotel.website || "",
       price: hotel.price || "",
       currency: hotel.currency || "USD",
+      category: hotel.category || "",
       notes: hotel.notes || "",
     });
     setSelectedCurrency(hotel.currency || "USD");
     setEditingId(hotel.id);
+    setFormKey(prev => prev + 1);
   };
 
   const getNights = (checkIn: number, checkOut: number) => {
@@ -227,7 +234,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
   }
 
   const FormFields = ({ defaults }: { defaults?: typeof editDefaults }) => (
-    <div className="grid gap-4 py-4" ref={formRef}>
+    <div className="grid gap-4 py-4" ref={formRef} key={formKey}>
       <div className="grid gap-2">
         <Label>{t("hotelName")} *</Label>
         <Input
@@ -331,7 +338,16 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
           <Select 
             value={selectedCurrency} 
             onValueChange={(value) => {
+              // Save current form values before changing currency
+              const currentValues = getFormValues();
+              if (currentValues) {
+                setEditDefaults({
+                  ...currentValues,
+                  currency: value,
+                });
+              }
               setSelectedCurrency(value);
+              setFormKey(prev => prev + 1);
             }}
           >
             <SelectTrigger tabIndex={10}>
@@ -345,6 +361,27 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
               ))}
             </SelectContent>
           </Select>
+        </div>
+        <div className="grid gap-2">
+          <Label>{language === "he" ? "קטגוריה" : "Category"}</Label>
+          <Select 
+            value={defaults?.category || ""} 
+            onValueChange={(value) => {
+              // Update the hidden input
+              const input = formRef.current?.querySelector('[name="category"]') as HTMLInputElement;
+              if (input) input.value = value;
+            }}
+          >
+            <SelectTrigger tabIndex={11}>
+              <SelectValue placeholder={language === "he" ? "בחר קטגוריה" : "Select category"} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="">-</SelectItem>
+              <SelectItem value="HOTELS TO CHOOSE KOSICE">HOTELS TO CHOOSE KOSICE</SelectItem>
+              <SelectItem value="Confirmed">Confirmed</SelectItem>
+            </SelectContent>
+          </Select>
+          <input type="hidden" name="category" defaultValue={defaults?.category || ""} />
         </div>
       </div>
       <div className="grid gap-2">
@@ -403,8 +440,19 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
             ];
             const gradient = gradients[index % gradients.length];
             
-            // Use coverImage from database if available, or parkingImage if uploaded
-            const hotelImage = hotel.coverImage || hotel.parkingImage || null;
+            // Use coverImage from database if available, or search for hotel image in documents
+            let hotelImage = hotel.coverImage || null;
+            if (!hotelImage) {
+              // Search for hotel image in documents (excluding parking images)
+              const hotelImageDoc = documents?.find(doc => 
+                (doc.category === 'other' || doc.category === 'booking') &&
+                !doc.name.toLowerCase().includes('parking') &&
+                (doc.fileUrl.match(/\.(jpg|jpeg|png|webp|gif)$/i)) &&
+                (doc.name.toLowerCase().includes(hotel.name.toLowerCase()) ||
+                 (hotel.address && doc.name.toLowerCase().includes(hotel.address.toLowerCase())))
+              );
+              hotelImage = hotelImageDoc?.fileUrl || hotel.parkingImage || null;
+            }
             
             return (
             <Card key={hotel.id} className={`overflow-hidden ${!hotelImage ? `bg-gradient-to-br ${gradient}` : ''} text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative group`}>
@@ -442,8 +490,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
                       const relatedDocs = documents?.filter(doc => 
                         (doc.category === 'booking' || doc.category === 'other') && 
                         !doc.name.toLowerCase().includes('parking') &&
-                        (doc.name.toLowerCase().includes(hotel.name.toLowerCase()) || 
-                         doc.name.toLowerCase().includes('hotel') ||
+                        (doc.name.toLowerCase().includes(hotel.name.toLowerCase()) ||
                          (hotel.address && doc.name.toLowerCase().includes(hotel.address.toLowerCase())))
                       );
                       return (
@@ -476,8 +523,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
                       const parkingDocs = documents?.filter(doc => 
                         (doc.category === 'booking' || doc.category === 'other') && 
                         doc.name.toLowerCase().includes('parking') &&
-                        (doc.name.toLowerCase().includes(hotel.name.toLowerCase()) || 
-                         doc.name.toLowerCase().includes('hotel') ||
+                        (doc.name.toLowerCase().includes(hotel.name.toLowerCase()) ||
                          (hotel.address && doc.name.toLowerCase().includes(hotel.address.toLowerCase())))
                       );
                       const hasParkingImage = hotel.parkingImage || (parkingDocs && parkingDocs.length > 0);

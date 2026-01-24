@@ -272,3 +272,12 @@
 - [ ] Create route map: Liptovský Mikuláš → Košice with attractions, restaurants, gas stations
 - [ ] Create route map: Košice → Vienna with attractions, restaurants, gas stations
 - [ ] Update navigation to show all three route maps as separate tabs
+
+## Bug Fixes and New Features - Current Session
+- [x] Fix hotel document display bug - all hotels showing same document (not hotel-specific)
+- [x] Add automatic background images for new hotels based on hotel name
+- [x] Fix currency selector bug - changing currency clears all other fields (regression)
+- [x] Add hotel category field to database schema
+- [x] Add category selector to Hotels form
+- [x] Create "HOTELS TO CHOOSE KOSICE" category group
+- [ ] Filter/group hotels by category in Hotels tab (optional enhancement)

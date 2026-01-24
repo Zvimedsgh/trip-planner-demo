@@ -1,0 +1,1 @@
+ALTER TABLE `hotels` ADD `category` varchar(100);
