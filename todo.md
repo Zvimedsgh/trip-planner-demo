@@ -469,3 +469,14 @@
 - [x] Create initial checklist items for health category (3 items)
 - [x] Create initial checklist items for finance category (4 items)
 - [x] Create initial checklist items for other category (4 items)
+
+## Add Deletion Confirmation Dialogs
+- [x] Add confirmation dialog for hotel deletion
+- [x] Add confirmation dialog for transportation deletion
+- [x] Add confirmation dialog for car rental deletion
+- [x] Add confirmation dialog for tourist site deletion
+- [x] Add confirmation dialog for restaurant deletion
+- [x] Add confirmation dialog for document deletion
+- [x] Add confirmation dialog for checklist item deletion
+- [x] Add confirmation dialog for day trip deletion
+- [x] Add confirmation dialog for trip deletion (main page)

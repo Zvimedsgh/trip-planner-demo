@@ -594,7 +594,11 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
                       size="icon" 
                       variant="ghost" 
                       className="h-8 w-8 text-white bg-red-500/80 hover:bg-red-600"
-                      onClick={() => deleteMutation.mutate({ id: hotel.id })}
+                      onClick={() => {
+                        if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את המלון?" : "Are you sure you want to delete this hotel?")) {
+                          deleteMutation.mutate({ id: hotel.id });
+                        }
+                      }}
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>

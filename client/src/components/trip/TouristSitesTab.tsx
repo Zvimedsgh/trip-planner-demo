@@ -298,7 +298,11 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
                         size="icon" 
                         variant="ghost" 
                         className="h-7 w-7 text-white bg-red-500/80 hover:bg-red-600"
-                        onClick={() => deleteMutation.mutate({ id: site.id })}
+                        onClick={() => {
+                        if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את האתר?" : "Are you sure you want to delete this site?")) {
+                          deleteMutation.mutate({ id: site.id });
+                        }
+                      }}
                       >
                         <Trash2 className="w-3 h-3" />
                       </Button>

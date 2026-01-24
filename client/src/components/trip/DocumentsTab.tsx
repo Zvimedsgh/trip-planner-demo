@@ -287,7 +287,11 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
                         size="icon" 
                         variant="ghost" 
                         className="h-8 w-8 text-destructive"
-                        onClick={() => deleteMutation.mutate({ id: doc.id })}
+                        onClick={() => {
+                        if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את המסמך?" : "Are you sure you want to delete this document?")) {
+                          deleteMutation.mutate({ id: doc.id });
+                        }
+                      }}
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>

@@ -16,7 +16,7 @@ interface DayTripsTabProps {
 }
 
 export default function DayTripsTab({ tripId }: DayTripsTabProps) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -194,7 +194,7 @@ export default function DayTripsTab({ tripId }: DayTripsTabProps) {
                         size="icon"
                         className="h-8 w-8 text-white hover:bg-white/20"
                         onClick={() => {
-                          if (confirm(t("confirmDelete"))) {
+                          if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את הטיול היומי?" : "Are you sure you want to delete this day trip?")) {
                             deleteMutation.mutate({ id: dayTrip.id });
                           }
                         }}

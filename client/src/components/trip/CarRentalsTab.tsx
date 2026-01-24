@@ -400,7 +400,11 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
                       size="icon" 
                       variant="ghost" 
                       className="h-7 w-7 text-white bg-red-500/80 hover:bg-red-600"
-                      onClick={() => deleteMutation.mutate({ id: rental.id })}
+                      onClick={() => {
+                        if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את השכרת הרכב?" : "Are you sure you want to delete this car rental?")) {
+                          deleteMutation.mutate({ id: rental.id });
+                        }
+                      }}
                     >
                       <Trash2 className="w-3 h-3" />
                     </Button>

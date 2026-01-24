@@ -563,7 +563,11 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
                       <Button size="icon" variant="ghost" className="h-7 w-7 text-white bg-amber-500/80 hover:bg-amber-600" onClick={() => openEdit(transport)}>
                         <Edit className="w-3 h-3" />
                       </Button>
-                      <Button size="icon" variant="ghost" className="h-7 w-7 text-white bg-red-500/80 hover:bg-red-600" onClick={() => deleteMutation.mutate({ id: transport.id })}>
+                      <Button size="icon" variant="ghost" className="h-7 w-7 text-white bg-red-500/80 hover:bg-red-600" onClick={() => {
+                        if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את הטיסה/הסעה?" : "Are you sure you want to delete this transportation?")) {
+                          deleteMutation.mutate({ id: transport.id });
+                        }
+                      }}>
                         <Trash2 className="w-3 h-3" />
                       </Button>
                     </div>

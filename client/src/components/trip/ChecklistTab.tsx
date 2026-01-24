@@ -244,7 +244,11 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
                           size="icon"
                           variant="ghost"
                           className="h-8 w-8 flex-shrink-0"
-                          onClick={() => deleteMutation.mutate({ id: item.id })}
+                          onClick={() => {
+                          if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את המשימה?" : "Are you sure you want to delete this task?")) {
+                            deleteMutation.mutate({ id: item.id });
+                          }
+                        }}
                         >
                           <Trash2 className="w-4 h-4 text-destructive" />
                         </Button>
