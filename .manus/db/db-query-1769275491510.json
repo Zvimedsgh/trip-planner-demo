@@ -1,0 +1,34 @@
+{
+  "query": "SELECT id, name, startDate, endDate FROM trips;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, startDate, endDate FROM trips;",
+  "rows": [
+    {
+      "id": "30001",
+      "name": "Goren Roots Trip to Slovakia",
+      "startDate": "1788220800000",
+      "endDate": "1788998400000"
+    },
+    {
+      "id": "60001",
+      "name": "Test Collaboration Trip",
+      "startDate": "1769173815865",
+      "endDate": "1769260215865"
+    },
+    {
+      "id": "60002",
+      "name": "Test Collaboration Trip",
+      "startDate": "1769173839706",
+      "endDate": "1769260239706"
+    },
+    {
+      "id": "60003",
+      "name": "Test Trip for Checklist",
+      "startDate": "1769175279796",
+      "endDate": "1769780079796"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tstartDate\tendDate\n30001\tGoren Roots Trip to Slovakia\t1788220800000\t1788998400000\n60001\tTest Collaboration Trip\t1769173815865\t1769260215865\n60002\tTest Collaboration Trip\t1769173839706\t1769260239706\n60003\tTest Trip for Checklist\t1769175279796\t1769780079796\n",
+  "stderr": "",
+  "execution_time_ms": 1492
+}

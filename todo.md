@@ -412,3 +412,19 @@
 - [x] Route 2 (Liptovský → Košice) should be Day 5 (not Day 6)
 - [x] Update dates in AllRouteMapsTab.tsx
 - [x] Update dates in DailyView.tsx
+
+## Day 2 Bratislava Activities
+- [x] Bratislava Castle already exists (09:30)
+- [x] Old Town Walk already exists (11:30)
+- [x] Blue Church already exists (15:00)
+- [x] Eurovea Shopping already exists (15:30)
+- [ ] Add lunch restaurant placeholder (13:30)
+- [ ] Add dinner restaurant placeholder (19:00)
+
+## Day 6 Košice Activities
+- [ ] Add St. Elisabeth's Cathedral tourist site (09:30)
+- [ ] Add State Theatre and Musical Fountain tourist site (11:00)
+- [ ] Add Orthodox Synagogue (Puškinova) tourist site (14:00)
+- [ ] Add Zvonárska Synagogue + Potters Street tourist site (15:30)
+- [ ] Add lunch at Hlavná Street restaurant (12:30)
+- [ ] Add dinner at Villa Regia restaurant (19:30)
