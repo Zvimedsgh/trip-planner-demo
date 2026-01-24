@@ -343,3 +343,8 @@
 - [x] Ensure POI markers are visible on map (gas stations=blue, attractions=red, restaurants=green)
 - [x] Add POI list below map in 2-3 columns (responsive grid)
 - [x] Include POI type icons and names in the list
+
+## New Route Maps - Day Trips & Updates
+- [x] Add Route 4: Liptovský Mikuláš → Štrbské Pleso → Liptovský Mikuláš (3/9 day trip) - High Tatras mountain lake
+- [x] Add Route 5: Liptovský Mikuláš → Jasná – Demänovská Dolina → Liptovský Mikuláš (day trip) - Ski resort and caves
+- [x] Update Route 2: Change Liptovský → Košice to pass through Slovenský Raj National Park - Added waypoint and POIs

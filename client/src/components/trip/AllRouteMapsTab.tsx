@@ -42,23 +42,27 @@ const routeMaps: RouteMap[] = [
   {
     id: "route2",
     title: {
-      en: "Route 2: Liptovský Mikuláš → Košice",
-      he: "מסלול 2: ליפטובסקי מיקולאש → קושיצה"
+      en: "Route 2: Liptovský Mikuláš → Košice (via Slovenský Raj)",
+      he: "מסלול 2: ליפטובסקי מיקולאש → קושיצה (דרך סלובנסקי ראי')"
     },
     description: {
-      en: "Through Slovak Paradise and Spiš Castle",
-      he: "דרך גן העדן הסלובקי וטירת שפיש"
+      en: "Through Slovenský Raj National Park and Spiš Castle",
+      he: "דרך פארק סלובנסקי ראי' וטירת שפיש"
     },
     gradient: "from-emerald-500 via-teal-500 to-cyan-500",
     origin: { lat: 49.0833, lng: 19.6167, name: "Liptovský Mikuláš" },
     destination: { lat: 48.7164, lng: 21.2611, name: "Košice" },
     waypoints: [
+      { location: { lat: 48.9333, lng: 20.3833 }, stopover: true }, // Slovenský Raj entrance
       { location: { lat: 48.9972, lng: 20.5597 }, stopover: true }, // Spiš Castle area
     ],
     pois: [
+      { lat: 48.9333, lng: 20.3833, name: "Slovenský Raj National Park", type: "attraction" },
+      { lat: 48.9167, lng: 20.4, name: "Dobšinská Ice Cave", type: "attraction" },
       { lat: 48.9972, lng: 20.5597, name: "Spiš Castle", type: "attraction" },
-      { lat: 49.0, lng: 20.3, name: "Slovak Paradise", type: "attraction" },
+      { lat: 49.0, lng: 20.3, name: "Slovak Paradise Gorges", type: "attraction" },
       { lat: 49.1, lng: 20.1, name: "Gas Station", type: "gas" },
+      { lat: 48.95, lng: 20.35, name: "Mountain Restaurant", type: "restaurant" },
       { lat: 48.85, lng: 21.0, name: "Restaurant", type: "restaurant" },
     ],
   },
@@ -83,6 +87,53 @@ const routeMaps: RouteMap[] = [
       { lat: 48.2085, lng: 16.3794, name: "Belvedere Palace", type: "attraction" },
       { lat: 48.5, lng: 18.0, name: "Gas Station", type: "gas" },
       { lat: 48.3, lng: 17.5, name: "Restaurant", type: "restaurant" },
+    ],
+  },
+  {
+    id: "route4",
+    title: {
+      en: "Route 4: Liptovský Mikuláš → Štrbské Pleso (Round Trip)",
+      he: "מסלול 4: ליפטובסקי מיקולאש → שטרבסקה פלסו (הלוך וחזור)"
+    },
+    description: {
+      en: "Day trip to High Tatras mountain lake",
+      he: "טיול יום לאגם ההרים בטטרה הגבוהה"
+    },
+    gradient: "from-sky-500 via-blue-500 to-indigo-500",
+    origin: { lat: 49.0833, lng: 19.6167, name: "Liptovský Mikuláš" },
+    destination: { lat: 49.1194, lng: 20.0611, name: "Štrbské Pleso" },
+    waypoints: [
+      { location: { lat: 49.1, lng: 19.85 }, stopover: true }, // Scenic viewpoint
+    ],
+    pois: [
+      { lat: 49.1194, lng: 20.0611, name: "Štrbské Pleso Lake", type: "attraction" },
+      { lat: 49.15, lng: 20.15, name: "Lomnický štít Cable Car", type: "attraction" },
+      { lat: 49.1, lng: 19.9, name: "Gas Station", type: "gas" },
+      { lat: 49.12, lng: 20.05, name: "Mountain Restaurant", type: "restaurant" },
+    ],
+  },
+  {
+    id: "route5",
+    title: {
+      en: "Route 5: Liptovský Mikuláš → Jasná – Demänovská Dolina (Round Trip)",
+      he: "מסלול 5: ליפטובסקי מיקולאש → יאסנה – דמנובסקה דולינה (הלוך וחזור)"
+    },
+    description: {
+      en: "Day trip to ski resort and caves",
+      he: "טיול יום לאתר סקי ומערות"
+    },
+    gradient: "from-violet-500 via-purple-500 to-fuchsia-500",
+    origin: { lat: 49.0833, lng: 19.6167, name: "Liptovský Mikuláš" },
+    destination: { lat: 49.0333, lng: 19.5833, name: "Jasná – Demänovská Dolina" },
+    waypoints: [
+      { location: { lat: 49.05, lng: 19.6 }, stopover: true }, // Demänovská Cave
+    ],
+    pois: [
+      { lat: 49.0333, lng: 19.5833, name: "Jasná Ski Resort", type: "attraction" },
+      { lat: 49.0444, lng: 19.5833, name: "Demänovská Ice Cave", type: "attraction" },
+      { lat: 49.0444, lng: 19.5833, name: "Demänovská Cave of Liberty", type: "attraction" },
+      { lat: 49.06, lng: 19.6, name: "Gas Station", type: "gas" },
+      { lat: 49.04, lng: 19.59, name: "Mountain Restaurant", type: "restaurant" },
     ],
   },
 ];
