@@ -1,0 +1,26 @@
+{
+  "query": "SELECT name, fileUrl FROM documents WHERE (name LIKE '%Ambassador%' OR name LIKE '%GOLDEN%' OR name LIKE '%Golden%' OR name LIKE '%Apar%') AND (category='other' OR category='booking');",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT name, fileUrl FROM documents WHERE (name LIKE '%Ambassador%' OR name LIKE '%GOLDEN%' OR name LIKE '%Golden%' OR name LIKE '%Apar%') AND (category='other' OR category='booking');",
+  "rows": [
+    {
+      "name": "Charming & Cozy Ambiente Apartments",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/0UiL-tSVWikghFFgQcaNJ-מלון בברטיסלבה"
+    },
+    {
+      "name": "myNext - Johannesgasse Apartments",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/pFrSjQo5wCaqdqoI8HATm-myNext - Johannesse Aparments.pdf"
+    },
+    {
+      "name": "Apart Hotel GOLDEN apartments",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/gAOpxZ_R1gcUM3yeP_3kS-Apart Hotel GOLDEN apartments"
+    },
+    {
+      "name": "Hilton Ambassador.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/CnTnv4QEiRiZTzZ9NSHk7-Hilton Ambassador.jpg"
+    }
+  ],
+  "messages": [],
+  "stdout": "name\tfileUrl\nCharming & Cozy Ambiente Apartments\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/0UiL-tSVWikghFFgQcaNJ-מלון בברטיסלבה\nmyNext - Johannesgasse Apartments\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/pFrSjQo5wCaqdqoI8HATm-myNext - Johannesse Aparments.pdf\nApart Hotel GOLDEN apartments\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/gAOpxZ_R1gcUM3yeP_3kS-Apart Hotel GOLDEN apartments\nHilton Ambassador.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/CnTnv4QEiRiZTzZ9NSHk7-Hilton Ambassador.jpg\n",
+  "stderr": "",
+  "execution_time_ms": 1537
+}

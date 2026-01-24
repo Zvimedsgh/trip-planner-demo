@@ -447,8 +447,12 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
               const normalizeText = (text: string) => 
                 text.toLowerCase().replace(/\s+/g, ' ').trim();
               
+              // Common words to ignore in matching
+              const commonWords = ['hotel', 'apart', 'apartments', 'the', 'and', 'inn', 'resort'];
+              
               const normalizedHotelName = normalizeText(hotel.name);
-              const hotelNameWords = normalizedHotelName.split(' ').filter(w => w.length > 2);
+              const hotelNameWords = normalizedHotelName.split(' ')
+                .filter(w => w.length > 2 && !commonWords.includes(w));
               
               // Search for hotel image in documents (excluding parking images)
               const hotelImageDoc = documents?.find(doc => {
@@ -460,12 +464,13 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
                 
                 const normalizedDocName = normalizeText(doc.name);
                 
-                // Check if doc name contains at least 2 significant words from hotel name
+                // Check if doc name contains at least 1 significant word from hotel name
+                // (after filtering out common words like 'hotel', 'apartments')
                 const matchingWords = hotelNameWords.filter(word => 
                   normalizedDocName.includes(word)
                 );
                 
-                return matchingWords.length >= 2 || 
+                return matchingWords.length >= 1 || 
                        normalizedDocName.includes(normalizedHotelName) ||
                        (hotel.address && normalizedDocName.includes(normalizeText(hotel.address)));
               });

@@ -299,3 +299,7 @@
 
 ## Bug Fix - Hotel Image Matching
 - [x] Fix case-insensitive matching for hotel images (DoubleTree By vs by, Hotel Ambassador not showing) - improved with word-based matching
+
+## Hotel Image Issues - Specific Hotels
+- [x] Fix Hotel Ambassador image not showing - filtered common words, requires 1 unique word match
+- [x] Fix Apart Hotel GOLDEN apartments image not showing - filtered 'apartments' from matching
