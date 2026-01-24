@@ -441,5 +441,7 @@
 
 ## Fix Route Display in Day 3 and Day 4
 - [x] Debug day number calculation in DailyView.tsx - Fixed to use Sep 1, 2026 as trip start
-- [x] Verify Route 4 appears in Day 3 tab
-- [x] Verify Route 5 appears in Day 4 tab
+- [x] Fixed early return that prevented route cards from showing when no other activities exist
+- [x] Moved route card rendering before empty state check
+- [x] Verified Route 4 (Štrbské Pleso) appears in Day 3 tab
+- [x] Verified Route 5 (Jasná) appears in Day 4 tab

@@ -230,17 +230,6 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
   // Sort activities by time
   activities.sort((a, b) => a.time - b.time);
 
-
-
-  if (activities.length === 0) {
-    return (
-      <div className="text-center py-12 text-muted-foreground">
-        <Calendar className="w-12 h-12 mx-auto mb-4 opacity-50" />
-        <p>{language === "he" ? "אין פעילויות מתוכננות ליום זה" : "No activities planned for this day"}</p>
-      </div>
-    );
-  }
-
   // Get pastel background color based on activity type
   const getActivityBgColor = (type: Activity["type"]) => {
     switch (type) {
@@ -339,6 +328,14 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
         </Card>
       )}
 
+
+      {/* Empty state if no activities */}
+      {activities.length === 0 && !todayRoute && (
+        <div className="text-center py-12 text-muted-foreground">
+          <Calendar className="w-12 h-12 mx-auto mb-4 opacity-50" />
+          <p>{language === "he" ? "אין פעילויות מתוכננות ליום זה" : "No activities planned for this day"}</p>
+        </div>
+      )}
 
       {activities.map((activity) => {
         const Icon = activity.icon;
