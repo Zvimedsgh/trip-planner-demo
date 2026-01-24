@@ -149,55 +149,82 @@ export function AllRouteMapsTab() {
 
       {/* Map Dialog */}
       <Dialog open={!!selectedRoute} onOpenChange={(open) => !open && setSelectedRoute(null)}>
-        <DialogContent className="max-w-5xl h-[80vh]">
+        <DialogContent className="max-w-[95vw] h-[95vh] flex flex-col">
           <DialogHeader>
             <DialogTitle>
               {selectedRoute && (language === "he" ? selectedRoute.title.he : selectedRoute.title.en)}
             </DialogTitle>
           </DialogHeader>
-          <div className="h-full rounded-lg overflow-hidden border-2 border-border">
-            {selectedRoute && (
-              <MapView
-                onMapReady={(map: any) => {
-                  const google = window.google;
-                  const directionsService = new google.maps.DirectionsService();
-                  const directionsRenderer = new google.maps.DirectionsRenderer({
-                    map,
-                    suppressMarkers: false,
-                  });
-
-                  directionsService.route(
-                    {
-                      origin: selectedRoute.origin,
-                      destination: selectedRoute.destination,
-                      waypoints: selectedRoute.waypoints,
-                      travelMode: google.maps.TravelMode.DRIVING,
-                    },
-                    (result: any, status: any) => {
-                      if (status === google.maps.DirectionsStatus.OK && result) {
-                        directionsRenderer.setDirections(result);
-                      }
-                    }
-                  );
-
-                  // Add POI markers
-                  selectedRoute.pois.forEach((poi) => {
-                    new google.maps.Marker({
-                      position: { lat: poi.lat, lng: poi.lng },
+          <div className="flex-1 flex flex-col gap-4 overflow-hidden">
+            {/* Map Container */}
+            <div className="flex-1 rounded-lg overflow-hidden border-2 border-border min-h-[500px]">
+              {selectedRoute && (
+                <MapView
+                  onMapReady={(map: any) => {
+                    const google = window.google;
+                    const directionsService = new google.maps.DirectionsService();
+                    const directionsRenderer = new google.maps.DirectionsRenderer({
                       map,
-                      title: poi.name,
-                      icon: {
-                        url:
-                          poi.type === "gas"
-                            ? "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-                            : poi.type === "restaurant"
-                            ? "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
-                            : "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
-                      },
+                      suppressMarkers: false,
                     });
-                  });
-                }}
-              />
+
+                    directionsService.route(
+                      {
+                        origin: selectedRoute.origin,
+                        destination: selectedRoute.destination,
+                        waypoints: selectedRoute.waypoints,
+                        travelMode: google.maps.TravelMode.DRIVING,
+                      },
+                      (result: any, status: any) => {
+                        if (status === google.maps.DirectionsStatus.OK && result) {
+                          directionsRenderer.setDirections(result);
+                        }
+                      }
+                    );
+
+                    // Add POI markers
+                    selectedRoute.pois.forEach((poi) => {
+                      new google.maps.Marker({
+                        position: { lat: poi.lat, lng: poi.lng },
+                        map,
+                        title: poi.name,
+                        icon: {
+                          url:
+                            poi.type === "gas"
+                              ? "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+                              : poi.type === "restaurant"
+                              ? "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
+                              : "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+                        },
+                      });
+                    });
+                  }}
+                />
+              )}
+            </div>
+
+            {/* POI List */}
+            {selectedRoute && selectedRoute.pois.length > 0 && (
+              <div className="border-t pt-4 overflow-y-auto max-h-[200px]">
+                <h3 className="font-semibold mb-3">
+                  {language === "he" ? "נקודות עניין לאורך המסלול" : "Points of Interest Along Route"}
+                </h3>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  {selectedRoute.pois.map((poi, index) => {
+                    const Icon = poi.type === "gas" ? Navigation : poi.type === "restaurant" ? Navigation : MapPin;
+                    const colorClass = 
+                      poi.type === "gas" ? "text-blue-600" : 
+                      poi.type === "restaurant" ? "text-green-600" : 
+                      "text-red-600";
+                    return (
+                      <div key={index} className="flex items-center gap-2 text-sm">
+                        <Icon className={`w-4 h-4 ${colorClass}`} />
+                        <span className="truncate">{poi.name}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             )}
           </div>
         </DialogContent>

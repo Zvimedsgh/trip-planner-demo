@@ -337,3 +337,9 @@
 - [x] Update budget logic to handle "selection" category hotels intelligently
 - [x] When multiple hotels marked as "selection", include only the highest-priced one in budget
 - [x] Exclude other selection hotels from total calculation
+
+## Route Map Dialog Improvements
+- [x] Enlarge map dialog to near-fullscreen size (95vw x 95vh)
+- [x] Ensure POI markers are visible on map (gas stations=blue, attractions=red, restaurants=green)
+- [x] Add POI list below map in 2-3 columns (responsive grid)
+- [x] Include POI type icons and names in the list
