@@ -285,3 +285,8 @@
 ## Bug Fix - Hilton Košice Edit Error
 - [x] Fix "Cannot read a client value during server rendering" error when editing Hilton Košice hotel
 - [x] Change category selector from controlled to uncontrolled component
+
+## Bug Fix - Hilton Košice Edit Error (FIXED)
+- [x] Fix "Cannot read a client value during server rendering" error when editing Hilton Košice hotel
+- [x] Root cause: key={formKey} prop on form div causes React to rebuild form on edit, triggering SSR hydration mismatch
+- [x] Solution: Removed key prop from form div

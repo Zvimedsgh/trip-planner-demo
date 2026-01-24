@@ -234,7 +234,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
   }
 
   const FormFields = ({ defaults }: { defaults?: typeof editDefaults }) => (
-    <div className="grid gap-4 py-4" ref={formRef} key={formKey}>
+    <div className="grid gap-4 py-4" ref={formRef}>
       <div className="grid gap-2">
         <Label>{t("hotelName")} *</Label>
         <Input

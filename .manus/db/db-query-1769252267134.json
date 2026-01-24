@@ -1,0 +1,52 @@
+{
+  "query": "SELECT * FROM hotels WHERE name LIKE '%Hilton%' OR name LIKE '%Košice%' OR name LIKE '%Kosice%' LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT * FROM hotels WHERE name LIKE '%Hilton%' OR name LIKE '%Košice%' OR name LIKE '%Kosice%' LIMIT 5;",
+  "rows": [
+    {
+      "id": "2",
+      "tripId": "30001",
+      "name": "Hotel Bankov Košice",
+      "address": "Bankov 2, 04001 Kosice, Slovakia",
+      "checkInDate": "1788566400000",
+      "checkOutDate": "1788739200000",
+      "confirmationNumber": "6183568617 PIN 1195",
+      "price": "723.00",
+      "currency": "EUR",
+      "category": "NULL",
+      "notes": "NULL",
+      "createdAt": "2026-01-22 10:32:33",
+      "updatedAt": "2026-01-24 08:23:02",
+      "checkInTime": "NULL",
+      "checkOutTime": "NULL",
+      "phone": "NULL",
+      "coverImage": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/tAaWWOTuLQpqewUs.jpg",
+      "parkingImage": "NULL",
+      "website": "https://www.facebook.com/HotelBankovKosice/"
+    },
+    {
+      "id": "90003",
+      "tripId": "30001",
+      "name": "DoubleTree By Hilton Košice",
+      "address": "NULL",
+      "checkInDate": "1788566400000",
+      "checkOutDate": "1788739200000",
+      "confirmationNumber": "NULL",
+      "price": "NULL",
+      "currency": "USD",
+      "category": "NULL",
+      "notes": "NULL",
+      "createdAt": "2026-01-24 09:56:56",
+      "updatedAt": "2026-01-24 09:56:56",
+      "checkInTime": "19:00",
+      "checkOutTime": "10:00",
+      "phone": "NULL",
+      "coverImage": "NULL",
+      "parkingImage": "NULL",
+      "website": "https://secure.booking.com/mytrips.he.html?label=hotel_details-pdPBaj%401769194794&sid=19a3fb651e19e265aa7b6c0c582b9ccd&aid=964694&trip_id=305110148748681"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttripId\tname\taddress\tcheckInDate\tcheckOutDate\tconfirmationNumber\tprice\tcurrency\tcategory\tnotes\tcreatedAt\tupdatedAt\tcheckInTime\tcheckOutTime\tphone\tcoverImage\tparkingImage\twebsite\n2\t30001\tHotel Bankov Košice\tBankov 2, 04001 Kosice, Slovakia\t1788566400000\t1788739200000\t6183568617 PIN 1195\t723.00\tEUR\tNULL\tNULL\t2026-01-22 10:32:33\t2026-01-24 08:23:02\tNULL\tNULL\tNULL\thttps://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/tAaWWOTuLQpqewUs.jpg\tNULL\thttps://www.facebook.com/HotelBankovKosice/\n90003\t30001\tDoubleTree By Hilton Košice\tNULL\t1788566400000\t1788739200000\tNULL\tNULL\tUSD\tNULL\tNULL\t2026-01-24 09:56:56\t2026-01-24 09:56:56\t19:00\t10:00\tNULL\tNULL\tNULL\thttps://secure.booking.com/mytrips.he.html?label=hotel_details-pdPBaj%401769194794&sid=19a3fb651e19e265aa7b6c0c582b9ccd&aid=964694&trip_id=305110148748681\n",
+  "stderr": "",
+  "execution_time_ms": 2087
+}
