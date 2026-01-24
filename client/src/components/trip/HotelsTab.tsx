@@ -436,63 +436,80 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
                       )}
                     </div>
                   </div>
-                  <div className="flex gap-1">
-                    {/* Link to related documents */}
+                  <div className="flex flex-wrap gap-1">
+                    {/* Link to related documents (excluding parking images) */}
                     {(() => {
                       const relatedDocs = documents?.filter(doc => 
                         (doc.category === 'booking' || doc.category === 'other') && 
+                        !doc.name.toLowerCase().includes('parking') &&
                         (doc.name.toLowerCase().includes(hotel.name.toLowerCase()) || 
                          doc.name.toLowerCase().includes('hotel') ||
-                         doc.name.toLowerCase().includes('parking') ||
                          (hotel.address && doc.name.toLowerCase().includes(hotel.address.toLowerCase())))
                       );
-                      if (relatedDocs && relatedDocs.length > 0) {
-                        return (
-                          <Button 
-                            size="icon" 
-                            variant="ghost" 
-                            className="h-8 w-8 text-white bg-blue-500/80 hover:bg-blue-600"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              // Open the document file
-                              if (relatedDocs[0]?.fileUrl) {
-                                window.open(relatedDocs[0].fileUrl, '_blank');
-                              }
-                            }}
-                            title={language === 'he' ? 'פתיחת מסמך' : 'Open document'}
-                          >
-                            <FileText className="w-4 h-4" />
-                          </Button>
-                        );
-                      }
-                      return null;
+                      return (
+                        <Button 
+                          size="icon" 
+                          variant="ghost" 
+                          className="h-8 w-8 text-white bg-blue-500/80 hover:bg-blue-600"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            if (relatedDocs && relatedDocs.length > 0) {
+                              // Open the first document
+                              window.open(relatedDocs[0].fileUrl, '_blank');
+                            } else {
+                              // Show toast message
+                              toast.info(language === 'he' ? 'אין מסמך' : 'No document');
+                            }
+                          }}
+                          title={relatedDocs && relatedDocs.length > 0 
+                            ? (language === 'he' ? 'פתיחת מסמך' : 'Open document')
+                            : (language === 'he' ? 'אין מסמך' : 'No document')
+                          }
+                        >
+                          <FileText className="w-4 h-4" />
+                        </Button>
+                      );
                     })()}
-                    <Button 
-                      size="icon" 
-                      variant="ghost" 
-                      className="h-8 w-8 text-white bg-purple-500/80 hover:bg-purple-600"
-                      onClick={() => {
-                        const input = document.createElement('input');
-                        input.type = 'file';
-                        input.accept = 'image/*';
-                        input.onchange = (e) => {
-                          const file = (e.target as HTMLInputElement).files?.[0];
-                          if (file) handleParkingImageUpload(hotel.id, file);
-                        };
-                        input.click();
-                      }}
-                      disabled={uploadingHotelId === hotel.id}
-                      title={language === 'he' ? 'העלה תמונת חניה' : 'Upload parking image'}
-                    >
-                      {uploadingHotelId === hotel.id ? (
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                      ) : hotel.parkingImage ? (
-                        <ImageIcon className="w-4 h-4" />
-                      ) : (
-                        <Upload className="w-4 h-4" />
-                      )}
-                    </Button>
+                    {/* Parking image button */}
+                    {(() => {
+                      const parkingDocs = documents?.filter(doc => 
+                        (doc.category === 'booking' || doc.category === 'other') && 
+                        doc.name.toLowerCase().includes('parking') &&
+                        (doc.name.toLowerCase().includes(hotel.name.toLowerCase()) || 
+                         doc.name.toLowerCase().includes('hotel') ||
+                         (hotel.address && doc.name.toLowerCase().includes(hotel.address.toLowerCase())))
+                      );
+                      const hasParkingImage = hotel.parkingImage || (parkingDocs && parkingDocs.length > 0);
+                      return (
+                        <Button 
+                          size="icon" 
+                          variant="ghost" 
+                          className="h-8 w-8 text-white bg-purple-500/80 hover:bg-purple-600"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            if (hotel.parkingImage) {
+                              window.open(hotel.parkingImage, '_blank');
+                            } else if (parkingDocs && parkingDocs.length > 0) {
+                              window.open(parkingDocs[0].fileUrl, '_blank');
+                            } else {
+                              toast.info(language === 'he' ? 'אין תמונת חניה' : 'No parking image');
+                            }
+                          }}
+                          title={hasParkingImage
+                            ? (language === 'he' ? 'פתיחת תמונת חניה' : 'Open parking image')
+                            : (language === 'he' ? 'אין תמונת חניה' : 'No parking image')
+                          }
+                        >
+                          {hasParkingImage ? (
+                            <ImageIcon className="w-4 h-4" />
+                          ) : (
+                            <Upload className="w-4 h-4" />
+                          )}
+                        </Button>
+                      );
+                    })()}
                     <Button size="icon" variant="ghost" className="h-8 w-8 text-white bg-amber-500/80 hover:bg-amber-600" onClick={() => openEdit(hotel)}>
                       <Edit className="w-4 h-4" />
                     </Button>

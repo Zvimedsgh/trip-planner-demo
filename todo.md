@@ -256,3 +256,19 @@
 - [x] Show URL link in daily view activities
 - [x] Link activities to ALL their related documents in daily view (not just one)
 - [x] Support multiple document buttons per activity in daily view
+
+## Bug Fixes and New Features - Session Complete
+- [x] Fix document upload bug - blue button now shows documents (not parking images)
+- [x] Fix parking image display - purple button now shows parking images only
+- [x] Support multiple document uploads per hotel
+- [x] Auto-wrap action buttons to new row if not enough space
+- [x] Translate "OTHER" to "BY CAR" in transportation type
+- [x] Show "אין מסמך" / "אין תמונת חניה" messages when no files available
+- [x] Colorize all action buttons with distinct colors (blue=document, purple=parking, amber=edit, red=delete)
+- [x] Display website URLs in all activity cards with external link icon
+- [x] Show website and document links in daily view
+
+## Route Maps - In Progress
+- [ ] Create route map: Liptovský Mikuláš → Košice with attractions, restaurants, gas stations
+- [ ] Create route map: Košice → Vienna with attractions, restaurants, gas stations
+- [ ] Update navigation to show all three route maps as separate tabs
