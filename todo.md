@@ -313,3 +313,7 @@
 ## Critical Bug - Daily Tabs Missing
 - [x] Daily tabs (Day 1-9) disappeared after adding route maps
 - [x] Fixed by changing second TabsList to div wrapper
+
+## Bug - Tabs Overlapping
+- [x] Category tabs and daily tabs are displaying on the same line and overlapping
+- [x] Fixed by adding mt-4 and clear-both classes to daily tabs wrapper
