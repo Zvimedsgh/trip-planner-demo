@@ -445,3 +445,19 @@
 - [x] Moved route card rendering before empty state check
 - [x] Verified Route 4 (Štrbské Pleso) appears in Day 3 tab
 - [x] Verified Route 5 (Jasná) appears in Day 4 tab
+
+## Vienna Activities (Days 7-8)
+### Day 7 Evening (Sep 7)
+- [x] Add Stephansplatz walking tour tourist site (19:00)
+- [x] Add Figlmüller restaurant for dinner (19:00)
+- [x] Add Lugeck restaurant as alternative for dinner (19:00)
+
+### Day 8 Full Day (Sep 8)
+- [x] Add Schönbrunn Palace tourist site (08:30)
+- [x] Add Naschmarkt tourist site (12:00)
+- [x] Add NENI restaurant at Naschmarkt for lunch (12:30)
+- [x] Add Hofburg Palace tourist site (15:00)
+- [x] Add Austrian National Library tourist site (15:30)
+- [x] Add Café Central for coffee and cake (16:30)
+- [x] Add Grinzing wine village tourist site (19:00)
+- [x] Add Zum Martin Sepp Heuriger restaurant for dinner (19:30)
