@@ -184,44 +184,9 @@ export default function TripDetail() {
           </div>
         </div>
 
-        {/* Daily Tabs - Separate from Activity Tabs */}
-        <div className="mb-8">
-          <Tabs defaultValue={`day-${trip.startDate}`} className="w-full">
-            <TabsList className="w-full flex flex-wrap h-auto gap-2 bg-transparent p-0 mb-6">
-              {Array.from({ length: getDaysCount(trip.startDate, trip.endDate) }, (_, i) => {
-                const dayDate = new Date(trip.startDate);
-                dayDate.setDate(dayDate.getDate() + i);
-                const dayTimestamp = dayDate.getTime();
-                return (
-                  <TabsTrigger
-                    key={`day-${dayTimestamp}`}
-                    value={`day-${dayTimestamp}`}
-                    className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-3 py-1.5 rounded-md border border-border data-[state=active]:border-primary text-sm transition-all font-medium"
-                  >
-                    {language === "he" ? `יום ${i + 1}` : `Day ${i + 1}`}
-                    <span className="text-xs hidden sm:inline">
-                      {format(dayDate, "MMM d")}
-                    </span>
-                  </TabsTrigger>
-                );
-              })}
-            </TabsList>
-
-            {Array.from({ length: getDaysCount(trip.startDate, trip.endDate) }, (_, i) => {
-              const dayDate = new Date(trip.startDate);
-              dayDate.setDate(dayDate.getDate() + i);
-              const dayTimestamp = dayDate.getTime();
-              return (
-                <TabsContent key={`day-content-${dayTimestamp}`} value={`day-${dayTimestamp}`} className="mt-4">
-                  <DailyView tripId={tripId} date={dayTimestamp} />
-                </TabsContent>
-              );
-            })}
-          </Tabs>
-        </div>
-
-        {/* Activity Category Tabs */}
+        {/* Combined Tabs: Activities (Row 1) + Days (Row 2) */}
         <Tabs defaultValue="hotels" className="w-full">
+          {/* Row 1: Activity Category Tabs */}
           <TabsList className="w-full flex flex-wrap h-auto gap-2 bg-transparent p-0 mb-6">
             {tabs.map((tab) => (
               <TabsTrigger
@@ -234,6 +199,39 @@ export default function TripDetail() {
               </TabsTrigger>
             ))}
           </TabsList>
+
+          {/* Row 2: Daily Tabs */}
+          <TabsList className="w-full flex flex-wrap h-auto gap-2 bg-transparent p-0 mb-6">
+            {Array.from({ length: getDaysCount(trip.startDate, trip.endDate) }, (_, i) => {
+              const dayDate = new Date(trip.startDate);
+              dayDate.setDate(dayDate.getDate() + i);
+              const dayTimestamp = dayDate.getTime();
+              return (
+                <TabsTrigger
+                  key={`day-${dayTimestamp}`}
+                  value={`day-${dayTimestamp}`}
+                  className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-3 py-1.5 rounded-md border border-border data-[state=active]:border-primary text-sm transition-all font-medium"
+                >
+                  {language === "he" ? `יום ${i + 1}` : `Day ${i + 1}`}
+                  <span className="text-xs hidden sm:inline">
+                    {format(dayDate, "MMM d")}
+                  </span>
+                </TabsTrigger>
+              );
+            })}
+          </TabsList>
+
+          {/* Daily Content */}
+          {Array.from({ length: getDaysCount(trip.startDate, trip.endDate) }, (_, i) => {
+            const dayDate = new Date(trip.startDate);
+            dayDate.setDate(dayDate.getDate() + i);
+            const dayTimestamp = dayDate.getTime();
+            return (
+              <TabsContent key={`day-content-${dayTimestamp}`} value={`day-${dayTimestamp}`}>
+                <DailyView tripId={tripId} date={dayTimestamp} />
+              </TabsContent>
+            );
+          })}
 
           <TabsContent value="sites">
             <TouristSitesTab tripId={tripId} />

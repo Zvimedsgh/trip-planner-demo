@@ -214,3 +214,8 @@
 ## Daily Tabs Fix
 - [x] Separate daily tabs from activity tabs - prevent content mixing
 - [x] Add distinct color to selected day tab for better visibility
+
+## Correct Tab Structure
+- [x] Row 1: Activity category tabs (Hotels, Transportation, etc.)
+- [x] Row 2: Daily tabs (Day 1-8)
+- [x] Daily view shows all activities sorted by time without category headers

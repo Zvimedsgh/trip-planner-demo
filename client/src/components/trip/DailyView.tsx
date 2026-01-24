@@ -9,6 +9,17 @@ interface DailyViewProps {
   date: number; // Unix timestamp for the day
 }
 
+type Activity = {
+  id: number;
+  type: "hotel-checkin" | "hotel-checkout" | "transportation" | "car-pickup" | "car-return" | "site" | "restaurant";
+  time: number;
+  icon: any;
+  title: string;
+  subtitle?: string;
+  details: string[];
+  price?: { amount: number; currency: string };
+};
+
 export default function DailyView({ tripId, date }: DailyViewProps) {
   const { language } = useLanguage();
   
@@ -25,30 +36,122 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
 
   const isOnDay = (timestamp: number) => timestamp >= dayStart && timestamp <= dayEnd;
 
-  const dayHotels = hotels?.filter(h => 
-    isOnDay(h.checkInDate) || isOnDay(h.checkOutDate)
-  ) || [];
+  // Collect all activities with their times
+  const activities: Activity[] = [];
 
-  const dayTransportation = transportation?.filter(t => 
-    isOnDay(t.departureDate)
-  ) || [];
+  // Hotels
+  hotels?.forEach(h => {
+    if (isOnDay(h.checkInDate)) {
+      activities.push({
+        id: h.id,
+        type: "hotel-checkin",
+        time: h.checkInDate,
+        icon: Hotel,
+        title: h.name,
+        subtitle: language === "he" ? "צ'ק-אין" : "Check-in",
+        details: [h.address].filter((d): d is string => Boolean(d)),
+        price: h.price ? { amount: parseFloat(h.price), currency: h.currency || "EUR" } : undefined
+      });
+    }
+    if (isOnDay(h.checkOutDate)) {
+      activities.push({
+        id: h.id + 10000,
+        type: "hotel-checkout",
+        time: h.checkOutDate,
+        icon: Hotel,
+        title: h.name,
+        subtitle: language === "he" ? "צ'ק-אאוט" : "Check-out",
+        details: [h.address].filter((d): d is string => Boolean(d)),
+        price: undefined
+      });
+    }
+  });
 
-  const dayCarRentals = carRentals?.filter(c => 
-    isOnDay(c.pickupDate) || isOnDay(c.returnDate)
-  ) || [];
+  // Transportation
+  transportation?.forEach(t => {
+    if (isOnDay(t.departureDate)) {
+      activities.push({
+        id: t.id,
+        type: "transportation",
+        time: t.departureDate,
+        icon: Plane,
+        title: t.type,
+        subtitle: `${t.origin} → ${t.destination}`,
+        details: [
+          t.flightNumber || "",
+          t.arrivalDate ? `${language === "he" ? "נחיתה:" : "Arrival:"} ${format(new Date(t.arrivalDate), "HH:mm")}` : ""
+        ].filter(Boolean),
+        price: t.price ? { amount: parseFloat(t.price), currency: t.currency || "EUR" } : undefined
+      });
+    }
+  });
 
-  const daySites = sites?.filter(s => 
-    s.plannedVisitDate && isOnDay(s.plannedVisitDate)
-  ) || [];
+  // Car Rentals
+  carRentals?.forEach(c => {
+    if (isOnDay(c.pickupDate)) {
+      activities.push({
+        id: c.id,
+        type: "car-pickup",
+        time: c.pickupDate,
+        icon: Car,
+        title: c.company,
+        subtitle: language === "he" ? "איסוף רכב" : "Car Pickup",
+        details: [c.carModel, c.pickupLocation].filter((d): d is string => Boolean(d)),
+        price: c.price ? { amount: parseFloat(c.price), currency: c.currency || "EUR" } : undefined
+      });
+    }
+    if (isOnDay(c.returnDate)) {
+      activities.push({
+        id: c.id + 10000,
+        type: "car-return",
+        time: c.returnDate,
+        icon: Car,
+        title: c.company,
+        subtitle: language === "he" ? "החזרת רכב" : "Car Return",
+        details: [c.carModel, c.returnLocation].filter((d): d is string => Boolean(d)),
+        price: undefined
+      });
+    }
+  });
 
-  const dayRestaurants = restaurants?.filter(r => 
-    r.reservationDate && isOnDay(r.reservationDate)
-  ) || [];
+  // Tourist Sites
+  sites?.forEach(s => {
+    if (s.plannedVisitDate && isOnDay(s.plannedVisitDate)) {
+      activities.push({
+        id: s.id,
+        type: "site",
+        time: s.plannedVisitDate,
+        icon: MapPin,
+        title: s.name,
+        details: [s.address, s.description, s.openingHours].filter((d): d is string => Boolean(d)),
+        price: undefined
+      });
+    }
+  });
 
-  const hasActivities = dayHotels.length > 0 || dayTransportation.length > 0 || 
-    dayCarRentals.length > 0 || daySites.length > 0 || dayRestaurants.length > 0;
+  // Restaurants
+  restaurants?.forEach(r => {
+    if (r.reservationDate && isOnDay(r.reservationDate)) {
+      activities.push({
+        id: r.id,
+        type: "restaurant",
+        time: r.reservationDate,
+        icon: Utensils,
+        title: r.name,
+        subtitle: r.cuisineType || undefined,
+        details: [
+          r.address,
+          r.numberOfDiners ? `${r.numberOfDiners} ${language === "he" ? "סועדים" : "diners"}` : ""
+        ].filter(Boolean) as string[],
+        price: r.price ? { amount: parseFloat(r.price), currency: r.currency || "EUR" } : undefined
+      });
+    }
+  });
 
-  if (!hasActivities) {
+  // Sort activities by time
+  activities.sort((a, b) => a.time - b.time);
+
+  if (activities.length === 0) {
     return (
       <div className="text-center py-12 text-muted-foreground">
         <Calendar className="w-12 h-12 mx-auto mb-4 opacity-50" />
@@ -58,184 +161,44 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Hotels */}
-      {dayHotels.length > 0 && (
-        <div>
-          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-            <Hotel className="w-5 h-5" />
-            {language === "he" ? "מלונות" : "Hotels"}
-          </h3>
-          <div className="grid gap-4 md:grid-cols-2">
-            {dayHotels.map((hotel) => (
-              <Card key={hotel.id}>
-                <CardHeader>
-                  <CardTitle className="text-base">{hotel.name}</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-2 text-sm">
-                  <p className="text-muted-foreground">{hotel.address}</p>
-                  {isOnDay(hotel.checkInDate) && (
-                    <p>
-                      <span className="font-medium">{language === "he" ? "צ'ק-אין:" : "Check-in:"}</span>{" "}
-                      {format(new Date(hotel.checkInDate), "HH:mm")}
+    <div className="space-y-4">
+      {activities.map((activity) => {
+        const Icon = activity.icon;
+        return (
+          <Card key={`${activity.type}-${activity.id}`}>
+            <CardHeader>
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-3">
+                  <Icon className="w-5 h-5 text-primary" />
+                  <div>
+                    <CardTitle className="text-base">{activity.title}</CardTitle>
+                    {activity.subtitle && (
+                      <p className="text-sm text-muted-foreground mt-1">{activity.subtitle}</p>
+                    )}
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm font-semibold">{format(new Date(activity.time), "HH:mm")}</p>
+                  {activity.price && (
+                    <p className="text-sm font-semibold text-primary mt-1">
+                      {activity.price.amount} {activity.price.currency}
                     </p>
                   )}
-                  {isOnDay(hotel.checkOutDate) && (
-                    <p>
-                      <span className="font-medium">{language === "he" ? "צ'ק-אאוט:" : "Check-out:"}</span>{" "}
-                      {format(new Date(hotel.checkOutDate), "HH:mm")}
-                    </p>
-                  )}
-                  {hotel.price && (
-                    <p className="font-semibold text-primary">
-                      {hotel.price} {hotel.currency || "EUR"}
-                    </p>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Transportation */}
-      {dayTransportation.length > 0 && (
-        <div>
-          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-            <Plane className="w-5 h-5" />
-            {language === "he" ? "תחבורה" : "Transportation"}
-          </h3>
-          <div className="grid gap-4 md:grid-cols-2">
-            {dayTransportation.map((trans) => (
-              <Card key={trans.id}>
-                <CardHeader>
-                  <CardTitle className="text-base">{trans.type}</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-2 text-sm">
-                  <p>
-                    {trans.origin} → {trans.destination}
-                  </p>
-                  <p>
-                    {format(new Date(trans.departureDate), "HH:mm")}
-                    {trans.arrivalDate && ` - ${format(new Date(trans.arrivalDate), "HH:mm")}`}
-                  </p>
-                  {trans.flightNumber && (
-                    <p className="text-muted-foreground">{trans.flightNumber}</p>
-                  )}
-                  {trans.price && (
-                    <p className="font-semibold text-primary">
-                      {trans.price} {trans.currency || "EUR"}
-                    </p>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Car Rentals */}
-      {dayCarRentals.length > 0 && (
-        <div>
-          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-            <Car className="w-5 h-5" />
-            {language === "he" ? "השכרת רכב" : "Car Rentals"}
-          </h3>
-          <div className="grid gap-4 md:grid-cols-2">
-            {dayCarRentals.map((car) => (
-              <Card key={car.id}>
-                <CardHeader>
-                  <CardTitle className="text-base">{car.company}</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-2 text-sm">
-                  <p>{car.carModel}</p>
-                  {isOnDay(car.pickupDate) && (
-                    <p>
-                      <span className="font-medium">{language === "he" ? "איסוף:" : "Pickup:"}</span>{" "}
-                      {car.pickupLocation} - {format(new Date(car.pickupDate), "HH:mm")}
-                    </p>
-                  )}
-                  {isOnDay(car.returnDate) && (
-                    <p>
-                      <span className="font-medium">{language === "he" ? "החזרה:" : "Return:"}</span>{" "}
-                      {car.returnLocation} - {format(new Date(car.returnDate), "HH:mm")}
-                    </p>
-                  )}
-                  {car.price && (
-                    <p className="font-semibold text-primary">
-                      {car.price} {car.currency || "EUR"}
-                    </p>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Tourist Sites */}
-      {daySites.length > 0 && (
-        <div>
-          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-            <MapPin className="w-5 h-5" />
-            {language === "he" ? "אתרי תיירות" : "Tourist Sites"}
-          </h3>
-          <div className="grid gap-4 md:grid-cols-2">
-            {daySites.map((site) => (
-              <Card key={site.id}>
-                <CardHeader>
-                  <CardTitle className="text-base">{site.name}</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-2 text-sm">
-                  <p className="text-muted-foreground">{site.address}</p>
-                  {site.description && (
-                    <p className="text-sm">{site.description}</p>
-                  )}
-                  {site.openingHours && (
-                    <p className="text-muted-foreground">{site.openingHours}</p>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Restaurants */}
-      {dayRestaurants.length > 0 && (
-        <div>
-          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-            <Utensils className="w-5 h-5" />
-            {language === "he" ? "מסעדות" : "Restaurants"}
-          </h3>
-          <div className="grid gap-4 md:grid-cols-2">
-            {dayRestaurants.map((restaurant) => (
-              <Card key={restaurant.id}>
-                <CardHeader>
-                  <CardTitle className="text-base">{restaurant.name}</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-2 text-sm">
-                  <p className="text-muted-foreground">{restaurant.address}</p>
-                  {restaurant.cuisineType && (
-                    <p>{restaurant.cuisineType}</p>
-                  )}
-                  {restaurant.reservationDate && (
-                    <p>
-                      {format(new Date(restaurant.reservationDate), "HH:mm")}
-                      {restaurant.numberOfDiners && ` - ${restaurant.numberOfDiners} ${language === "he" ? "סועדים" : "diners"}`}
-                    </p>
-                  )}
-                  {restaurant.price && (
-                    <p className="font-semibold text-primary">
-                      {restaurant.price} {restaurant.currency || "EUR"}
-                    </p>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      )}
+                </div>
+              </div>
+            </CardHeader>
+            {activity.details.length > 0 && (
+              <CardContent className="pt-0">
+                <div className="space-y-1 text-sm text-muted-foreground">
+                  {activity.details.map((detail, idx) => (
+                    <p key={idx}>{detail}</p>
+                  ))}
+                </div>
+              </CardContent>
+            )}
+          </Card>
+        );
+      })}
     </div>
   );
 }
