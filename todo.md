@@ -238,3 +238,14 @@
 - [x] Update Restaurants form to include time input
 - [x] Update DailyView to combine date+time for tourist sites
 - [x] Update DailyView to combine date+time for restaurants
+
+## UI/UX Improvements and URL Support
+- [x] Add URL field to Hotels (website link)
+- [x] Add URL field to Tourist Sites (website link)
+- [x] Add URL field to Restaurants (website link)
+- [x] Add URL field to Transportation (booking link)
+- [x] Add URL field to Car Rentals (booking link)
+- [x] Update all forms to include URL input field
+- [x] Colorize small action buttons (document view, edit, delete) with distinct colors
+- [x] Add document links to activities in daily view
+- [x] Make document buttons more visible and accessible

@@ -60,6 +60,7 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
       openingHours: getValue("openingHours"),
       plannedVisitDate: getValue("plannedVisitDate"),
       plannedVisitTime: getValue("plannedVisitTime"),
+      website: getValue("website"),
       notes: getValue("notes"),
     };
   };
@@ -80,6 +81,7 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
       openingHours: values.openingHours || undefined,
       plannedVisitDate: values.plannedVisitDate ? new Date(values.plannedVisitDate).getTime() : undefined,
       plannedVisitTime: values.plannedVisitTime || undefined,
+      website: values.website || undefined,
       notes: values.notes || undefined,
     });
   };
@@ -100,6 +102,7 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
       openingHours: values.openingHours || undefined,
       plannedVisitDate: values.plannedVisitDate ? new Date(values.plannedVisitDate).getTime() : undefined,
       plannedVisitTime: values.plannedVisitTime || undefined,
+      website: values.website || undefined,
       notes: values.notes || undefined,
     });
   };
@@ -111,6 +114,7 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
     openingHours: "",
     plannedVisitDate: "",
     plannedVisitTime: "",
+    website: "",
     notes: "",
   });
 
@@ -122,6 +126,7 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
       openingHours: site.openingHours || "",
       plannedVisitDate: site.plannedVisitDate ? format(new Date(site.plannedVisitDate), "yyyy-MM-dd") : "",
       plannedVisitTime: site.plannedVisitTime || "",
+      website: site.website || "",
       notes: site.notes || "",
     });
     setEditingId(site.id);
@@ -185,6 +190,15 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
             defaultValue={defaults?.plannedVisitTime || ""}
           />
         </div>
+      </div>
+      <div className="grid gap-2">
+        <Label>{language === "he" ? "אתר אינטרנט" : "Website"}</Label>
+        <Input
+          name="website"
+          type="url"
+          defaultValue={defaults?.website || ""}
+          placeholder="https://"
+        />
       </div>
       <div className="grid gap-2">
         <Label>{t("notes")}</Label>
@@ -277,13 +291,13 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
                       </div>
                     </div>
                     <div className="flex gap-0.5">
-                      <Button size="icon" variant="ghost" className="h-7 w-7 text-white hover:bg-white/20" onClick={() => openEdit(site)}>
+                      <Button size="icon" variant="ghost" className="h-7 w-7 text-white bg-amber-500/80 hover:bg-amber-600" onClick={() => openEdit(site)}>
                         <Edit className="w-3 h-3" />
                       </Button>
                       <Button 
                         size="icon" 
                         variant="ghost" 
-                        className="h-7 w-7 text-white hover:bg-white/20"
+                        className="h-7 w-7 text-white bg-red-500/80 hover:bg-red-600"
                         onClick={() => deleteMutation.mutate({ id: site.id })}
                       >
                         <Trash2 className="w-3 h-3" />

@@ -120,6 +120,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
       checkOutTime: getValue("checkOutTime"),
       confirmationNumber: getValue("confirmationNumber"),
       phone: getValue("phone"),
+      website: getValue("website"),
       price: getValue("price"),
       notes: getValue("notes"),
     };
@@ -143,6 +144,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
       checkOutTime: values.checkOutTime || undefined,
       confirmationNumber: values.confirmationNumber || undefined,
       phone: values.phone || undefined,
+      website: values.website || undefined,
       price: values.price || undefined,
       currency: selectedCurrency,
       notes: values.notes || undefined,
@@ -167,6 +169,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
       checkOutTime: values.checkOutTime || undefined,
       confirmationNumber: values.confirmationNumber || undefined,
       phone: values.phone || undefined,
+      website: values.website || undefined,
       price: values.price || undefined,
       currency: selectedCurrency,
       notes: values.notes || undefined,
@@ -182,6 +185,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
     checkOutTime: "",
     confirmationNumber: "",
     phone: "",
+    website: "",
     price: "",
     currency: "USD",
     notes: "",
@@ -197,6 +201,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
       checkOutTime: hotel.checkOutTime || "",
       confirmationNumber: hotel.confirmationNumber || "",
       phone: hotel.phone || "",
+      website: hotel.website || "",
       price: hotel.price || "",
       currency: hotel.currency || "USD",
       notes: hotel.notes || "",
@@ -280,15 +285,15 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
           />
         </div>
       </div>
+      <div className="grid gap-2">
+        <Label>{t("confirmationNumber")}</Label>
+        <Input
+          name="confirmationNumber"
+          tabIndex={7}
+          defaultValue={defaults?.confirmationNumber || ""}
+        />
+      </div>
       <div className="grid grid-cols-2 gap-4">
-        <div className="grid gap-2">
-          <Label>{t("confirmationNumber")}</Label>
-          <Input
-            name="confirmationNumber"
-            tabIndex={7}
-            defaultValue={defaults?.confirmationNumber || ""}
-          />
-        </div>
         <div className="grid gap-2">
           <Label>{language === "he" ? "טלפון" : "Phone"}</Label>
           <Input
@@ -297,6 +302,16 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
             type="tel"
             defaultValue={defaults?.phone || ""}
             placeholder={language === "he" ? "+972-XX-XXX-XXXX" : "+1-XXX-XXX-XXXX"}
+          />
+        </div>
+        <div className="grid gap-2">
+          <Label>{language === "he" ? "אתר אינטרנט" : "Website"}</Label>
+          <Input
+            name="website"
+            tabIndex={9}
+            type="url"
+            defaultValue={defaults?.website || ""}
+            placeholder="https://"
           />
         </div>
       </div>
@@ -436,7 +451,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
                           <Button 
                             size="icon" 
                             variant="ghost" 
-                            className="h-8 w-8 text-white hover:bg-white/20"
+                            className="h-8 w-8 text-white bg-blue-500/80 hover:bg-blue-600"
                             onClick={(e) => {
                               e.preventDefault();
                               e.stopPropagation();
@@ -456,7 +471,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
                     <Button 
                       size="icon" 
                       variant="ghost" 
-                      className="h-8 w-8 text-white hover:bg-white/20"
+                      className="h-8 w-8 text-white bg-purple-500/80 hover:bg-purple-600"
                       onClick={() => {
                         const input = document.createElement('input');
                         input.type = 'file';
@@ -478,13 +493,13 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
                         <Upload className="w-4 h-4" />
                       )}
                     </Button>
-                    <Button size="icon" variant="ghost" className="h-8 w-8 text-white hover:bg-white/20" onClick={() => openEdit(hotel)}>
+                    <Button size="icon" variant="ghost" className="h-8 w-8 text-white bg-amber-500/80 hover:bg-amber-600" onClick={() => openEdit(hotel)}>
                       <Edit className="w-4 h-4" />
                     </Button>
                     <Button 
                       size="icon" 
                       variant="ghost" 
-                      className="h-8 w-8 text-white hover:bg-white/20"
+                      className="h-8 w-8 text-white bg-red-500/80 hover:bg-red-600"
                       onClick={() => deleteMutation.mutate({ id: hotel.id })}
                     >
                       <Trash2 className="w-4 h-4" />

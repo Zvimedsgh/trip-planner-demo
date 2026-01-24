@@ -82,6 +82,7 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
       reservationTime: getValue("reservationTime"),
       numberOfDiners: getValue("numberOfDiners"),
       phone: getValue("phone"),
+      website: getValue("website"),
       price: getValue("price"),
       notes: getValue("notes"),
     };
@@ -104,6 +105,7 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
       reservationTime: values.reservationTime || undefined,
       numberOfDiners: values.numberOfDiners ? parseInt(values.numberOfDiners) : undefined,
       phone: values.phone || undefined,
+      website: values.website || undefined,
       price: values.price || undefined,
       currency: selectedCurrency,
       notes: values.notes || undefined,
@@ -127,6 +129,7 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
       reservationTime: values.reservationTime || undefined,
       numberOfDiners: values.numberOfDiners ? parseInt(values.numberOfDiners) : undefined,
       phone: values.phone || undefined,
+      website: values.website || undefined,
       price: values.price || undefined,
       currency: selectedCurrency,
       notes: values.notes || undefined,
@@ -141,6 +144,7 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
     reservationTime: "",
     numberOfDiners: "",
     phone: "",
+    website: "",
     price: "",
     currency: "USD",
     notes: "",
@@ -155,6 +159,7 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
       reservationTime: restaurant.reservationTime || "",
       numberOfDiners: restaurant.numberOfDiners?.toString() || "",
       phone: restaurant.phone || "",
+      website: restaurant.website || "",
       price: restaurant.price || "",
       currency: restaurant.currency || "USD",
       notes: restaurant.notes || "",
@@ -194,16 +199,16 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
           defaultValue={defaults?.address || ""}
         />
       </div>
+      <div className="grid gap-2">
+        <Label>{t("cuisineType")}</Label>
+        <Input
+          name="cuisineType"
+          tabIndex={3}
+          defaultValue={defaults?.cuisineType || ""}
+          placeholder={language === "he" ? "צרפתית, איטלקית..." : "French, Italian..."}
+        />
+      </div>
       <div className="grid grid-cols-2 gap-4">
-        <div className="grid gap-2">
-          <Label>{t("cuisineType")}</Label>
-          <Input
-            name="cuisineType"
-            tabIndex={3}
-            defaultValue={defaults?.cuisineType || ""}
-            placeholder={language === "he" ? "צרפתית, איטלקית..." : "French, Italian..."}
-          />
-        </div>
         <div className="grid gap-2">
           <Label>{language === "he" ? "טלפון" : "Phone"}</Label>
           <Input
@@ -212,6 +217,16 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
             type="tel"
             defaultValue={defaults?.phone || ""}
             placeholder={language === "he" ? "+972-XX-XXX-XXXX" : "+1-XXX-XXX-XXXX"}
+          />
+        </div>
+        <div className="grid gap-2">
+          <Label>{language === "he" ? "אתר אינטרנט" : "Website"}</Label>
+          <Input
+            name="website"
+            tabIndex={5}
+            type="url"
+            defaultValue={defaults?.website || ""}
+            placeholder="https://"
           />
         </div>
       </div>
@@ -328,17 +343,17 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
                       )}
                     </div>
                   </div>
-                  <div className="flex gap-1">
-                    <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => openEdit(restaurant)}>
-                      <Edit className="w-4 h-4" />
+                  <div className="flex gap-0.5">
+                    <Button size="icon" variant="ghost" className="h-7 w-7 text-white bg-amber-500/80 hover:bg-amber-600" onClick={() => openEdit(restaurant)}>
+                      <Edit className="w-3 h-3" />
                     </Button>
                     <Button 
                       size="icon" 
                       variant="ghost" 
-                      className="h-8 w-8 text-destructive"
+                      className="h-7 w-7 text-white bg-red-500/80 hover:bg-red-600"
                       onClick={() => deleteMutation.mutate({ id: restaurant.id })}
                     >
-                      <Trash2 className="w-4 h-4" />
+                      <Trash2 className="w-3 h-3" />
                     </Button>
                   </div>
                 </div>

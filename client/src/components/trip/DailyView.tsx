@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
-import { Hotel, Plane, Car, MapPin, Utensils, Calendar } from "lucide-react";
+import { Hotel, Plane, Car, MapPin, Utensils, Calendar, FileText, ExternalLink } from "lucide-react";
 
 interface DailyViewProps {
   tripId: number;
@@ -18,6 +18,8 @@ type Activity = {
   subtitle?: string;
   details: string[];
   price?: { amount: number; currency: string };
+  documentUrl?: string;
+  website?: string;
 };
 
 export default function DailyView({ tripId, date }: DailyViewProps) {
@@ -29,6 +31,7 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
   const { data: carRentals } = trpc.carRentals.list.useQuery({ tripId });
   const { data: sites } = trpc.touristSites.list.useQuery({ tripId });
   const { data: restaurants } = trpc.restaurants.list.useQuery({ tripId });
+  const { data: documents } = trpc.documents.list.useQuery({ tripId });
 
   // Filter activities for this specific day
   const dayStart = new Date(date).setHours(0, 0, 0, 0);
@@ -50,6 +53,12 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
         checkInDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
         checkInTimestamp = checkInDate.getTime();
       }
+      const relatedDoc = documents?.find(doc => 
+        (doc.category === 'booking' || doc.category === 'other') && 
+        (doc.name.toLowerCase().includes(h.name.toLowerCase()) || 
+         doc.name.toLowerCase().includes('hotel') ||
+         (h.address && doc.name.toLowerCase().includes(h.address.toLowerCase())))
+      );
       activities.push({
         id: h.id,
         type: "hotel-checkin",
@@ -58,7 +67,9 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
         title: h.name,
         subtitle: language === "he" ? "צ'ק-אין" : "Check-in",
         details: [h.address].filter((d): d is string => Boolean(d)),
-        price: h.price ? { amount: parseFloat(h.price), currency: h.currency || "EUR" } : undefined
+        price: h.price ? { amount: parseFloat(h.price), currency: h.currency || "EUR" } : undefined,
+        documentUrl: relatedDoc?.fileUrl || undefined,
+        website: h.website || undefined
       });
     }
     if (isOnDay(h.checkOutDate)) {
@@ -70,6 +81,12 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
         checkOutDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
         checkOutTimestamp = checkOutDate.getTime();
       }
+      const relatedDoc = documents?.find(doc => 
+        (doc.category === 'booking' || doc.category === 'other') && 
+        (doc.name.toLowerCase().includes(h.name.toLowerCase()) || 
+         doc.name.toLowerCase().includes('hotel') ||
+         (h.address && doc.name.toLowerCase().includes(h.address.toLowerCase())))
+      );
       activities.push({
         id: h.id + 10000,
         type: "hotel-checkout",
@@ -78,7 +95,9 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
         title: h.name,
         subtitle: language === "he" ? "צ'ק-אאוט" : "Check-out",
         details: [h.address].filter((d): d is string => Boolean(d)),
-        price: undefined
+        price: undefined,
+        documentUrl: relatedDoc?.fileUrl || undefined,
+        website: h.website || undefined
       });
     }
   });
@@ -98,7 +117,8 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
           `${language === "he" ? "המראה:" : "Departure:"} ${format(new Date(t.departureDate), "HH:mm")}`,
           t.arrivalDate ? `${language === "he" ? "נחיתה:" : "Arrival:"} ${format(new Date(t.arrivalDate), "HH:mm")}` : ""
         ].filter(Boolean),
-        price: t.price ? { amount: parseFloat(t.price), currency: t.currency || "EUR" } : undefined
+        price: t.price ? { amount: parseFloat(t.price), currency: t.currency || "EUR" } : undefined,
+        website: t.website || undefined
       });
     }
   });
@@ -122,7 +142,8 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
         title: c.company,
         subtitle: language === "he" ? "איסוף רכב" : "Car Pickup",
         details: [c.carModel, c.pickupLocation].filter((d): d is string => Boolean(d)),
-        price: c.price ? { amount: parseFloat(c.price), currency: c.currency || "EUR" } : undefined
+        price: c.price ? { amount: parseFloat(c.price), currency: c.currency || "EUR" } : undefined,
+        website: c.website || undefined
       });
     }
     if (isOnDay(c.returnDate)) {
@@ -142,7 +163,8 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
         title: c.company,
         subtitle: language === "he" ? "החזרת רכב" : "Car Return",
         details: [c.carModel, c.returnLocation].filter((d): d is string => Boolean(d)),
-        price: undefined
+        price: undefined,
+        website: c.website || undefined
       });
     }
   });
@@ -165,7 +187,8 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
         icon: MapPin,
         title: s.name,
         details: [s.address, s.description, s.openingHours].filter((d): d is string => Boolean(d)),
-        price: undefined
+        price: undefined,
+        website: s.website || undefined
       });
     }
   });
@@ -192,7 +215,8 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
           r.address,
           r.numberOfDiners ? `${r.numberOfDiners} ${language === "he" ? "סועדים" : "diners"}` : ""
         ].filter(Boolean) as string[],
-        price: r.price ? { amount: parseFloat(r.price), currency: r.currency || "EUR" } : undefined
+        price: r.price ? { amount: parseFloat(r.price), currency: r.currency || "EUR" } : undefined,
+        website: r.website || undefined
       });
     }
   });
@@ -247,13 +271,35 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
                     )}
                   </div>
                 </div>
-                <div className="text-right">
-                  <p className="text-sm font-semibold">{format(new Date(activity.time), "HH:mm")}</p>
-                  {activity.price && (
-                    <p className="text-sm font-semibold text-primary mt-1">
-                      {activity.price.amount} {activity.price.currency}
-                    </p>
-                  )}
+                <div className="flex items-start gap-2">
+                  <div className="text-right">
+                    <p className="text-sm font-semibold">{format(new Date(activity.time), "HH:mm")}</p>
+                    {activity.price && (
+                      <p className="text-sm font-semibold text-primary mt-1">
+                        {activity.price.amount} {activity.price.currency}
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex gap-1">
+                    {activity.documentUrl && (
+                      <button
+                        onClick={() => window.open(activity.documentUrl, '_blank')}
+                        className="p-1.5 rounded bg-blue-500/80 hover:bg-blue-600 text-white transition-colors"
+                        title={language === "he" ? "פתיחת מסמך" : "Open document"}
+                      >
+                        <FileText className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                    {activity.website && (
+                      <button
+                        onClick={() => window.open(activity.website, '_blank')}
+                        className="p-1.5 rounded bg-green-500/80 hover:bg-green-600 text-white transition-colors"
+                        title={language === "he" ? "פתיחת אתר" : "Open website"}
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             </CardHeader>

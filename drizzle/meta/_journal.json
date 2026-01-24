@@ -99,6 +99,13 @@
       "when": 1769174877730,
       "tag": "0013_strong_wendell_vaughn",
       "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "5",
+      "when": 1769241985339,
+      "tag": "0014_mixed_goblin_queen",
+      "breakpoints": true
     }
   ]
 }

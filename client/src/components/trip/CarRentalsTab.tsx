@@ -85,6 +85,7 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
       returnLocation: getValue("returnLocation"),
       confirmationNumber: getValue("confirmationNumber"),
       phone: getValue("phone"),
+      website: getValue("website"),
       price: getValue("price"),
       currency: getValue("currency"),
       notes: getValue("notes"),
@@ -111,6 +112,7 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
       returnLocation: values.returnLocation || undefined,
       confirmationNumber: values.confirmationNumber || undefined,
       phone: values.phone || undefined,
+      website: values.website || undefined,
       price: values.price || undefined,
       currency: selectedCurrency,
       notes: values.notes || undefined,
@@ -137,6 +139,7 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
       returnLocation: values.returnLocation || undefined,
       confirmationNumber: values.confirmationNumber || undefined,
       phone: values.phone || undefined,
+      website: values.website || undefined,
       price: values.price || undefined,
       currency: selectedCurrency,
       notes: values.notes || undefined,
@@ -154,6 +157,7 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
     returnLocation: "",
     confirmationNumber: "",
     phone: "",
+    website: "",
     price: "",
     currency: "USD",
     notes: "",
@@ -171,6 +175,7 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
       returnLocation: rental.returnLocation || "",
       confirmationNumber: rental.confirmationNumber || "",
       phone: rental.phone || "",
+      website: rental.website || "",
       price: rental.price || "",
       currency: rental.currency || "USD",
       notes: rental.notes || "",
@@ -275,15 +280,15 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
           />
         </div>
       </div>
+      <div className="grid gap-2">
+        <Label>{t("confirmationNumber")}</Label>
+        <Input
+          name="confirmationNumber"
+          tabIndex={9}
+          defaultValue={defaults?.confirmationNumber || ""}
+        />
+      </div>
       <div className="grid grid-cols-2 gap-4">
-        <div className="grid gap-2">
-          <Label>{t("confirmationNumber")}</Label>
-          <Input
-            name="confirmationNumber"
-            tabIndex={9}
-            defaultValue={defaults?.confirmationNumber || ""}
-          />
-        </div>
         <div className="grid gap-2">
           <Label>{language === "he" ? "טלפון" : "Phone"}</Label>
           <Input
@@ -292,6 +297,16 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
             type="tel"
             defaultValue={defaults?.phone || ""}
             placeholder={language === "he" ? "+972-XX-XXX-XXXX" : "+1-XXX-XXX-XXXX"}
+          />
+        </div>
+        <div className="grid gap-2">
+          <Label>{language === "he" ? "אתר אינטרנט" : "Website"}</Label>
+          <Input
+            name="website"
+            tabIndex={11}
+            type="url"
+            defaultValue={defaults?.website || ""}
+            placeholder="https://"
           />
         </div>
       </div>
@@ -377,17 +392,17 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
                       )}
                     </div>
                   </div>
-                  <div className="flex gap-1">
-                    <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => openEdit(rental)}>
-                      <Edit className="w-4 h-4" />
+                  <div className="flex gap-0.5">
+                    <Button size="icon" variant="ghost" className="h-7 w-7 text-white bg-amber-500/80 hover:bg-amber-600" onClick={() => openEdit(rental)}>
+                      <Edit className="w-3 h-3" />
                     </Button>
                     <Button 
                       size="icon" 
                       variant="ghost" 
-                      className="h-8 w-8 text-destructive"
+                      className="h-7 w-7 text-white bg-red-500/80 hover:bg-red-600"
                       onClick={() => deleteMutation.mutate({ id: rental.id })}
                     >
-                      <Trash2 className="w-4 h-4" />
+                      <Trash2 className="w-3 h-3" />
                     </Button>
                   </div>
                 </div>

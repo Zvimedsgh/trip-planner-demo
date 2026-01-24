@@ -51,6 +51,7 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
     arrivalTime: useRef<string>(""),
     flightNumber: useRef<string>(""),
     confirmation: useRef<string>(""),
+    website: useRef<string>(""),
     price: useRef<string>(""),
     currency: useRef<string>("USD"),
     notes: useRef<string>(""),
@@ -77,6 +78,7 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
     formRefs.arrivalTime.current = "";
     formRefs.flightNumber.current = "";
     formRefs.confirmation.current = "";
+    formRefs.website.current = "";
     formRefs.price.current = "";
     formRefs.currency.current = "USD";
     formRefs.notes.current = "";
@@ -172,6 +174,7 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
       arrivalTime: getInputValue("arrivalTime") || formRefs.arrivalTime.current,
       flightNumber: getInputValue("flightNumber") || formRefs.flightNumber.current,
       confirmation: getInputValue("confirmation") || formRefs.confirmation.current,
+      website: getInputValue("website") || formRefs.website.current,
       price: getInputValue("price") || formRefs.price.current,
       currency: formCurrency,
       notes: getInputValue("notes") || formRefs.notes.current,
@@ -198,6 +201,7 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
       arrivalDate: arrivalTimestamp,
       flightNumber: values.flightNumber.trim() || undefined,
       confirmationNumber: values.confirmation.trim() || undefined,
+      website: values.website.trim() || undefined,
       price: values.price || undefined,
       currency: values.currency || undefined,
       notes: values.notes.trim() || undefined,
@@ -224,6 +228,7 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
       arrivalDate: arrivalTimestamp,
       flightNumber: values.flightNumber.trim() || undefined,
       confirmationNumber: values.confirmation.trim() || undefined,
+      website: values.website.trim() || undefined,
       price: values.price || undefined,
       currency: values.currency || undefined,
       notes: values.notes.trim() || undefined,
@@ -243,6 +248,7 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
     formRefs.arrivalTime.current = arrDate ? format(arrDate, "HH:mm") : "";
     formRefs.flightNumber.current = transport.flightNumber || "";
     formRefs.confirmation.current = transport.confirmationNumber || "";
+    formRefs.website.current = transport.website || "";
     formRefs.price.current = transport.price || "";
     formRefs.currency.current = transport.currency || "USD";
     formRefs.notes.current = transport.notes || "";
@@ -373,15 +379,28 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
         </div>
       </div>
       
-      <div className="grid gap-2">
-        <Label>{t("confirmationNumber")}</Label>
-        <Input
-          data-field="confirmation"
-          tabIndex={9}
-          defaultValue={formRefs.confirmation.current}
-          onChange={(e) => { formRefs.confirmation.current = e.target.value; }}
-          placeholder={language === "he" ? "מספר אישור" : "Confirmation #"}
-        />
+      <div className="grid grid-cols-2 gap-4">
+        <div className="grid gap-2">
+          <Label>{t("confirmationNumber")}</Label>
+          <Input
+            data-field="confirmation"
+            tabIndex={9}
+            defaultValue={formRefs.confirmation.current}
+            onChange={(e) => { formRefs.confirmation.current = e.target.value; }}
+            placeholder={language === "he" ? "מספר אישור" : "Confirmation #"}
+          />
+        </div>
+        <div className="grid gap-2">
+          <Label>{language === "he" ? "אתר אינטרנט" : "Website"}</Label>
+          <Input
+            data-field="website"
+            tabIndex={10}
+            type="url"
+            defaultValue={formRefs.website.current}
+            onChange={(e) => { formRefs.website.current = e.target.value; }}
+            placeholder="https://"
+          />
+        </div>
       </div>
       
       <div className="grid grid-cols-2 gap-4">
@@ -541,10 +560,10 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
                       </div>
                     </div>
                     <div className="flex gap-0.5">
-                      <Button size="icon" variant="ghost" className="h-7 w-7 text-white hover:bg-white/20" onClick={() => openEdit(transport)}>
+                      <Button size="icon" variant="ghost" className="h-7 w-7 text-white bg-amber-500/80 hover:bg-amber-600" onClick={() => openEdit(transport)}>
                         <Edit className="w-3 h-3" />
                       </Button>
-                      <Button size="icon" variant="ghost" className="h-7 w-7 text-white hover:bg-white/20" onClick={() => deleteMutation.mutate({ id: transport.id })}>
+                      <Button size="icon" variant="ghost" className="h-7 w-7 text-white bg-red-500/80 hover:bg-red-600" onClick={() => deleteMutation.mutate({ id: transport.id })}>
                         <Trash2 className="w-3 h-3" />
                       </Button>
                     </div>

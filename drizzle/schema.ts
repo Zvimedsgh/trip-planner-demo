@@ -51,6 +51,7 @@ export const touristSites = mysqlTable("tourist_sites", {
   openingHours: varchar("openingHours", { length: 255 }),
   plannedVisitDate: bigint("plannedVisitDate", { mode: "number" }), // UTC timestamp in ms
   plannedVisitTime: varchar("plannedVisitTime", { length: 10 }), // HH:MM format
+  website: varchar("website", { length: 500 }),
   notes: text("notes"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
@@ -73,6 +74,7 @@ export const hotels = mysqlTable("hotels", {
   checkOutTime: varchar("checkOutTime", { length: 10 }), // HH:MM format
   confirmationNumber: varchar("confirmationNumber", { length: 100 }),
   phone: varchar("phone", { length: 50 }),
+  website: varchar("website", { length: 500 }),
   price: decimal("price", { precision: 10, scale: 2 }),
   currency: varchar("currency", { length: 10 }).default("USD"),
   coverImage: varchar("coverImage", { length: 500 }),
@@ -98,6 +100,7 @@ export const transportation = mysqlTable("transportation", {
   departureDate: bigint("departureDate", { mode: "number" }).notNull(), // UTC timestamp in ms
   arrivalDate: bigint("arrivalDate", { mode: "number" }),
   confirmationNumber: varchar("confirmationNumber", { length: 100 }),
+  website: varchar("website", { length: 500 }),
   price: decimal("price", { precision: 10, scale: 2 }),
   currency: varchar("currency", { length: 10 }).default("USD"),
   notes: text("notes"),
@@ -163,6 +166,7 @@ export const carRentals = mysqlTable("car_rentals", {
   returnLocation: varchar("returnLocation", { length: 500 }),
   confirmationNumber: varchar("confirmationNumber", { length: 100 }),
   phone: varchar("phone", { length: 50 }),
+  website: varchar("website", { length: 500 }),
   price: decimal("price", { precision: 10, scale: 2 }),
   currency: varchar("currency", { length: 10 }).default("USD"),
   notes: text("notes"),
@@ -186,6 +190,7 @@ export const restaurants = mysqlTable("restaurants", {
   reservationTime: varchar("reservationTime", { length: 10 }), // HH:MM format
   numberOfDiners: int("numberOfDiners"),
   phone: varchar("phone", { length: 50 }),
+  website: varchar("website", { length: 500 }),
   price: decimal("price", { precision: 10, scale: 2 }),
   currency: varchar("currency", { length: 10 }).default("USD"),
   notes: text("notes"),

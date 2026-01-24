@@ -1,8 +1,8 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "c1dc8e69-3dc3-4351-93ae-88d70fb79dd5",
-  "prevId": "8e14643b-ca92-4e04-8b96-77a1c88f042f",
+  "id": "444c7292-36bf-4933-afc1-690c91c95caa",
+  "prevId": "c1dc8e69-3dc3-4351-93ae-88d70fb79dd5",
   "tables": {
     "car_rentals": {
       "name": "car_rentals",
@@ -87,6 +87,13 @@
         "phone": {
           "name": "phone",
           "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "website": {
+          "name": "website",
+          "type": "varchar(500)",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -502,6 +509,13 @@
           "notNull": false,
           "autoincrement": false
         },
+        "website": {
+          "name": "website",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "price": {
           "name": "price",
           "type": "decimal(10,2)",
@@ -635,6 +649,13 @@
           "notNull": false,
           "autoincrement": false
         },
+        "website": {
+          "name": "website",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "price": {
           "name": "price",
           "type": "decimal(10,2)",
@@ -747,6 +768,13 @@
           "notNull": false,
           "autoincrement": false
         },
+        "website": {
+          "name": "website",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "notes": {
           "name": "notes",
           "type": "text",
@@ -847,6 +875,13 @@
         "confirmationNumber": {
           "name": "confirmationNumber",
           "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "website": {
+          "name": "website",
+          "type": "varchar(500)",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
