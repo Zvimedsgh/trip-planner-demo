@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
-import { Hotel, Plane, Car, MapPin, Utensils, Calendar, FileText, ExternalLink } from "lucide-react";
+import { Hotel, Plane, Car, MapPin, Utensils, Calendar, FileText, ExternalLink, Map as MapIcon } from "lucide-react";
 
 interface DailyViewProps {
   tripId: number;
@@ -224,7 +224,53 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
   // Sort activities by time
   activities.sort((a, b) => a.time - b.time);
 
-  if (activities.length === 0) {
+  // Determine which route this day corresponds to
+  const getRouteForDay = (date: number) => {
+    const dateObj = new Date(date);
+    const month = dateObj.getMonth() + 1; // 0-indexed
+    const day = dateObj.getDate();
+    
+    // September 1, 2026 - Day 1
+    if (month === 9 && day === 1) {
+      return {
+        title: language === "he" ? "מסלול 1: ברטיסלבה → ליפטובסקי מיקולאש" : "Route 1: Bratislava → Liptovský Mikuláš",
+        subtitle: language === "he" ? "יום 1 - הגעה לסלובקיה" : "Day 1 - Arrival to Slovakia"
+      };
+    }
+    // September 3, 2026 - Day 3
+    if (month === 9 && day === 3) {
+      return {
+        title: language === "he" ? "מסלול 4: טיול ל-Štrbské Pleso" : "Route 4: Trip to Štrbské Pleso",
+        subtitle: language === "he" ? "יום 3 - אגם הרים בטטרה הגבוהה" : "Day 3 - High Tatras Mountain Lake"
+      };
+    }
+    // September 4, 2026 - Day 4
+    if (month === 9 && day === 4) {
+      return {
+        title: language === "he" ? "מסלול 5: טיול ל-Jasná – Demänovská Dolina" : "Route 5: Trip to Jasná – Demänovská Dolina",
+        subtitle: language === "he" ? "יום 4 - אתר סקי ומערות" : "Day 4 - Ski Resort and Caves"
+      };
+    }
+    // September 5, 2026 - Day 5
+    if (month === 9 && day === 5) {
+      return {
+        title: language === "he" ? "מסלול 2: ליפטובסקי מיקולאש → קושיצה דרך Slovenský Raj" : "Route 2: Liptovský Mikuláš → Košice via Slovenský Raj",
+        subtitle: language === "he" ? "יום 5 - מסע לקושיצה דרך גן עדן סלובקי" : "Day 5 - Journey to Košice via Slovak Paradise"
+      };
+    }
+    // September 6, 2026 - Day 6
+    if (month === 9 && day === 6) {
+      return {
+        title: language === "he" ? "מסלול 3: קושיצה → וינה" : "Route 3: Košice → Vienna",
+        subtitle: language === "he" ? "יום 6 - נסיעה לווינה" : "Day 6 - Drive to Vienna"
+      };
+    }
+    return null;
+  };
+
+  const routeInfo = getRouteForDay(date);
+
+  if (activities.length === 0 && !routeInfo) {
     return (
       <div className="text-center py-12 text-muted-foreground">
         <Calendar className="w-12 h-12 mx-auto mb-4 opacity-50" />
@@ -255,6 +301,19 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
 
   return (
     <div className="space-y-4">
+      {routeInfo && (
+        <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200">
+          <CardHeader>
+            <div className="flex items-center gap-3">
+              <MapIcon className="w-6 h-6 text-blue-600" />
+              <div>
+                <CardTitle className="text-lg text-blue-900">{routeInfo.title}</CardTitle>
+                <p className="text-sm text-blue-700 mt-1">{routeInfo.subtitle}</p>
+              </div>
+            </div>
+          </CardHeader>
+        </Card>
+      )}
       {activities.map((activity) => {
         const Icon = activity.icon;
         const bgColor = getActivityBgColor(activity.type);

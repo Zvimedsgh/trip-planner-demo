@@ -3,7 +3,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format, isSameDay } from "date-fns";
 import { formatTime24 } from "@/lib/timeFormat";
-import { Bus, Calendar, Car, Hotel, Loader2, MapPin, Plane, Ship, Train, Utensils } from "lucide-react";
+import { Bus, Calendar, Car, Hotel, Loader2, MapPin, Plane, Ship, Train, Utensils, Map as MapIcon } from "lucide-react";
 
 interface TimelineTabProps {
   tripId: number;
@@ -11,7 +11,7 @@ interface TimelineTabProps {
 
 interface TimelineEvent {
   id: string;
-  type: "site" | "hotel_checkin" | "hotel_checkout" | "transport" | "car_pickup" | "car_return" | "restaurant";
+  type: "site" | "hotel_checkin" | "hotel_checkout" | "transport" | "car_pickup" | "car_return" | "restaurant" | "route";
   date: number;
   time?: string;
   title: string;
@@ -141,6 +141,48 @@ export default function TimelineTab({ tripId }: TimelineTabProps) {
         color: "from-rose-500 to-pink-600",
       });
     }
+  });
+
+  // Routes - Add route information for specific days
+  const routeEvents = [
+    {
+      date: new Date(2026, 8, 1).setHours(9, 0, 0, 0), // September 1, 2026, 9:00 AM
+      title: language === "he" ? "מסלול 1: ברטיסלבה → ליפטובסקי מיקולאש" : "Route 1: Bratislava → Liptovský Mikuláš",
+      subtitle: language === "he" ? "הגעה לסלובקיה" : "Arrival to Slovakia"
+    },
+    {
+      date: new Date(2026, 8, 3).setHours(9, 0, 0, 0), // September 3, 2026, 9:00 AM
+      title: language === "he" ? "מסלול 4: טיול ל-Štrbské Pleso" : "Route 4: Trip to Štrbské Pleso",
+      subtitle: language === "he" ? "אגם הרים בטטרה הגבוהה" : "High Tatras Mountain Lake"
+    },
+    {
+      date: new Date(2026, 8, 4).setHours(9, 0, 0, 0), // September 4, 2026, 9:00 AM
+      title: language === "he" ? "מסלול 5: טיול ל-Jasná – Demänovská Dolina" : "Route 5: Trip to Jasná – Demänovská Dolina",
+      subtitle: language === "he" ? "אתר סקי ומערות" : "Ski Resort and Caves"
+    },
+    {
+      date: new Date(2026, 8, 5).setHours(9, 0, 0, 0), // September 5, 2026, 9:00 AM
+      title: language === "he" ? "מסלול 2: ליפטובסקי מיקולאש → קושיצה דרך Slovenský Raj" : "Route 2: Liptovský Mikuláš → Košice via Slovenský Raj",
+      subtitle: language === "he" ? "מסע לקושיצה דרך גן עדן סלובקי" : "Journey to Košice via Slovak Paradise"
+    },
+    {
+      date: new Date(2026, 8, 6).setHours(9, 0, 0, 0), // September 6, 2026, 9:00 AM
+      title: language === "he" ? "מסלול 3: קושיצה → וינה" : "Route 3: Košice → Vienna",
+      subtitle: language === "he" ? "נסיעה לווינה" : "Drive to Vienna"
+    }
+  ];
+
+  routeEvents.forEach((route, index) => {
+    events.push({
+      id: `route-${index}`,
+      type: "route",
+      date: route.date,
+      time: "09:00",
+      title: route.title,
+      subtitle: route.subtitle,
+      icon: MapIcon,
+      color: "from-cyan-500 to-blue-600",
+    });
   });
 
   // Sort by date

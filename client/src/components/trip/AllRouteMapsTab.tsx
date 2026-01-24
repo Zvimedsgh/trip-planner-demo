@@ -92,12 +92,12 @@ const routeMaps: RouteMap[] = [
   {
     id: "route4",
     title: {
-      en: "Route 4: Liptovský Mikuláš → Štrbské Pleso (Round Trip)",
-      he: "מסלול 4: ליפטובסקי מיקולאש → שטרבסקה פלסו (הלוך וחזור)"
+      en: "Route 4: Liptovský Mikuláš → Štrbské Pleso (Sep 3)",
+      he: "מסלול 4: ליפטובסקי מיקולאש → שטרבסקה פלסו (3 בספטמבר)"
     },
     description: {
-      en: "Day trip to High Tatras mountain lake",
-      he: "טיול יום לאגם ההרים בטטרה הגבוהה"
+      en: "Day 3: Round trip to High Tatras mountain lake",
+      he: "יום 3: טיול יום לאגם ההרים בטטרה הגבוהה"
     },
     gradient: "from-sky-500 via-blue-500 to-indigo-500",
     origin: { lat: 49.0833, lng: 19.6167, name: "Liptovský Mikuláš" },
@@ -115,12 +115,12 @@ const routeMaps: RouteMap[] = [
   {
     id: "route5",
     title: {
-      en: "Route 5: Liptovský Mikuláš → Jasná – Demänovská Dolina (Round Trip)",
-      he: "מסלול 5: ליפטובסקי מיקולאש → יאסנה – דמנובסקה דולינה (הלוך וחזור)"
+      en: "Route 5: Liptovský Mikuláš → Jasná – Demänovská Dolina (Sep 4)",
+      he: "מסלול 5: ליפטובסקי מיקולאש → יאסנה – דמנובסקה דולינה (4 בספטמבר)"
     },
     description: {
-      en: "Day trip to ski resort and caves",
-      he: "טיול יום לאתר סקי ומערות"
+      en: "Day 4: Round trip to ski resort and caves",
+      he: "יום 4: טיול יום לאתר סקי ומערות"
     },
     gradient: "from-violet-500 via-purple-500 to-fuchsia-500",
     origin: { lat: 49.0833, lng: 19.6167, name: "Liptovský Mikuláš" },

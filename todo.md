@@ -348,3 +348,9 @@
 - [x] Add Route 4: Liptovský Mikuláš → Štrbské Pleso → Liptovský Mikuláš (3/9 day trip) - High Tatras mountain lake
 - [x] Add Route 5: Liptovský Mikuláš → Jasná – Demänovská Dolina → Liptovský Mikuláš (day trip) - Ski resort and caves
 - [x] Update Route 2: Change Liptovský → Košice to pass through Slovenský Raj National Park - Added waypoint and POIs
+
+## Route Map Dates & Daily Integration
+- [ ] Add date (3/9) to Route 4 (Štrbské Pleso) title and description
+- [ ] Add date (4/9) to Route 5 (Demänovská Dolina) title and description
+- [ ] Confirm Route 2 (Košice) remains at 5/9
+- [ ] Integrate route titles into corresponding daily tabs (Day 3, Day 4, Day 5)
