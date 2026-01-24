@@ -127,6 +127,13 @@
       "when": 1769274205243,
       "tag": "0017_polite_logan",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "5",
+      "when": 1769297067849,
+      "tag": "0018_parched_sprite",
+      "breakpoints": true
     }
   ]
 }

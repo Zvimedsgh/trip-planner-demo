@@ -1,0 +1,9 @@
+{
+  "query": "CREATE TABLE IF NOT EXISTS `trip_collaborators` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`tripId` int NOT NULL,\n\t`userId` int NOT NULL,\n\t`permission` enum('view_only','can_edit') NOT NULL DEFAULT 'view_only',\n\t`invitedBy` int NOT NULL,\n\t`createdAt` timestamp NOT NULL DEFAULT (now()),\n\t`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,\n\tCONSTRAINT `trip_collaborators_id` PRIMARY KEY(`id`)\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute CREATE TABLE IF NOT EXISTS `trip_collaborators` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`tripId` int NOT NULL,\n\t`userId` int NOT NULL,\n\t`permission` enum('view_only','can_edit') NOT NULL DEFAULT 'view_only',\n\t`invitedBy` int NOT NULL,\n\t`createdAt` timestamp NOT NULL DEFAULT (now()),\n\t`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,\n\tCONSTRAINT `trip_collaborators_id` PRIMARY KEY(`id`)\n);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1659
+}

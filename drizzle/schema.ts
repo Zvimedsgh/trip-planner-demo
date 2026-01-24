@@ -222,3 +222,19 @@ export const documents = mysqlTable("documents", {
 export type Document = typeof documents.$inferSelect;
 export type InsertDocument = typeof documents.$inferInsert;
 
+
+/**
+ * Trip collaborators table - manages shared access to trips
+ */
+export const tripCollaborators = mysqlTable("trip_collaborators", {
+  id: int("id").autoincrement().primaryKey(),
+  tripId: int("tripId").notNull(),
+  userId: int("userId").notNull(), // The collaborator's user ID
+  permission: mysqlEnum("permission", ["view_only", "can_edit"]).default("view_only").notNull(),
+  invitedBy: int("invitedBy").notNull(), // User ID of the person who invited
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type TripCollaborator = typeof tripCollaborators.$inferSelect;
+export type InsertTripCollaborator = typeof tripCollaborators.$inferInsert;

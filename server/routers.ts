@@ -552,6 +552,93 @@ export const appRouter = router({
       .input(z.object({ tripId: z.number() }))
       .query(({ input }) => db.getTripBudget(input.tripId)),
   }),
+
+  // ============ COLLABORATORS ============
+  collaborators: router({
+    // List all collaborators for a trip
+    list: protectedProcedure
+      .input(z.object({ tripId: z.number() }))
+      .query(async ({ ctx, input }) => {
+        // Check if user is owner or collaborator
+        const trip = await db.getTripById(input.tripId, ctx.user.id);
+        if (!trip) throw new Error('Trip not found or access denied');
+        return db.getTripCollaborators(input.tripId);
+      }),
+    
+    // Get my permission for a trip
+    getMyPermission: protectedProcedure
+      .input(z.object({ tripId: z.number() }))
+      .query(async ({ ctx, input }) => {
+        const trip = await db.getTripById(input.tripId, ctx.user.id);
+        if (!trip) return null;
+        // If user is owner, they have full edit rights
+        if (trip.userId === ctx.user.id) {
+          return { permission: 'can_edit' as const, isOwner: true };
+        }
+        // Check if user is a collaborator
+        const collab = await db.getUserCollaboratorPermission(input.tripId, ctx.user.id);
+        return collab ? { permission: collab.permission, isOwner: false } : null;
+      }),
+    
+    // Invite a user to collaborate (by user ID)
+    invite: protectedProcedure
+      .input(z.object({
+        tripId: z.number(),
+        userId: z.number(),
+        permission: z.enum(['view_only', 'can_edit']),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        // Check if current user is the trip owner
+        const trip = await db.getTripById(input.tripId, ctx.user.id);
+        if (!trip || trip.userId !== ctx.user.id) {
+          throw new Error('Only trip owner can invite collaborators');
+        }
+        // Check if user is already a collaborator
+        const existing = await db.getUserCollaboratorPermission(input.tripId, input.userId);
+        if (existing) {
+          throw new Error('User is already a collaborator');
+        }
+        return db.addTripCollaborator({
+          tripId: input.tripId,
+          userId: input.userId,
+          permission: input.permission,
+          invitedBy: ctx.user.id,
+        });
+      }),
+    
+    // Update collaborator permission
+    updatePermission: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        permission: z.enum(['view_only', 'can_edit']),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        // Get the collaborator record
+        const collab = await db.getCollaboratorById(input.id);
+        if (!collab) throw new Error('Collaborator not found');
+        // Check if current user is the trip owner
+        const trip = await db.getTripById(collab.tripId, ctx.user.id);
+        if (!trip || trip.userId !== ctx.user.id) {
+          throw new Error('Only trip owner can update permissions');
+        }
+        return db.updateCollaboratorPermission(input.id, input.permission);
+      }),
+    
+    // Remove a collaborator
+    remove: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        // Get the collaborator record
+        const collab = await db.getCollaboratorById(input.id);
+        if (!collab) throw new Error('Collaborator not found');
+        // Check if current user is the trip owner
+        const trip = await db.getTripById(collab.tripId, ctx.user.id);
+        if (!trip || trip.userId !== ctx.user.id) {
+          throw new Error('Only trip owner can remove collaborators');
+        }
+        return db.removeCollaborator(input.id);
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

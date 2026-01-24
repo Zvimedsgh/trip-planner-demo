@@ -32,6 +32,7 @@ import ChecklistTab from "@/components/trip/ChecklistTab";
 import { AllRouteMapsTab } from "@/components/trip/AllRouteMapsTab";
 import DayTripsTab from "@/components/trip/DayTripsTab";
 import DailyView from "@/components/trip/DailyView";
+import CollaboratorsDialog from "@/components/trip/CollaboratorsDialog";
 
 export default function TripDetail() {
   const params = useParams<{ id: string }>();
@@ -134,6 +135,10 @@ export default function TripDetail() {
           </div>
           
           <div className="flex items-center gap-4">
+            <CollaboratorsDialog 
+              tripId={tripId} 
+              isOwner={trip?.userId === user?.id}
+            />
             <Button
               variant="outline"
               size="sm"

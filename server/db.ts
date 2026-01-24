@@ -10,7 +10,8 @@ import {
   restaurants, InsertRestaurant, Restaurant,
   documents, InsertDocument, Document,
   dayTrips, InsertDayTrip, DayTrip,
-  checklistItems, InsertChecklistItem, ChecklistItem
+  checklistItems, InsertChecklistItem, ChecklistItem,
+  tripCollaborators, InsertTripCollaborator, TripCollaborator
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -488,5 +489,114 @@ export async function deleteChecklistItem(id: number): Promise<boolean> {
   if (!db) return false;
   
   await db.delete(checklistItems).where(eq(checklistItems.id, id));
+  return true;
+}
+
+
+// ============ COLLABORATORS ============
+
+export async function getTripCollaborators(tripId: number): Promise<Array<TripCollaborator & { user: { id: number; name: string | null; email: string | null } }>> {
+  const db = await getDb();
+  if (!db) return [];
+  
+  const collaborators = await db
+    .select({
+      id: tripCollaborators.id,
+      tripId: tripCollaborators.tripId,
+      userId: tripCollaborators.userId,
+      permission: tripCollaborators.permission,
+      invitedBy: tripCollaborators.invitedBy,
+      createdAt: tripCollaborators.createdAt,
+      updatedAt: tripCollaborators.updatedAt,
+      userName: users.name,
+      userEmail: users.email,
+    })
+    .from(tripCollaborators)
+    .leftJoin(users, eq(tripCollaborators.userId, users.id))
+    .where(eq(tripCollaborators.tripId, tripId))
+    .orderBy(desc(tripCollaborators.createdAt));
+  
+  return collaborators.map(c => ({
+    id: c.id,
+    tripId: c.tripId,
+    userId: c.userId,
+    permission: c.permission,
+    invitedBy: c.invitedBy,
+    createdAt: c.createdAt,
+    updatedAt: c.updatedAt,
+    user: {
+      id: c.userId,
+      name: c.userName,
+      email: c.userEmail,
+    },
+  }));
+}
+
+export async function getUserCollaboratorPermission(tripId: number, userId: number): Promise<TripCollaborator | null> {
+  const db = await getDb();
+  if (!db) return null;
+  
+  const result = await db
+    .select()
+    .from(tripCollaborators)
+    .where(and(
+      eq(tripCollaborators.tripId, tripId),
+      eq(tripCollaborators.userId, userId)
+    ))
+    .limit(1);
+  
+  return result[0] || null;
+}
+
+export async function addTripCollaborator(data: InsertTripCollaborator): Promise<TripCollaborator> {
+  const db = await getDb();
+  if (!db) throw new Error('Database not available');
+  
+  const result = await db.insert(tripCollaborators).values(data);
+  const inserted = await db
+    .select()
+    .from(tripCollaborators)
+    .where(eq(tripCollaborators.id, Number((result as any).insertId)))
+    .limit(1);
+  
+  return inserted[0];
+}
+
+export async function getCollaboratorById(id: number): Promise<TripCollaborator | null> {
+  const db = await getDb();
+  if (!db) return null;
+  
+  const result = await db
+    .select()
+    .from(tripCollaborators)
+    .where(eq(tripCollaborators.id, id))
+    .limit(1);
+  
+  return result[0] || null;
+}
+
+export async function updateCollaboratorPermission(id: number, permission: 'view_only' | 'can_edit'): Promise<TripCollaborator | null> {
+  const db = await getDb();
+  if (!db) return null;
+  
+  await db
+    .update(tripCollaborators)
+    .set({ permission })
+    .where(eq(tripCollaborators.id, id));
+  
+  const updated = await db
+    .select()
+    .from(tripCollaborators)
+    .where(eq(tripCollaborators.id, id))
+    .limit(1);
+  
+  return updated[0] || null;
+}
+
+export async function removeCollaborator(id: number): Promise<boolean> {
+  const db = await getDb();
+  if (!db) return false;
+  
+  await db.delete(tripCollaborators).where(eq(tripCollaborators.id, id));
   return true;
 }
