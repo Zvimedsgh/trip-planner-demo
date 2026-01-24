@@ -399,3 +399,9 @@
 - [ ] Create route management UI (add/edit/delete buttons and forms)
 - [ ] Migrate existing 6 hardcoded routes to database
 - [ ] Test route management functionality
+
+## Route Cards in Daily Tabs
+- [x] Add route cards to daily tabs showing which route is taken that day
+- [x] Route cards should appear at top of daily view with map icon
+- [x] Include route title, description, and link to full map in Route Maps tab
+- [x] Routes should appear on correct days: Route 1 (Day 2), Route 4 (Day 4), Route 5 (Day 5), Route 2 (Day 6), Route 3 (Day 7), Route 6 (Day 9)

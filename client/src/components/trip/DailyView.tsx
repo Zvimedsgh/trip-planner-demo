@@ -261,8 +261,84 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
     }
   };
 
+  // Define routes with their dates (day of trip)
+  const routes = [
+    {
+      id: 1,
+      day: 2, // Sep 2
+      title: { en: "Route 1: Bratislava → Liptovský Mikuláš", he: "מסלול 1: ברטיסלבה → ליפטובסקי מיקולאש" },
+      description: { en: "Day 2: Arrival in Slovakia", he: "יום 2: הגעה לסלובקיה" },
+      gradient: "from-blue-500 via-indigo-500 to-purple-500"
+    },
+    {
+      id: 4,
+      day: 4, // Sep 4
+      title: { en: "Route 4: Trip to Štrbské Pleso", he: "מסלול 4: טיול לשטרבסקה פלסו" },
+      description: { en: "Day 4: High Tatras mountain lake", he: "יום 4: אגם ההרים בטטרה הגבוהה" },
+      gradient: "from-sky-500 via-blue-500 to-indigo-500"
+    },
+    {
+      id: 5,
+      day: 5, // Sep 5
+      title: { en: "Route 5: Trip to Jasná – Demänovská Dolina", he: "מסלול 5: טיול ליאסנה – דמנובסקה דולינה" },
+      description: { en: "Day 5: Ski resort and caves", he: "יום 5: אתר סקי ומערות" },
+      gradient: "from-violet-500 via-purple-500 to-fuchsia-500"
+    },
+    {
+      id: 2,
+      day: 6, // Sep 6
+      title: { en: "Route 2: Liptovský Mikuláš → Košice", he: "מסלול 2: ליפטובסקי מיקולאש → קושיצה" },
+      description: { en: "Day 6: Journey to Košice via Slovenský Raj", he: "יום 6: מסע לקושיצה דרך סלובנסקי ראי'" },
+      gradient: "from-emerald-500 via-teal-500 to-cyan-500"
+    },
+    {
+      id: 3,
+      day: 7, // Sep 7
+      title: { en: "Route 3: Košice → Vienna", he: "מסלול 3: קושיצה → וינה" },
+      description: { en: "Day 7: Drive to Vienna", he: "יום 7: נסיעה לוינה" },
+      gradient: "from-amber-500 via-orange-500 to-red-500"
+    },
+    {
+      id: 6,
+      day: 9, // Sep 9
+      title: { en: "Route 6: Vienna → Bratislava Airport", he: "מסלול 6: וינה → שדה התעופה" },
+      description: { en: "Day 9: Departure", he: "יום 9: יציאה" },
+      gradient: "from-rose-500 via-pink-500 to-purple-500"
+    }
+  ];
+
+  // Find route for current day (calculate day number from date)
+  const tripStart = new Date(date);
+  tripStart.setDate(tripStart.getDate() - (tripStart.getDate() - 1)); // Get Sept 1
+  const dayNumber = Math.floor((date - tripStart.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+  const todayRoute = routes.find(r => r.day === dayNumber);
+
   return (
     <div className="space-y-4">
+      {/* Route card if there's a route for this day */}
+      {todayRoute && (
+        <Card className={`overflow-hidden bg-gradient-to-br ${todayRoute.gradient} text-white shadow-lg border-0`}>
+          <CardHeader>
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center flex-shrink-0">
+                <MapIcon className="w-5 h-5 text-white" />
+              </div>
+              <div className="flex-1">
+                <CardTitle className="text-base font-bold drop-shadow-md">
+                  {language === "he" ? todayRoute.title.he : todayRoute.title.en}
+                </CardTitle>
+                <p className="text-sm text-white/90 mt-1 drop-shadow">
+                  {language === "he" ? todayRoute.description.he : todayRoute.description.en}
+                </p>
+                <p className="text-xs text-white/80 mt-2">
+                  {language === "he" ? "לחץ על טאב 'מפות מסלול' לצפייה במפה המלאה" : "Click 'Route Maps' tab to view full map"}
+                </p>
+              </div>
+            </div>
+          </CardHeader>
+        </Card>
+      )}
+
 
       {activities.map((activity) => {
         const Icon = activity.icon;
