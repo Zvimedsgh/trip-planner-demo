@@ -261,7 +261,7 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
       </div>
 
       {documents && documents.length > 0 ? (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {documents.map((doc) => {
             const Icon = categoryIcons[doc.category];
             const colorClass = categoryColors[doc.category];

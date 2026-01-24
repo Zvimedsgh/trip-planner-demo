@@ -303,3 +303,9 @@
 ## Hotel Image Issues - Specific Hotels
 - [x] Fix Hotel Ambassador image not showing - filtered common words, requires 1 unique word match
 - [x] Fix Apart Hotel GOLDEN apartments image not showing - filtered 'apartments' from matching
+
+## Final Tasks Before Sharing with Travelers
+- [x] Reduce card sizes from 3 to 4 columns in Hotels tab
+- [x] Reduce card sizes from 3 to 4 columns in Documents tab
+- [x] Create RouteMapTab2 (Liptovský Mikuláš → Košice)
+- [x] Create RouteMapTab3 (Košice → Vienna)

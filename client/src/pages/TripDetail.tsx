@@ -30,6 +30,8 @@ import TimelineTab from "@/components/trip/TimelineTab";
 import BudgetTab from "@/components/trip/BudgetTab";
 import ChecklistTab from "@/components/trip/ChecklistTab";
 import { RouteMapTab } from "@/components/trip/RouteMapTab";
+import { RouteMapTab2 } from "@/components/trip/RouteMapTab2";
+import { RouteMapTab3 } from "@/components/trip/RouteMapTab3";
 import DayTripsTab from "@/components/trip/DayTripsTab";
 import DailyView from "@/components/trip/DailyView";
 
@@ -106,7 +108,9 @@ export default function TripDetail() {
     { id: "restaurants", label: t("restaurants"), icon: Utensils },
     { id: "documents", label: t("documents"), icon: FileText },
     { id: "timeline", label: t("timeline"), icon: Clock },
-    { id: "route", label: language === "he" ? "מפת מסלול" : "Route Map", icon: Map },
+    { id: "route", label: language === "he" ? "מסלול 1: ברטיסלבה→מיקולש" : "Route 1: Bratislava→Mikuláš", icon: Map },
+    { id: "route2", label: language === "he" ? "מסלול 2: מיקולש→קושיצה" : "Route 2: Mikuláš→Košice", icon: Map },
+    { id: "route3", label: language === "he" ? "מסלול 3: קושיצה→וינה" : "Route 3: Košice→Vienna", icon: Map },
     { id: "daytrips", label: t("dayTrips"), icon: ArrowRight },
     { id: "checklist", label: language === "he" ? "רשימת משימות" : "Checklist", icon: CheckSquare },
     { id: "budget", label: t("budget"), icon: DollarSign },
@@ -263,6 +267,14 @@ export default function TripDetail() {
 
           <TabsContent value="route">
             <RouteMapTab tripId={tripId} />
+          </TabsContent>
+
+          <TabsContent value="route2">
+            <RouteMapTab2 tripId={tripId} />
+          </TabsContent>
+
+          <TabsContent value="route3">
+            <RouteMapTab3 tripId={tripId} />
           </TabsContent>
 
           <TabsContent value="daytrips">
