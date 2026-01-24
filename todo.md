@@ -219,3 +219,8 @@
 - [x] Row 1: Activity category tabs (Hotels, Transportation, etc.)
 - [x] Row 2: Daily tabs (Day 1-8)
 - [x] Daily view shows all activities sorted by time without category headers
+
+## Visual Improvements
+- [x] Color active category tab (Hotels, Transportation, etc.)
+- [x] Add pastel background colors to activities in daily view
+- [x] Show departure time in flights displayed in daily view

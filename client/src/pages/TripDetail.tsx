@@ -192,7 +192,7 @@ export default function TripDetail() {
               <TabsTrigger
                 key={tab.id}
                 value={tab.id}
-                className="flex items-center gap-2 data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground px-4 py-2 rounded-lg border border-border data-[state=active]:border-secondary transition-all"
+                className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-4 py-2 rounded-lg border border-border data-[state=active]:border-primary transition-all"
               >
                 <tab.icon className="w-4 h-4" />
                 <span className="hidden sm:inline">{tab.label}</span>

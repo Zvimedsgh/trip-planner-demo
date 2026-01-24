@@ -79,6 +79,7 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
         subtitle: `${t.origin} → ${t.destination}`,
         details: [
           t.flightNumber || "",
+          `${language === "he" ? "המראה:" : "Departure:"} ${format(new Date(t.departureDate), "HH:mm")}`,
           t.arrivalDate ? `${language === "he" ? "נחיתה:" : "Arrival:"} ${format(new Date(t.arrivalDate), "HH:mm")}` : ""
         ].filter(Boolean),
         price: t.price ? { amount: parseFloat(t.price), currency: t.currency || "EUR" } : undefined
@@ -160,12 +161,33 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
     );
   }
 
+  // Get pastel background color based on activity type
+  const getActivityBgColor = (type: Activity["type"]) => {
+    switch (type) {
+      case "hotel-checkin":
+      case "hotel-checkout":
+        return "bg-blue-50";
+      case "transportation":
+        return "bg-green-50";
+      case "car-pickup":
+      case "car-return":
+        return "bg-yellow-50";
+      case "site":
+        return "bg-purple-50";
+      case "restaurant":
+        return "bg-orange-50";
+      default:
+        return "bg-gray-50";
+    }
+  };
+
   return (
     <div className="space-y-4">
       {activities.map((activity) => {
         const Icon = activity.icon;
+        const bgColor = getActivityBgColor(activity.type);
         return (
-          <Card key={`${activity.type}-${activity.id}`}>
+          <Card key={`${activity.type}-${activity.id}`} className={bgColor}>
             <CardHeader>
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">
