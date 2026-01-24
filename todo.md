@@ -326,3 +326,14 @@
 ## Critical Issues - Current
 - [x] Daily tabs (Day 1-9) still not showing after consolidating route maps - FIXED by correcting swapped dates in database
 - [x] Hotels marked as "for selection" need visual indicator (badge/tag within hotel card) - Added yellow badge next to hotel name
+
+## Route Maps UI Improvements
+- [x] Fix AllRouteMapsTab - only Košice→Vienna map showing, need all 3 maps visible
+- [x] Create card-based UI for route maps - show cards/cubes for each map
+- [x] Open map in dialog/modal when clicking on card
+- [x] Prepare for future map additions with scalable card layout
+
+## Budget Calculation Enhancement
+- [x] Update budget logic to handle "selection" category hotels intelligently
+- [x] When multiple hotels marked as "selection", include only the highest-priced one in budget
+- [x] Exclude other selection hotels from total calculation

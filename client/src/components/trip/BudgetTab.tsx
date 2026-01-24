@@ -111,10 +111,41 @@ export default function BudgetTab({ tripId }: BudgetTabProps) {
     currencyTotals[currency].total += amount;
   };
 
-  // Process hotels
+  // Process hotels - smart handling of "selection" category
+  // Group hotels by currency and selection status
+  const selectionHotelsByCurrency: Record<string, typeof hotels> = {};
+  const confirmedHotels: typeof hotels = [];
+  
   hotels?.forEach(hotel => {
     if (hotel.price) {
+      if (hotel.category === 'selection') {
+        const currency = hotel.currency || "USD";
+        if (!selectionHotelsByCurrency[currency]) {
+          selectionHotelsByCurrency[currency] = [];
+        }
+        selectionHotelsByCurrency[currency].push(hotel);
+      } else {
+        confirmedHotels.push(hotel);
+      }
+    }
+  });
+  
+  // Add confirmed hotels to budget
+  confirmedHotels.forEach(hotel => {
+    if (hotel.price) {
       addToCurrency(hotel.currency || "USD", "hotels", parseFloat(hotel.price));
+    }
+  });
+  
+  // For selection hotels, add only the highest priced one per currency
+  Object.entries(selectionHotelsByCurrency).forEach(([currency, hotelsList]) => {
+    if (hotelsList && hotelsList.length > 0) {
+      const highestPriced = hotelsList.reduce((max, hotel) => {
+        const price = parseFloat(hotel.price!);
+        const maxPrice = parseFloat(max.price!);
+        return price > maxPrice ? hotel : max;
+      });
+      addToCurrency(currency, "hotels", parseFloat(highestPriced.price!));
     }
   });
 

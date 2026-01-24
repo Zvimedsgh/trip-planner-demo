@@ -1,192 +1,207 @@
+import { useState } from "react";
 import { MapView } from "../Map";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Card, CardContent } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { MapPin, Navigation } from "lucide-react";
+
+type RouteMap = {
+  id: string;
+  title: { en: string; he: string };
+  description: { en: string; he: string };
+  gradient: string;
+  origin: { lat: number; lng: number; name: string };
+  destination: { lat: number; lng: number; name: string };
+  waypoints: Array<{ location: { lat: number; lng: number }; stopover: boolean }>;
+  pois: Array<{ lat: number; lng: number; name: string; type: string }>;
+};
+
+const routeMaps: RouteMap[] = [
+  {
+    id: "route1",
+    title: {
+      en: "Route 1: Bratislava → Liptovský Mikuláš",
+      he: "מסלול 1: ברטיסלבה → ליפטובסקי מיקולאש"
+    },
+    description: {
+      en: "Scenic drive through central Slovakia",
+      he: "נסיעה נופית דרך מרכז סלובקיה"
+    },
+    gradient: "from-blue-500 via-indigo-500 to-purple-500",
+    origin: { lat: 48.1486, lng: 17.1077, name: "Bratislava" },
+    destination: { lat: 49.0833, lng: 19.6167, name: "Liptovský Mikuláš" },
+    waypoints: [
+      { location: { lat: 48.7164, lng: 19.1517 }, stopover: true }, // Banská Bystrica
+    ],
+    pois: [
+      { lat: 48.7164, lng: 19.1517, name: "Banská Bystrica", type: "city" },
+      { lat: 48.8, lng: 19.5, name: "Gas Station", type: "gas" },
+      { lat: 48.9, lng: 19.4, name: "Restaurant", type: "restaurant" },
+    ],
+  },
+  {
+    id: "route2",
+    title: {
+      en: "Route 2: Liptovský Mikuláš → Košice",
+      he: "מסלול 2: ליפטובסקי מיקולאש → קושיצה"
+    },
+    description: {
+      en: "Through Slovak Paradise and Spiš Castle",
+      he: "דרך גן העדן הסלובקי וטירת שפיש"
+    },
+    gradient: "from-emerald-500 via-teal-500 to-cyan-500",
+    origin: { lat: 49.0833, lng: 19.6167, name: "Liptovský Mikuláš" },
+    destination: { lat: 48.7164, lng: 21.2611, name: "Košice" },
+    waypoints: [
+      { location: { lat: 48.9972, lng: 20.5597 }, stopover: true }, // Spiš Castle area
+    ],
+    pois: [
+      { lat: 48.9972, lng: 20.5597, name: "Spiš Castle", type: "attraction" },
+      { lat: 49.0, lng: 20.3, name: "Slovak Paradise", type: "attraction" },
+      { lat: 49.1, lng: 20.1, name: "Gas Station", type: "gas" },
+      { lat: 48.85, lng: 21.0, name: "Restaurant", type: "restaurant" },
+    ],
+  },
+  {
+    id: "route3",
+    title: {
+      en: "Route 3: Košice → Vienna",
+      he: "מסלול 3: קושיצה → וינה"
+    },
+    description: {
+      en: "Return journey via Bratislava to Vienna",
+      he: "מסע חזרה דרך ברטיסלבה לוינה"
+    },
+    gradient: "from-amber-500 via-orange-500 to-red-500",
+    origin: { lat: 48.7164, lng: 21.2611, name: "Košice" },
+    destination: { lat: 48.2082, lng: 16.3738, name: "Vienna" },
+    waypoints: [
+      { location: { lat: 48.1486, lng: 17.1077 }, stopover: true }, // Bratislava
+    ],
+    pois: [
+      { lat: 48.2082, lng: 16.3738, name: "Schönbrunn Palace", type: "attraction" },
+      { lat: 48.2085, lng: 16.3794, name: "Belvedere Palace", type: "attraction" },
+      { lat: 48.5, lng: 18.0, name: "Gas Station", type: "gas" },
+      { lat: 48.3, lng: 17.5, name: "Restaurant", type: "restaurant" },
+    ],
+  },
+];
 
 export function AllRouteMapsTab() {
   const { language } = useLanguage();
+  const [selectedRoute, setSelectedRoute] = useState<RouteMap | null>(null);
 
   return (
-    <div className="space-y-8">
-      {/* Route 1: Bratislava → Liptovský Mikuláš */}
-      <div className="space-y-4">
-        <h2 className="text-2xl font-bold">
-          {language === "he" ? "מסלול 1: ברטיסלבה → ליפטובסקי מיקולאש" : "Route 1: Bratislava → Liptovský Mikuláš"}
+    <div className="space-y-6">
+      <div className="text-center mb-8">
+        <h2 className="text-2xl font-bold mb-2">
+          {language === "he" ? "מפות מסלול" : "Route Maps"}
         </h2>
-        <div className="h-[500px] rounded-lg overflow-hidden border-2 border-border">
-          <MapView
-            onMapReady={(map: any) => {
-              const google = window.google;
-              const directionsService = new google.maps.DirectionsService();
-              const directionsRenderer = new google.maps.DirectionsRenderer({
-                map,
-                suppressMarkers: false,
-              });
-
-              const waypoints = [
-                { location: { lat: 48.7164, lng: 19.1517 }, stopover: true }, // Banská Bystrica
-              ];
-
-              directionsService.route(
-                {
-                  origin: { lat: 48.1486, lng: 17.1077 }, // Bratislava
-                  destination: { lat: 49.0833, lng: 19.6167 }, // Liptovský Mikuláš
-                  waypoints,
-                  travelMode: google.maps.TravelMode.DRIVING,
-                },
-                (result: any, status: any) => {
-                  if (status === google.maps.DirectionsStatus.OK && result) {
-                    directionsRenderer.setDirections(result);
-                  }
-                }
-              );
-
-              // Points of Interest
-              const pois = [
-                { lat: 48.7164, lng: 19.1517, name: "Banská Bystrica", type: "city" },
-                { lat: 48.8, lng: 19.5, name: "Gas Station", type: "gas" },
-                { lat: 48.9, lng: 19.4, name: "Restaurant", type: "restaurant" },
-              ];
-
-              pois.forEach((poi) => {
-                new google.maps.Marker({
-                  position: { lat: poi.lat, lng: poi.lng },
-                  map,
-                  title: poi.name,
-                  icon: {
-                    url:
-                      poi.type === "gas"
-                        ? "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-                        : poi.type === "restaurant"
-                        ? "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
-                        : "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
-                  },
-                });
-              });
-            }}
-          />
-        </div>
+        <p className="text-muted-foreground">
+          {language === "he" 
+            ? "לחץ על כרטיס כדי לצפות במפה המפורטת" 
+            : "Click on a card to view the detailed map"}
+        </p>
       </div>
 
-      {/* Route 2: Liptovský Mikuláš → Košice */}
-      <div className="space-y-4">
-        <h2 className="text-2xl font-bold">
-          {language === "he" ? "מסלול 2: ליפטובסקי מיקולאש → קושיצה" : "Route 2: Liptovský Mikuláš → Košice"}
-        </h2>
-        <div className="h-[500px] rounded-lg overflow-hidden border-2 border-border">
-          <MapView
-            onMapReady={(map: any) => {
-              const google = window.google;
-              const directionsService = new google.maps.DirectionsService();
-              const directionsRenderer = new google.maps.DirectionsRenderer({
-                map,
-                suppressMarkers: false,
-              });
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {routeMaps.map((route) => (
+          <Card
+            key={route.id}
+            className={`overflow-hidden bg-gradient-to-br ${route.gradient} text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer group`}
+            onClick={() => setSelectedRoute(route)}
+          >
+            <CardContent className="p-6">
+              <div className="flex items-start justify-between mb-4">
+                <div className="w-12 h-12 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Navigation className="w-6 h-6 text-white" />
+                </div>
+              </div>
 
-              const waypoints = [
-                { location: { lat: 48.9972, lng: 20.5597 }, stopover: true }, // Spiš Castle area
-              ];
+              <h3 className="font-bold text-lg mb-2 drop-shadow-md">
+                {language === "he" ? route.title.he : route.title.en}
+              </h3>
 
-              directionsService.route(
-                {
-                  origin: { lat: 49.0833, lng: 19.6167 }, // Liptovský Mikuláš
-                  destination: { lat: 48.7164, lng: 21.2611 }, // Košice
-                  waypoints,
-                  travelMode: google.maps.TravelMode.DRIVING,
-                },
-                (result: any, status: any) => {
-                  if (status === google.maps.DirectionsStatus.OK && result) {
-                    directionsRenderer.setDirections(result);
-                  }
-                }
-              );
+              <p className="text-sm text-white/90 mb-4 drop-shadow">
+                {language === "he" ? route.description.he : route.description.en}
+              </p>
 
-              // Points of Interest
-              const pois = [
-                { lat: 48.9972, lng: 20.5597, name: "Spiš Castle", type: "attraction" },
-                { lat: 49.0, lng: 20.3, name: "Slovak Paradise", type: "attraction" },
-                { lat: 49.1, lng: 20.1, name: "Gas Station", type: "gas" },
-                { lat: 48.85, lng: 21.0, name: "Restaurant", type: "restaurant" },
-              ];
+              <div className="space-y-2 text-sm">
+                <div className="flex items-center gap-2">
+                  <MapPin className="w-4 h-4" />
+                  <span className="font-medium">{route.origin.name}</span>
+                </div>
+                <div className="flex items-center gap-2 pl-6">
+                  <span>→</span>
+                  <span className="font-medium">{route.destination.name}</span>
+                </div>
+              </div>
 
-              pois.forEach((poi) => {
-                new google.maps.Marker({
-                  position: { lat: poi.lat, lng: poi.lng },
-                  map,
-                  title: poi.name,
-                  icon: {
-                    url:
-                      poi.type === "gas"
-                        ? "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-                        : poi.type === "restaurant"
-                        ? "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
-                        : "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
-                  },
-                });
-              });
-            }}
-          />
-        </div>
+              <div className="mt-4 pt-4 border-t border-white/20">
+                <p className="text-xs text-white/80">
+                  {route.pois.length} {language === "he" ? "נקודות עניין" : "points of interest"}
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
-      {/* Route 3: Košice → Vienna */}
-      <div className="space-y-4">
-        <h2 className="text-2xl font-bold">
-          {language === "he" ? "מסלול 3: קושיצה → וינה" : "Route 3: Košice → Vienna"}
-        </h2>
-        <div className="h-[500px] rounded-lg overflow-hidden border-2 border-border">
-          <MapView
-            onMapReady={(map: any) => {
-              const google = window.google;
-              const directionsService = new google.maps.DirectionsService();
-              const directionsRenderer = new google.maps.DirectionsRenderer({
-                map,
-                suppressMarkers: false,
-              });
+      {/* Map Dialog */}
+      <Dialog open={!!selectedRoute} onOpenChange={(open) => !open && setSelectedRoute(null)}>
+        <DialogContent className="max-w-5xl h-[80vh]">
+          <DialogHeader>
+            <DialogTitle>
+              {selectedRoute && (language === "he" ? selectedRoute.title.he : selectedRoute.title.en)}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="h-full rounded-lg overflow-hidden border-2 border-border">
+            {selectedRoute && (
+              <MapView
+                onMapReady={(map: any) => {
+                  const google = window.google;
+                  const directionsService = new google.maps.DirectionsService();
+                  const directionsRenderer = new google.maps.DirectionsRenderer({
+                    map,
+                    suppressMarkers: false,
+                  });
 
-              const waypoints = [
-                { location: { lat: 48.1486, lng: 17.1077 }, stopover: true }, // Bratislava
-              ];
+                  directionsService.route(
+                    {
+                      origin: selectedRoute.origin,
+                      destination: selectedRoute.destination,
+                      waypoints: selectedRoute.waypoints,
+                      travelMode: google.maps.TravelMode.DRIVING,
+                    },
+                    (result: any, status: any) => {
+                      if (status === google.maps.DirectionsStatus.OK && result) {
+                        directionsRenderer.setDirections(result);
+                      }
+                    }
+                  );
 
-              directionsService.route(
-                {
-                  origin: { lat: 48.7164, lng: 21.2611 }, // Košice
-                  destination: { lat: 48.2082, lng: 16.3738 }, // Vienna
-                  waypoints,
-                  travelMode: google.maps.TravelMode.DRIVING,
-                },
-                (result: any, status: any) => {
-                  if (status === google.maps.DirectionsStatus.OK && result) {
-                    directionsRenderer.setDirections(result);
-                  }
-                }
-              );
-
-              // Points of Interest
-              const pois = [
-                { lat: 48.2082, lng: 16.3738, name: "Schönbrunn Palace", type: "attraction" },
-                { lat: 48.2085, lng: 16.3794, name: "Belvedere Palace", type: "attraction" },
-                { lat: 48.5, lng: 18.0, name: "Gas Station", type: "gas" },
-                { lat: 48.3, lng: 17.5, name: "Restaurant", type: "restaurant" },
-              ];
-
-              pois.forEach((poi) => {
-                new google.maps.Marker({
-                  position: { lat: poi.lat, lng: poi.lng },
-                  map,
-                  title: poi.name,
-                  icon: {
-                    url:
-                      poi.type === "gas"
-                        ? "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-                        : poi.type === "restaurant"
-                        ? "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
-                        : "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
-                  },
-                });
-              });
-            }}
-          />
-        </div>
-      </div>
+                  // Add POI markers
+                  selectedRoute.pois.forEach((poi) => {
+                    new google.maps.Marker({
+                      position: { lat: poi.lat, lng: poi.lng },
+                      map,
+                      title: poi.name,
+                      icon: {
+                        url:
+                          poi.type === "gas"
+                            ? "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+                            : poi.type === "restaurant"
+                            ? "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
+                            : "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+                      },
+                    });
+                  });
+                }}
+              />
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
