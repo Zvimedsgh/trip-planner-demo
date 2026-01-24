@@ -23,7 +23,7 @@ const CURRENCIES = [
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
-import { Calendar, Car, DollarSign, Edit, ExternalLink, Loader2, MapPin, Phone, Plus, Trash2 } from "lucide-react";
+import { Calendar, Car, DollarSign, Edit, ExternalLink, FileText, Loader2, MapPin, Phone, Plus, Trash2 } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 
@@ -40,6 +40,7 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
 
   const utils = trpc.useUtils();
   const { data: rentals, isLoading } = trpc.carRentals.list.useQuery({ tripId });
+  const { data: documents } = trpc.documents.list.useQuery({ tripId });
 
   const createMutation = trpc.carRentals.create.useMutation({
     onSuccess: () => {
@@ -392,9 +393,39 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
                       )}
                     </div>
                   </div>
-                  <div className="flex gap-0.5">
-                    <Button size="icon" variant="ghost" className="h-7 w-7 text-white bg-amber-500/80 hover:bg-amber-600" onClick={() => openEdit(rental)}>
-                      <Edit className="w-3 h-3" />
+                    <div className="flex gap-0.5">
+                      {/* Document link button */}
+                      {(() => {
+                        const relatedDocs = documents?.filter(doc => 
+                          (doc.category === 'booking' || doc.category === 'other') && 
+                          (doc.name.toLowerCase().includes(rental.company.toLowerCase()) ||
+                           (rental.pickupLocation && doc.name.toLowerCase().includes(rental.pickupLocation.toLowerCase())))
+                        );
+                        return (
+                          <Button 
+                            size="icon" 
+                            variant="ghost" 
+                            className="h-7 w-7 text-white bg-blue-500/80 hover:bg-blue-600"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              if (relatedDocs && relatedDocs.length > 0) {
+                                window.open(relatedDocs[0].fileUrl, '_blank');
+                              } else {
+                                toast.info(language === 'he' ? 'אין מסמך' : 'No document');
+                              }
+                            }}
+                            title={relatedDocs && relatedDocs.length > 0 
+                              ? (language === 'he' ? 'פתיחת מסמך' : 'Open document')
+                              : (language === 'he' ? 'אין מסמך' : 'No document')
+                            }
+                          >
+                            <FileText className="w-3 h-3" />
+                          </Button>
+                        );
+                      })()}
+                      <Button size="icon" variant="ghost" className="h-7 w-7 text-white bg-amber-500/80 hover:bg-amber-600" onClick={() => openEdit(rental)}>
+                        <Edit className="w-3 h-3" />
                     </Button>
                     <Button 
                       size="icon" 

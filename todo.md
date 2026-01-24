@@ -480,3 +480,44 @@
 - [x] Add confirmation dialog for checklist item deletion
 - [x] Add confirmation dialog for day trip deletion
 - [x] Add confirmation dialog for trip deletion (main page)
+
+## Document Linking Icons
+- [x] Hotels already have document linking
+- [x] Add document link icon to tourist site cards
+- [x] Add document link icon to restaurant cards
+- [x] Add document link icon to car rental cards
+- [x] Add document link icon to transportation cards
+
+## Collaboration System
+- [ ] Create trip_collaborators table in database schema
+- [ ] Add permission field (view_only / can_edit) to collaborators table
+- [ ] Create tRPC procedure: collaborators.invite (email or share link)
+- [ ] Create tRPC procedure: collaborators.list (get all collaborators for a trip)
+- [ ] Create tRPC procedure: collaborators.remove (remove collaborator access)
+- [ ] Create tRPC procedure: collaborators.updatePermission (change view/edit rights)
+- [ ] Add permission check middleware to all create/update/delete procedures
+- [ ] Build "Share & Collaborate" UI panel in trip settings
+- [ ] Add collaborator list with permission toggles
+- [ ] Add invite form (email input + permission selector)
+- [ ] Display current user's permission level in UI
+- [ ] Show "read-only" indicators when user has view-only access
+- [ ] Disable edit/delete buttons for view-only users
+
+## Hotel Images
+- [ ] Find and add image for Apart Hotel GOLDEN (Mikuláš)
+- [ ] Find and add image for Private holiday house Vivendi (Košice)
+- [ ] Find and add images for other hotels if missing
+
+## Budget Tab
+- [ ] Add estimated hotel expenses to budget
+- [ ] Add estimated food expenses (restaurants) to budget
+- [ ] Add estimated transportation expenses (flights, car rental) to budget
+- [ ] Add estimated attractions expenses to budget
+- [ ] Add estimated fuel/gas expenses to budget
+- [ ] Calculate and display total budget
+
+## Restaurants for Days 3-4 (Mikuláš)
+- [ ] Research and add lunch restaurant for Day 3
+- [ ] Research and add dinner restaurant for Day 3
+- [ ] Research and add lunch restaurant for Day 4
+- [ ] Research and add dinner restaurant for Day 4
