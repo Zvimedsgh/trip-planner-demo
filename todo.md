@@ -229,3 +229,12 @@
 - [ ] Fix incorrect time display in daily view (Day 2 activities showing 03:00)
 - [ ] Investigate timezone conversion issue
 - [ ] Ensure times match what user entered
+
+## Time Fields for All Activities
+- [x] Add time field to Tourist Sites (planned visit time)
+- [x] Add time field to Restaurants (reservation time)
+- [x] Update database schema with new time fields
+- [x] Update Tourist Sites form to include time input
+- [x] Update Restaurants form to include time input
+- [x] Update DailyView to combine date+time for tourist sites
+- [x] Update DailyView to combine date+time for restaurants

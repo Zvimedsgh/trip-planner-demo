@@ -59,6 +59,7 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
       description: getValue("description"),
       openingHours: getValue("openingHours"),
       plannedVisitDate: getValue("plannedVisitDate"),
+      plannedVisitTime: getValue("plannedVisitTime"),
       notes: getValue("notes"),
     };
   };
@@ -78,6 +79,7 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
       description: values.description || undefined,
       openingHours: values.openingHours || undefined,
       plannedVisitDate: values.plannedVisitDate ? new Date(values.plannedVisitDate).getTime() : undefined,
+      plannedVisitTime: values.plannedVisitTime || undefined,
       notes: values.notes || undefined,
     });
   };
@@ -97,6 +99,7 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
       description: values.description || undefined,
       openingHours: values.openingHours || undefined,
       plannedVisitDate: values.plannedVisitDate ? new Date(values.plannedVisitDate).getTime() : undefined,
+      plannedVisitTime: values.plannedVisitTime || undefined,
       notes: values.notes || undefined,
     });
   };
@@ -107,6 +110,7 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
     description: "",
     openingHours: "",
     plannedVisitDate: "",
+    plannedVisitTime: "",
     notes: "",
   });
 
@@ -117,6 +121,7 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
       description: site.description || "",
       openingHours: site.openingHours || "",
       plannedVisitDate: site.plannedVisitDate ? format(new Date(site.plannedVisitDate), "yyyy-MM-dd") : "",
+      plannedVisitTime: site.plannedVisitTime || "",
       notes: site.notes || "",
     });
     setEditingId(site.id);
@@ -155,21 +160,29 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
           rows={2}
         />
       </div>
+      <div className="grid gap-2">
+        <Label>{t("openingHours")}</Label>
+        <Input
+          name="openingHours"
+          defaultValue={defaults?.openingHours || ""}
+          placeholder="9:00 - 18:00"
+        />
+      </div>
       <div className="grid grid-cols-2 gap-4">
-        <div className="grid gap-2">
-          <Label>{t("openingHours")}</Label>
-          <Input
-            name="openingHours"
-            defaultValue={defaults?.openingHours || ""}
-            placeholder="9:00 - 18:00"
-          />
-        </div>
         <div className="grid gap-2">
           <Label>{t("plannedVisitDate")}</Label>
           <Input
             name="plannedVisitDate"
             type="date"
             defaultValue={defaults?.plannedVisitDate || ""}
+          />
+        </div>
+        <div className="grid gap-2">
+          <Label>{language === "he" ? "שעת ביקור" : "Visit Time"}</Label>
+          <Input
+            name="plannedVisitTime"
+            type="time"
+            defaultValue={defaults?.plannedVisitTime || ""}
           />
         </div>
       </div>

@@ -50,6 +50,7 @@ export const touristSites = mysqlTable("tourist_sites", {
   description: text("description"),
   openingHours: varchar("openingHours", { length: 255 }),
   plannedVisitDate: bigint("plannedVisitDate", { mode: "number" }), // UTC timestamp in ms
+  plannedVisitTime: varchar("plannedVisitTime", { length: 10 }), // HH:MM format
   notes: text("notes"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
@@ -182,6 +183,7 @@ export const restaurants = mysqlTable("restaurants", {
   address: varchar("address", { length: 500 }),
   cuisineType: varchar("cuisineType", { length: 100 }),
   reservationDate: bigint("reservationDate", { mode: "number" }), // UTC timestamp in ms
+  reservationTime: varchar("reservationTime", { length: 10 }), // HH:MM format
   numberOfDiners: int("numberOfDiners"),
   phone: varchar("phone", { length: 50 }),
   price: decimal("price", { precision: 10, scale: 2 }),

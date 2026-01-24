@@ -156,6 +156,7 @@ export const appRouter = router({
         description: z.string().optional(),
         openingHours: z.string().optional(),
         plannedVisitDate: z.number().optional(),
+        plannedVisitTime: z.string().optional(),
         notes: z.string().optional(),
       }))
       .mutation(({ input }) => db.createTouristSite(input)),
@@ -168,6 +169,7 @@ export const appRouter = router({
         description: z.string().optional(),
         openingHours: z.string().optional(),
         plannedVisitDate: z.number().optional(),
+        plannedVisitTime: z.string().optional(),
         notes: z.string().optional(),
       }))
       .mutation(({ input }) => {
@@ -359,6 +361,7 @@ export const appRouter = router({
         address: z.string().optional(),
         cuisineType: z.string().optional(),
         reservationDate: z.number().optional(),
+        reservationTime: z.string().optional(),
         numberOfDiners: z.number().optional(),
         phone: z.string().optional(),
         price: z.string().optional(),
@@ -374,6 +377,7 @@ export const appRouter = router({
         address: z.string().optional(),
         cuisineType: z.string().optional(),
         reservationDate: z.number().optional(),
+        reservationTime: z.string().optional(),
         numberOfDiners: z.number().optional(),
         phone: z.string().optional(),
         price: z.string().optional(),

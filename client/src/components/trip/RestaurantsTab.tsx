@@ -79,6 +79,7 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
       address: getValue("address"),
       cuisineType: getValue("cuisineType"),
       reservationDate: getValue("reservationDate"),
+      reservationTime: getValue("reservationTime"),
       numberOfDiners: getValue("numberOfDiners"),
       phone: getValue("phone"),
       price: getValue("price"),
@@ -100,6 +101,7 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
       address: values.address || undefined,
       cuisineType: values.cuisineType || undefined,
       reservationDate: values.reservationDate ? new Date(values.reservationDate).getTime() : undefined,
+      reservationTime: values.reservationTime || undefined,
       numberOfDiners: values.numberOfDiners ? parseInt(values.numberOfDiners) : undefined,
       phone: values.phone || undefined,
       price: values.price || undefined,
@@ -122,6 +124,7 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
       address: values.address || undefined,
       cuisineType: values.cuisineType || undefined,
       reservationDate: values.reservationDate ? new Date(values.reservationDate).getTime() : undefined,
+      reservationTime: values.reservationTime || undefined,
       numberOfDiners: values.numberOfDiners ? parseInt(values.numberOfDiners) : undefined,
       phone: values.phone || undefined,
       price: values.price || undefined,
@@ -135,6 +138,7 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
     address: "",
     cuisineType: "",
     reservationDate: "",
+    reservationTime: "",
     numberOfDiners: "",
     phone: "",
     price: "",
@@ -147,7 +151,8 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
       name: restaurant.name,
       address: restaurant.address || "",
       cuisineType: restaurant.cuisineType || "",
-      reservationDate: restaurant.reservationDate ? format(new Date(restaurant.reservationDate), "yyyy-MM-dd'T'HH:mm") : "",
+      reservationDate: restaurant.reservationDate ? format(new Date(restaurant.reservationDate), "yyyy-MM-dd") : "",
+      reservationTime: restaurant.reservationTime || "",
       numberOfDiners: restaurant.numberOfDiners?.toString() || "",
       phone: restaurant.phone || "",
       price: restaurant.price || "",
@@ -210,21 +215,30 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
           />
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-3 gap-4">
         <div className="grid gap-2">
           <Label>{t("reservationDate")}</Label>
           <Input
             name="reservationDate"
             tabIndex={5}
-            type="datetime-local"
+            type="date"
             defaultValue={defaults?.reservationDate || ""}
+          />
+        </div>
+        <div className="grid gap-2">
+          <Label>{language === "he" ? "שעת הזמנה" : "Time"}</Label>
+          <Input
+            name="reservationTime"
+            tabIndex={6}
+            type="time"
+            defaultValue={defaults?.reservationTime || ""}
           />
         </div>
         <div className="grid gap-2">
           <Label>{t("numberOfDiners")}</Label>
           <Input
             name="numberOfDiners"
-            tabIndex={6}
+            tabIndex={7}
             type="number"
             min="1"
             defaultValue={defaults?.numberOfDiners || ""}

@@ -150,10 +150,18 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
   // Tourist Sites
   sites?.forEach(s => {
     if (s.plannedVisitDate && isOnDay(s.plannedVisitDate)) {
+      // Combine date with plannedVisitTime if available
+      let visitTimestamp = s.plannedVisitDate;
+      if (s.plannedVisitTime) {
+        const [hours, minutes] = s.plannedVisitTime.split(':');
+        const visitDate = new Date(s.plannedVisitDate);
+        visitDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+        visitTimestamp = visitDate.getTime();
+      }
       activities.push({
         id: s.id,
         type: "site",
-        time: s.plannedVisitDate,
+        time: visitTimestamp,
         icon: MapPin,
         title: s.name,
         details: [s.address, s.description, s.openingHours].filter((d): d is string => Boolean(d)),
@@ -165,10 +173,18 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
   // Restaurants
   restaurants?.forEach(r => {
     if (r.reservationDate && isOnDay(r.reservationDate)) {
+      // Combine date with reservationTime if available
+      let reservationTimestamp = r.reservationDate;
+      if (r.reservationTime) {
+        const [hours, minutes] = r.reservationTime.split(':');
+        const reservationDate = new Date(r.reservationDate);
+        reservationDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+        reservationTimestamp = reservationDate.getTime();
+      }
       activities.push({
         id: r.id,
         type: "restaurant",
-        time: r.reservationDate,
+        time: reservationTimestamp,
         icon: Utensils,
         title: r.name,
         subtitle: r.cuisineType || undefined,
