@@ -40,7 +40,7 @@ const categoryPastelBg = {
   insurance: "bg-amber-50",
   booking: "bg-purple-50",
   ticket: "bg-rose-50",
-  other: "bg-gray-50",
+  other: "bg-cyan-50",
 };
 
 type CategoryType = "passport" | "visa" | "insurance" | "booking" | "ticket" | "other";
