@@ -1,0 +1,130 @@
+{
+  "query": "DESCRIBE transportation;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute DESCRIBE transportation;",
+  "rows": [
+    {
+      "Field": "id",
+      "Type": "int(11)",
+      "Null": "NO",
+      "Key": "PRI",
+      "Default": "NULL",
+      "Extra": "auto_increment"
+    },
+    {
+      "Field": "tripId",
+      "Type": "int(11)",
+      "Null": "NO",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "type",
+      "Type": "enum('flight','train','bus','ferry','other')",
+      "Null": "NO",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "origin",
+      "Type": "varchar(255)",
+      "Null": "NO",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "destination",
+      "Type": "varchar(255)",
+      "Null": "NO",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "departureDate",
+      "Type": "bigint(20)",
+      "Null": "NO",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "arrivalDate",
+      "Type": "bigint(20)",
+      "Null": "YES",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "confirmationNumber",
+      "Type": "varchar(100)",
+      "Null": "YES",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "price",
+      "Type": "decimal(10,2)",
+      "Null": "YES",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "currency",
+      "Type": "varchar(10)",
+      "Null": "YES",
+      "Key": "",
+      "Default": "USD",
+      "Extra": ""
+    },
+    {
+      "Field": "notes",
+      "Type": "text",
+      "Null": "YES",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "createdAt",
+      "Type": "timestamp",
+      "Null": "NO",
+      "Key": "",
+      "Default": "CURRENT_TIMESTAMP",
+      "Extra": ""
+    },
+    {
+      "Field": "updatedAt",
+      "Type": "timestamp",
+      "Null": "NO",
+      "Key": "",
+      "Default": "CURRENT_TIMESTAMP",
+      "Extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP"
+    },
+    {
+      "Field": "flightNumber",
+      "Type": "varchar(50)",
+      "Null": "YES",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "website",
+      "Type": "varchar(500)",
+      "Null": "YES",
+      "Key": "",
+      "Default": "NULL",
+      "Extra": ""
+    }
+  ],
+  "messages": [],
+  "stdout": "Field\tType\tNull\tKey\tDefault\tExtra\nid\tint(11)\tNO\tPRI\tNULL\tauto_increment\ntripId\tint(11)\tNO\t\tNULL\t\ntype\tenum('flight','train','bus','ferry','other')\tNO\t\tNULL\t\norigin\tvarchar(255)\tNO\t\tNULL\t\ndestination\tvarchar(255)\tNO\t\tNULL\t\ndepartureDate\tbigint(20)\tNO\t\tNULL\t\narrivalDate\tbigint(20)\tYES\t\tNULL\t\nconfirmationNumber\tvarchar(100)\tYES\t\tNULL\t\nprice\tdecimal(10,2)\tYES\t\tNULL\t\ncurrency\tvarchar(10)\tYES\t\tUSD\t\nnotes\ttext\tYES\t\tNULL\t\ncreatedAt\ttimestamp\tNO\t\tCURRENT_TIMESTAMP\t\nupdatedAt\ttimestamp\tNO\t\tCURRENT_TIMESTAMP\tDEFAULT_GENERATED on update CURRENT_TIMESTAMP\nflightNumber\tvarchar(50)\tYES\t\tNULL\t\nwebsite\tvarchar(500)\tYES\t\tNULL\t\n",
+  "stderr": "",
+  "execution_time_ms": 1516
+}

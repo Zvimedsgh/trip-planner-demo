@@ -1,0 +1,55 @@
+{
+  "query": "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'transportation';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'transportation';",
+  "rows": [
+    {
+      "COLUMN_NAME": "id"
+    },
+    {
+      "COLUMN_NAME": "tripId"
+    },
+    {
+      "COLUMN_NAME": "type"
+    },
+    {
+      "COLUMN_NAME": "origin"
+    },
+    {
+      "COLUMN_NAME": "destination"
+    },
+    {
+      "COLUMN_NAME": "departureDate"
+    },
+    {
+      "COLUMN_NAME": "arrivalDate"
+    },
+    {
+      "COLUMN_NAME": "confirmationNumber"
+    },
+    {
+      "COLUMN_NAME": "price"
+    },
+    {
+      "COLUMN_NAME": "currency"
+    },
+    {
+      "COLUMN_NAME": "notes"
+    },
+    {
+      "COLUMN_NAME": "createdAt"
+    },
+    {
+      "COLUMN_NAME": "updatedAt"
+    },
+    {
+      "COLUMN_NAME": "flightNumber"
+    },
+    {
+      "COLUMN_NAME": "website"
+    }
+  ],
+  "messages": [],
+  "stdout": "COLUMN_NAME\nid\ntripId\ntype\norigin\ndestination\ndepartureDate\narrivalDate\nconfirmationNumber\nprice\ncurrency\nnotes\ncreatedAt\nupdatedAt\nflightNumber\nwebsite\n",
+  "stderr": "",
+  "execution_time_ms": 1514
+}

@@ -362,3 +362,12 @@
 - [x] Add dinner with Ava restaurant to Day 6 Košice evening
 - [x] Create Route 6: Vienna → Bratislava Airport (Day 9)
 - [x] Add more POIs to existing route maps (gas stations and restaurants)
+
+## Complete Trip Data Entry from Documents
+- [x] Add outbound flight (Sep 1, 22:00 from Israel to Bratislava, arrival Sep 2, 01:10)
+- [x] Add return flight (Sep 9, 17:00 from Bratislava to Israel)
+- [x] Add car rental transportation (Sep 2, 10:00 pickup - Sep 9, 15:00 return at BTS Airport)
+- [x] Add Day 2 Bratislava activities (Bratislava Castle, Old Town, Blue Church, Eurovea Mall + Primark)
+- [ ] Verify all 9 days have correct activities and timeline
+- [ ] Remove any duplicate or incorrect data from previous entries
+- [ ] Fix timezone display issue for flight times
