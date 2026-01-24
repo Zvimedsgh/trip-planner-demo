@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
-import { Calendar, Clock, Edit, Loader2, MapPin, Plus, Trash2 } from "lucide-react";
+import { Calendar, Clock, Edit, ExternalLink, Loader2, MapPin, Plus, Trash2 } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 
@@ -321,6 +321,18 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
                         <Calendar className="w-3 h-3" />
                         {format(new Date(site.plannedVisitDate), "MMM d")}
                       </span>
+                    )}
+                    {site.website && (
+                      <a 
+                        href={site.website} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1 bg-blue-500/80 hover:bg-blue-600 text-white px-2 py-1 rounded transition-colors"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <ExternalLink className="w-3 h-3" />
+                        {language === 'he' ? 'אתר' : 'Website'}
+                      </a>
                     )}
                   </div>
                 </CardContent>

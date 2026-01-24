@@ -18,7 +18,7 @@ type Activity = {
   subtitle?: string;
   details: string[];
   price?: { amount: number; currency: string };
-  documentUrl?: string;
+  documentUrls?: Array<{ url: string; name: string }>;
   website?: string;
 };
 
@@ -53,12 +53,12 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
         checkInDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
         checkInTimestamp = checkInDate.getTime();
       }
-      const relatedDoc = documents?.find(doc => 
+      const relatedDocs = documents?.filter(doc => 
         (doc.category === 'booking' || doc.category === 'other') && 
         (doc.name.toLowerCase().includes(h.name.toLowerCase()) || 
          doc.name.toLowerCase().includes('hotel') ||
          (h.address && doc.name.toLowerCase().includes(h.address.toLowerCase())))
-      );
+      ).map(doc => ({ url: doc.fileUrl, name: doc.name })) || [];
       activities.push({
         id: h.id,
         type: "hotel-checkin",
@@ -68,7 +68,7 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
         subtitle: language === "he" ? "צ'ק-אין" : "Check-in",
         details: [h.address].filter((d): d is string => Boolean(d)),
         price: h.price ? { amount: parseFloat(h.price), currency: h.currency || "EUR" } : undefined,
-        documentUrl: relatedDoc?.fileUrl || undefined,
+        documentUrls: relatedDocs.length > 0 ? relatedDocs : undefined,
         website: h.website || undefined
       });
     }
@@ -81,12 +81,12 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
         checkOutDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
         checkOutTimestamp = checkOutDate.getTime();
       }
-      const relatedDoc = documents?.find(doc => 
+      const relatedDocs = documents?.filter(doc => 
         (doc.category === 'booking' || doc.category === 'other') && 
         (doc.name.toLowerCase().includes(h.name.toLowerCase()) || 
          doc.name.toLowerCase().includes('hotel') ||
          (h.address && doc.name.toLowerCase().includes(h.address.toLowerCase())))
-      );
+      ).map(doc => ({ url: doc.fileUrl, name: doc.name })) || [];
       activities.push({
         id: h.id + 10000,
         type: "hotel-checkout",
@@ -96,7 +96,7 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
         subtitle: language === "he" ? "צ'ק-אאוט" : "Check-out",
         details: [h.address].filter((d): d is string => Boolean(d)),
         price: undefined,
-        documentUrl: relatedDoc?.fileUrl || undefined,
+        documentUrls: relatedDocs.length > 0 ? relatedDocs : undefined,
         website: h.website || undefined
       });
     }
@@ -281,15 +281,16 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
                     )}
                   </div>
                   <div className="flex gap-1">
-                    {activity.documentUrl && (
+                    {activity.documentUrls?.map((doc, idx) => (
                       <button
-                        onClick={() => window.open(activity.documentUrl, '_blank')}
+                        key={idx}
+                        onClick={() => window.open(doc.url, '_blank')}
                         className="p-1.5 rounded bg-blue-500/80 hover:bg-blue-600 text-white transition-colors"
-                        title={language === "he" ? "פתיחת מסמך" : "Open document"}
+                        title={doc.name}
                       >
                         <FileText className="w-3.5 h-3.5" />
                       </button>
-                    )}
+                    ))}
                     {activity.website && (
                       <button
                         onClick={() => window.open(activity.website, '_blank')}

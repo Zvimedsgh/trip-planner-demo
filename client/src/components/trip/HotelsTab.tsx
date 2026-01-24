@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
-import { Calendar, DollarSign, Edit, FileText, Hotel, Loader2, MapPin, Phone, Plus, Trash2, Upload, Image as ImageIcon } from "lucide-react";
+import { Calendar, DollarSign, Edit, ExternalLink, FileText, Hotel, Loader2, MapPin, Phone, Plus, Trash2, Upload, Image as ImageIcon } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 
@@ -403,8 +403,8 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
             ];
             const gradient = gradients[index % gradients.length];
             
-            // Use coverImage from database if available, or parkingImage for Vienna hotel
-            const hotelImage = hotel.coverImage || (hotel.name.includes('Johannesgasse') ? (hotel as any).parkingImage : null);
+            // Use coverImage from database if available, or parkingImage if uploaded
+            const hotelImage = hotel.coverImage || hotel.parkingImage || null;
             
             return (
             <Card key={hotel.id} className={`overflow-hidden ${!hotelImage ? `bg-gradient-to-br ${gradient}` : ''} text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative group`}>
@@ -535,6 +535,18 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
                       <Phone className="w-3 h-3" />
                       {hotel.phone}
                     </span>
+                  )}
+                  {hotel.website && (
+                    <a 
+                      href={hotel.website} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 bg-blue-500/80 hover:bg-blue-600 backdrop-blur-sm px-2 py-1 rounded transition-colors"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <ExternalLink className="w-3 h-3" />
+                      {language === 'he' ? 'אתר' : 'Website'}
+                    </a>
                   )}
                 </div>
               </CardContent>

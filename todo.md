@@ -249,3 +249,10 @@
 - [x] Colorize small action buttons (document view, edit, delete) with distinct colors
 - [x] Add document links to activities in daily view
 - [x] Make document buttons more visible and accessible
+
+## Bug Fixes - Parking Image and URL Display
+- [x] Fix parking image upload bug - all activities showing Vienna hotel parking image
+- [x] Display website URL in activity cards (Hotels, Tourist Sites, Restaurants, Transportation, Car Rentals)
+- [x] Show URL link in daily view activities
+- [x] Link activities to ALL their related documents in daily view (not just one)
+- [x] Support multiple document buttons per activity in daily view

@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
-import { ArrowRight, Bus, Calendar, Clock, DollarSign, Edit, Loader2, Plane, Plus, RotateCcw, Ship, Train, Trash2 } from "lucide-react";
+import { ArrowRight, Bus, Calendar, Clock, DollarSign, Edit, ExternalLink, Loader2, Plane, Plus, RotateCcw, Ship, Train, Trash2 } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { toast } from "sonner";
 
@@ -594,6 +594,18 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
                     <p className="text-xs text-muted-foreground mt-1">
                       {language === "he" ? "הגעה:" : "Arr:"} {format(arrDate, "MMM d, HH:mm")}
                     </p>
+                  )}
+                  {transport.website && (
+                    <a 
+                      href={transport.website} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 bg-blue-500/80 hover:bg-blue-600 text-white px-2 py-1 rounded transition-colors text-xs mt-2 inline-flex w-fit"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <ExternalLink className="w-3 h-3" />
+                      {language === 'he' ? 'אתר' : 'Website'}
+                    </a>
                   )}
                 </CardContent>
               </Card>
