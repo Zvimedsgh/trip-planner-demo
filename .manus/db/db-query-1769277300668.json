@@ -1,0 +1,9 @@
+{
+  "query": "-- Update Day 2 tourist sites (Sep 2, 2026)\nUPDATE tourist_sites \nSET plannedVisitDate = 1788307200000, updatedAt = NOW()\nWHERE tripId = 30001 AND plannedVisitDate = 1725224400000;\n\n-- Update Day 2 restaurants (Sep 2, 2026)\nUPDATE restaurants \nSET reservationDate = 1788307200000, updatedAt = NOW()\nWHERE tripId = 30001 AND reservationDate = 1725224400000;\n\n-- Update Day 6 tourist sites (Sep 6, 2026)\nUPDATE tourist_sites \nSET plannedVisitDate = 1788652800000, updatedAt = NOW()\nWHERE tripId = 30001 AND plannedVisitDate = 1725613200000;\n\n-- Update Day 6 restaurants (Sep 6, 2026)\nUPDATE restaurants \nSET reservationDate = 1788652800000, updatedAt = NOW()\nWHERE tripId = 30001 AND reservationDate = 1725613200000;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute -- Update Day 2 tourist sites (Sep 2, 2026)\nUPDATE tourist_sites \nSET plannedVisitDate = 1788307200000, updatedAt = NOW()\nWHERE tripId = 30001 AND plannedVisitDate = 1725224400000;\n\n-- Update Day 2 restaurants (Sep 2, 2026)\nUPDATE restaurants \nSET reservationDate = 1788307200000, updatedAt = NOW()\nWHERE tripId = 30001 AND reservationDate = 1725224400000;\n\n-- Update Day 6 tourist sites (Sep 6, 2026)\nUPDATE tourist_sites \nSET plannedVisitDate = 1788652800000, updatedAt = NOW()\nWHERE tripId = 30001 AND plannedVisitDate = 1725613200000;\n\n-- Update Day 6 restaurants (Sep 6, 2026)\nUPDATE restaurants \nSET reservationDate = 1788652800000, updatedAt = NOW()\nWHERE tripId = 30001 AND reservationDate = 1725613200000;",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 2179
+}

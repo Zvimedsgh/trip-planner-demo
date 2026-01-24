@@ -432,3 +432,9 @@
 ## Fix Route 1 Start Time
 - [x] Update Route 1 description in AllRouteMapsTab to show 19:00 start time
 - [x] Update Route 1 card in DailyView to show 19:00 start time
+
+## Fix 2024 to 2026 Dates
+- [x] Update Day 2 (Sep 2, 2026) tourist sites from 2024 to 2026 timestamp
+- [x] Update Day 2 (Sep 2, 2026) restaurants from 2024 to 2026 timestamp
+- [x] Update Day 6 (Sep 6, 2026) tourist sites from 2024 to 2026 timestamp
+- [x] Update Day 6 (Sep 6, 2026) restaurants from 2024 to 2026 timestamp

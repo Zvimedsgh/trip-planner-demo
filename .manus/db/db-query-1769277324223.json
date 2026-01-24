@@ -1,0 +1,40 @@
+{
+  "query": "SELECT name, plannedVisitDate, FROM_UNIXTIME(plannedVisitDate/1000) as date_readable \nFROM tourist_sites \nWHERE tripId = 30001 AND (plannedVisitDate = 1788307200000 OR plannedVisitDate = 1788652800000)\nORDER BY plannedVisitDate, plannedVisitTime;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT name, plannedVisitDate, FROM_UNIXTIME(plannedVisitDate/1000) as date_readable \nFROM tourist_sites \nWHERE tripId = 30001 AND (plannedVisitDate = 1788307200000 OR plannedVisitDate = 1788652800000)\nORDER BY plannedVisitDate, plannedVisitTime;",
+  "rows": [
+    {
+      "name": "Bratislava Castle",
+      "plannedVisitDate": "1788307200000",
+      "date_readable": "2026-09-02 00:00:00.0000"
+    },
+    {
+      "name": "Chatam sofer-memorial",
+      "plannedVisitDate": "1788307200000",
+      "date_readable": "2026-09-02 00:00:00.0000"
+    },
+    {
+      "name": "אם נשאר זמן - הצעות נוספות",
+      "plannedVisitDate": "1788307200000",
+      "date_readable": "2026-09-02 00:00:00.0000"
+    },
+    {
+      "name": "St. Elisabeth's Cathedral",
+      "plannedVisitDate": "1788652800000",
+      "date_readable": "2026-09-06 00:00:00.0000"
+    },
+    {
+      "name": "State Theatre & Musical Fountain",
+      "plannedVisitDate": "1788652800000",
+      "date_readable": "2026-09-06 00:00:00.0000"
+    },
+    {
+      "name": "Zvonárska Synagogue & Potters Street",
+      "plannedVisitDate": "1788652800000",
+      "date_readable": "2026-09-06 00:00:00.0000"
+    }
+  ],
+  "messages": [],
+  "stdout": "name\tplannedVisitDate\tdate_readable\nBratislava Castle\t1788307200000\t2026-09-02 00:00:00.0000\nChatam sofer-memorial\t1788307200000\t2026-09-02 00:00:00.0000\nאם נשאר זמן - הצעות נוספות\t1788307200000\t2026-09-02 00:00:00.0000\nSt. Elisabeth's Cathedral\t1788652800000\t2026-09-06 00:00:00.0000\nState Theatre & Musical Fountain\t1788652800000\t2026-09-06 00:00:00.0000\nZvonárska Synagogue & Potters Street\t1788652800000\t2026-09-06 00:00:00.0000\n",
+  "stderr": "",
+  "execution_time_ms": 1538
+}
