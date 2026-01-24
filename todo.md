@@ -381,3 +381,8 @@
 
 ## Bug Fix - Trip Dates Wrong Year
 - [x] Update trip startDate and endDate from 2024 to 2026 so daily tabs match hotel/activity dates
+
+## Bug Fix - Remove Hardcoded Routes from Daily Views
+- [x] Remove route display logic from DailyView component
+- [x] Remove route display logic from TimelineTab component
+- [x] Routes should only appear in Route Maps tab, not in daily timeline
