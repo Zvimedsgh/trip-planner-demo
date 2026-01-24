@@ -461,3 +461,11 @@
 - [x] Add Café Central for coffee and cake (16:30)
 - [x] Add Grinzing wine village tourist site (19:00)
 - [x] Add Zum Martin Sepp Heuriger restaurant for dinner (19:30)
+
+## Pre-Trip Checklist
+- [x] Create initial checklist items for documents category (6 items)
+- [x] Create initial checklist items for bookings category (2 items)
+- [x] Create initial checklist items for packing category (7 items)
+- [x] Create initial checklist items for health category (3 items)
+- [x] Create initial checklist items for finance category (4 items)
+- [x] Create initial checklist items for other category (4 items)
