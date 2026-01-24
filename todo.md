@@ -204,3 +204,9 @@
 - [ ] Add parking details/photos for other hotels (Bratislava, Košice) - Skipped, no photos available yet
 - [x] Expand document links in hotel cards to include "other" category (not just booking) - Now includes parking and other docs
 - [ ] Create Pre-Trip Checklist tab (passport, insurance, bookings, car keys)
+
+## Daily View Feature
+- [x] Add second row of tabs below main tabs with one tab per day (Sep 1-9)
+- [x] Create DailyView component to show all activities for a specific day
+- [x] Display hotels, flights, car rentals, sites, restaurants for each day
+- [x] Integrate daily tabs into TripDetail page

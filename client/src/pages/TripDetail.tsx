@@ -31,6 +31,7 @@ import BudgetTab from "@/components/trip/BudgetTab";
 import ChecklistTab from "@/components/trip/ChecklistTab";
 import { RouteMapTab } from "@/components/trip/RouteMapTab";
 import DayTripsTab from "@/components/trip/DayTripsTab";
+import DailyView from "@/components/trip/DailyView";
 
 export default function TripDetail() {
   const params = useParams<{ id: string }>();
@@ -183,8 +184,9 @@ export default function TripDetail() {
           </div>
         </div>
 
-        {/* Tabs */}
+        {/* Main Category Tabs */}
         <Tabs defaultValue="hotels" className="w-full">
+          {/* Category Tabs */}
           <TabsList className="w-full flex flex-wrap h-auto gap-2 bg-transparent p-0 mb-6">
             {tabs.map((tab) => (
               <TabsTrigger
@@ -197,6 +199,42 @@ export default function TripDetail() {
               </TabsTrigger>
             ))}
           </TabsList>
+
+          {/* Daily Tabs - Second Row */}
+          <div className="mb-6">
+            <Tabs defaultValue={`day-${trip.startDate}`} className="w-full">
+              <TabsList className="w-full flex flex-wrap h-auto gap-2 bg-transparent p-0">
+                {Array.from({ length: getDaysCount(trip.startDate, trip.endDate) }, (_, i) => {
+                  const dayDate = new Date(trip.startDate);
+                  dayDate.setDate(dayDate.getDate() + i);
+                  const dayTimestamp = dayDate.getTime();
+                  return (
+                    <TabsTrigger
+                      key={`day-${dayTimestamp}`}
+                      value={`day-${dayTimestamp}`}
+                      className="flex items-center gap-2 data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground px-3 py-1.5 rounded-md border border-border data-[state=active]:border-secondary text-sm transition-all"
+                    >
+                      {language === "he" ? `יום ${i + 1}` : `Day ${i + 1}`}
+                      <span className="text-xs text-muted-foreground hidden sm:inline">
+                        {format(dayDate, "MMM d")}
+                      </span>
+                    </TabsTrigger>
+                  );
+                })}
+              </TabsList>
+
+              {Array.from({ length: getDaysCount(trip.startDate, trip.endDate) }, (_, i) => {
+                const dayDate = new Date(trip.startDate);
+                dayDate.setDate(dayDate.getDate() + i);
+                const dayTimestamp = dayDate.getTime();
+                return (
+                  <TabsContent key={`day-content-${dayTimestamp}`} value={`day-${dayTimestamp}`} className="mt-4">
+                    <DailyView tripId={tripId} date={dayTimestamp} />
+                  </TabsContent>
+                );
+              })}
+            </Tabs>
+          </div>
 
           <TabsContent value="sites">
             <TouristSitesTab tripId={tripId} />
