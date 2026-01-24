@@ -308,9 +308,9 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
   ];
 
   // Find route for current day (calculate day number from date)
-  const tripStart = new Date(date);
-  tripStart.setDate(tripStart.getDate() - (tripStart.getDate() - 1)); // Get Sept 1
-  const dayNumber = Math.floor((date - tripStart.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+  // Trip starts on Sep 1, 2026
+  const tripStartDate = new Date('2026-09-01T00:00:00Z').getTime();
+  const dayNumber = Math.floor((date - tripStartDate) / (1000 * 60 * 60 * 24)) + 1;
   const todayRoute = routes.find(r => r.day === dayNumber);
 
   return (

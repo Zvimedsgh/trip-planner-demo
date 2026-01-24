@@ -438,3 +438,8 @@
 - [x] Update Day 2 (Sep 2, 2026) restaurants from 2024 to 2026 timestamp
 - [x] Update Day 6 (Sep 6, 2026) tourist sites from 2024 to 2026 timestamp
 - [x] Update Day 6 (Sep 6, 2026) restaurants from 2024 to 2026 timestamp
+
+## Fix Route Display in Day 3 and Day 4
+- [x] Debug day number calculation in DailyView.tsx - Fixed to use Sep 1, 2026 as trip start
+- [x] Verify Route 4 appears in Day 3 tab
+- [x] Verify Route 5 appears in Day 4 tab
