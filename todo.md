@@ -316,4 +316,4 @@
 
 ## Bug - Tabs Overlapping
 - [x] Category tabs and daily tabs are displaying on the same line and overlapping
-- [x] Fixed by adding mt-4 and clear-both classes to daily tabs wrapper
+- [x] Fixed by wrapping daily tabs in nested div with block display and explicit marginTop

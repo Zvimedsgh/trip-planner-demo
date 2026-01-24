@@ -205,7 +205,8 @@ export default function TripDetail() {
           </TabsList>
 
           {/* Row 2: Daily Tabs */}
-          <div className="w-full flex flex-wrap gap-2 mb-6 mt-4 clear-both">
+          <div className="w-full block mb-6" style={{marginTop: '1.5rem'}}>
+            <div className="flex flex-wrap gap-2">
             {Array.from({ length: getDaysCount(trip.startDate, trip.endDate) }, (_, i) => {
               const dayDate = new Date(trip.startDate);
               dayDate.setDate(dayDate.getDate() + i);
@@ -223,6 +224,7 @@ export default function TripDetail() {
                 </TabsTrigger>
               );
             })}
+            </div>
           </div>
 
           {/* Daily Content */}
