@@ -309,3 +309,7 @@
 - [x] Reduce card sizes from 3 to 4 columns in Documents tab
 - [x] Create RouteMapTab2 (Liptovský Mikuláš → Košice)
 - [x] Create RouteMapTab3 (Košice → Vienna)
+
+## Critical Bug - Daily Tabs Missing
+- [x] Daily tabs (Day 1-9) disappeared after adding route maps
+- [x] Fixed by changing second TabsList to div wrapper
