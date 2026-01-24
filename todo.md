@@ -281,3 +281,7 @@
 - [x] Add category selector to Hotels form
 - [x] Create "HOTELS TO CHOOSE KOSICE" category group
 - [ ] Filter/group hotels by category in Hotels tab (optional enhancement)
+
+## Bug Fix - Hilton Košice Edit Error
+- [x] Fix "Cannot read a client value during server rendering" error when editing Hilton Košice hotel
+- [x] Change category selector from controlled to uncontrolled component

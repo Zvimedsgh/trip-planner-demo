@@ -365,7 +365,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
         <div className="grid gap-2">
           <Label>{language === "he" ? "קטגוריה" : "Category"}</Label>
           <Select 
-            value={defaults?.category || ""} 
+            defaultValue={defaults?.category || ""} 
             onValueChange={(value) => {
               // Update the hidden input
               const input = formRef.current?.querySelector('[name="category"]') as HTMLInputElement;
