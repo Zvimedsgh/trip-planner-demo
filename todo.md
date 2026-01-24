@@ -371,3 +371,10 @@
 - [ ] Verify all 9 days have correct activities and timeline
 - [ ] Remove any duplicate or incorrect data from previous entries
 - [ ] Fix timezone display issue for flight times
+
+## Bug Fix - Hotel Dates
+- [ ] Update all hotel check-in/check-out dates from 2024 to 2026 so they appear in daily timeline views
+
+## Bug Fix - Hotels Not Appearing in Daily Views
+- [x] Debug why hotels with correct 2026 dates are not showing in daily timeline tabs - Fixed isOnDay function
+- [ ] User needs to manually update hotel dates in UI from 2024 to 2026

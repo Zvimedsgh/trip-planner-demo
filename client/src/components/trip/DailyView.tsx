@@ -34,10 +34,16 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
   const { data: documents } = trpc.documents.list.useQuery({ tripId });
 
   // Filter activities for this specific day
-  const dayStart = new Date(date).setHours(0, 0, 0, 0);
-  const dayEnd = new Date(date).setHours(23, 59, 59, 999);
-
-  const isOnDay = (timestamp: number) => timestamp >= dayStart && timestamp <= dayEnd;
+  // Compare dates only (ignore time) to avoid timezone issues
+  const isOnDay = (timestamp: number) => {
+    const activityDate = new Date(timestamp);
+    const targetDate = new Date(date);
+    return (
+      activityDate.getFullYear() === targetDate.getFullYear() &&
+      activityDate.getMonth() === targetDate.getMonth() &&
+      activityDate.getDate() === targetDate.getDate()
+    );
+  };
 
   // Collect all activities with their times
   const activities: Activity[] = [];

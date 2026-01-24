@@ -1,0 +1,73 @@
+{
+  "query": "\nSELECT \n  name,\n  FROM_UNIXTIME(checkInDate/1000) as checkIn,\n  FROM_UNIXTIME(checkOutDate/1000) as checkOut,\n  checkInDate,\n  checkOutDate\nFROM hotels\nWHERE tripId = 30001\nORDER BY checkInDate;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute \nSELECT \n  name,\n  FROM_UNIXTIME(checkInDate/1000) as checkIn,\n  FROM_UNIXTIME(checkOutDate/1000) as checkOut,\n  checkInDate,\n  checkOutDate\nFROM hotels\nWHERE tripId = 30001\nORDER BY checkInDate;\n",
+  "rows": [
+    {
+      "name": "Private holiday house Vivendi",
+      "checkIn": "2026-09-02 00:00:00.0000",
+      "checkOut": "2026-09-05 00:00:00.0000",
+      "checkInDate": "1788307200000",
+      "checkOutDate": "1788566400000"
+    },
+    {
+      "name": "Charming & Cozy Ambiente Apartments",
+      "checkIn": "2026-09-02 00:00:00.0000",
+      "checkOut": "2026-09-02 00:00:00.0000",
+      "checkInDate": "1788307200000",
+      "checkOutDate": "1788307200000"
+    },
+    {
+      "name": "Hotel Bankov Košice",
+      "checkIn": "2026-09-05 00:00:00.0000",
+      "checkOut": "2026-09-07 00:00:00.0000",
+      "checkInDate": "1788566400000",
+      "checkOutDate": "1788739200000"
+    },
+    {
+      "name": "Villa Regia",
+      "checkIn": "2026-09-05 00:00:00.0000",
+      "checkOut": "2026-09-07 00:00:00.0000",
+      "checkInDate": "1788566400000",
+      "checkOutDate": "1788739200000"
+    },
+    {
+      "name": "Hotel Ambassador",
+      "checkIn": "2026-09-05 00:00:00.0000",
+      "checkOut": "2029-09-07 00:00:00.0000",
+      "checkInDate": "1788566400000",
+      "checkOutDate": "1883433600000"
+    },
+    {
+      "name": "DoubleTree By Hilton Košice",
+      "checkIn": "2026-09-05 00:00:00.0000",
+      "checkOut": "2026-09-07 00:00:00.0000",
+      "checkInDate": "1788566400000",
+      "checkOutDate": "1788739200000"
+    },
+    {
+      "name": "Apart Hotel GOLDEN apartments",
+      "checkIn": "2026-09-05 00:00:00.0000",
+      "checkOut": "2026-09-07 00:00:00.0000",
+      "checkInDate": "1788566400000",
+      "checkOutDate": "1788739200000"
+    },
+    {
+      "name": "myNext - Johannesgasse Apartments",
+      "checkIn": "2026-09-07 00:00:00.0000",
+      "checkOut": "2026-09-09 00:00:00.0000",
+      "checkInDate": "1788739200000",
+      "checkOutDate": "1788912000000"
+    },
+    {
+      "name": "Vienna Parking",
+      "checkIn": "2026-09-07 00:00:00.0000",
+      "checkOut": "2026-09-09 00:00:00.0000",
+      "checkInDate": "1788739200000",
+      "checkOutDate": "1788912000000"
+    }
+  ],
+  "messages": [],
+  "stdout": "name\tcheckIn\tcheckOut\tcheckInDate\tcheckOutDate\nPrivate holiday house Vivendi\t2026-09-02 00:00:00.0000\t2026-09-05 00:00:00.0000\t1788307200000\t1788566400000\nCharming & Cozy Ambiente Apartments\t2026-09-02 00:00:00.0000\t2026-09-02 00:00:00.0000\t1788307200000\t1788307200000\nHotel Bankov Košice\t2026-09-05 00:00:00.0000\t2026-09-07 00:00:00.0000\t1788566400000\t1788739200000\nVilla Regia\t2026-09-05 00:00:00.0000\t2026-09-07 00:00:00.0000\t1788566400000\t1788739200000\nHotel Ambassador\t2026-09-05 00:00:00.0000\t2029-09-07 00:00:00.0000\t1788566400000\t1883433600000\nDoubleTree By Hilton Košice\t2026-09-05 00:00:00.0000\t2026-09-07 00:00:00.0000\t1788566400000\t1788739200000\nApart Hotel GOLDEN apartments\t2026-09-05 00:00:00.0000\t2026-09-07 00:00:00.0000\t1788566400000\t1788739200000\nmyNext - Johannesgasse Apartments\t2026-09-07 00:00:00.0000\t2026-09-09 00:00:00.0000\t1788739200000\t1788912000000\nVienna Parking\t2026-09-07 00:00:00.0000\t2026-09-09 00:00:00.0000\t1788739200000\t1788912000000\n",
+  "stderr": "",
+  "execution_time_ms": 1502
+}

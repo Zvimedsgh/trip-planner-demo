@@ -1,0 +1,17 @@
+{
+  "query": "\nSELECT \n  name,\n  checkInDate,\n  checkOutDate,\n  FROM_UNIXTIME(checkInDate/1000) as checkInUTC,\n  FROM_UNIXTIME(checkOutDate/1000) as checkOutUTC\nFROM hotels\nWHERE tripId = 30001 AND name LIKE '%Vivendi%';\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute \nSELECT \n  name,\n  checkInDate,\n  checkOutDate,\n  FROM_UNIXTIME(checkInDate/1000) as checkInUTC,\n  FROM_UNIXTIME(checkOutDate/1000) as checkOutUTC\nFROM hotels\nWHERE tripId = 30001 AND name LIKE '%Vivendi%';\n",
+  "rows": [
+    {
+      "name": "Private holiday house Vivendi",
+      "checkInDate": "1788307200000",
+      "checkOutDate": "1788566400000",
+      "checkInUTC": "2026-09-02 00:00:00.0000",
+      "checkOutUTC": "2026-09-05 00:00:00.0000"
+    }
+  ],
+  "messages": [],
+  "stdout": "name\tcheckInDate\tcheckOutDate\tcheckInUTC\tcheckOutUTC\nPrivate holiday house Vivendi\t1788307200000\t1788566400000\t2026-09-02 00:00:00.0000\t2026-09-05 00:00:00.0000\n",
+  "stderr": "",
+  "execution_time_ms": 1524
+}
