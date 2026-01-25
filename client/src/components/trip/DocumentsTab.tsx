@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
-import { Edit, ExternalLink, File, FileText, Loader2, Plus, Shield, Ticket, Trash2, Upload } from "lucide-react";
+import { Edit, ExternalLink, File, FileText, Loader2, Plus, Shield, Ticket, Trash2, Upload, Hotel, Utensils } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 
@@ -22,6 +22,8 @@ const categoryIcons = {
   insurance: Shield,
   booking: File,
   ticket: Ticket,
+  restaurant: Utensils,
+  hotel: Hotel,
   other: File,
 };
 
@@ -31,6 +33,8 @@ const categoryColors = {
   insurance: "from-amber-500 to-orange-600",
   booking: "from-purple-500 to-violet-600",
   ticket: "from-rose-500 to-pink-600",
+  restaurant: "from-orange-500 to-red-600",
+  hotel: "from-cyan-500 to-blue-600",
   other: "from-gray-500 to-slate-600",
 };
 
@@ -40,10 +44,12 @@ const categoryPastelBg = {
   insurance: "bg-amber-50",
   booking: "bg-purple-50",
   ticket: "bg-rose-50",
+  restaurant: "bg-orange-50",
+  hotel: "bg-cyan-50",
   other: "bg-gray-50",
 };
 
-type CategoryType = "passport" | "visa" | "insurance" | "booking" | "ticket" | "other";
+type CategoryType = "passport" | "visa" | "insurance" | "booking" | "ticket" | "restaurant" | "hotel" | "other";
 
 export default function DocumentsTab({ tripId }: DocumentsTabProps) {
   const { t, language, isRTL } = useLanguage();
@@ -65,6 +71,28 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
 
   const utils = trpc.useUtils();
   const { data: documents, isLoading } = trpc.documents.list.useQuery({ tripId });
+
+  // Track which folders are open (all open by default)
+  const [openFolders, setOpenFolders] = useState<Set<CategoryType>>(new Set<CategoryType>(["passport", "visa", "insurance", "booking", "ticket", "restaurant", "hotel", "other"]));
+
+  const toggleFolder = (category: CategoryType) => {
+    setOpenFolders(prev => {
+      const next = new Set(prev);
+      if (next.has(category)) {
+        next.delete(category);
+      } else {
+        next.add(category);
+      }
+      return next;
+    });
+  };
+
+  // Group documents by category
+  const documentsByCategory = documents?.reduce((acc, doc) => {
+    if (!acc[doc.category]) acc[doc.category] = [];
+    acc[doc.category].push(doc);
+    return acc;
+  }, {} as Record<CategoryType, typeof documents>);
 
   const uploadMutation = trpc.documents.upload.useMutation({
     onSuccess: () => {
@@ -228,6 +256,8 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
                     <SelectItem value="insurance">{t("insurance")}</SelectItem>
                     <SelectItem value="booking">{t("booking")}</SelectItem>
                     <SelectItem value="ticket">{t("ticket")}</SelectItem>
+                    <SelectItem value="restaurant">{t("restaurant")}</SelectItem>
+                    <SelectItem value="hotel">{t("hotel")}</SelectItem>
                     <SelectItem value="other">{t("other")}</SelectItem>
                   </SelectContent>
                 </Select>
@@ -261,67 +291,101 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
       </div>
 
       {documents && documents.length > 0 ? (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
-          {documents.map((doc) => {
-            const Icon = categoryIcons[doc.category];
-            const colorClass = categoryColors[doc.category];
-            const pastelBg = categoryPastelBg[doc.category];
+        <div className="space-y-4">
+          {(Object.keys(categoryIcons) as CategoryType[]).map((category) => {
+            const docsInCategory = documentsByCategory?.[category] || [];
+            if (docsInCategory.length === 0) return null;
+            
+            const Icon = categoryIcons[category];
+            const colorClass = categoryColors[category];
+            const isOpen = openFolders.has(category);
+            
             return (
-              <Card key={doc.id} data-document-id={doc.id} className={`elegant-card-hover ${pastelBg}`}>
-                <CardHeader className="pb-2">
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-2">
-                      <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClass} flex items-center justify-center`}>
-                        <Icon className="w-5 h-5 text-white" />
-                      </div>
-                      <div>
-                        <CardTitle className="text-sm font-medium line-clamp-1">{doc.name}</CardTitle>
-                        <CardDescription className="text-xs capitalize">{t(doc.category)}</CardDescription>
-                      </div>
+              <div key={category} className="elegant-card">
+                <button
+                  onClick={() => toggleFolder(category)}
+                  className="w-full flex items-center justify-between p-4 hover:bg-muted/50 transition-colors"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClass} flex items-center justify-center`}>
+                      <Icon className="w-5 h-5 text-white" />
                     </div>
-                    <div className="flex gap-1">
-                      <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => openEdit(doc)}>
-                        <Edit className="w-4 h-4" />
-                      </Button>
-                      <Button 
-                        size="icon" 
-                        variant="ghost" 
-                        className="h-8 w-8 text-destructive"
-                        onClick={() => {
-                        if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את המסמך?" : "Are you sure you want to delete this document?")) {
-                          deleteMutation.mutate({ id: doc.id });
-                        }
-                      }}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
+                    <div className="text-left">
+                      <h3 className="font-semibold capitalize">{t(category)}</h3>
+                      <p className="text-sm text-muted-foreground">
+                        {docsInCategory.length} {language === "he" ? "מסמכים" : "documents"}
+                      </p>
                     </div>
                   </div>
-                </CardHeader>
-                <CardContent>
-                  {doc.tags && (
-                    <div className="flex flex-wrap gap-1 mb-3">
-                      {doc.tags.split(",").map((tag, i) => (
-                        <span key={i} className="text-xs bg-muted px-2 py-0.5 rounded">
-                          {tag.trim()}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
-                    {format(new Date(doc.createdAt), "MMM d, yyyy")}
-                  </div>
-                  <a 
-                    href={doc.fileUrl} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
+                  <svg
+                    className={`w-5 h-5 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
                   >
-                    <ExternalLink className="w-3 h-3" />
-                    {language === "he" ? "פתח קובץ" : "Open file"}
-                  </a>
-                </CardContent>
-              </Card>
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                
+                {isOpen && (
+                  <div className="p-4 pt-0 grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {docsInCategory.map((doc) => {
+                      const pastelBg = categoryPastelBg[doc.category];
+                      return (
+                        <Card key={doc.id} data-document-id={doc.id} className={`elegant-card-hover ${pastelBg}`}>
+                          <CardHeader className="pb-2">
+                            <div className="flex items-start justify-between">
+                              <div>
+                                <CardTitle className="text-sm font-medium line-clamp-1">{doc.name}</CardTitle>
+                                <CardDescription className="text-xs">
+                                  {format(new Date(doc.createdAt), "MMM d, yyyy")}
+                                </CardDescription>
+                              </div>
+                              <div className="flex gap-1">
+                                <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => openEdit(doc)}>
+                                  <Edit className="w-4 h-4" />
+                                </Button>
+                                <Button 
+                                  size="icon" 
+                                  variant="ghost" 
+                                  className="h-8 w-8 text-destructive"
+                                  onClick={() => {
+                                    if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את המסמך?" : "Are you sure you want to delete this document?")) {
+                                      deleteMutation.mutate({ id: doc.id });
+                                    }
+                                  }}
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            </div>
+                          </CardHeader>
+                          <CardContent>
+                            {doc.tags && (
+                              <div className="flex flex-wrap gap-1 mb-3">
+                                {doc.tags.split(",").map((tag, i) => (
+                                  <span key={i} className="text-xs bg-muted px-2 py-0.5 rounded">
+                                    {tag.trim()}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
+                            <a 
+                              href={doc.fileUrl} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
+                            >
+                              <ExternalLink className="w-3 h-3" />
+                              {language === "he" ? "פתח קובץ" : "Open file"}
+                            </a>
+                          </CardContent>
+                        </Card>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
             );
           })}
         </div>
@@ -362,6 +426,8 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
                   <SelectItem value="insurance">{t("insurance")}</SelectItem>
                   <SelectItem value="booking">{t("booking")}</SelectItem>
                   <SelectItem value="ticket">{t("ticket")}</SelectItem>
+                  <SelectItem value="restaurant">{t("restaurant")}</SelectItem>
+                  <SelectItem value="hotel">{t("hotel")}</SelectItem>
                   <SelectItem value="other">{t("other")}</SelectItem>
                 </SelectContent>
               </Select>

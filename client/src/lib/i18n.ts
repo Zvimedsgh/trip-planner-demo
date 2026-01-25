@@ -108,6 +108,8 @@ export const translations = {
     insurance: "Insurance",
     booking: "Booking",
     ticket: "Ticket",
+    restaurant: "Restaurant",
+    hotel: "Hotel",
     tags: "Tags",
     noDocuments: "No documents uploaded yet",
     
@@ -282,6 +284,8 @@ export const translations = {
     insurance: "ביטוח",
     booking: "הזמנה",
     ticket: "כרטיס",
+    restaurant: "מסעדה",
+    hotel: "מלון",
     tags: "תגיות",
     noDocuments: "לא הועלו מסמכים עדיין",
     
