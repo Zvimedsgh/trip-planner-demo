@@ -575,5 +575,9 @@
 - [x] Swap tab order - day tabs above activity tabs
 - [x] Add pastel colors to day tabs
 - [x] Auto-select current day (or first day if trip not started)
-- [x] Make tabs sticky during scroll (freeze position)
-- [x] Add floating scroll-to-top button
+- [ ] Make tabs sticky during scroll (freeze position) - NOT WORKING YET
+- [ ] Add floating scroll-to-top button - NOT VISIBLE YET
+
+## Additional UX Improvements - Pending
+- [ ] Color-code events in Timeline and DailyView to match day colors
+- [ ] Improve active tab highlighting (make selected tab more visually distinct)
