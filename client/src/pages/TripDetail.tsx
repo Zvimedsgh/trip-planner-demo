@@ -9,7 +9,7 @@ import {
   ArrowLeft, Calendar, Car, DollarSign, FileText, Globe, 
   Hotel, Loader2, MapPin, Plane, Utensils, Clock, ArrowRight, Share2, Copy, Check, X, Map, CheckSquare
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -44,6 +44,60 @@ export default function TripDetail() {
   const { data: trip, isLoading, refetch } = trpc.trips.get.useQuery({ id: tripId });
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const [defaultTab, setDefaultTab] = useState<string>("hotels");
+  
+  // Auto-select current day or first day
+  useEffect(() => {
+    if (!trip) return;
+    
+    const now = Date.now();
+    const tripStart = trip.startDate;
+    const tripEnd = trip.endDate;
+    
+    // If trip hasn't started yet, select first day
+    if (now < tripStart) {
+      setDefaultTab(`day-${tripStart}`);
+      return;
+    }
+    
+    // If trip has ended, select first day
+    if (now > tripEnd) {
+      setDefaultTab(`day-${tripStart}`);
+      return;
+    }
+    
+    // Trip is ongoing - find current day
+    const daysCount = getDaysCount(tripStart, tripEnd);
+    for (let i = 0; i < daysCount; i++) {
+      const dayDate = new Date(tripStart);
+      dayDate.setDate(dayDate.getDate() + i);
+      const dayStart = dayDate.setHours(0, 0, 0, 0);
+      const dayEnd = dayDate.setHours(23, 59, 59, 999);
+      
+      if (now >= dayStart && now <= dayEnd) {
+        setDefaultTab(`day-${dayStart}`);
+        return;
+      }
+    }
+    
+    // Fallback to first day
+    setDefaultTab(`day-${tripStart}`);
+  }, [trip]);
+  
+  // Scroll-to-top button visibility
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 300);
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+  
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
   
   const generateShareLink = trpc.trips.generateShareLink.useMutation({
     onSuccess: () => {
@@ -189,49 +243,61 @@ export default function TripDetail() {
           </div>
         </div>
 
-        {/* Combined Tabs: Activities (Row 1) + Days (Row 2) */}
-        <Tabs defaultValue="hotels" className="w-full">
-          {/* Row 1: Activity Category Tabs */}
-          <TabsList className="w-full flex flex-col h-auto gap-4 bg-transparent p-0 mb-6">
-            {/* Row 1: Activity Category Tabs */}
-            <div className="flex flex-wrap gap-2">
-              {tabs.map((tab) => (
-                <TabsTrigger
-                  key={tab.id}
-                  value={tab.id}
-                  className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-4 py-2 rounded-lg border border-border data-[state=active]:border-primary transition-all"
-                >
-                  <tab.icon className="w-4 h-4" />
-                  <span className="hidden sm:inline">{tab.label}</span>
-                </TabsTrigger>
-              ))}
-            </div>
+        {/* Combined Tabs: Days (Row 1) + Activities (Row 2) */}
+        <Tabs value={defaultTab} onValueChange={setDefaultTab} className="w-full">
+          {/* Sticky Tab Container */}
+          <div className="sticky top-0 z-10 bg-background pb-4 border-b border-border mb-6">
+            <TabsList className="w-full flex flex-col h-auto gap-4 bg-transparent p-0">
+              {/* Row 1: Daily Tabs with Pastel Colors */}
+              <div className="flex flex-wrap gap-2">
+                {(() => {
+                  const daysCount = getDaysCount(trip.startDate, trip.endDate);
+                  const pastelColors = [
+                    'bg-pink-100 hover:bg-pink-200 data-[state=active]:bg-pink-300 data-[state=active]:text-pink-900 border-pink-200',
+                    'bg-blue-100 hover:bg-blue-200 data-[state=active]:bg-blue-300 data-[state=active]:text-blue-900 border-blue-200',
+                    'bg-green-100 hover:bg-green-200 data-[state=active]:bg-green-300 data-[state=active]:text-green-900 border-green-200',
+                    'bg-yellow-100 hover:bg-yellow-200 data-[state=active]:bg-yellow-300 data-[state=active]:text-yellow-900 border-yellow-200',
+                    'bg-purple-100 hover:bg-purple-200 data-[state=active]:bg-purple-300 data-[state=active]:text-purple-900 border-purple-200',
+                    'bg-orange-100 hover:bg-orange-200 data-[state=active]:bg-orange-300 data-[state=active]:text-orange-900 border-orange-200',
+                    'bg-teal-100 hover:bg-teal-200 data-[state=active]:bg-teal-300 data-[state=active]:text-teal-900 border-teal-200',
+                    'bg-indigo-100 hover:bg-indigo-200 data-[state=active]:bg-indigo-300 data-[state=active]:text-indigo-900 border-indigo-200',
+                  ];
+                  return Array.from({ length: daysCount }, (_, i) => {
+                    const dayDate = new Date(trip.startDate);
+                    dayDate.setDate(dayDate.getDate() + i);
+                    const dayTimestamp = dayDate.getTime();
+                    const colorClass = pastelColors[i % pastelColors.length];
+                    return (
+                      <TabsTrigger
+                        key={`day-${dayTimestamp}`}
+                        value={`day-${dayTimestamp}`}
+                        className={`flex items-center gap-2 px-3 py-1.5 rounded-md border text-sm transition-all font-medium ${colorClass}`}
+                      >
+                        {language === "he" ? `יום ${i + 1}` : `Day ${i + 1}`}
+                        <span className="text-xs hidden sm:inline">
+                          {format(dayDate, "MMM d")}
+                        </span>
+                      </TabsTrigger>
+                    );
+                  });
+                })()}
+              </div>
 
-            {/* Row 2: Daily Tabs */}
-            <div className="flex flex-wrap gap-2">
-              {(() => {
-                const daysCount = getDaysCount(trip.startDate, trip.endDate);
-                console.log('Days count:', daysCount, 'Start:', trip.startDate, 'End:', trip.endDate);
-                return Array.from({ length: daysCount }, (_, i) => {
-                  const dayDate = new Date(trip.startDate);
-                  dayDate.setDate(dayDate.getDate() + i);
-                  const dayTimestamp = dayDate.getTime();
-                  return (
-                    <TabsTrigger
-                      key={`day-${dayTimestamp}`}
-                      value={`day-${dayTimestamp}`}
-                      className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-3 py-1.5 rounded-md border border-border data-[state=active]:border-primary text-sm transition-all font-medium"
-                    >
-                      {language === "he" ? `יום ${i + 1}` : `Day ${i + 1}`}
-                      <span className="text-xs hidden sm:inline">
-                        {format(dayDate, "MMM d")}
-                      </span>
-                    </TabsTrigger>
-                  );
-                });
-              })()}
-            </div>
-          </TabsList>
+              {/* Row 2: Activity Category Tabs */}
+              <div className="flex flex-wrap gap-2">
+                {tabs.map((tab) => (
+                  <TabsTrigger
+                    key={tab.id}
+                    value={tab.id}
+                    className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-4 py-2 rounded-lg border border-border data-[state=active]:border-primary transition-all"
+                  >
+                    <tab.icon className="w-4 h-4" />
+                    <span className="hidden sm:inline">{tab.label}</span>
+                  </TabsTrigger>
+                ))}
+              </div>
+            </TabsList>
+          </div>
 
           {/* Daily Content */}
           {Array.from({ length: getDaysCount(trip.startDate, trip.endDate) }, (_, i) => {
@@ -347,6 +413,17 @@ export default function TripDetail() {
           </div>
         </DialogContent>
       </Dialog>
+      
+      {/* Floating Scroll-to-Top Button */}
+      {showScrollTop && (
+        <Button
+          onClick={scrollToTop}
+          className="fixed bottom-8 right-8 z-50 rounded-full w-12 h-12 p-0 shadow-lg"
+          size="icon"
+        >
+          <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-90' : '-rotate-90'}`} />
+        </Button>
+      )}
     </div>
   );
 }

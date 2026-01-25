@@ -570,3 +570,10 @@
 
 ## Bug Fixes - Route Times
 - [x] Fix Timeline chronological sorting - events now appear in correct time order
+
+## UX Improvements - Trip Detail Page
+- [x] Swap tab order - day tabs above activity tabs
+- [x] Add pastel colors to day tabs
+- [x] Auto-select current day (or first day if trip not started)
+- [x] Make tabs sticky during scroll (freeze position)
+- [x] Add floating scroll-to-top button
