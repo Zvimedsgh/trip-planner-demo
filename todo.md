@@ -567,3 +567,6 @@
 - [x] Update DailyView to fetch routes from database instead of static array
 - [ ] Create route management UI with add/edit/delete functionality in Route Maps tab
 - [x] Migrate existing 6 static routes to database
+
+## Bug Fixes - Route Times
+- [x] Fix route times in Timeline - converted UTC timestamps to local Bratislava timezone
