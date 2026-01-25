@@ -31,7 +31,17 @@ export const appRouter = router({
     
     get: protectedProcedure
       .input(z.object({ id: z.number() }))
-      .query(({ ctx, input }) => db.getTripById(input.id, ctx.user.id)),
+      .query(async ({ ctx, input }) => {
+        const trip = await db.getTripById(input.id, ctx.user.id);
+        // If user is a collaborator (not owner), update their lastSeen and visitCount
+        if (trip && trip.userId !== ctx.user.id) {
+          const collab = await db.getUserCollaboratorPermission(input.id, ctx.user.id);
+          if (collab) {
+            await db.updateCollaboratorVisit(input.id, ctx.user.id);
+          }
+        }
+        return trip;
+      }),
     
     create: protectedProcedure
       .input(z.object({
@@ -637,6 +647,19 @@ export const appRouter = router({
           throw new Error('Only trip owner can remove collaborators');
         }
         return db.removeCollaborator(input.id);
+      }),
+    
+    // Get activity log for a trip
+    getActivityLog: protectedProcedure
+      .input(z.object({ 
+        tripId: z.number(),
+        limit: z.number().optional(),
+      }))
+      .query(async ({ ctx, input }) => {
+        // Check if user is owner or collaborator
+        const trip = await db.getTripById(input.tripId, ctx.user.id);
+        if (!trip) throw new Error('Trip not found or access denied');
+        return db.getActivityLog(input.tripId, input.limit);
       }),
   }),
 });

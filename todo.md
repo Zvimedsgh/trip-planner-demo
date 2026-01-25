@@ -521,3 +521,13 @@
 - [ ] Research and add dinner restaurant for Day 3
 - [ ] Research and add lunch restaurant for Day 4
 - [ ] Research and add dinner restaurant for Day 4
+
+## Collaborator Activity Tracking
+- [ ] Add lastSeen timestamp field to trip_collaborators table
+- [ ] Add visitCount field to trip_collaborators table
+- [ ] Create activity_log table for tracking user actions
+- [ ] Update trip access procedure to record lastSeen and increment visitCount
+- [ ] Add activity logging to all create/update/delete operations
+- [ ] Display last seen time in CollaboratorsDialog
+- [ ] Display visit count in CollaboratorsDialog
+- [ ] Add activity history view in CollaboratorsDialog

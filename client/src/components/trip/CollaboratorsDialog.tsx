@@ -173,6 +173,22 @@ export default function CollaboratorsDialog({ tripId, isOwner }: CollaboratorsDi
                     {collab.user.email && (
                       <p className="text-sm text-muted-foreground">{collab.user.email}</p>
                     )}
+                    <div className="flex gap-3 text-xs text-muted-foreground mt-1">
+                      {collab.lastSeen && (
+                        <span>
+                          {language === "he" ? "נראה לאחרונה:" : "Last seen:"}{" "}
+                          {new Date(collab.lastSeen).toLocaleDateString(language === "he" ? "he-IL" : "en-US", {
+                            month: "short",
+                            day: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </span>
+                      )}
+                      <span>
+                        {language === "he" ? "ביקורים:" : "Visits:"} {collab.visitCount}
+                      </span>
+                    </div>
                   </div>
                   <div className="flex items-center gap-2">
                     {isOwner ? (

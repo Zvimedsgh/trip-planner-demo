@@ -232,9 +232,28 @@ export const tripCollaborators = mysqlTable("trip_collaborators", {
   userId: int("userId").notNull(), // The collaborator's user ID
   permission: mysqlEnum("permission", ["view_only", "can_edit"]).default("view_only").notNull(),
   invitedBy: int("invitedBy").notNull(), // User ID of the person who invited
+  lastSeen: timestamp("lastSeen"), // Last time the collaborator accessed this trip
+  visitCount: int("visitCount").default(0).notNull(), // Number of times accessed
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 
 export type TripCollaborator = typeof tripCollaborators.$inferSelect;
 export type InsertTripCollaborator = typeof tripCollaborators.$inferInsert;
+
+/**
+ * Activity log table - tracks all user actions on trips
+ */
+export const activityLog = mysqlTable("activity_log", {
+  id: int("id").autoincrement().primaryKey(),
+  tripId: int("tripId").notNull(),
+  userId: int("userId").notNull(),
+  action: mysqlEnum("action", ["create", "update", "delete"]).notNull(),
+  entityType: mysqlEnum("entityType", ["hotel", "transportation", "car_rental", "tourist_site", "restaurant", "document", "checklist", "day_trip"]).notNull(),
+  entityId: int("entityId"), // ID of the affected entity
+  entityName: varchar("entityName", { length: 255 }), // Name/description for display
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type ActivityLog = typeof activityLog.$inferSelect;
+export type InsertActivityLog = typeof activityLog.$inferInsert;

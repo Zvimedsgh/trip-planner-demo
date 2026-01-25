@@ -134,6 +134,13 @@
       "when": 1769297067849,
       "tag": "0018_parched_sprite",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "5",
+      "when": 1769332123612,
+      "tag": "0019_chief_phil_sheldon",
+      "breakpoints": true
     }
   ]
 }

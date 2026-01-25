@@ -1,4 +1,4 @@
-import { eq, and, desc, asc } from "drizzle-orm";
+import { eq, and, desc, asc, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import { 
   InsertUser, users, 
@@ -11,7 +11,8 @@ import {
   documents, InsertDocument, Document,
   dayTrips, InsertDayTrip, DayTrip,
   checklistItems, InsertChecklistItem, ChecklistItem,
-  tripCollaborators, InsertTripCollaborator, TripCollaborator
+  tripCollaborators, InsertTripCollaborator, TripCollaborator,
+  activityLog, InsertActivityLog, ActivityLog
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -506,6 +507,8 @@ export async function getTripCollaborators(tripId: number): Promise<Array<TripCo
       userId: tripCollaborators.userId,
       permission: tripCollaborators.permission,
       invitedBy: tripCollaborators.invitedBy,
+      lastSeen: tripCollaborators.lastSeen,
+      visitCount: tripCollaborators.visitCount,
       createdAt: tripCollaborators.createdAt,
       updatedAt: tripCollaborators.updatedAt,
       userName: users.name,
@@ -522,6 +525,8 @@ export async function getTripCollaborators(tripId: number): Promise<Array<TripCo
     userId: c.userId,
     permission: c.permission,
     invitedBy: c.invitedBy,
+    lastSeen: c.lastSeen,
+    visitCount: c.visitCount,
     createdAt: c.createdAt,
     updatedAt: c.updatedAt,
     user: {
@@ -599,4 +604,78 @@ export async function removeCollaborator(id: number): Promise<boolean> {
   
   await db.delete(tripCollaborators).where(eq(tripCollaborators.id, id));
   return true;
+}
+
+/**
+ * Update collaborator's last seen timestamp and increment visit count
+ */
+export async function updateCollaboratorVisit(tripId: number, userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  await db
+    .update(tripCollaborators)
+    .set({
+      lastSeen: new Date(),
+      visitCount: sql`${tripCollaborators.visitCount} + 1`,
+    })
+    .where(
+      and(
+        eq(tripCollaborators.tripId, tripId),
+        eq(tripCollaborators.userId, userId)
+      )
+    );
+}
+
+/**
+ * Log a user activity
+ */
+export async function logActivity(data: InsertActivityLog) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  await db.insert(activityLog).values(data);
+}
+
+/**
+ * Get activity log for a trip
+ */
+export async function getActivityLog(tripId: number, limit: number = 50) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const activities = await db
+    .select({
+      id: activityLog.id,
+      tripId: activityLog.tripId,
+      userId: activityLog.userId,
+      action: activityLog.action,
+      entityType: activityLog.entityType,
+      entityId: activityLog.entityId,
+      entityName: activityLog.entityName,
+      createdAt: activityLog.createdAt,
+      userName: users.name,
+      userEmail: users.email,
+    })
+    .from(activityLog)
+    .leftJoin(users, eq(activityLog.userId, users.id))
+    .where(eq(activityLog.tripId, tripId))
+    .orderBy(desc(activityLog.createdAt))
+    .limit(limit);
+
+  return activities.map(a => ({
+    id: a.id,
+    tripId: a.tripId,
+    userId: a.userId,
+    action: a.action,
+    entityType: a.entityType,
+    entityId: a.entityId,
+    entityName: a.entityName,
+    createdAt: a.createdAt,
+    user: {
+      id: a.userId,
+      name: a.userName,
+      email: a.userEmail,
+    },
+  }));
 }

@@ -1,0 +1,9 @@
+{
+  "query": "CREATE TABLE activity_log (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  tripId INT NOT NULL,\n  userId INT NOT NULL,\n  action ENUM('create', 'update', 'delete') NOT NULL,\n  entityType ENUM('hotel', 'transportation', 'car_rental', 'tourist_site', 'restaurant', 'document', 'checklist', 'day_trip') NOT NULL,\n  entityId INT,\n  entityName VARCHAR(255),\n  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute CREATE TABLE activity_log (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  tripId INT NOT NULL,\n  userId INT NOT NULL,\n  action ENUM('create', 'update', 'delete') NOT NULL,\n  entityType ENUM('hotel', 'transportation', 'car_rental', 'tourist_site', 'restaurant', 'document', 'checklist', 'day_trip') NOT NULL,\n  entityId INT,\n  entityName VARCHAR(255),\n  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL\n);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1658
+}
