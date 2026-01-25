@@ -242,6 +242,26 @@ export type TripCollaborator = typeof tripCollaborators.$inferSelect;
 export type InsertTripCollaborator = typeof tripCollaborators.$inferInsert;
 
 /**
+ * Routes table - driving routes between destinations
+ */
+export const routes = mysqlTable("trip_routes", {
+  id: int("id").autoincrement().primaryKey(),
+  tripId: int("tripId").notNull(),
+  name: varchar("name", { length: 255 }).notNull(), // e.g., "Route 1: Bratislava → Liptovský Mikuláš"
+  nameHe: varchar("nameHe", { length: 255 }), // Hebrew translation
+  description: text("description"), // e.g., "Day 2: Drive to mountain accommodation"
+  descriptionHe: text("descriptionHe"), // Hebrew translation
+  date: bigint("date", { mode: "number" }).notNull(), // UTC timestamp in ms
+  time: varchar("time", { length: 5 }), // HH:MM format (24-hour)
+  mapData: text("mapData"), // JSON string with map configuration (markers, waypoints, etc.)
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Route = typeof routes.$inferSelect;
+export type InsertRoute = typeof routes.$inferInsert;
+
+/**
  * Activity log table - tracks all user actions on trips
  */
 export const activityLog = mysqlTable("activity_log", {

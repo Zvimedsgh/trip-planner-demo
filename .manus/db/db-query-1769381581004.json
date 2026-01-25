@@ -1,0 +1,9 @@
+{
+  "query": "ALTER TABLE routes ADD COLUMN routeTime varchar(5);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute ALTER TABLE routes ADD COLUMN routeTime varchar(5);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1895
+}

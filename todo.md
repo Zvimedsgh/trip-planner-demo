@@ -559,3 +559,11 @@
 - [ ] Fix routes not appearing in timeline for days 3 and 4
 - [x] Fix DailyView to display route cards for Day 3 and Day 4
 - [x] Add routes to Timeline view so they appear in chronological order
+
+## Dynamic Route Management System
+- [x] Create routes table in database schema
+- [x] Build tRPC procedures for route CRUD operations (create, list, update, delete)
+- [x] Update Timeline to fetch routes from database instead of static array
+- [x] Update DailyView to fetch routes from database instead of static array
+- [ ] Create route management UI with add/edit/delete functionality in Route Maps tab
+- [x] Migrate existing 6 static routes to database

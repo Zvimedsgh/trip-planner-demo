@@ -563,6 +563,64 @@ export const appRouter = router({
       .query(({ input }) => db.getTripBudget(input.tripId)),
   }),
 
+  // ============ ROUTES ============
+  routes: router({
+    list: protectedProcedure
+      .input(z.object({ tripId: z.number() }))
+      .query(async ({ ctx, input }) => {
+        const trip = await db.getTripById(input.tripId, ctx.user.id);
+        if (!trip) throw new Error('Trip not found or access denied');
+        return db.getTripRoutes(input.tripId);
+      }),
+    
+    create: protectedProcedure
+      .input(z.object({
+        tripId: z.number(),
+        name: z.string().min(1),
+        nameHe: z.string().optional(),
+        description: z.string().optional(),
+        descriptionHe: z.string().optional(),
+        date: z.number(),
+        time: z.string().optional(),
+        mapData: z.string().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const trip = await db.getTripById(input.tripId, ctx.user.id);
+        if (!trip) throw new Error('Trip not found or access denied');
+        return db.createRoute(input);
+      }),
+    
+    update: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        name: z.string().optional(),
+        nameHe: z.string().optional(),
+        description: z.string().optional(),
+        descriptionHe: z.string().optional(),
+        date: z.number().optional(),
+        time: z.string().optional(),
+        mapData: z.string().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const route = await db.getRouteById(input.id);
+        if (!route) throw new Error('Route not found');
+        const trip = await db.getTripById(route.tripId, ctx.user.id);
+        if (!trip) throw new Error('Access denied');
+        const { id, ...data } = input;
+        return db.updateRoute(id, data);
+      }),
+    
+    delete: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        const route = await db.getRouteById(input.id);
+        if (!route) throw new Error('Route not found');
+        const trip = await db.getTripById(route.tripId, ctx.user.id);
+        if (!trip) throw new Error('Access denied');
+        return db.deleteRoute(input.id);
+      }),
+  }),
+
   // ============ COLLABORATORS ============
   collaborators: router({
     // Search users by name

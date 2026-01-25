@@ -1,0 +1,8 @@
+{
+  "query": "ALTER TABLE routes \nADD COLUMN date bigint NOT NULL DEFAULT 0 AFTER descriptionHe,\nADD COLUMN time varchar(5) AFTER date;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute ALTER TABLE routes \nADD COLUMN date bigint NOT NULL DEFAULT 0 AFTER descriptionHe,\nADD COLUMN time varchar(5) AFTER date;",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1054 (42S22) at line 1: Unknown column 'date' in 'routes'"
+  ]
+}

@@ -12,7 +12,8 @@ import {
   dayTrips, InsertDayTrip, DayTrip,
   checklistItems, InsertChecklistItem, ChecklistItem,
   tripCollaborators, InsertTripCollaborator, TripCollaborator,
-  activityLog, InsertActivityLog, ActivityLog
+  activityLog, InsertActivityLog, ActivityLog,
+  routes, InsertRoute, Route
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -549,6 +550,73 @@ export async function deleteChecklistItem(id: number): Promise<boolean> {
   if (!db) return false;
   
   await db.delete(checklistItems).where(eq(checklistItems.id, id));
+  return true;
+}
+
+
+// ============ ROUTES QUERIES ============
+
+export async function createRoute(data: InsertRoute): Promise<Route> {
+  const db = await getDb();
+  if (!db) throw new Error('Database not available');
+  
+  const result = await db.insert(routes).values(data);
+  const inserted = await db
+    .select()
+    .from(routes)
+    .where(eq(routes.id, Number((result as any).insertId)))
+    .limit(1);
+  
+  return inserted[0];
+}
+
+export async function getTripRoutes(tripId: number): Promise<Route[]> {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return db
+    .select()
+    .from(routes)
+    .where(eq(routes.tripId, tripId))
+    .orderBy(routes.date, routes.time);
+}
+
+export async function getRouteById(id: number): Promise<Route | null> {
+  const db = await getDb();
+  if (!db) return null;
+  
+  const result = await db
+    .select()
+    .from(routes)
+    .where(eq(routes.id, id))
+    .limit(1);
+  
+  return result[0] || null;
+}
+
+export async function updateRoute(id: number, data: Partial<InsertRoute>): Promise<Route | null> {
+  const db = await getDb();
+  if (!db) return null;
+  
+  await db
+    .update(routes)
+    .set(data)
+    .where(eq(routes.id, id));
+  
+  const updated = await db
+    .select()
+    .from(routes)
+    .where(eq(routes.id, id))
+    .limit(1);
+  
+  return updated[0] || null;
+}
+
+export async function deleteRoute(id: number): Promise<boolean> {
+  const db = await getDb();
+  if (!db) return false;
+  
+  await db.delete(routes).where(eq(routes.id, id));
   return true;
 }
 

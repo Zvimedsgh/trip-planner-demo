@@ -1,0 +1,8 @@
+{
+  "query": "CREATE TABLE `routes` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`tripId` int NOT NULL,\n\t`name` varchar(255) NOT NULL,\n\t`nameHe` varchar(255),\n\t`description` text,\n\t`descriptionHe` text,\n\t`date` bigint NOT NULL,\n\t`time` varchar(5),\n\t`mapData` text,\n\t`createdAt` timestamp NOT NULL DEFAULT (now()),\n\t`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,\n\tCONSTRAINT `routes_id` PRIMARY KEY(`id`)\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute CREATE TABLE `routes` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`tripId` int NOT NULL,\n\t`name` varchar(255) NOT NULL,\n\t`nameHe` varchar(255),\n\t`description` text,\n\t`descriptionHe` text,\n\t`date` bigint NOT NULL,\n\t`time` varchar(5),\n\t`mapData` text,\n\t`createdAt` timestamp NOT NULL DEFAULT (now()),\n\t`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,\n\tCONSTRAINT `routes_id` PRIMARY KEY(`id`)\n);",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1050 (42S01) at line 1: Table '2rtwtAqF2DqhH9oEcii9XY.routes' already exists"
+  ]
+}
