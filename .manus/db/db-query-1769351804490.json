@@ -1,0 +1,9 @@
+{
+  "query": "\n-- Add back the accounts that were actually used\nINSERT INTO trip_collaborators (tripId, userId, permission, invitedBy) VALUES\n(30001, 1080001, 'can_edit', 1),  -- Efi Goren (the one actually used)\n(30001, 1080005, 'can_edit', 1);  -- mikgrn (the one actually used)\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute \n-- Add back the accounts that were actually used\nINSERT INTO trip_collaborators (tripId, userId, permission, invitedBy) VALUES\n(30001, 1080001, 'can_edit', 1),  -- Efi Goren (the one actually used)\n(30001, 1080005, 'can_edit', 1);  -- mikgrn (the one actually used)\n",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1540
+}
