@@ -557,4 +557,5 @@
 
 
 - [ ] Fix routes not appearing in timeline for days 3 and 4
-- [x] Fix DailyView to display all activities for Day 3 and Day 4 (currently not showing any events)
+- [x] Fix DailyView to display route cards for Day 3 and Day 4
+- [x] Add routes to Timeline view so they appear in chronological order

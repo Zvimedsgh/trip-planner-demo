@@ -143,7 +143,59 @@ export default function TimelineTab({ tripId }: TimelineTabProps) {
     }
   });
 
+  // Routes (static definitions matching DailyView)
+  const routes = [
+    {
+      id: 1,
+      date: new Date('2026-09-02T19:00:00').getTime(), // Sep 2, 19:00
+      title: { en: "Route 1: Bratislava → Liptovský Mikuláš", he: "מסלול 1: ברטיסלבה → ליפטובסקי מיקולאש" },
+      time: "19:00"
+    },
+    {
+      id: 4,
+      date: new Date('2026-09-03T09:00:00').getTime(), // Sep 3, 09:00
+      title: { en: "Route 4: Trip to Štrbské Pleso", he: "מסלול 4: טיול לשטרבסקה פלסו" },
+      time: "09:00"
+    },
+    {
+      id: 5,
+      date: new Date('2026-09-04T09:00:00').getTime(), // Sep 4, 09:00
+      title: { en: "Route 5: Trip to Jasná – Demänovská Dolina", he: "מסלול 5: טיול ליאסנה – דמנובסקה דולינה" },
+      time: "09:00"
+    },
+    {
+      id: 2,
+      date: new Date('2026-09-05T10:00:00').getTime(), // Sep 5, 10:00
+      title: { en: "Route 2: Liptovský Mikuláš → Košice", he: "מסלול 2: ליפטובסקי מיקולאש → קושיצה" },
+      time: "10:00"
+    },
+    {
+      id: 3,
+      date: new Date('2026-09-07T10:00:00').getTime(), // Sep 7, 10:00
+      title: { en: "Route 3: Košice → Vienna", he: "מסלול 3: קושיצה → וינה" },
+      time: "10:00"
+    },
+    {
+      id: 6,
+      date: new Date('2026-09-09T08:00:00').getTime(), // Sep 9, 08:00
+      title: { en: "Route 6: Vienna → Bratislava Airport", he: "מסלול 6: וינה → שדה התעופה" },
+      time: "08:00"
+    }
+  ];
 
+  // Add routes to events
+  routes.forEach((route) => {
+    events.push({
+      id: `route-${route.id}`,
+      type: "route",
+      date: route.date,
+      time: route.time,
+      title: language === "he" ? route.title.he : route.title.en,
+      subtitle: language === "he" ? "מסלול נסיעה" : "Driving route",
+      icon: MapIcon,
+      color: "from-cyan-500 to-blue-600",
+    });
+  });
 
   // Sort by date and time
   events.sort((a, b) => {
