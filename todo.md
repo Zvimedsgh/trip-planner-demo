@@ -550,3 +550,8 @@
 ## Bug Fix - Collaborator Trips Visibility
 - [ ] Fix getUserTrips to include trips where user is collaborator
 - [ ] Test that Michal and Efi can see shared trips
+
+## Timeline Issues - Current Session
+- [ ] Fix timeline date 2/9 issue - Charming hotel check-in/check-out appearing on wrong date
+- [x] Fix check-in/check-out times to appear chronologically by hour, not at end of day
+

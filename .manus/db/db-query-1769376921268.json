@@ -1,0 +1,17 @@
+{
+  "query": "SELECT name, checkInDate, checkInTime, checkOutDate, checkOutTime FROM hotels WHERE name LIKE '%Charming%';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT name, checkInDate, checkInTime, checkOutDate, checkOutTime FROM hotels WHERE name LIKE '%Charming%';",
+  "rows": [
+    {
+      "name": "Charming & Cozy Ambiente Apartments",
+      "checkInDate": "1788307200000",
+      "checkInTime": "02:30",
+      "checkOutDate": "1788307200000",
+      "checkOutTime": "11:00"
+    }
+  ],
+  "messages": [],
+  "stdout": "name\tcheckInDate\tcheckInTime\tcheckOutDate\tcheckOutTime\nCharming & Cozy Ambiente Apartments\t1788307200000\t02:30\t1788307200000\t11:00\n",
+  "stderr": "",
+  "execution_time_ms": 1525
+}

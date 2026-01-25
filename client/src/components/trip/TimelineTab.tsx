@@ -145,8 +145,16 @@ export default function TimelineTab({ tripId }: TimelineTabProps) {
 
 
 
-  // Sort by date
-  events.sort((a, b) => a.date - b.date);
+  // Sort by date and time
+  events.sort((a, b) => {
+    // First sort by date
+    if (a.date !== b.date) return a.date - b.date;
+    
+    // If same date, sort by time
+    const timeA = a.time || "00:00";
+    const timeB = b.time || "00:00";
+    return timeA.localeCompare(timeB);
+  });
 
   // Group by date
   const groupedEvents: { date: Date; events: TimelineEvent[] }[] = [];
