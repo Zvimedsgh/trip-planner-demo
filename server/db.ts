@@ -145,17 +145,55 @@ export async function getUserTrips(userId: number): Promise<Trip[]> {
   const db = await getDb();
   if (!db) return [];
   
-  return db.select().from(trips).where(eq(trips.userId, userId)).orderBy(desc(trips.startDate));
+  // Get trips owned by user
+  const ownedTrips = await db.select().from(trips).where(eq(trips.userId, userId));
+  
+  // Get trips where user is a collaborator
+  const collaboratedTripsResult = await db
+    .select()
+    .from(tripCollaborators)
+    .innerJoin(trips, eq(tripCollaborators.tripId, trips.id))
+    .where(eq(tripCollaborators.userId, userId));
+  
+  const collaboratedTrips = collaboratedTripsResult.map(row => row.trips);
+  
+  // Combine and deduplicate
+  const allTrips: Trip[] = [...ownedTrips, ...collaboratedTrips];
+  const uniqueTrips = Array.from(new Map(allTrips.map(t => [t.id, t])).values());
+  
+  // Sort by start date descending
+  return uniqueTrips.sort((a, b) => b.startDate - a.startDate);
 }
 
 export async function getTripById(tripId: number, userId: number): Promise<Trip | undefined> {
   const db = await getDb();
   if (!db) return undefined;
   
-  const result = await db.select().from(trips)
+  // First check if user owns the trip
+  const ownedTrip = await db.select().from(trips)
     .where(and(eq(trips.id, tripId), eq(trips.userId, userId)))
     .limit(1);
-  return result[0];
+  
+  if (ownedTrip.length > 0) {
+    return ownedTrip[0];
+  }
+  
+  // If not owner, check if user is a collaborator
+  const collaboratorAccess = await db.select()
+    .from(tripCollaborators)
+    .where(and(eq(tripCollaborators.tripId, tripId), eq(tripCollaborators.userId, userId)))
+    .limit(1);
+  
+  if (collaboratorAccess.length > 0) {
+    // User is a collaborator, return the trip
+    const trip = await db.select().from(trips)
+      .where(eq(trips.id, tripId))
+      .limit(1);
+    return trip[0];
+  }
+  
+  // User has no access
+  return undefined;
 }
 
 export async function updateTrip(tripId: number, userId: number, data: Partial<InsertTrip>): Promise<Trip | undefined> {
@@ -228,7 +266,7 @@ export async function getTripTouristSites(tripId: number): Promise<TouristSite[]
   const db = await getDb();
   if (!db) return [];
   
-  return db.select().from(touristSites).where(eq(touristSites.tripId, tripId)).orderBy(touristSites.plannedVisitDate);
+  return db.select().from(touristSites).where(eq(touristSites.tripId, tripId)).orderBy(sql`COALESCE(${touristSites.plannedVisitDate}, 9999999999999)`);
 }
 
 export async function updateTouristSite(id: number, data: Partial<InsertTouristSite>): Promise<TouristSite | undefined> {

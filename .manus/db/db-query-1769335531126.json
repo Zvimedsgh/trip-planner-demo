@@ -1,0 +1,35 @@
+{
+  "query": "SELECT id, name, email FROM users ORDER BY name;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, email FROM users ORDER BY name;",
+  "rows": [
+    {
+      "id": "1020034",
+      "name": "Efi",
+      "email": "gorene75@gmail.com"
+    },
+    {
+      "id": "1020036",
+      "name": "Michal",
+      "email": "mikgrn@gmail.com"
+    },
+    {
+      "id": "1020035",
+      "name": "Ruth",
+      "email": "ruthgoren@hotmail.com"
+    },
+    {
+      "id": "1020037",
+      "name": "Yona",
+      "email": "yona@gorentech.co.il"
+    },
+    {
+      "id": "1",
+      "name": "Zvi Goren",
+      "email": "wq429j95sv@privaterelay.appleid.com"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\temail\n1020034\tEfi\tgorene75@gmail.com\n1020036\tMichal\tmikgrn@gmail.com\n1020035\tRuth\truthgoren@hotmail.com\n1020037\tYona\tyona@gorentech.co.il\n1\tZvi Goren\twq429j95sv@privaterelay.appleid.com\n",
+  "stderr": "",
+  "execution_time_ms": 1519
+}

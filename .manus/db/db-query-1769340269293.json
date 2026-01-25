@@ -1,0 +1,22 @@
+{
+  "query": "SELECT id, name FROM trips LIMIT 3;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name FROM trips LIMIT 3;",
+  "rows": [
+    {
+      "id": "30001",
+      "name": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "60001",
+      "name": "Test Collaboration Trip"
+    },
+    {
+      "id": "60002",
+      "name": "Test Collaboration Trip"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\n30001\tGoren Roots Trip to Slovakia\n60001\tTest Collaboration Trip\n60002\tTest Collaboration Trip\n",
+  "stderr": "",
+  "execution_time_ms": 1516
+}

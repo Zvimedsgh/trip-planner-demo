@@ -1,0 +1,28 @@
+{
+  "query": "SELECT DATABASE() as current_db;\nSELECT COUNT(*) as total_sites FROM tourist_sites WHERE tripId = 1;\nSELECT id, name FROM tourist_sites WHERE tripId = 1 AND name LIKE '%eše%' ORDER BY id DESC LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT DATABASE() as current_db;\nSELECT COUNT(*) as total_sites FROM tourist_sites WHERE tripId = 1;\nSELECT id, name FROM tourist_sites WHERE tripId = 1 AND name LIKE '%eše%' ORDER BY id DESC LIMIT 5;",
+  "rows": [
+    {
+      "current_db": "2rtwtAqF2DqhH9oEcii9XY"
+    },
+    {
+      "current_db": "total_sites"
+    },
+    {
+      "current_db": "4"
+    },
+    {
+      "current_db": "id\tname"
+    },
+    {
+      "current_db": "180001\tWaterpark Bešeňová"
+    },
+    {
+      "current_db": "150001\tWaterpark Bešeňová"
+    }
+  ],
+  "messages": [],
+  "stdout": "current_db\n2rtwtAqF2DqhH9oEcii9XY\ntotal_sites\n4\nid\tname\n180001\tWaterpark Bešeňová\n150001\tWaterpark Bešeňová\n",
+  "stderr": "",
+  "execution_time_ms": 1968
+}

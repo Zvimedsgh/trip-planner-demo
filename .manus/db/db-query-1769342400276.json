@@ -1,0 +1,22 @@
+{
+  "query": "SELECT id, name, plannedVisitDate, plannedVisitTime \nFROM tourist_sites \nWHERE tripId = 1 \nORDER BY id DESC \nLIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, plannedVisitDate, plannedVisitTime \nFROM tourist_sites \nWHERE tripId = 1 \nORDER BY id DESC \nLIMIT 5;",
+  "rows": [
+    {
+      "id": "150002",
+      "name": "Termálny prameň Kalameny (מעיינות טבעיים)",
+      "plannedVisitDate": "NULL",
+      "plannedVisitTime": "NULL"
+    },
+    {
+      "id": "150001",
+      "name": "Waterpark Bešeňová",
+      "plannedVisitDate": "1788476400000",
+      "plannedVisitTime": "19:00"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tplannedVisitDate\tplannedVisitTime\n150002\tTermálny prameň Kalameny (מעיינות טבעיים)\tNULL\tNULL\n150001\tWaterpark Bešeňová\t1788476400000\t19:00\n",
+  "stderr": "",
+  "execution_time_ms": 1493
+}

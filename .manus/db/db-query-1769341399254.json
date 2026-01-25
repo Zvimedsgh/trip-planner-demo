@@ -1,0 +1,24 @@
+{
+  "query": "SELECT id, name, plannedVisitDate, plannedVisitTime, address \nFROM tourist_sites \nWHERE tripId = 1 AND (name LIKE '%Bešeňová%' OR name LIKE '%Kalameny%')\nORDER BY id DESC;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, plannedVisitDate, plannedVisitTime, address \nFROM tourist_sites \nWHERE tripId = 1 AND (name LIKE '%Bešeňová%' OR name LIKE '%Kalameny%')\nORDER BY id DESC;",
+  "rows": [
+    {
+      "id": "150002",
+      "name": "Termálny prameň Kalameny (מעיינות טבעיים)",
+      "plannedVisitDate": "NULL",
+      "plannedVisitTime": "NULL",
+      "address": "Kalameny, Slovakia (צפונית לכפר קלמני)"
+    },
+    {
+      "id": "150001",
+      "name": "Waterpark Bešeňová",
+      "plannedVisitDate": "1788476400000",
+      "plannedVisitTime": "19:00",
+      "address": "Bešeňová 136, 034 83 Bešeňová, Slovakia"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tplannedVisitDate\tplannedVisitTime\taddress\n150002\tTermálny prameň Kalameny (מעיינות טבעיים)\tNULL\tNULL\tKalameny, Slovakia (צפונית לכפר קלמני)\n150001\tWaterpark Bešeňová\t1788476400000\t19:00\tBešeňová 136, 034 83 Bešeňová, Slovakia\n",
+  "stderr": "",
+  "execution_time_ms": 1496
+}

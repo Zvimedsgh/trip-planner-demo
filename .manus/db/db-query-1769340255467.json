@@ -1,0 +1,22 @@
+{
+  "query": "SELECT id, openId, name, email FROM users WHERE email = 'mikgrn@gmail.com' ORDER BY id DESC LIMIT 2;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, openId, name, email FROM users WHERE email = 'mikgrn@gmail.com' ORDER BY id DESC LIMIT 2;",
+  "rows": [
+    {
+      "id": "1080005",
+      "openId": "YveGG8p2d79R7Mgr2qkAoa",
+      "name": "mikgrn",
+      "email": "mikgrn@gmail.com"
+    },
+    {
+      "id": "1020036",
+      "openId": "test-michal-goren-003",
+      "name": "Michal",
+      "email": "mikgrn@gmail.com"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\topenId\tname\temail\n1080005\tYveGG8p2d79R7Mgr2qkAoa\tmikgrn\tmikgrn@gmail.com\n1020036\ttest-michal-goren-003\tMichal\tmikgrn@gmail.com\n",
+  "stderr": "",
+  "execution_time_ms": 1601
+}

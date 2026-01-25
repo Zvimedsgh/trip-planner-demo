@@ -1,0 +1,36 @@
+{
+  "query": "SELECT tc.*, u.name, u.email \nFROM trip_collaborators tc \nJOIN users u ON tc.userId = u.id \nWHERE tc.tripId = 1 AND u.email = 'mikgrn@gmail.com';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT tc.*, u.name, u.email \nFROM trip_collaborators tc \nJOIN users u ON tc.userId = u.id \nWHERE tc.tripId = 1 AND u.email = 'mikgrn@gmail.com';",
+  "rows": [
+    {
+      "id": "30002",
+      "tripId": "1",
+      "userId": "1020036",
+      "permission": "view_only",
+      "invitedBy": "1",
+      "createdAt": "2026-01-25 12:30:47",
+      "updatedAt": "2026-01-25 12:30:47",
+      "lastSeen": "NULL",
+      "visitCount": "0",
+      "name": "Michal",
+      "email": "mikgrn@gmail.com"
+    },
+    {
+      "id": "30004",
+      "tripId": "1",
+      "userId": "1080005",
+      "permission": "view_only",
+      "invitedBy": "1",
+      "createdAt": "2026-01-25 12:30:47",
+      "updatedAt": "2026-01-25 12:30:47",
+      "lastSeen": "NULL",
+      "visitCount": "0",
+      "name": "mikgrn",
+      "email": "mikgrn@gmail.com"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttripId\tuserId\tpermission\tinvitedBy\tcreatedAt\tupdatedAt\tlastSeen\tvisitCount\tname\temail\n30002\t1\t1020036\tview_only\t1\t2026-01-25 12:30:47\t2026-01-25 12:30:47\tNULL\t0\tMichal\tmikgrn@gmail.com\n30004\t1\t1080005\tview_only\t1\t2026-01-25 12:30:47\t2026-01-25 12:30:47\tNULL\t0\tmikgrn\tmikgrn@gmail.com\n",
+  "stderr": "",
+  "execution_time_ms": 1560
+}

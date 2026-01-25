@@ -538,3 +538,15 @@
 - [x] Update CollaboratorsDialog UI to accept display name input
 - [x] Add user search/autocomplete for display names
 - [x] Test invitation flow with display names
+
+## Hot Springs Addition
+- [x] Add Waterpark Bešeňová as tourist site for day 3 at 19:00
+- [x] Add Termálny prameň Kalameny as tourist site
+- [x] Create document with hot springs information and tips
+- [ ] Debug why sites exist in DB but don't appear in UI
+- [ ] Fix the loading/display issue
+- [ ] Clean up duplicate entries
+
+## Bug Fix - Collaborator Trips Visibility
+- [ ] Fix getUserTrips to include trips where user is collaborator
+- [ ] Test that Michal and Efi can see shared trips

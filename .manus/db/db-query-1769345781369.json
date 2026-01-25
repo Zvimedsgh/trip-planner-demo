@@ -1,0 +1,9 @@
+{
+  "query": "INSERT INTO trip_collaborators (tripId, userId, permission, invitedBy, visitCount) \nVALUES \n(1, (SELECT id FROM users WHERE email = 'mikgrn@gmail.com' LIMIT 1), 'view_only', 1, 0),\n(1, (SELECT id FROM users WHERE email = 'gorene75@gmail.com' LIMIT 1), 'view_only', 1, 0);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute INSERT INTO trip_collaborators (tripId, userId, permission, invitedBy, visitCount) \nVALUES \n(1, (SELECT id FROM users WHERE email = 'mikgrn@gmail.com' LIMIT 1), 'view_only', 1, 0),\n(1, (SELECT id FROM users WHERE email = 'gorene75@gmail.com' LIMIT 1), 'view_only', 1, 0);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1488
+}

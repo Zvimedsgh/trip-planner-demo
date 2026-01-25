@@ -1,0 +1,90 @@
+{
+  "query": "SELECT id, tripId, name, plannedVisitDate, plannedVisitTime, createdAt \nFROM tourist_sites \nORDER BY id DESC \nLIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, tripId, name, plannedVisitDate, plannedVisitTime, createdAt \nFROM tourist_sites \nORDER BY id DESC \nLIMIT 10;",
+  "rows": [
+    {
+      "id": "150002",
+      "tripId": "1",
+      "name": "Termálny prameň Kalameny (מעיינות טבעיים)",
+      "plannedVisitDate": "NULL",
+      "plannedVisitTime": "NULL",
+      "createdAt": "2026-01-25 11:42:07"
+    },
+    {
+      "id": "150001",
+      "tripId": "1",
+      "name": "Waterpark Bešeňová",
+      "plannedVisitDate": "1788476400000",
+      "plannedVisitTime": "19:00",
+      "createdAt": "2026-01-25 11:41:41"
+    },
+    {
+      "id": "120006",
+      "tripId": "30001",
+      "name": "Grinzing Wine Village",
+      "plannedVisitDate": "1788912000000",
+      "plannedVisitTime": "19:00",
+      "createdAt": "2026-01-24 22:21:39"
+    },
+    {
+      "id": "120005",
+      "tripId": "30001",
+      "name": "Austrian National Library",
+      "plannedVisitDate": "1788895800000",
+      "plannedVisitTime": "15:30",
+      "createdAt": "2026-01-24 22:21:39"
+    },
+    {
+      "id": "120004",
+      "tripId": "30001",
+      "name": "Hofburg Palace",
+      "plannedVisitDate": "1788825600000",
+      "plannedVisitTime": "15:00",
+      "createdAt": "2026-01-24 22:21:39"
+    },
+    {
+      "id": "120003",
+      "tripId": "30001",
+      "name": "Naschmarkt",
+      "plannedVisitDate": "1788825600000",
+      "plannedVisitTime": "12:00",
+      "createdAt": "2026-01-24 22:21:39"
+    },
+    {
+      "id": "120002",
+      "tripId": "30001",
+      "name": "Schönbrunn Palace",
+      "plannedVisitDate": "1788825600000",
+      "plannedVisitTime": "08:30",
+      "createdAt": "2026-01-24 22:21:39"
+    },
+    {
+      "id": "120001",
+      "tripId": "30001",
+      "name": "Stephansplatz Walking Tour",
+      "plannedVisitDate": "1788739200000",
+      "plannedVisitTime": "21:00",
+      "createdAt": "2026-01-24 22:21:39"
+    },
+    {
+      "id": "90011",
+      "tripId": "30001",
+      "name": "Zvonárska Synagogue & Potters Street",
+      "plannedVisitDate": "1788652800000",
+      "plannedVisitTime": "15:30",
+      "createdAt": "2026-01-24 17:34:54"
+    },
+    {
+      "id": "90010",
+      "tripId": "30001",
+      "name": "Orthodox Synagogue (Puškinova)",
+      "plannedVisitDate": "1788652800000",
+      "plannedVisitTime": "14:00",
+      "createdAt": "2026-01-24 17:34:54"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttripId\tname\tplannedVisitDate\tplannedVisitTime\tcreatedAt\n150002\t1\tTermálny prameň Kalameny (מעיינות טבעיים)\tNULL\tNULL\t2026-01-25 11:42:07\n150001\t1\tWaterpark Bešeňová\t1788476400000\t19:00\t2026-01-25 11:41:41\n120006\t30001\tGrinzing Wine Village\t1788912000000\t19:00\t2026-01-24 22:21:39\n120005\t30001\tAustrian National Library\t1788895800000\t15:30\t2026-01-24 22:21:39\n120004\t30001\tHofburg Palace\t1788825600000\t15:00\t2026-01-24 22:21:39\n120003\t30001\tNaschmarkt\t1788825600000\t12:00\t2026-01-24 22:21:39\n120002\t30001\tSchönbrunn Palace\t1788825600000\t08:30\t2026-01-24 22:21:39\n120001\t30001\tStephansplatz Walking Tour\t1788739200000\t21:00\t2026-01-24 22:21:39\n90011\t30001\tZvonárska Synagogue & Potters Street\t1788652800000\t15:30\t2026-01-24 17:34:54\n90010\t30001\tOrthodox Synagogue (Puškinova)\t1788652800000\t14:00\t2026-01-24 17:34:54\n",
+  "stderr": "",
+  "execution_time_ms": 1496
+}

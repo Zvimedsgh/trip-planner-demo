@@ -1,0 +1,50 @@
+{
+  "query": "SELECT id, name, email FROM users WHERE openId LIKE 'test-%' ORDER BY name;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, email FROM users WHERE openId LIKE 'test-%' ORDER BY name;",
+  "rows": [
+    {
+      "id": "1020034",
+      "name": "Efi",
+      "email": "gorene75@gmail.com"
+    },
+    {
+      "id": "1020036",
+      "name": "Michal",
+      "email": "mikgrn@gmail.com"
+    },
+    {
+      "id": "1020035",
+      "name": "Ruth",
+      "email": "ruthgoren@hotmail.com"
+    },
+    {
+      "id": "540130",
+      "name": "Test Collaborator",
+      "email": "collaborator-wLwigGG5@test.com"
+    },
+    {
+      "id": "540134",
+      "name": "Test Collaborator",
+      "email": "collaborator-_3xLsTGs@test.com"
+    },
+    {
+      "id": "540129",
+      "name": "Test Owner",
+      "email": "owner-GyxeifrC@test.com"
+    },
+    {
+      "id": "540133",
+      "name": "Test Owner",
+      "email": "owner-GjB6lIzr@test.com"
+    },
+    {
+      "id": "1020037",
+      "name": "Yona",
+      "email": "yona@gorentech.co.il"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\temail\n1020034\tEfi\tgorene75@gmail.com\n1020036\tMichal\tmikgrn@gmail.com\n1020035\tRuth\truthgoren@hotmail.com\n540130\tTest Collaborator\tcollaborator-wLwigGG5@test.com\n540134\tTest Collaborator\tcollaborator-_3xLsTGs@test.com\n540129\tTest Owner\towner-GyxeifrC@test.com\n540133\tTest Owner\towner-GjB6lIzr@test.com\n1020037\tYona\tyona@gorentech.co.il\n",
+  "stderr": "",
+  "execution_time_ms": 1517
+}

@@ -1,0 +1,8 @@
+{
+  "query": "INSERT INTO trip_collaborators (tripId, userId, permission, lastSeen, visitCount, createdAt) \nVALUES \n((SELECT id FROM users WHERE email = 'mikgrn@gmail.com' LIMIT 1), 1, 'view_only', NULL, 0, UNIX_TIMESTAMP() * 1000),\n((SELECT id FROM users WHERE email = 'gorene75@gmail.com' LIMIT 1), 1, 'view_only', NULL, 0, UNIX_TIMESTAMP() * 1000);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute INSERT INTO trip_collaborators (tripId, userId, permission, lastSeen, visitCount, createdAt) \nVALUES \n((SELECT id FROM users WHERE email = 'mikgrn@gmail.com' LIMIT 1), 1, 'view_only', NULL, 0, UNIX_TIMESTAMP() * 1000),\n((SELECT id FROM users WHERE email = 'gorene75@gmail.com' LIMIT 1), 1, 'view_only', NULL, 0, UNIX_TIMESTAMP() * 1000);",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1292 (22007) at line 1: Incorrect timestamp value: '1769344228000' for column 'createdAt' at row 1"
+  ]
+}

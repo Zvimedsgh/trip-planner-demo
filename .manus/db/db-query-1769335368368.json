@@ -1,0 +1,9 @@
+{
+  "query": "INSERT INTO users (openId, name, email, role, preferredLanguage, lastSignedIn) VALUES\n('test-efi-goren-001', 'Efi', 'gorene75@gmail.com', 'user', 'he', NOW()),\n('test-ruth-goren-002', 'Ruth', 'ruthgoren@hotmail.com', 'user', 'he', NOW()),\n('test-michal-goren-003', 'Michal', 'mikgrn@gmail.com', 'user', 'he', NOW()),\n('test-yona-goren-004', 'Yona', 'yona@gorentech.co.il', 'user', 'he', NOW());",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute INSERT INTO users (openId, name, email, role, preferredLanguage, lastSignedIn) VALUES\n('test-efi-goren-001', 'Efi', 'gorene75@gmail.com', 'user', 'he', NOW()),\n('test-ruth-goren-002', 'Ruth', 'ruthgoren@hotmail.com', 'user', 'he', NOW()),\n('test-michal-goren-003', 'Michal', 'mikgrn@gmail.com', 'user', 'he', NOW()),\n('test-yona-goren-004', 'Yona', 'yona@gorentech.co.il', 'user', 'he', NOW());",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1618
+}

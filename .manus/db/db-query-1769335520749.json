@@ -1,0 +1,58 @@
+{
+  "query": "SELECT id, openId, name, email FROM users WHERE openId LIKE 'test-%' ORDER BY id;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, openId, name, email FROM users WHERE openId LIKE 'test-%' ORDER BY id;",
+  "rows": [
+    {
+      "id": "540129",
+      "openId": "test-owner-SUqxHl7r",
+      "name": "Test Owner",
+      "email": "owner-GyxeifrC@test.com"
+    },
+    {
+      "id": "540130",
+      "openId": "test-collab-fwF0IoyK",
+      "name": "Test Collaborator",
+      "email": "collaborator-wLwigGG5@test.com"
+    },
+    {
+      "id": "540133",
+      "openId": "test-owner-wRFAEJt2",
+      "name": "Test Owner",
+      "email": "owner-GjB6lIzr@test.com"
+    },
+    {
+      "id": "540134",
+      "openId": "test-collab-q041ihcF",
+      "name": "Test Collaborator",
+      "email": "collaborator-_3xLsTGs@test.com"
+    },
+    {
+      "id": "1020034",
+      "openId": "test-efi-goren-001",
+      "name": "Efi",
+      "email": "gorene75@gmail.com"
+    },
+    {
+      "id": "1020035",
+      "openId": "test-ruth-goren-002",
+      "name": "Ruth",
+      "email": "ruthgoren@hotmail.com"
+    },
+    {
+      "id": "1020036",
+      "openId": "test-michal-goren-003",
+      "name": "Michal",
+      "email": "mikgrn@gmail.com"
+    },
+    {
+      "id": "1020037",
+      "openId": "test-yona-goren-004",
+      "name": "Yona",
+      "email": "yona@gorentech.co.il"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\topenId\tname\temail\n540129\ttest-owner-SUqxHl7r\tTest Owner\towner-GyxeifrC@test.com\n540130\ttest-collab-fwF0IoyK\tTest Collaborator\tcollaborator-wLwigGG5@test.com\n540133\ttest-owner-wRFAEJt2\tTest Owner\towner-GjB6lIzr@test.com\n540134\ttest-collab-q041ihcF\tTest Collaborator\tcollaborator-_3xLsTGs@test.com\n1020034\ttest-efi-goren-001\tEfi\tgorene75@gmail.com\n1020035\ttest-ruth-goren-002\tRuth\truthgoren@hotmail.com\n1020036\ttest-michal-goren-003\tMichal\tmikgrn@gmail.com\n1020037\ttest-yona-goren-004\tYona\tyona@gorentech.co.il\n",
+  "stderr": "",
+  "execution_time_ms": 1496
+}

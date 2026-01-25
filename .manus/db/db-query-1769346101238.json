@@ -1,0 +1,9 @@
+{
+  "query": "\n-- Delete all old collaborator entries pointing to non-existent trip\nDELETE FROM trip_collaborators WHERE tripId = 1;\n\n-- Add collaborators to the correct trip (30001), invitedBy = 1 (Zvi Goren)\nINSERT INTO trip_collaborators (tripId, userId, permission, invitedBy) VALUES\n(30001, 1020034, 'view_only', 1),  -- Efi\n(30001, 1020036, 'view_only', 1),  -- Michal\n(30001, 1080001, 'view_only', 1),  -- Efi Goren (duplicate account?)\n(30001, 1080005, 'view_only', 1);  -- mikgrn (duplicate account?)\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute \n-- Delete all old collaborator entries pointing to non-existent trip\nDELETE FROM trip_collaborators WHERE tripId = 1;\n\n-- Add collaborators to the correct trip (30001), invitedBy = 1 (Zvi Goren)\nINSERT INTO trip_collaborators (tripId, userId, permission, invitedBy) VALUES\n(30001, 1020034, 'view_only', 1),  -- Efi\n(30001, 1020036, 'view_only', 1),  -- Michal\n(30001, 1080001, 'view_only', 1),  -- Efi Goren (duplicate account?)\n(30001, 1080005, 'view_only', 1);  -- mikgrn (duplicate account?)\n",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1755
+}

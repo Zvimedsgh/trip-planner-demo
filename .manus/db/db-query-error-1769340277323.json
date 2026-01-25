@@ -1,0 +1,8 @@
+{
+  "query": "-- Remove fake users from collaborators (trip id 1)\nDELETE FROM trip_collaborators WHERE userId IN (\n  SELECT id FROM users WHERE openId LIKE 'test-%'\n);\n\n-- Add real Michal (assuming her real user id is the latest one with that email)\nINSERT INTO trip_collaborators (tripId, userId, permission, addedAt)\nSELECT 1, id, 'view_only', NOW()\nFROM users \nWHERE email = 'mikgrn@gmail.com' \n  AND openId NOT LIKE 'test-%'\nLIMIT 1;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute -- Remove fake users from collaborators (trip id 1)\nDELETE FROM trip_collaborators WHERE userId IN (\n  SELECT id FROM users WHERE openId LIKE 'test-%'\n);\n\n-- Add real Michal (assuming her real user id is the latest one with that email)\nINSERT INTO trip_collaborators (tripId, userId, permission, addedAt)\nSELECT 1, id, 'view_only', NOW()\nFROM users \nWHERE email = 'mikgrn@gmail.com' \n  AND openId NOT LIKE 'test-%'\nLIMIT 1;",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1054 (42S22) at line 7: Unknown column 'addedAt' in 'field list'"
+  ]
+}

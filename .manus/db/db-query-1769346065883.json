@@ -1,0 +1,88 @@
+{
+  "query": "\nSELECT tc.*, u.name as user_name, t.name as trip_name \nFROM trip_collaborators tc\nLEFT JOIN users u ON tc.userId = u.id\nLEFT JOIN trips t ON tc.tripId = t.id\nWHERE u.email IN ('mikgrn@gmail.com', 'gorene75@gmail.com')\nORDER BY tc.id;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute \nSELECT tc.*, u.name as user_name, t.name as trip_name \nFROM trip_collaborators tc\nLEFT JOIN users u ON tc.userId = u.id\nLEFT JOIN trips t ON tc.tripId = t.id\nWHERE u.email IN ('mikgrn@gmail.com', 'gorene75@gmail.com')\nORDER BY tc.id;\n",
+  "rows": [
+    {
+      "id": "30001",
+      "tripId": "1",
+      "userId": "1020034",
+      "permission": "view_only",
+      "invitedBy": "1",
+      "createdAt": "2026-01-25 12:30:47",
+      "updatedAt": "2026-01-25 12:30:47",
+      "lastSeen": "NULL",
+      "visitCount": "0",
+      "user_name": "Efi",
+      "trip_name": "NULL"
+    },
+    {
+      "id": "30002",
+      "tripId": "1",
+      "userId": "1020036",
+      "permission": "view_only",
+      "invitedBy": "1",
+      "createdAt": "2026-01-25 12:30:47",
+      "updatedAt": "2026-01-25 12:30:47",
+      "lastSeen": "NULL",
+      "visitCount": "0",
+      "user_name": "Michal",
+      "trip_name": "NULL"
+    },
+    {
+      "id": "30003",
+      "tripId": "1",
+      "userId": "1080001",
+      "permission": "view_only",
+      "invitedBy": "1",
+      "createdAt": "2026-01-25 12:30:47",
+      "updatedAt": "2026-01-25 12:30:47",
+      "lastSeen": "NULL",
+      "visitCount": "0",
+      "user_name": "Efi Goren",
+      "trip_name": "NULL"
+    },
+    {
+      "id": "30004",
+      "tripId": "1",
+      "userId": "1080005",
+      "permission": "view_only",
+      "invitedBy": "1",
+      "createdAt": "2026-01-25 12:30:47",
+      "updatedAt": "2026-01-25 12:30:47",
+      "lastSeen": "NULL",
+      "visitCount": "0",
+      "user_name": "mikgrn",
+      "trip_name": "NULL"
+    },
+    {
+      "id": "30005",
+      "tripId": "1",
+      "userId": "1020036",
+      "permission": "view_only",
+      "invitedBy": "1",
+      "createdAt": "2026-01-25 12:56:21",
+      "updatedAt": "2026-01-25 12:56:21",
+      "lastSeen": "NULL",
+      "visitCount": "0",
+      "user_name": "Michal",
+      "trip_name": "NULL"
+    },
+    {
+      "id": "30006",
+      "tripId": "1",
+      "userId": "1020034",
+      "permission": "view_only",
+      "invitedBy": "1",
+      "createdAt": "2026-01-25 12:56:21",
+      "updatedAt": "2026-01-25 12:56:21",
+      "lastSeen": "NULL",
+      "visitCount": "0",
+      "user_name": "Efi",
+      "trip_name": "NULL"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttripId\tuserId\tpermission\tinvitedBy\tcreatedAt\tupdatedAt\tlastSeen\tvisitCount\tuser_name\ttrip_name\n30001\t1\t1020034\tview_only\t1\t2026-01-25 12:30:47\t2026-01-25 12:30:47\tNULL\t0\tEfi\tNULL\n30002\t1\t1020036\tview_only\t1\t2026-01-25 12:30:47\t2026-01-25 12:30:47\tNULL\t0\tMichal\tNULL\n30003\t1\t1080001\tview_only\t1\t2026-01-25 12:30:47\t2026-01-25 12:30:47\tNULL\t0\tEfi Goren\tNULL\n30004\t1\t1080005\tview_only\t1\t2026-01-25 12:30:47\t2026-01-25 12:30:47\tNULL\t0\tmikgrn\tNULL\n30005\t1\t1020036\tview_only\t1\t2026-01-25 12:56:21\t2026-01-25 12:56:21\tNULL\t0\tMichal\tNULL\n30006\t1\t1020034\tview_only\t1\t2026-01-25 12:56:21\t2026-01-25 12:56:21\tNULL\t0\tEfi\tNULL\n",
+  "stderr": "",
+  "execution_time_ms": 1528
+}
