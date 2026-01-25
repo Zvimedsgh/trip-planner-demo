@@ -555,3 +555,6 @@
 - [ ] Fix timeline date 2/9 issue - Charming hotel check-in/check-out appearing on wrong date
 - [x] Fix check-in/check-out times to appear chronologically by hour, not at end of day
 
+
+- [ ] Fix routes not appearing in timeline for days 3 and 4
+- [x] Fix DailyView to display all activities for Day 3 and Day 4 (currently not showing any events)

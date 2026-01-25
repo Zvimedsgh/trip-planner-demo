@@ -329,7 +329,7 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
       )}
 
 
-      {/* Empty state if no activities */}
+      {/* Empty state if no activities AND no route */}
       {activities.length === 0 && !todayRoute && (
         <div className="text-center py-12 text-muted-foreground">
           <Calendar className="w-12 h-12 mx-auto mb-4 opacity-50" />
