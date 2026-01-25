@@ -160,13 +160,25 @@ export default function TimelineTab({ tripId }: TimelineTabProps) {
 
   // Sort by date and time
   events.sort((a, b) => {
-    // First sort by date
-    if (a.date !== b.date) return a.date - b.date;
+    // Create full timestamps by combining date and time
+    const getFullTimestamp = (event: TimelineEvent) => {
+      if (!event.time) return event.date;
+      
+      // Parse time string (HH:MM)
+      const [hours, minutes] = event.time.split(':').map(Number);
+      
+      // Get date at midnight
+      const eventDate = new Date(event.date);
+      const midnight = new Date(eventDate.getFullYear(), eventDate.getMonth(), eventDate.getDate());
+      
+      // Add hours and minutes
+      return midnight.getTime() + (hours * 60 * 60 * 1000) + (minutes * 60 * 1000);
+    };
     
-    // If same date, sort by time
-    const timeA = a.time || "00:00";
-    const timeB = b.time || "00:00";
-    return timeA.localeCompare(timeB);
+    const timestampA = getFullTimestamp(a);
+    const timestampB = getFullTimestamp(b);
+    
+    return timestampA - timestampB;
   });
 
   // Group by date

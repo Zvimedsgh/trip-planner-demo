@@ -569,4 +569,4 @@
 - [x] Migrate existing 6 static routes to database
 
 ## Bug Fixes - Route Times
-- [x] Fix route times in Timeline - converted UTC timestamps to local Bratislava timezone
+- [x] Fix Timeline chronological sorting - events now appear in correct time order
