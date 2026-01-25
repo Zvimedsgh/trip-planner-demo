@@ -1,7 +1,7 @@
-import { eq, and, desc, asc, sql } from "drizzle-orm";
+import { eq, and, desc, asc, sql, like } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import { 
-  InsertUser, users, 
+  InsertUser, User, users, 
   trips, InsertTrip, Trip,
   touristSites, InsertTouristSite, TouristSite,
   hotels, InsertHotel, Hotel,
@@ -107,6 +107,27 @@ export async function updateUserLanguage(userId: number, language: "en" | "he") 
   const db = await getDb();
   if (!db) return;
   await db.update(users).set({ preferredLanguage: language }).where(eq(users.id, userId));
+}
+
+export async function searchUsersByName(searchTerm: string): Promise<User[]> {
+  const db = await getDb();
+  if (!db) return [];
+  
+  // Search for users whose name contains the search term (case-insensitive)
+  // Use LOWER() for case-insensitive comparison
+  const result = await db.select().from(users)
+    .where(sql`LOWER(${users.name}) LIKE LOWER(${'%' + searchTerm + '%'})`)
+    .limit(10);
+  
+  return result;
+}
+
+export async function getUserById(userId: number): Promise<User | undefined> {
+  const db = await getDb();
+  if (!db) return undefined;
+  
+  const result = await db.select().from(users).where(eq(users.id, userId)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
 }
 
 // ============ TRIP QUERIES ============

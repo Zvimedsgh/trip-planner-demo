@@ -523,11 +523,18 @@
 - [ ] Research and add dinner restaurant for Day 4
 
 ## Collaborator Activity Tracking
-- [ ] Add lastSeen timestamp field to trip_collaborators table
-- [ ] Add visitCount field to trip_collaborators table
-- [ ] Create activity_log table for tracking user actions
-- [ ] Update trip access procedure to record lastSeen and increment visitCount
+- [x] Add lastSeen timestamp field to trip_collaborators table
+- [x] Add visitCount field to trip_collaborators table
+- [x] Create activity_log table for tracking user actions
+- [x] Update trip access procedure to record lastSeen and increment visitCount
 - [ ] Add activity logging to all create/update/delete operations
-- [ ] Display last seen time in CollaboratorsDialog
-- [ ] Display visit count in CollaboratorsDialog
+- [x] Display last seen time in CollaboratorsDialog
+- [x] Display visit count in CollaboratorsDialog
 - [ ] Add activity history view in CollaboratorsDialog
+
+## Collaboration UX - Display Name Invitation
+- [x] Change user invitation from User ID to Display Name (first name)
+- [x] Update backend to search users by display name instead of userId
+- [x] Update CollaboratorsDialog UI to accept display name input
+- [x] Add user search/autocomplete for display names
+- [x] Test invitation flow with display names

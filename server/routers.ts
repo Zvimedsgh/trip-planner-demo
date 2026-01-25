@@ -565,6 +565,15 @@ export const appRouter = router({
 
   // ============ COLLABORATORS ============
   collaborators: router({
+    // Search users by name
+    searchUsers: protectedProcedure
+      .input(z.object({ searchTerm: z.string().min(1) }))
+      .query(async ({ input }) => {
+        const users = await db.searchUsersByName(input.searchTerm);
+        // Return only id and name for privacy
+        return users.map(u => ({ id: u.id, name: u.name }));
+      }),
+    
     // List all collaborators for a trip
     list: protectedProcedure
       .input(z.object({ tripId: z.number() }))

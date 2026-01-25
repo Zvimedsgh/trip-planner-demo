@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,7 +17,10 @@ interface CollaboratorsDialogProps {
 export default function CollaboratorsDialog({ tripId, isOwner }: CollaboratorsDialogProps) {
   const { language } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
-  const [newUserId, setNewUserId] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+  const [selectedUserName, setSelectedUserName] = useState("");
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const [newPermission, setNewPermission] = useState<"view_only" | "can_edit">("view_only");
 
   const utils = trpc.useUtils();
@@ -26,10 +29,17 @@ export default function CollaboratorsDialog({ tripId, isOwner }: CollaboratorsDi
     { enabled: isOpen }
   );
 
+  const { data: searchResults, isLoading: isSearching } = trpc.collaborators.searchUsers.useQuery(
+    { searchTerm },
+    { enabled: searchTerm.length >= 2 && showSuggestions }
+  );
+
   const inviteMutation = trpc.collaborators.invite.useMutation({
     onSuccess: () => {
       toast.success(language === "he" ? "משתמש הוזמן בהצלחה" : "User invited successfully");
-      setNewUserId("");
+      setSearchTerm("");
+      setSelectedUserId(null);
+      setSelectedUserName("");
       setNewPermission("view_only");
       utils.collaborators.list.invalidate({ tripId });
     },
@@ -59,12 +69,11 @@ export default function CollaboratorsDialog({ tripId, isOwner }: CollaboratorsDi
   });
 
   const handleInvite = () => {
-    const userId = parseInt(newUserId);
-    if (isNaN(userId)) {
-      toast.error(language === "he" ? "מזהה משתמש לא חוקי" : "Invalid user ID");
+    if (!selectedUserId) {
+      toast.error(language === "he" ? "אנא בחר משתמש מהרשימה" : "Please select a user from the list");
       return;
     }
-    inviteMutation.mutate({ tripId, userId, permission: newPermission });
+    inviteMutation.mutate({ tripId, userId: selectedUserId, permission: newPermission });
   };
 
   const handleRemove = (id: number) => {
@@ -76,6 +85,29 @@ export default function CollaboratorsDialog({ tripId, isOwner }: CollaboratorsDi
   const handlePermissionChange = (id: number, permission: "view_only" | "can_edit") => {
     updatePermissionMutation.mutate({ id, permission });
   };
+
+  const handleSelectUser = (userId: number, userName: string) => {
+    setSelectedUserId(userId);
+    setSelectedUserName(userName);
+    setSearchTerm(userName);
+    setShowSuggestions(false);
+  };
+
+  const handleSearchChange = (value: string) => {
+    setSearchTerm(value);
+    setSelectedUserId(null);
+    setSelectedUserName("");
+    setShowSuggestions(true);
+  };
+
+  // Close suggestions when clicking outside
+  useEffect(() => {
+    const handleClickOutside = () => setShowSuggestions(false);
+    if (showSuggestions) {
+      document.addEventListener("click", handleClickOutside);
+      return () => document.removeEventListener("click", handleClickOutside);
+    }
+  }, [showSuggestions]);
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -105,17 +137,43 @@ export default function CollaboratorsDialog({ tripId, isOwner }: CollaboratorsDi
               {language === "he" ? "הזמן משתמש חדש" : "Invite New User"}
             </h3>
             <div className="grid grid-cols-[1fr_auto_auto] gap-2">
-              <div>
-                <Label htmlFor="userId">
-                  {language === "he" ? "מזהה משתמש" : "User ID"}
+              <div className="relative" onClick={(e) => e.stopPropagation()}>
+                <Label htmlFor="userName">
+                  {language === "he" ? "שם המשתמש" : "User Name"}
                 </Label>
                 <Input
-                  id="userId"
-                  type="number"
-                  placeholder={language === "he" ? "הזן מזהה משתמש" : "Enter user ID"}
-                  value={newUserId}
-                  onChange={(e) => setNewUserId(e.target.value)}
+                  id="userName"
+                  type="text"
+                  placeholder={language === "he" ? "הזן שם פרטי (למשל: דני)" : "Enter first name (e.g., Danny)"}
+                  value={searchTerm}
+                  onChange={(e) => handleSearchChange(e.target.value)}
+                  onFocus={() => setShowSuggestions(true)}
                 />
+                {/* Autocomplete suggestions */}
+                {showSuggestions && searchTerm.length >= 2 && (
+                  <div className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 border rounded-md shadow-lg max-h-60 overflow-y-auto">
+                    {isSearching ? (
+                      <div className="p-3 text-center text-sm text-muted-foreground">
+                        <Loader2 className="w-4 h-4 animate-spin inline-block mr-2" />
+                        {language === "he" ? "מחפש..." : "Searching..."}
+                      </div>
+                    ) : !searchResults || searchResults.length === 0 ? (
+                      <div className="p-3 text-center text-sm text-muted-foreground">
+                        {language === "he" ? "לא נמצאו משתמשים" : "No users found"}
+                      </div>
+                    ) : (
+                      searchResults.map((user) => (
+                        <button
+                          key={user.id}
+                          className="w-full text-left px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                          onClick={() => handleSelectUser(user.id, user.name || `User #${user.id}`)}
+                        >
+                          <p className="font-medium">{user.name || `User #${user.id}`}</p>
+                        </button>
+                      ))
+                    )}
+                  </div>
+                )}
               </div>
               <div>
                 <Label htmlFor="permission">
@@ -138,7 +196,7 @@ export default function CollaboratorsDialog({ tripId, isOwner }: CollaboratorsDi
               <div className="flex items-end">
                 <Button 
                   onClick={handleInvite} 
-                  disabled={inviteMutation.isPending || !newUserId}
+                  disabled={inviteMutation.isPending || !selectedUserId}
                 >
                   {inviteMutation.isPending ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
