@@ -13,7 +13,8 @@ import {
   checklistItems, InsertChecklistItem, ChecklistItem,
   tripCollaborators, InsertTripCollaborator, TripCollaborator,
   activityLog, InsertActivityLog, ActivityLog,
-  routes, InsertRoute, Route
+  routes, InsertRoute, Route,
+  routePointsOfInterest, InsertRoutePointOfInterest, RoutePointOfInterest
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -624,6 +625,61 @@ export async function deleteRoute(id: number): Promise<boolean> {
   return true;
 }
 
+// ============ ROUTE POINTS OF INTEREST ============
+
+export async function createRoutePOI(data: InsertRoutePointOfInterest): Promise<RoutePointOfInterest> {
+  const db = await getDb();
+  if (!db) throw new Error('Database connection failed');
+  
+  const [poi] = await db.insert(routePointsOfInterest).values(data).$returningId();
+  const created = await getRoutePOIById(poi.id);
+  if (!created) throw new Error('Failed to create POI');
+  return created;
+}
+
+export async function getRoutePOIs(routeId: number): Promise<RoutePointOfInterest[]> {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return db
+    .select()
+    .from(routePointsOfInterest)
+    .where(eq(routePointsOfInterest.routeId, routeId))
+    .orderBy(routePointsOfInterest.createdAt);
+}
+
+export async function getRoutePOIById(id: number): Promise<RoutePointOfInterest | null> {
+  const db = await getDb();
+  if (!db) return null;
+  
+  const [poi] = await db
+    .select()
+    .from(routePointsOfInterest)
+    .where(eq(routePointsOfInterest.id, id))
+    .limit(1);
+  
+  return poi || null;
+}
+
+export async function updateRoutePOI(id: number, data: Partial<InsertRoutePointOfInterest>): Promise<RoutePointOfInterest | null> {
+  const db = await getDb();
+  if (!db) return null;
+  
+  await db
+    .update(routePointsOfInterest)
+    .set(data)
+    .where(eq(routePointsOfInterest.id, id));
+  
+  return getRoutePOIById(id);
+}
+
+export async function deleteRoutePOI(id: number): Promise<boolean> {
+  const db = await getDb();
+  if (!db) return false;
+  
+  await db.delete(routePointsOfInterest).where(eq(routePointsOfInterest.id, id));
+  return true;
+}
 
 // ============ COLLABORATORS ============
 

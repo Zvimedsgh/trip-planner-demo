@@ -701,3 +701,13 @@
 
 ## Documents Tab Background
 - [x] Add gradient background and decorative pattern to Documents tab for visual variety
+
+## Route Points of Interest System
+- [x] Create route_points_of_interest table in database
+- [x] Add backend procedures for POI CRUD (create, list, update, delete)
+- [ ] Integrate Google Places API for auto-discovery along routes
+- [ ] Add POI markers on route maps
+- [ ] Add POI list view below map
+- [ ] Add "Add Point of Interest" button and form
+- [ ] Add "Find POIs" button for auto-discovery
+- [ ] Support POI types: attraction, restaurant, gas_station, other

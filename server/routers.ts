@@ -642,6 +642,83 @@ export const appRouter = router({
       }),
   }),
 
+  // ============ ROUTE POINTS OF INTEREST ============
+  routePOI: router({
+    list: protectedProcedure
+      .input(z.object({ routeId: z.number() }))
+      .query(async ({ ctx, input }) => {
+        const route = await db.getRouteById(input.routeId);
+        if (!route) throw new Error('Route not found');
+        const trip = await db.getTripById(route.tripId, ctx.user.id);
+        if (!trip) throw new Error('Access denied');
+        return db.getRoutePOIs(input.routeId);
+      }),
+    
+    create: protectedProcedure
+      .input(z.object({
+        routeId: z.number(),
+        name: z.string().min(1),
+        nameHe: z.string().optional(),
+        type: z.enum(['attraction', 'restaurant', 'gas_station', 'other']),
+        latitude: z.number(),
+        longitude: z.number(),
+        address: z.string().optional(),
+        placeId: z.string().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const route = await db.getRouteById(input.routeId);
+        if (!route) throw new Error('Route not found');
+        const trip = await db.getTripById(route.tripId, ctx.user.id);
+        if (!trip) throw new Error('Access denied');
+        const { latitude, longitude, ...data } = input;
+        return db.createRoutePOI({
+          ...data,
+          latitude: latitude.toString(),
+          longitude: longitude.toString(),
+        });
+      }),
+    
+    update: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        name: z.string().optional(),
+        nameHe: z.string().optional(),
+        type: z.enum(['attraction', 'restaurant', 'gas_station', 'other']).optional(),
+        latitude: z.number().optional(),
+        longitude: z.number().optional(),
+        address: z.string().optional(),
+        placeId: z.string().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const poi = await db.getRoutePOIById(input.id);
+        if (!poi) throw new Error('POI not found');
+        const route = await db.getRouteById(poi.routeId);
+        if (!route) throw new Error('Route not found');
+        const trip = await db.getTripById(route.tripId, ctx.user.id);
+        if (!trip) throw new Error('Access denied');
+        const { id, latitude, longitude, ...data } = input;
+        return db.updateRoutePOI(id, {
+          ...data,
+          latitude: latitude !== undefined ? latitude.toString() : undefined,
+          longitude: longitude !== undefined ? longitude.toString() : undefined,
+        });
+      }),
+    
+    delete: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        const poi = await db.getRoutePOIById(input.id);
+        if (!poi) throw new Error('POI not found');
+        const route = await db.getRouteById(poi.routeId);
+        if (!route) throw new Error('Route not found');
+        const trip = await db.getTripById(route.tripId, ctx.user.id);
+        if (!trip) throw new Error('Access denied');
+        return db.deleteRoutePOI(input.id);
+      }),
+  }),
+
   // ============ COLLABORATORS ============
   collaborators: router({
     // Search users by name

@@ -183,6 +183,13 @@
       "when": 1769441968577,
       "tag": "0025_moaning_swordsman",
       "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "5",
+      "when": 1769444168503,
+      "tag": "0026_curved_northstar",
+      "breakpoints": true
     }
   ]
 }

@@ -270,6 +270,27 @@ export type Route = typeof routes.$inferSelect;
 export type InsertRoute = typeof routes.$inferInsert;
 
 /**
+ * Route Points of Interest table - attractions, restaurants, gas stations along routes
+ */
+export const routePointsOfInterest = mysqlTable("route_points_of_interest", {
+  id: int("id").autoincrement().primaryKey(),
+  routeId: int("routeId").notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  nameHe: varchar("nameHe", { length: 255 }),
+  type: mysqlEnum("type", ["attraction", "restaurant", "gas_station", "other"]).notNull(),
+  latitude: decimal("latitude", { precision: 10, scale: 7 }).notNull(),
+  longitude: decimal("longitude", { precision: 10, scale: 7 }).notNull(),
+  address: text("address"),
+  placeId: varchar("placeId", { length: 255 }), // Google Places ID for reference
+  notes: text("notes"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type RoutePointOfInterest = typeof routePointsOfInterest.$inferSelect;
+export type InsertRoutePointOfInterest = typeof routePointsOfInterest.$inferInsert;
+
+/**
  * Activity log table - tracks all user actions on trips
  */
 export const activityLog = mysqlTable("activity_log", {
