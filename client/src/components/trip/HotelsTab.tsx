@@ -377,7 +377,6 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="none">-</SelectItem>
-              <SelectItem value="HOTELS TO CHOOSE KOSICE">HOTELS TO CHOOSE KOSICE</SelectItem>
               <SelectItem value="Confirmed">Confirmed</SelectItem>
             </SelectContent>
           </Select>

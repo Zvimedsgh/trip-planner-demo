@@ -621,3 +621,10 @@
 ## Bug - Route Manager Date Picker
 - [x] Fix RangeError: Invalid time value when trying to select a date in the add/edit route form
 - [x] Root cause: Date picker returns invalid date format that causes crash - fixed with validation
+
+## UX Improvements - User Feedback (5 items)
+- [x] 1. Remove "Hotels to Choose" category - after selecting hotel in Košice, this category is no longer needed
+- [ ] 2. Hide price from event cards - show prices only in Budget tab, not on every event
+- [ ] 3. Add payment status tracking - add "Paid" / "Pending Payment" status to events with filtering option
+- [ ] 4. Merge Car Rentals into Transportation - remove Car Rentals tab/category, move all car rental events to Transportation
+- [ ] 5. Remove location subtitle - remove "Bratislava,Slovakia" from trip header subtitle (redundant)
