@@ -290,6 +290,19 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
               </div>
             </div>
           </CardHeader>
+          <CardContent>
+            <button
+              onClick={() => {
+                const routeName = language === "he" && todayRoute.nameHe ? todayRoute.nameHe : todayRoute.name;
+                const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(routeName)}`;
+                window.open(googleMapsUrl, "_blank");
+              }}
+              className="w-full bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors"
+            >
+              <ExternalLink className="w-4 h-4" />
+              {language === "he" ? "פתח במפות Google" : "Open in Google Maps"}
+            </button>
+          </CardContent>
         </Card>
       )}
 

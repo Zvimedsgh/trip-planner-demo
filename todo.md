@@ -641,3 +641,8 @@
 - [x] Generate Google Maps URL from route name/description
 - [x] Open map in new tab when button clicked
 - [x] Add appropriate icon (ExternalLink)
+
+## DailyView Route Display Improvements
+- [x] Add start time display to route cards in DailyView (already existed in route subtitle)
+- [x] Add "Open in Google Maps" button to route cards in DailyView
+- [x] Match the styling and functionality from Route Manager
