@@ -46,10 +46,11 @@ export default function TripDetail() {
   const [copied, setCopied] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [defaultTab, setDefaultTab] = useState<string>("hotels");
+  const [hasInitialized, setHasInitialized] = useState(false);
   
-  // Auto-select current day or first day
+  // Auto-select current day or first day (only on mount)
   useEffect(() => {
-    if (!trip) return;
+    if (!trip || hasInitialized) return;
     
     const now = Date.now();
     const tripStart = trip.startDate;
@@ -58,12 +59,14 @@ export default function TripDetail() {
     // If trip hasn't started yet, select first day
     if (now < tripStart) {
       setDefaultTab(`day-${tripStart}`);
+      setHasInitialized(true);
       return;
     }
     
     // If trip has ended, select first day
     if (now > tripEnd) {
       setDefaultTab(`day-${tripStart}`);
+      setHasInitialized(true);
       return;
     }
     
@@ -77,13 +80,15 @@ export default function TripDetail() {
       
       if (now >= dayStart && now <= dayEnd) {
         setDefaultTab(`day-${dayStart}`);
+        setHasInitialized(true);
         return;
       }
     }
     
     // Fallback to first day
     setDefaultTab(`day-${tripStart}`);
-  }, [trip]);
+    setHasInitialized(true);
+  }, [trip, hasInitialized]);
   
   // Scroll-to-top button visibility
   useEffect(() => {

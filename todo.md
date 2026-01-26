@@ -602,3 +602,7 @@
 - [x] Multi-row day tabs - support 30+ day trips with automatic wrapping to multiple rows
 - [x] Unique colors for each activity category - Hotels (blue), Transportation (purple), Sites (green), Restaurants (orange), etc.
 - [x] Always provide publish checkpoint link after each significant change
+
+## Bug - Tab Switching
+- [x] Fix tab switching bug - clicking Transportation or Timeline shows content briefly then jumps back to Day 1
+- [x] Root cause: useEffect auto-select logic runs on every render instead of only on mount
