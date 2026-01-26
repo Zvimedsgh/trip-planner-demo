@@ -136,10 +136,6 @@ export default function Home() {
                   <div className="relative h-full flex flex-col justify-between p-6">
                     <div className="text-white">
                       <h3 className="text-2xl font-bold mb-2">{slovakiaTrip.name}</h3>
-                      <div className="flex items-center gap-1 text-white/90 text-sm mb-3">
-                        <MapPin className="w-4 h-4" />
-                        {slovakiaTrip.destination}
-                      </div>
                     </div>
                     <div className="space-y-3">
                       <div className="flex items-center gap-2 text-sm text-white/90">

@@ -656,3 +656,8 @@
 - [x] Remove "Bratislava,Slovakia" subtitle from trip header
 - [x] Keep only trip name and date range in header
 - [x] Location info remains in trip name ("Goren Roots Trip to Slovakia")
+
+## Remove Location from Home Page Trip Cards
+- [x] Remove "Bratislava,Slovakia" from trip cards on home page
+- [x] Keep only trip name, dates, and "Trip Details" button
+- [x] Maintain consistent design with trip detail page
