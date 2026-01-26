@@ -582,12 +582,19 @@ export const appRouter = router({
         descriptionHe: z.string().optional(),
         date: z.number(),
         time: z.string().optional(),
+        distanceKm: z.number().optional(),
+        estimatedDuration: z.number().optional(),
+        roadType: z.string().optional(),
         mapData: z.string().optional(),
       }))
       .mutation(async ({ ctx, input }) => {
         const trip = await db.getTripById(input.tripId, ctx.user.id);
         if (!trip) throw new Error('Trip not found or access denied');
-        return db.createRoute(input);
+        const { distanceKm, ...data } = input;
+        return db.createRoute({
+          ...data,
+          distanceKm: distanceKm !== undefined ? distanceKm.toString() : undefined,
+        });
       }),
     
     update: protectedProcedure
@@ -599,6 +606,9 @@ export const appRouter = router({
         descriptionHe: z.string().optional(),
         date: z.number().optional(),
         time: z.string().optional(),
+        distanceKm: z.number().optional(),
+        estimatedDuration: z.number().optional(),
+        roadType: z.string().optional(),
         mapData: z.string().optional(),
       }))
       .mutation(async ({ ctx, input }) => {
@@ -606,8 +616,11 @@ export const appRouter = router({
         if (!route) throw new Error('Route not found');
         const trip = await db.getTripById(route.tripId, ctx.user.id);
         if (!trip) throw new Error('Access denied');
-        const { id, ...data } = input;
-        return db.updateRoute(id, data);
+        const { id, distanceKm, ...data } = input;
+        return db.updateRoute(id, {
+          ...data,
+          distanceKm: distanceKm !== undefined ? distanceKm.toString() : undefined,
+        });
       }),
     
     delete: protectedProcedure

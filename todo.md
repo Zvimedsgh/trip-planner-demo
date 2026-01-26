@@ -606,3 +606,14 @@
 ## Bug - Tab Switching
 - [x] Fix tab switching bug - clicking Transportation or Timeline shows content briefly then jumps back to Day 1
 - [x] Root cause: useEffect auto-select logic runs on every render instead of only on mount
+
+## Feature Implementation Queue (9 features)
+- [x] 1. Route Management Interface - add/edit/delete routes directly from app
+- [x] 1a. Route metadata - distance (km), estimated travel time, road type (completed with #1)
+- [ ] 2. Link routes to maps - button in route cards to open corresponding map
+- [ ] 3. Timeline filtering - filter by event type (hotels, restaurants, etc.)
+- [ ] 4. Trip progress indicator - progress bar showing days elapsed
+- [ ] 5. Offline mode - save data to localStorage for offline viewing
+- [ ] 6. Global search - search field for hotels, restaurants, attractions
+- [ ] 7. PDF export - export full trip details to PDF
+- [ ] 8. Real-time notifications - alerts before check-in/flights

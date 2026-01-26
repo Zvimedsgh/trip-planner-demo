@@ -162,6 +162,13 @@
       "when": 1769382144371,
       "tag": "0022_majestic_prism",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "5",
+      "when": 1769414645134,
+      "tag": "0023_clever_rhino",
+      "breakpoints": true
     }
   ]
 }

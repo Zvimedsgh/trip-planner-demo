@@ -253,6 +253,9 @@ export const routes = mysqlTable("trip_routes", {
   descriptionHe: text("descriptionHe"), // Hebrew translation
   date: bigint("date", { mode: "number" }).notNull(), // UTC timestamp in ms
   time: varchar("time", { length: 5 }), // HH:MM format (24-hour)
+  distanceKm: decimal("distanceKm", { precision: 8, scale: 2 }), // Distance in kilometers
+  estimatedDuration: int("estimatedDuration"), // Estimated travel time in minutes
+  roadType: varchar("roadType", { length: 50 }), // e.g., "highway", "scenic", "mountain"
   mapData: text("mapData"), // JSON string with map configuration (markers, waypoints, etc.)
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),

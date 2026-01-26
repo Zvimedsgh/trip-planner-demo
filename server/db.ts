@@ -561,10 +561,14 @@ export async function createRoute(data: InsertRoute): Promise<Route> {
   if (!db) throw new Error('Database not available');
   
   const result = await db.insert(routes).values(data);
+  // result is an array, insertId is in result[0]
+  const rawInsertId = Array.isArray(result) ? (result[0] as any)?.insertId : (result as any).insertId;
+  const insertId = typeof rawInsertId === 'bigint' ? Number(rawInsertId) : rawInsertId;
+  
   const inserted = await db
     .select()
     .from(routes)
-    .where(eq(routes.id, Number((result as any).insertId)))
+    .where(eq(routes.id, insertId))
     .limit(1);
   
   return inserted[0];
