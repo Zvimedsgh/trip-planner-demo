@@ -262,7 +262,7 @@ export default function TimelineTab({ tripId }: TimelineTabProps) {
                       </div>
                     </CardContent>
                   </Card>
-                  );
+                );
                 })}
               </div>
             </div>

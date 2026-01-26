@@ -581,3 +581,9 @@
 ## Additional UX Improvements - Pending
 - [x] Color-code events in Timeline and DailyView to match day colors
 - [x] Improve active tab highlighting (make selected tab more visually distinct)
+
+## UX Bugs - Morning Session
+- [x] Fix scroll-to-top button - appears after scrolling 300px
+- [x] Fix sticky tabs - tabs stay at top-16 below header
+- [x] Fix active tab highlighting - darker background + thick border + shadow
+- [x] Add pastel colors to activity tabs - slate gray pastel

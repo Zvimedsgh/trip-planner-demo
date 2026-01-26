@@ -246,7 +246,7 @@ export default function TripDetail() {
         {/* Combined Tabs: Days (Row 1) + Activities (Row 2) */}
         <Tabs value={defaultTab} onValueChange={setDefaultTab} className="w-full">
           {/* Sticky Tab Container */}
-          <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm pb-4 pt-4 border-b border-border mb-6 shadow-sm">
+          <div className="sticky top-16 z-20 bg-background/95 backdrop-blur-sm pb-4 pt-4 border-b border-border mb-6 shadow-sm">
             <TabsList className="w-full flex flex-col h-auto gap-4 bg-transparent p-0">
               {/* Row 1: Daily Tabs with Pastel Colors */}
               <div className="flex flex-wrap gap-2">
@@ -289,7 +289,7 @@ export default function TripDetail() {
                   <TabsTrigger
                     key={tab.id}
                     value={tab.id}
-                    className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-4 py-2 rounded-lg border border-border data-[state=active]:border-primary data-[state=active]:border-2 data-[state=active]:shadow-lg transition-all"
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg border transition-all bg-slate-100 hover:bg-slate-200 data-[state=active]:bg-slate-400 data-[state=active]:text-slate-950 border-slate-200 data-[state=active]:border-slate-500 data-[state=active]:border-2 data-[state=active]:shadow-lg"
                   >
                     <tab.icon className="w-4 h-4" />
                     <span className="hidden sm:inline">{tab.label}</span>
