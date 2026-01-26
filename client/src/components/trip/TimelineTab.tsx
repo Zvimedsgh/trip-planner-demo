@@ -164,14 +164,16 @@ export default function TimelineTab({ tripId }: TimelineTabProps) {
   events.sort((a, b) => {
     // Create full timestamps by combining date and time
     const getFullTimestamp = (event: TimelineEvent) => {
-      if (!event.time) return event.date;
+      const eventDate = new Date(event.date);
+      const midnight = new Date(eventDate.getFullYear(), eventDate.getMonth(), eventDate.getDate());
+      
+      if (!event.time) {
+        // Events without time go to end of day (23:59) so they appear last
+        return midnight.getTime() + (23 * 60 * 60 * 1000) + (59 * 60 * 1000);
+      }
       
       // Parse time string (HH:MM)
       const [hours, minutes] = event.time.split(':').map(Number);
-      
-      // Get date at midnight
-      const eventDate = new Date(event.date);
-      const midnight = new Date(eventDate.getFullYear(), eventDate.getMonth(), eventDate.getDate());
       
       // Add hours and minutes
       return midnight.getTime() + (hours * 60 * 60 * 1000) + (minutes * 60 * 1000);

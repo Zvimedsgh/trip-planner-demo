@@ -110,7 +110,7 @@ export default function RouteManager({ tripId }: RouteManagerProps) {
       description: formData.description || undefined,
       descriptionHe: formData.descriptionHe || undefined,
       date: formData.date,
-      time: formData.time || undefined,
+      time: formData.time && formData.time.trim() !== "" ? formData.time : undefined,
       distanceKm: formData.distanceKm ? parseFloat(formData.distanceKm) : undefined,
       estimatedDuration: formData.estimatedDuration ? parseInt(formData.estimatedDuration) : undefined,
       roadType: formData.roadType || undefined,

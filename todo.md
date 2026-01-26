@@ -754,3 +754,8 @@
 - [x] Update origin/destination labels for car rental (Pickup Location / Return Location)
 - [x] Update create/update handlers to save car rental fields
 - [x] Display car rental info correctly in transportation cards
+
+## Timeline Sorting Bug
+- [x] Fix timeline sorting to include routes in chronological order by hour
+- [x] Routes should not always appear first in day's schedule
+- [x] All items (hotels, transportation, sites, restaurants, routes) should be sorted by time
