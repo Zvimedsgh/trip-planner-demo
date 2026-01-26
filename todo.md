@@ -746,3 +746,11 @@
 - [x] Remove "Car Rentals" category from Budget tab
 - [x] Verify car rentals (type='car_rental') are counted in Transportation category
 - [x] Update budget calculations to include car_rental in transportation totals
+
+## Dynamic Transportation Form
+- [x] Add car rental specific fields to form (company, carModel, pickupLocation, returnLocation, phone)
+- [x] Show flight-specific fields only for flights (flightNumber)
+- [x] Show car rental fields only for car_rental type
+- [x] Update origin/destination labels for car rental (Pickup Location / Return Location)
+- [x] Update create/update handlers to save car rental fields
+- [x] Display car rental info correctly in transportation cards

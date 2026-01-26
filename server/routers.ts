@@ -294,6 +294,12 @@ export const appRouter = router({
         paymentStatus: z.enum(["paid", "pending"]).optional(),
         notes: z.string().optional(),
         linkedDocumentId: z.number().optional(),
+        // Car rental specific fields
+        company: z.string().optional(),
+        carModel: z.string().optional(),
+        pickupLocation: z.string().optional(),
+        returnLocation: z.string().optional(),
+        phone: z.string().optional(),
       }))
       .mutation(({ input }) => db.createTransportation(input)),
     
@@ -313,6 +319,12 @@ export const appRouter = router({
         paymentStatus: z.enum(["paid", "pending"]).optional(),
         notes: z.string().optional(),
         linkedDocumentId: z.number().optional(),
+        // Car rental specific fields
+        company: z.string().optional(),
+        carModel: z.string().optional(),
+        pickupLocation: z.string().optional(),
+        returnLocation: z.string().optional(),
+        phone: z.string().optional(),
       }))
       .mutation(({ input }) => {
         const { id, ...data } = input;
