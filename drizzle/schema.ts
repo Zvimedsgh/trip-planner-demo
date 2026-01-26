@@ -53,6 +53,7 @@ export const touristSites = mysqlTable("tourist_sites", {
   plannedVisitTime: varchar("plannedVisitTime", { length: 10 }), // HH:MM format
   website: varchar("website", { length: 500 }),
   notes: text("notes"),
+  linkedDocumentId: int("linkedDocumentId"), // Explicitly linked document
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -82,6 +83,7 @@ export const hotels = mysqlTable("hotels", {
   coverImage: varchar("coverImage", { length: 500 }),
   parkingImage: varchar("parkingImage", { length: 500 }),
   notes: text("notes"),
+  linkedDocumentId: int("linkedDocumentId"), // Explicitly linked document
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -107,6 +109,7 @@ export const transportation = mysqlTable("transportation", {
   currency: varchar("currency", { length: 10 }).default("USD"),
   paymentStatus: mysqlEnum("paymentStatus", ["paid", "pending"]).default("pending"),
   notes: text("notes"),
+  linkedDocumentId: int("linkedDocumentId"), // Explicitly linked document
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -175,6 +178,7 @@ export const carRentals = mysqlTable("car_rentals", {
   currency: varchar("currency", { length: 10 }).default("USD"),
   paymentStatus: mysqlEnum("paymentStatus", ["paid", "pending"]).default("pending"),
   notes: text("notes"),
+  linkedDocumentId: int("linkedDocumentId"), // Explicitly linked document
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -200,6 +204,7 @@ export const restaurants = mysqlTable("restaurants", {
   currency: varchar("currency", { length: 10 }).default("USD"),
   paymentStatus: mysqlEnum("paymentStatus", ["paid", "pending"]).default("pending"),
   notes: text("notes"),
+  linkedDocumentId: int("linkedDocumentId"), // Explicitly linked document
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });

@@ -190,6 +190,13 @@
       "when": 1769444168503,
       "tag": "0026_curved_northstar",
       "breakpoints": true
+    },
+    {
+      "idx": 27,
+      "version": "5",
+      "when": 1769449277263,
+      "tag": "0027_soft_ted_forrester",
+      "breakpoints": true
     }
   ]
 }

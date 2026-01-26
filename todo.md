@@ -717,3 +717,10 @@
 - [x] Replace dark gradient backgrounds with light pastel colors
 - [x] Add subtle map pattern to route card backgrounds (dots pattern at 3% opacity)
 - [x] Use colored borders instead of full background fills (left border with matching icon color)
+
+## Document Linking UX Improvement
+- [ ] Replace name-based document matching with selection dialog
+- [ ] Add "Link Document" button that opens dialog with list of all documents
+- [ ] Allow user to select document from list instead of requiring exact name match
+- [ ] Add "Unlink Document" option in dialog
+- [ ] Apply to all entities: Transportation (flights), Hotels, Tourist Sites, Restaurants, Car Rentals

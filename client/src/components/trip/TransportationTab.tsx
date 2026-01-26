@@ -11,6 +11,7 @@ import { format } from "date-fns";
 import { ArrowRight, Bus, Calendar, Clock, DollarSign, Edit, ExternalLink, FileText, Loader2, Plane, Plus, RotateCcw, Ship, Train, Trash2 } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { toast } from "sonner";
+import { DocumentLinkDialog } from "@/components/DocumentLinkDialog";
 
 interface TransportationTabProps {
   tripId: number;
@@ -63,6 +64,10 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
   const [formCurrency, setFormCurrency] = useState("USD");
   const [formPaymentStatus, setFormPaymentStatus] = useState<"paid" | "pending">("pending");
   const [paymentFilter, setPaymentFilter] = useState<"all" | "paid" | "pending">("all");
+  
+  // Document linking state
+  const [documentLinkDialogOpen, setDocumentLinkDialogOpen] = useState(false);
+  const [linkingTransportId, setLinkingTransportId] = useState<number | null>(null);
   
   // Force re-render trigger
   const [formKey, setFormKey] = useState(0);
@@ -156,6 +161,21 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
       toast.success(language === "he" ? "ההסעה נמחקה בהצלחה" : "Transportation deleted successfully");
     },
   });
+
+  const handleDocumentLink = (transportId: number) => {
+    setLinkingTransportId(transportId);
+    setDocumentLinkDialogOpen(true);
+  };
+
+  const handleDocumentSelect = (documentId: number | null) => {
+    if (linkingTransportId) {
+      updateMutation.mutate({
+        id: linkingTransportId,
+        linkedDocumentId: documentId || undefined,
+      });
+      setLinkingTransportId(null);
+    }
+  };
 
   const combineDateAndTime = (date: string, time: string): number | undefined => {
     if (!date) return undefined;
@@ -592,12 +612,21 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
                     <div className="flex gap-0.5">
                       {/* Document link button */}
                       {(() => {
-                        const relatedDocs = documents?.filter(doc => 
+                        // Check for explicitly linked document first
+                        const linkedDoc = transport.linkedDocumentId 
+                          ? documents?.find(doc => doc.id === transport.linkedDocumentId)
+                          : null;
+                        
+                        // Fall back to automatic matching if no explicit link
+                        const autoMatchedDocs = !linkedDoc ? documents?.filter(doc => 
                           (doc.category === 'booking' || doc.category === 'other') && 
                           (doc.name.toLowerCase().includes(transport.origin.toLowerCase()) ||
                            doc.name.toLowerCase().includes(transport.destination.toLowerCase()) ||
                            (transport.confirmationNumber && doc.name.toLowerCase().includes(transport.confirmationNumber.toLowerCase())))
-                        );
+                        ) : null;
+                        
+                        const hasDocument = linkedDoc || (autoMatchedDocs && autoMatchedDocs.length > 0);
+                        
                         return (
                           <Button 
                             size="icon" 
@@ -606,15 +635,18 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
                             onClick={(e) => {
                               e.preventDefault();
                               e.stopPropagation();
-                              if (relatedDocs && relatedDocs.length > 0) {
-                                window.open(relatedDocs[0].fileUrl, '_blank');
+                              if (linkedDoc) {
+                                window.open(linkedDoc.fileUrl, '_blank');
+                              } else if (autoMatchedDocs && autoMatchedDocs.length > 0) {
+                                window.open(autoMatchedDocs[0].fileUrl, '_blank');
                               } else {
-                                toast.info(language === 'he' ? 'אין מסמך' : 'No document');
+                                // Open dialog to manually select document
+                                handleDocumentLink(transport.id);
                               }
                             }}
-                            title={relatedDocs && relatedDocs.length > 0 
+                            title={hasDocument
                               ? (language === 'he' ? 'פתיחת מסמך' : 'Open document')
-                              : (language === 'he' ? 'אין מסמך' : 'No document')
+                              : (language === 'he' ? 'קישור מסמך' : 'Link document')
                             }
                           >
                             <FileText className="w-3 h-3" />
@@ -683,6 +715,15 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
           </CardContent>
         </Card>
       )}
+
+      {/* Document Link Dialog */}
+      <DocumentLinkDialog
+        open={documentLinkDialogOpen}
+        onOpenChange={setDocumentLinkDialogOpen}
+        tripId={tripId}
+        currentDocumentId={linkingTransportId ? transports?.find(t => t.id === linkingTransportId)?.linkedDocumentId : null}
+        onSelectDocument={handleDocumentSelect}
+      />
     </div>
   );
 }
