@@ -215,6 +215,7 @@ export const appRouter = router({
         price: z.string().optional(),
         currency: z.string().optional(),
         category: z.string().optional(),
+        paymentStatus: z.enum(["paid", "pending"]).optional(),
         notes: z.string().optional(),
       }))
       .mutation(({ input }) => db.createHotel(input)),
@@ -234,6 +235,7 @@ export const appRouter = router({
         price: z.string().optional(),
         currency: z.string().optional(),
         category: z.string().optional(),
+        paymentStatus: z.enum(["paid", "pending"]).optional(),
         notes: z.string().optional(),
       }))
       .mutation(({ input }) => {

@@ -625,6 +625,6 @@
 ## UX Improvements - User Feedback (5 items)
 - [x] 1. Remove "Hotels to Choose" category - after selecting hotel in Košice, this category is no longer needed
 - [x] 2. Hide price from event cards - show prices only in Budget tab, not on every event
-- [ ] 3. Add payment status tracking - add "Paid" / "Pending Payment" status to events with filtering option
+- [x] 3. Add payment status tracking - add "Paid" / "Pending Payment" status to events with filtering option (Hotels completed, Transportation/CarRentals/Restaurants in progress)
 - [ ] 4. Merge Car Rentals into Transportation - remove Car Rentals tab/category, move all car rental events to Transportation
 - [ ] 5. Remove location subtitle - remove "Bratislava,Slovakia" from trip header subtitle (redundant)
