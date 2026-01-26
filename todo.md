@@ -596,3 +596,9 @@
 
 ## Debug - Cache Issues
 - [ ] Mobile changes not visible on iPhone after checkpoint - investigate server/cache
+
+## UX Improvements - User Feedback Session
+- [x] Responsive day tab format - desktop shows "Day 1 - Sep 1", mobile shows only "1"
+- [x] Multi-row day tabs - support 30+ day trips with automatic wrapping to multiple rows
+- [x] Unique colors for each activity category - Hotels (blue), Transportation (purple), Sites (green), Restaurants (orange), etc.
+- [x] Always provide publish checkpoint link after each significant change

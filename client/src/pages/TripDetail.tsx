@@ -154,17 +154,17 @@ export default function TripDetail() {
   };
 
   const tabs = [
-    { id: "hotels", label: t("hotels"), icon: Hotel },
-    { id: "transport", label: t("transportation"), icon: Plane },
-    { id: "cars", label: t("carRentals"), icon: Car },
-    { id: "sites", label: t("touristSites"), icon: MapPin },
-    { id: "restaurants", label: t("restaurants"), icon: Utensils },
-    { id: "documents", label: t("documents"), icon: FileText },
-    { id: "timeline", label: t("timeline"), icon: Clock },
-    { id: "routes", label: language === "he" ? "מפות מסלול" : "Route Maps", icon: Map },
-    { id: "daytrips", label: t("dayTrips"), icon: ArrowRight },
-    { id: "checklist", label: language === "he" ? "רשימת משימות" : "Checklist", icon: CheckSquare },
-    { id: "budget", label: t("budget"), icon: DollarSign },
+    { id: "hotels", label: t("hotels"), icon: Hotel, color: "bg-blue-50 hover:bg-blue-100 data-[state=active]:bg-blue-300 data-[state=active]:text-blue-950 border-blue-200 data-[state=active]:border-blue-600" },
+    { id: "transport", label: t("transportation"), icon: Plane, color: "bg-purple-50 hover:bg-purple-100 data-[state=active]:bg-purple-300 data-[state=active]:text-purple-950 border-purple-200 data-[state=active]:border-purple-600" },
+    { id: "cars", label: t("carRentals"), icon: Car, color: "bg-red-50 hover:bg-red-100 data-[state=active]:bg-red-300 data-[state=active]:text-red-950 border-red-200 data-[state=active]:border-red-600" },
+    { id: "sites", label: t("touristSites"), icon: MapPin, color: "bg-green-50 hover:bg-green-100 data-[state=active]:bg-green-300 data-[state=active]:text-green-950 border-green-200 data-[state=active]:border-green-600" },
+    { id: "restaurants", label: t("restaurants"), icon: Utensils, color: "bg-orange-50 hover:bg-orange-100 data-[state=active]:bg-orange-300 data-[state=active]:text-orange-950 border-orange-200 data-[state=active]:border-orange-600" },
+    { id: "documents", label: t("documents"), icon: FileText, color: "bg-slate-50 hover:bg-slate-100 data-[state=active]:bg-slate-300 data-[state=active]:text-slate-950 border-slate-200 data-[state=active]:border-slate-600" },
+    { id: "timeline", label: t("timeline"), icon: Clock, color: "bg-cyan-50 hover:bg-cyan-100 data-[state=active]:bg-cyan-300 data-[state=active]:text-cyan-950 border-cyan-200 data-[state=active]:border-cyan-600" },
+    { id: "routes", label: language === "he" ? "מפות מסלול" : "Route Maps", icon: Map, color: "bg-teal-50 hover:bg-teal-100 data-[state=active]:bg-teal-300 data-[state=active]:text-teal-950 border-teal-200 data-[state=active]:border-teal-600" },
+    { id: "daytrips", label: t("dayTrips"), icon: ArrowRight, color: "bg-pink-50 hover:bg-pink-100 data-[state=active]:bg-pink-300 data-[state=active]:text-pink-950 border-pink-200 data-[state=active]:border-pink-600" },
+    { id: "checklist", label: language === "he" ? "רשימת משימות" : "Checklist", icon: CheckSquare, color: "bg-lime-50 hover:bg-lime-100 data-[state=active]:bg-lime-300 data-[state=active]:text-lime-950 border-lime-200 data-[state=active]:border-lime-600" },
+    { id: "budget", label: t("budget"), icon: DollarSign, color: "bg-amber-50 hover:bg-amber-100 data-[state=active]:bg-amber-300 data-[state=active]:text-amber-950 border-amber-200 data-[state=active]:border-amber-600" },
   ];
 
   return (
@@ -277,7 +277,12 @@ export default function TripDetail() {
                         value={`day-${dayTimestamp}`}
                         className={`flex items-center justify-center gap-1 px-2 py-1.5 rounded-md border text-sm transition-all font-medium min-w-[60px] ${colorClass}`}
                       >
-                        <span className="text-base font-bold">{i + 1}</span>
+                        {/* Mobile: numbers only */}
+                        <span className="md:hidden text-base font-bold">{i + 1}</span>
+                        {/* Desktop: full format */}
+                        <span className="hidden md:inline text-sm font-medium">
+                          {language === "he" ? `יום ${i + 1} - ${format(dayDate, "MMM d")}` : `Day ${i + 1} - ${format(dayDate, "MMM d")}`}
+                        </span>
                       </TabsTrigger>
                     );
                   });
@@ -291,7 +296,7 @@ export default function TripDetail() {
                   <TabsTrigger
                     key={tab.id}
                     value={tab.id}
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg border transition-all bg-amber-50 hover:bg-amber-100 data-[state=active]:bg-amber-300 data-[state=active]:text-amber-950 border-amber-200 data-[state=active]:border-amber-600 data-[state=active]:border-[3px] data-[state=active]:shadow-lg"
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-all data-[state=active]:border-[3px] data-[state=active]:shadow-lg ${tab.color}`}
                   >
                     <tab.icon className="w-4 h-4" />
                     <span className="hidden sm:inline">{tab.label}</span>
