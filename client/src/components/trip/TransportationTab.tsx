@@ -68,6 +68,7 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
   // Document linking state
   const [documentLinkDialogOpen, setDocumentLinkDialogOpen] = useState(false);
   const [linkingTransportId, setLinkingTransportId] = useState<number | null>(null);
+  const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout | null>(null);
   
   // Force re-render trigger
   const [formKey, setFormKey] = useState(0);
@@ -644,8 +645,36 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
                                 handleDocumentLink(transport.id);
                               }
                             }}
+                            onContextMenu={(e) => {
+                              // Right-click opens dialog
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handleDocumentLink(transport.id);
+                            }}
+                            onTouchStart={(e) => {
+                              // Long press on mobile
+                              e.stopPropagation();
+                              const timer = setTimeout(() => {
+                                handleDocumentLink(transport.id);
+                              }, 500);
+                              setLongPressTimer(timer);
+                            }}
+                            onTouchEnd={(e) => {
+                              e.stopPropagation();
+                              if (longPressTimer) {
+                                clearTimeout(longPressTimer);
+                                setLongPressTimer(null);
+                              }
+                            }}
+                            onTouchMove={(e) => {
+                              e.stopPropagation();
+                              if (longPressTimer) {
+                                clearTimeout(longPressTimer);
+                                setLongPressTimer(null);
+                              }
+                            }}
                             title={hasDocument
-                              ? (language === 'he' ? 'פתיחת מסמך' : 'Open document')
+                              ? (language === 'he' ? 'פתיחת מסמך (לחץ ארוך לשינוי)' : 'Open document (long press to change)')
                               : (language === 'he' ? 'קישור מסמך' : 'Link document')
                             }
                           >

@@ -724,3 +724,9 @@
 - [ ] Allow user to select document from list instead of requiring exact name match
 - [ ] Add "Unlink Document" option in dialog
 - [ ] Apply to all entities: Transportation (flights), Hotels, Tourist Sites, Restaurants, Car Rentals
+
+## Document Linking - Change/Remove Links
+- [x] Add long-press interaction on document button to open selection dialog even when document is already linked
+- [x] Add "None" option in DocumentLinkDialog to remove document links
+- [x] Allow users to change auto-matched document links
+- [x] Allow users to remove any document link (auto or manual)

@@ -94,6 +94,37 @@ export function DocumentLinkDialog({
           {/* Document list */}
           {!isLoading && documents.length > 0 && (
             <div className="space-y-2">
+              {/* None option to remove link */}
+              <button
+                onClick={() => setSelectedId(null)}
+                className={`w-full p-3 rounded-lg border-2 transition-all text-left ${
+                  selectedId === null
+                    ? "border-red-500 bg-red-50"
+                    : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                }`}
+              >
+                <div className="flex items-start gap-3">
+                  <X
+                    className={`w-5 h-5 mt-0.5 ${
+                      selectedId === null ? "text-red-600" : "text-gray-400"
+                    }`}
+                  />
+                  <div className="flex-1 min-w-0">
+                    <div className="font-medium text-gray-900">
+                      {language === "he" ? "ללא מסמך" : "No Document"}
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      {language === "he" ? "הסר את הקישור למסמך" : "Remove document link"}
+                    </div>
+                  </div>
+                  {selectedId === null && (
+                    <div className="w-5 h-5 rounded-full bg-red-500 flex items-center justify-center flex-shrink-0">
+                      <div className="w-2 h-2 rounded-full bg-white" />
+                    </div>
+                  )}
+                </div>
+              </button>
+
               {documents.map((doc) => (
                 <button
                   key={doc.id}
@@ -143,7 +174,7 @@ export function DocumentLinkDialog({
             <Button variant="outline" onClick={() => onOpenChange(false)}>
               {language === "he" ? "ביטול" : "Cancel"}
             </Button>
-            <Button onClick={handleConfirm} disabled={selectedId === null}>
+            <Button onClick={handleConfirm}>
               {language === "he" ? "אישור" : "Confirm"}
             </Button>
           </div>
