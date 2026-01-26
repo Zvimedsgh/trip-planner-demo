@@ -361,6 +361,7 @@ export const appRouter = router({
         price: z.string().optional(),
         currency: z.string().optional(),
         notes: z.string().optional(),
+        paymentStatus: z.enum(["paid", "pending"]).optional(),
       }))
       .mutation(({ input }) => {
         const { id, ...data } = input;

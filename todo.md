@@ -668,10 +668,11 @@
 - [x] Remove payment status (Paid/Pending) from Hotels tab (UI hidden, data preserved)
 - [x] Remove payment status from Transportation tab (UI hidden, data preserved)
 - [x] Remove payment status from Restaurants tab (UI hidden, data preserved)
-- [ ] Add payment tracking to Budget tab for all expense categories
-- [ ] Show total paid vs unpaid by original currency
-- [ ] Show total paid vs unpaid converted to ILS (₪)
-- [ ] Add payment status toggle for each expense item in Budget
+- [x] Add payment tracking to Budget tab for all expense categories
+- [x] Show total paid vs unpaid by original currency (green/orange badges)
+- [x] Show total paid vs unpaid converted to ILS (₪)
+- [x] Add payment status toggle (Switch component) for each expense item in Budget
+- [x] Write vitest tests for payment status management (5/5 tests passed)
 
 ### Documents Tab Background
 - [x] Check if previously uploaded documents still exist (10 documents found in database)
