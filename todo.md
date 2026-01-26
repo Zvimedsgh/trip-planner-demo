@@ -755,7 +755,8 @@
 - [x] Update create/update handlers to save car rental fields
 - [x] Display car rental info correctly in transportation cards
 
-## Timeline Sorting Bug
-- [x] Fix timeline sorting to include routes in chronological order by hour
+#### Day by Day Tab - Sorting Bug
+- [x] Fix Day by Day tab sorting to include routes in chronological order by hour
 - [x] Routes should not always appear first in day's schedule
 - [x] All items (hotels, transportation, sites, restaurants, routes) should be sorted by time
+- [x] Issue was in DailyView component - routes were rendered separately before activities array

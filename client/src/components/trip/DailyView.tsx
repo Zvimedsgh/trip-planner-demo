@@ -11,7 +11,7 @@ interface DailyViewProps {
 
 type Activity = {
   id: number;
-  type: "hotel-checkin" | "hotel-checkout" | "transportation" | "car-pickup" | "car-return" | "site" | "restaurant";
+  type: "hotel-checkin" | "hotel-checkout" | "transportation" | "car-pickup" | "car-return" | "site" | "restaurant" | "route";
   time: number;
   icon: any;
   title: string;
@@ -20,6 +20,7 @@ type Activity = {
   price?: { amount: number; currency: string };
   documentUrls?: Array<{ url: string; name: string }>;
   website?: string;
+  routeData?: any; // Store full route data for rendering
 };
 
 export default function DailyView({ tripId, date }: DailyViewProps) {
@@ -228,6 +229,38 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
     }
   });
 
+  // Add route to activities if exists for this day
+  const todayRoute = routesData?.find(r => isOnDay(r.date));
+  if (todayRoute) {
+    // Parse route time or default to end of day if no time
+    let routeTime = date; // Default to start of day
+    if (todayRoute.time) {
+      const [hours, minutes] = todayRoute.time.split(':').map(Number);
+      const routeDate = new Date(date);
+      routeDate.setHours(hours, minutes, 0, 0);
+      routeTime = routeDate.getTime();
+    } else {
+      // No time specified - put at end of day
+      const routeDate = new Date(date);
+      routeDate.setHours(23, 59, 0, 0);
+      routeTime = routeDate.getTime();
+    }
+    
+    activities.push({
+      id: todayRoute.id,
+      type: "route",
+      time: routeTime,
+      icon: MapIcon,
+      title: language === "he" && todayRoute.nameHe ? todayRoute.nameHe : todayRoute.name,
+      subtitle: todayRoute.description || undefined,
+      details: [
+        todayRoute.distanceKm ? `${todayRoute.distanceKm} km` : "",
+        todayRoute.estimatedDuration ? `${Math.floor(Number(todayRoute.estimatedDuration) / 60)}h ${Number(todayRoute.estimatedDuration) % 60}m` : ""
+      ].filter(Boolean) as string[],
+      routeData: todayRoute // Store for custom rendering
+    });
+  }
+  
   // Sort activities by time
   activities.sort((a, b) => a.time - b.time);
 
@@ -246,74 +279,17 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
         return "bg-purple-50";
       case "restaurant":
         return "bg-orange-50";
+      case "route":
+        return "bg-cyan-50";
       default:
         return "bg-gray-50";
     }
   };
-
-  // Find route for current day from database
-  const todayRoute = routesData?.find(r => isOnDay(r.date));
   
-  // Default gradient colors for routes
-  const routeGradients = [
-    "from-blue-500 via-indigo-500 to-purple-500",
-    "from-sky-500 via-blue-500 to-indigo-500",
-    "from-violet-500 via-purple-500 to-fuchsia-500",
-    "from-emerald-500 via-teal-500 to-cyan-500",
-    "from-amber-500 via-orange-500 to-red-500",
-    "from-rose-500 via-pink-500 to-purple-500",
-  ];
-  const routeGradient = todayRoute ? routeGradients[todayRoute.id % routeGradients.length] : routeGradients[0];
-
   return (
     <div className="space-y-4">
-      {/* Route card if there's a route for this day */}
-      {todayRoute && (
-        <Card className={`overflow-hidden bg-gradient-to-br ${routeGradient} text-white shadow-lg border-0`}>
-          <CardHeader>
-            <div className="flex items-start justify-between">
-              <div className="flex items-start gap-3 flex-1">
-                <div className="w-10 h-10 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center flex-shrink-0">
-                  <MapIcon className="w-5 h-5 text-white" />
-                </div>
-                <div className="flex-1">
-                  <CardTitle className="text-base font-bold drop-shadow-md">
-                    {language === "he" && todayRoute.nameHe ? todayRoute.nameHe : todayRoute.name}
-                  </CardTitle>
-                  {(todayRoute.description || todayRoute.descriptionHe) && (
-                    <p className="text-sm text-white/90 mt-1 drop-shadow">
-                      {language === "he" && todayRoute.descriptionHe ? todayRoute.descriptionHe : todayRoute.description}
-                    </p>
-                  )}
-                  <p className="text-xs text-white/80 mt-2">
-                    {language === "he" ? "לחץ על טאב 'מפות מסלול' לצפייה במפה המלאה" : "Click 'Route Maps' tab to view full map"}
-                  </p>
-                </div>
-              </div>
-              <div className="text-right flex-shrink-0">
-                <div className="text-sm font-semibold drop-shadow">{todayRoute.time}</div>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <button
-              onClick={() => {
-                const routeName = language === "he" && todayRoute.nameHe ? todayRoute.nameHe : todayRoute.name;
-                const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(routeName)}`;
-                window.open(googleMapsUrl, "_blank");
-              }}
-              className="w-full bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors"
-            >
-              <ExternalLink className="w-4 h-4" />
-              {language === "he" ? "פתח במפות Google" : "Open in Google Maps"}
-            </button>
-          </CardContent>
-        </Card>
-      )}
-
-
-      {/* Empty state if no activities AND no route */}
-      {activities.length === 0 && !todayRoute && (
+      {/* Empty state if no activities */}
+      {activities.length === 0 && (
         <div className="text-center py-12 text-muted-foreground">
           <Calendar className="w-12 h-12 mx-auto mb-4 opacity-50" />
           <p>{language === "he" ? "אין פעילויות מתוכננות ליום זה" : "No activities planned for this day"}</p>
@@ -323,6 +299,59 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
       {activities.map((activity) => {
         const Icon = activity.icon;
         const bgColor = getActivityBgColor(activity.type);
+        
+        // Special rendering for routes with gradient background
+        if (activity.type === "route" && activity.routeData) {
+          const routeGradients = [
+            "from-blue-500 via-indigo-500 to-purple-500",
+            "from-sky-500 via-blue-500 to-indigo-500",
+            "from-violet-500 via-purple-500 to-fuchsia-500",
+            "from-emerald-500 via-teal-500 to-cyan-500",
+            "from-amber-500 via-orange-500 to-red-500",
+            "from-rose-500 via-pink-500 to-purple-500",
+          ];
+          const routeGradient = routeGradients[activity.id % routeGradients.length];
+          
+          return (
+            <Card key={`${activity.type}-${activity.id}`} className={`overflow-hidden bg-gradient-to-br ${routeGradient} text-white shadow-lg border-0`}>
+              <CardHeader>
+                <div className="flex items-start justify-between">
+                  <div className="flex items-start gap-3 flex-1">
+                    <div className="w-10 h-10 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center flex-shrink-0">
+                      <Icon className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <CardTitle className="text-base font-bold drop-shadow-md">{activity.title}</CardTitle>
+                      {activity.subtitle && (
+                        <p className="text-sm text-white/90 mt-1 drop-shadow">{activity.subtitle}</p>
+                      )}
+                      {activity.details.length > 0 && (
+                        <p className="text-xs text-white/80 mt-2">{activity.details.join(" • ")}</p>
+                      )}
+                    </div>
+                  </div>
+                  <div className="text-right flex-shrink-0">
+                    <div className="text-sm font-semibold drop-shadow">{format(new Date(activity.time), "HH:mm")}</div>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <button
+                  onClick={() => {
+                    const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(activity.title)}`;
+                    window.open(googleMapsUrl, "_blank");
+                  }}
+                  className="w-full bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  {language === "he" ? "פתח במפות Google" : "Open in Google Maps"}
+                </button>
+              </CardContent>
+            </Card>
+          );
+        }
+        
+        // Regular activity rendering
         return (
           <Card key={`${activity.type}-${activity.id}`} className={bgColor}>
             <CardHeader>
