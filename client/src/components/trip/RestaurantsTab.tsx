@@ -292,18 +292,7 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
             </SelectContent>
           </Select>
         </div>
-        <div className="grid gap-2">
-          <Label>{language === "he" ? "סטטוס תשלום" : "Payment Status"}</Label>
-          <Select value={paymentStatus} onValueChange={(v: "paid" | "pending") => setPaymentStatus(v)}>
-            <SelectTrigger tabIndex={9}>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="paid">{language === "he" ? "שולם" : "Paid"}</SelectItem>
-              <SelectItem value="pending">{language === "he" ? "ממתין לתשלום" : "Pending Payment"}</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+        {/* Payment Status field hidden - managed in Budget tab */}
       </div>
       <div className="grid gap-2">
         <Label>{t("notes")}</Label>
@@ -332,22 +321,7 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
             >
               {language === "he" ? "הכל" : "All"}
             </Button>
-            <Button
-              variant={paymentFilter === "paid" ? "default" : "ghost"}
-              size="sm"
-              onClick={() => setPaymentFilter("paid")}
-              className="h-7 px-2 text-xs bg-green-500 hover:bg-green-600 text-white"
-            >
-              {language === "he" ? "שולם" : "Paid"}
-            </Button>
-            <Button
-              variant={paymentFilter === "pending" ? "default" : "ghost"}
-              size="sm"
-              onClick={() => setPaymentFilter("pending")}
-              className="h-7 px-2 text-xs bg-amber-500 hover:bg-amber-600 text-white"
-            >
-              {language === "he" ? "ממתין" : "Pending"}
-            </Button>
+            {/* Payment filter buttons hidden - managed in Budget tab */}
           </div>
           <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
           <DialogTrigger asChild>
@@ -391,17 +365,7 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
                         <CardTitle className="text-lg">{restaurant.name}</CardTitle>
-                        {restaurant.paymentStatus && (
-                          <span className={`text-xs px-2 py-0.5 rounded-full ${
-                            restaurant.paymentStatus === "paid" 
-                              ? "bg-green-100 text-green-700" 
-                              : "bg-amber-100 text-amber-700"
-                          }`}>
-                            {restaurant.paymentStatus === "paid" 
-                              ? (language === "he" ? "שולם" : "Paid")
-                              : (language === "he" ? "ממתין" : "Pending")}
-                          </span>
-                        )}
+                        {/* Payment status badge hidden - managed in Budget tab */}
                       </div>
                       {restaurant.cuisineType && (
                         <CardDescription className="text-xs">{restaurant.cuisineType}</CardDescription>

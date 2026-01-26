@@ -661,3 +661,31 @@
 - [x] Remove "Bratislava,Slovakia" from trip cards on home page
 - [x] Keep only trip name, dates, and "Trip Details" button
 - [x] Maintain consistent design with trip detail page
+
+## Critical Changes - User Priority
+
+### Payment Management Consolidation
+- [x] Remove payment status (Paid/Pending) from Hotels tab (UI hidden, data preserved)
+- [x] Remove payment status from Transportation tab (UI hidden, data preserved)
+- [x] Remove payment status from Restaurants tab (UI hidden, data preserved)
+- [ ] Add payment tracking to Budget tab for all expense categories
+- [ ] Show total paid vs unpaid by original currency
+- [ ] Show total paid vs unpaid converted to ILS (₪)
+- [ ] Add payment status toggle for each expense item in Budget
+
+### Documents Tab Background
+- [x] Check if previously uploaded documents still exist (10 documents found in database)
+- [ ] Add background image/pattern to Documents category card
+
+### Routes Tab Map Background
+- [x] Replace plain background with map background in Routes tab
+
+### Day Trips Tab
+- [x] Hide Day Trips tab (keep code, don't delete)
+- [x] Ensure data is preserved for future use
+
+### Checklist System
+- [ ] Create shared checklist visible to all trip participants
+- [ ] Create private checklist for each user
+- [ ] Add UI to switch between shared and private views
+- [ ] Store checklist items with owner/visibility flags in database

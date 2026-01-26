@@ -169,7 +169,7 @@ export default function TripDetail() {
     { id: "timeline", label: t("timeline"), icon: Clock, color: "bg-cyan-50 hover:bg-cyan-100 data-[state=active]:bg-cyan-300 data-[state=active]:text-cyan-950 border-cyan-200 data-[state=active]:border-cyan-600" },
     { id: "routes", label: language === "he" ? "מפות מסלול" : "Route Maps", icon: Map, color: "bg-teal-50 hover:bg-teal-100 data-[state=active]:bg-teal-300 data-[state=active]:text-teal-950 border-teal-200 data-[state=active]:border-teal-600" },
     { id: "route_manager", label: language === "he" ? "ניהול מסלולים" : "Route Manager", icon: Navigation, color: "bg-indigo-50 hover:bg-indigo-100 data-[state=active]:bg-indigo-300 data-[state=active]:text-indigo-950 border-indigo-200 data-[state=active]:border-indigo-600" },
-    { id: "daytrips", label: t("dayTrips"), icon: ArrowRight, color: "bg-pink-50 hover:bg-pink-100 data-[state=active]:bg-pink-300 data-[state=active]:text-pink-950 border-pink-200 data-[state=active]:border-pink-600" },
+    // { id: "daytrips", label: t("dayTrips"), icon: ArrowRight, color: "bg-pink-50 hover:bg-pink-100 data-[state=active]:bg-pink-300 data-[state=active]:text-pink-950 border-pink-200 data-[state=active]:border-pink-600" }, // Hidden temporarily
     { id: "checklist", label: language === "he" ? "רשימת משימות" : "Checklist", icon: CheckSquare, color: "bg-lime-50 hover:bg-lime-100 data-[state=active]:bg-lime-300 data-[state=active]:text-lime-950 border-lime-200 data-[state=active]:border-lime-600" },
     { id: "budget", label: t("budget"), icon: DollarSign, color: "bg-amber-50 hover:bg-amber-100 data-[state=active]:bg-amber-300 data-[state=active]:text-amber-950 border-amber-200 data-[state=active]:border-amber-600" },
   ];

@@ -388,25 +388,8 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
           </Select>
           <input type="hidden" name="category" defaultValue={defaults?.category || "none"} />
         </div>
-        <div className="grid gap-2">
-          <Label>{language === "he" ? "סטטוס תשלום" : "Payment Status"}</Label>
-          <Select 
-            defaultValue={defaults?.paymentStatus || "pending"} 
-            onValueChange={(value) => {
-              const input = formRef.current?.querySelector('[name="paymentStatus"]') as HTMLInputElement;
-              if (input) input.value = value;
-            }}
-          >
-            <SelectTrigger tabIndex={12}>
-              <SelectValue placeholder={language === "he" ? "בחר סטטוס" : "Select status"} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="pending">{language === "he" ? "ממתין לתשלום" : "Pending Payment"}</SelectItem>
-              <SelectItem value="paid">{language === "he" ? "שולם" : "Paid"}</SelectItem>
-            </SelectContent>
-          </Select>
-          <input type="hidden" name="paymentStatus" defaultValue={defaults?.paymentStatus || "pending"} />
-        </div>
+        {/* Payment Status field hidden - managed in Budget tab */}
+        <input type="hidden" name="paymentStatus" defaultValue={defaults?.paymentStatus || "pending"} />
       </div>
       <div className="grid gap-2">
         <Label>{t("notes")}</Label>
@@ -459,22 +442,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
         >
           {language === "he" ? "הכל" : "All"}
         </Button>
-        <Button
-          size="sm"
-          variant={paymentFilter === "paid" ? "default" : "outline"}
-          onClick={() => setPaymentFilter("paid")}
-          className={paymentFilter === "paid" ? "bg-green-600 hover:bg-green-700" : ""}
-        >
-          {language === "he" ? "שולם" : "Paid"}
-        </Button>
-        <Button
-          size="sm"
-          variant={paymentFilter === "pending" ? "default" : "outline"}
-          onClick={() => setPaymentFilter("pending")}
-          className={paymentFilter === "pending" ? "bg-amber-600 hover:bg-amber-700" : ""}
-        >
-          {language === "he" ? "ממתין" : "Pending"}
-        </Button>
+        {/* Payment filter buttons hidden - managed in Budget tab */}
       </div>
 
       {hotels && hotels.length > 0 ? (
@@ -680,17 +648,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
                     </span>
                   )}
 
-                  {hotel.paymentStatus && (
-                    <span className={`flex items-center gap-1 px-2 py-1 rounded font-medium ${
-                      hotel.paymentStatus === "paid" 
-                        ? "bg-green-500/90 text-white" 
-                        : "bg-amber-500/90 text-white"
-                    }`}>
-                      {hotel.paymentStatus === "paid" 
-                        ? (language === "he" ? "שולם" : "Paid")
-                        : (language === "he" ? "ממתין" : "Pending")}
-                    </span>
-                  )}
+                  {/* Payment status badge hidden - managed in Budget tab */}
                   {hotel.phone && (
                     <span className="flex items-center gap-1 bg-white/20 backdrop-blur-sm px-2 py-1 rounded">
                       <Phone className="w-3 h-3" />

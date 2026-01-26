@@ -451,21 +451,7 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
             </SelectContent>
           </Select>
         </div>
-        <div className="grid gap-2">
-          <Label>{language === "he" ? "סטטוס תשלום" : "Payment Status"}</Label>
-          <Select value={formPaymentStatus} onValueChange={(v: "paid" | "pending") => {
-            setFormPaymentStatus(v);
-            formRefs.paymentStatus.current = v;
-          }}>
-            <SelectTrigger tabIndex={12}>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="paid">{language === "he" ? "שולם" : "Paid"}</SelectItem>
-              <SelectItem value="pending">{language === "he" ? "ממתין לתשלום" : "Pending Payment"}</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+        {/* Payment Status field hidden - managed in Budget tab */}
       </div>
       
       <div className="grid gap-2">
@@ -496,22 +482,7 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
             >
               {language === "he" ? "הכל" : "All"}
             </Button>
-            <Button
-              variant={paymentFilter === "paid" ? "default" : "ghost"}
-              size="sm"
-              onClick={() => setPaymentFilter("paid")}
-              className="h-7 px-2 text-xs bg-green-500 hover:bg-green-600 text-white"
-            >
-              {language === "he" ? "שולם" : "Paid"}
-            </Button>
-            <Button
-              variant={paymentFilter === "pending" ? "default" : "ghost"}
-              size="sm"
-              onClick={() => setPaymentFilter("pending")}
-              className="h-7 px-2 text-xs bg-amber-500 hover:bg-amber-600 text-white"
-            >
-              {language === "he" ? "ממתין" : "Pending"}
-            </Button>
+            {/* Payment filter buttons hidden - managed in Budget tab */}
           </div>
           {/* Return Flight Button - only show if there's an outbound flight */}
           {hasOutboundFlight && (
@@ -611,15 +582,7 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
                           <h3 className="font-semibold text-white text-sm">{t(transport.type)}</h3>
-                          {transport.paymentStatus && (
-                            <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium ${
-                              transport.paymentStatus === "paid" 
-                                ? "bg-green-500/90 text-white" 
-                                : "bg-amber-500/90 text-white"
-                            }`}>
-                              {transport.paymentStatus === "paid" ? (language === "he" ? "שולם" : "Paid") : (language === "he" ? "ממתין" : "Pending")}
-                            </span>
-                          )}
+                          {/* Payment status badge hidden - managed in Budget tab */}
                         </div>
                         <p className="text-xs text-white/80 flex items-center gap-1">
                           {transport.origin} <ArrowRight className="w-2 h-2" /> {transport.destination}
