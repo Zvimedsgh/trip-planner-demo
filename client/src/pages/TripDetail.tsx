@@ -23,7 +23,7 @@ import { Link, useParams, useLocation } from "wouter";
 import TouristSitesTab from "@/components/trip/TouristSitesTab";
 import HotelsTab from "@/components/trip/HotelsTab";
 import TransportationTab from "@/components/trip/TransportationTab";
-import CarRentalsTab from "@/components/trip/CarRentalsTab";
+// import CarRentalsTab from "@/components/trip/CarRentalsTab"; // Removed - merged into Transportation
 import RestaurantsTab from "@/components/trip/RestaurantsTab";
 import DocumentsTab from "@/components/trip/DocumentsTab";
 import TimelineTab from "@/components/trip/TimelineTab";
@@ -162,7 +162,7 @@ export default function TripDetail() {
   const tabs = [
     { id: "hotels", label: t("hotels"), icon: Hotel, color: "bg-blue-50 hover:bg-blue-100 data-[state=active]:bg-blue-300 data-[state=active]:text-blue-950 border-blue-200 data-[state=active]:border-blue-600" },
     { id: "transport", label: t("transportation"), icon: Plane, color: "bg-purple-50 hover:bg-purple-100 data-[state=active]:bg-purple-300 data-[state=active]:text-purple-950 border-purple-200 data-[state=active]:border-purple-600" },
-    { id: "cars", label: t("carRentals"), icon: Car, color: "bg-red-50 hover:bg-red-100 data-[state=active]:bg-red-300 data-[state=active]:text-red-950 border-red-200 data-[state=active]:border-red-600" },
+    // { id: "cars", label: t("carRentals"), icon: Car, color: "bg-red-50 hover:bg-red-100 data-[state=active]:bg-red-300 data-[state=active]:text-red-950 border-red-200 data-[state=active]:border-red-600" }, // Removed - merged into Transportation
     { id: "sites", label: t("touristSites"), icon: MapPin, color: "bg-green-50 hover:bg-green-100 data-[state=active]:bg-green-300 data-[state=active]:text-green-950 border-green-200 data-[state=active]:border-green-600" },
     { id: "restaurants", label: t("restaurants"), icon: Utensils, color: "bg-orange-50 hover:bg-orange-100 data-[state=active]:bg-orange-300 data-[state=active]:text-orange-950 border-orange-200 data-[state=active]:border-orange-600" },
     { id: "documents", label: t("documents"), icon: FileText, color: "bg-slate-50 hover:bg-slate-100 data-[state=active]:bg-slate-300 data-[state=active]:text-slate-950 border-slate-200 data-[state=active]:border-slate-600" },
@@ -335,10 +335,6 @@ export default function TripDetail() {
 
           <TabsContent value="transport">
             <TransportationTab tripId={tripId} />
-          </TabsContent>
-
-          <TabsContent value="cars">
-            <CarRentalsTab tripId={tripId} />
           </TabsContent>
 
           <TabsContent value="restaurants">

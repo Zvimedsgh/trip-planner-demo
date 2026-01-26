@@ -1,0 +1,55 @@
+{
+  "query": "SHOW TABLES;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SHOW TABLES;",
+  "rows": [
+    {
+      "Tables_in_2rtwtAqF2DqhH9oEcii9XY": "__drizzle_migrations"
+    },
+    {
+      "Tables_in_2rtwtAqF2DqhH9oEcii9XY": "activity_log"
+    },
+    {
+      "Tables_in_2rtwtAqF2DqhH9oEcii9XY": "car_rentals"
+    },
+    {
+      "Tables_in_2rtwtAqF2DqhH9oEcii9XY": "checklist_items"
+    },
+    {
+      "Tables_in_2rtwtAqF2DqhH9oEcii9XY": "day_trips"
+    },
+    {
+      "Tables_in_2rtwtAqF2DqhH9oEcii9XY": "documents"
+    },
+    {
+      "Tables_in_2rtwtAqF2DqhH9oEcii9XY": "hotels"
+    },
+    {
+      "Tables_in_2rtwtAqF2DqhH9oEcii9XY": "restaurants"
+    },
+    {
+      "Tables_in_2rtwtAqF2DqhH9oEcii9XY": "routes"
+    },
+    {
+      "Tables_in_2rtwtAqF2DqhH9oEcii9XY": "tourist_sites"
+    },
+    {
+      "Tables_in_2rtwtAqF2DqhH9oEcii9XY": "transportation"
+    },
+    {
+      "Tables_in_2rtwtAqF2DqhH9oEcii9XY": "trip_collaborators"
+    },
+    {
+      "Tables_in_2rtwtAqF2DqhH9oEcii9XY": "trip_routes"
+    },
+    {
+      "Tables_in_2rtwtAqF2DqhH9oEcii9XY": "trips"
+    },
+    {
+      "Tables_in_2rtwtAqF2DqhH9oEcii9XY": "users"
+    }
+  ],
+  "messages": [],
+  "stdout": "Tables_in_2rtwtAqF2DqhH9oEcii9XY\n__drizzle_migrations\nactivity_log\ncar_rentals\nchecklist_items\nday_trips\ndocuments\nhotels\nrestaurants\nroutes\ntourist_sites\ntransportation\ntrip_collaborators\ntrip_routes\ntrips\nusers\n",
+  "stderr": "",
+  "execution_time_ms": 1540
+}
