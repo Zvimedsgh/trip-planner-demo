@@ -230,10 +230,6 @@ export default function TripDetail() {
               <h1 className="text-3xl font-bold mb-2">{trip.name}</h1>
               <div className="flex flex-wrap items-center gap-4 text-muted-foreground">
                 <div className="flex items-center gap-1">
-                  <MapPin className="w-4 h-4" />
-                  <span>{trip.destination}</span>
-                </div>
-                <div className="flex items-center gap-1">
                   <Calendar className="w-4 h-4" />
                   <span>
                     {format(new Date(trip.startDate), "MMM d")} - {format(new Date(trip.endDate), "MMM d, yyyy")}

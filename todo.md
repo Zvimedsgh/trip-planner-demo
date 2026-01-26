@@ -651,3 +651,8 @@
 - [x] Move route start time from subtitle text to top-right corner of card
 - [x] Match the time display style of other activity cards (hotels, transportation, sites)
 - [x] Display time prominently in top-right with white text and drop-shadow
+
+## Remove Duplicate Location Subtitle
+- [x] Remove "Bratislava,Slovakia" subtitle from trip header
+- [x] Keep only trip name and date range in header
+- [x] Location info remains in trip name ("Goren Roots Trip to Slovakia")
