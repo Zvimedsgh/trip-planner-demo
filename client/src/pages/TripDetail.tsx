@@ -246,21 +246,21 @@ export default function TripDetail() {
         {/* Combined Tabs: Days (Row 1) + Activities (Row 2) */}
         <Tabs value={defaultTab} onValueChange={setDefaultTab} className="w-full">
           {/* Sticky Tab Container */}
-          <div className="sticky top-0 z-10 bg-background pb-4 border-b border-border mb-6">
+          <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm pb-4 pt-4 border-b border-border mb-6 shadow-sm">
             <TabsList className="w-full flex flex-col h-auto gap-4 bg-transparent p-0">
               {/* Row 1: Daily Tabs with Pastel Colors */}
               <div className="flex flex-wrap gap-2">
                 {(() => {
                   const daysCount = getDaysCount(trip.startDate, trip.endDate);
                   const pastelColors = [
-                    'bg-pink-100 hover:bg-pink-200 data-[state=active]:bg-pink-300 data-[state=active]:text-pink-900 border-pink-200',
-                    'bg-blue-100 hover:bg-blue-200 data-[state=active]:bg-blue-300 data-[state=active]:text-blue-900 border-blue-200',
-                    'bg-green-100 hover:bg-green-200 data-[state=active]:bg-green-300 data-[state=active]:text-green-900 border-green-200',
-                    'bg-yellow-100 hover:bg-yellow-200 data-[state=active]:bg-yellow-300 data-[state=active]:text-yellow-900 border-yellow-200',
-                    'bg-purple-100 hover:bg-purple-200 data-[state=active]:bg-purple-300 data-[state=active]:text-purple-900 border-purple-200',
-                    'bg-orange-100 hover:bg-orange-200 data-[state=active]:bg-orange-300 data-[state=active]:text-orange-900 border-orange-200',
-                    'bg-teal-100 hover:bg-teal-200 data-[state=active]:bg-teal-300 data-[state=active]:text-teal-900 border-teal-200',
-                    'bg-indigo-100 hover:bg-indigo-200 data-[state=active]:bg-indigo-300 data-[state=active]:text-indigo-900 border-indigo-200',
+                    'bg-pink-100 hover:bg-pink-200 data-[state=active]:bg-pink-400 data-[state=active]:text-pink-950 border-pink-200 data-[state=active]:border-pink-500 data-[state=active]:border-2 data-[state=active]:shadow-lg',
+                    'bg-blue-100 hover:bg-blue-200 data-[state=active]:bg-blue-400 data-[state=active]:text-blue-950 border-blue-200 data-[state=active]:border-blue-500 data-[state=active]:border-2 data-[state=active]:shadow-lg',
+                    'bg-green-100 hover:bg-green-200 data-[state=active]:bg-green-400 data-[state=active]:text-green-950 border-green-200 data-[state=active]:border-green-500 data-[state=active]:border-2 data-[state=active]:shadow-lg',
+                    'bg-yellow-100 hover:bg-yellow-200 data-[state=active]:bg-yellow-400 data-[state=active]:text-yellow-950 border-yellow-200 data-[state=active]:border-yellow-500 data-[state=active]:border-2 data-[state=active]:shadow-lg',
+                    'bg-purple-100 hover:bg-purple-200 data-[state=active]:bg-purple-400 data-[state=active]:text-purple-950 border-purple-200 data-[state=active]:border-purple-500 data-[state=active]:border-2 data-[state=active]:shadow-lg',
+                    'bg-orange-100 hover:bg-orange-200 data-[state=active]:bg-orange-400 data-[state=active]:text-orange-950 border-orange-200 data-[state=active]:border-orange-500 data-[state=active]:border-2 data-[state=active]:shadow-lg',
+                    'bg-teal-100 hover:bg-teal-200 data-[state=active]:bg-teal-400 data-[state=active]:text-teal-950 border-teal-200 data-[state=active]:border-teal-500 data-[state=active]:border-2 data-[state=active]:shadow-lg',
+                    'bg-indigo-100 hover:bg-indigo-200 data-[state=active]:bg-indigo-400 data-[state=active]:text-indigo-950 border-indigo-200 data-[state=active]:border-indigo-500 data-[state=active]:border-2 data-[state=active]:shadow-lg',
                   ];
                   return Array.from({ length: daysCount }, (_, i) => {
                     const dayDate = new Date(trip.startDate);
@@ -289,7 +289,7 @@ export default function TripDetail() {
                   <TabsTrigger
                     key={tab.id}
                     value={tab.id}
-                    className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-4 py-2 rounded-lg border border-border data-[state=active]:border-primary transition-all"
+                    className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-4 py-2 rounded-lg border border-border data-[state=active]:border-primary data-[state=active]:border-2 data-[state=active]:shadow-lg transition-all"
                   >
                     <tab.icon className="w-4 h-4" />
                     <span className="hidden sm:inline">{tab.label}</span>
@@ -418,10 +418,10 @@ export default function TripDetail() {
       {showScrollTop && (
         <Button
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 z-50 rounded-full w-12 h-12 p-0 shadow-lg"
+          className="fixed bottom-8 right-8 z-[100] rounded-full w-14 h-14 p-0 shadow-2xl hover:shadow-xl transition-all hover:scale-110"
           size="icon"
         >
-          <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-90' : '-rotate-90'}`} />
+          <ArrowRight className={`w-6 h-6 ${isRTL ? 'rotate-90' : '-rotate-90'}`} />
         </Button>
       )}
     </div>

@@ -4,6 +4,7 @@ import { trpc } from "@/lib/trpc";
 import { format, isSameDay } from "date-fns";
 import { formatTime24 } from "@/lib/timeFormat";
 import { Bus, Calendar, Car, Hotel, Loader2, MapPin, Plane, Ship, Train, Utensils, Map as MapIcon } from "lucide-react";
+import { getDayColor } from "@/lib/dayColors";
 
 interface TimelineTabProps {
   tripId: number;
@@ -31,6 +32,7 @@ const transportIcons: Record<string, React.ElementType> = {
 export default function TimelineTab({ tripId }: TimelineTabProps) {
   const { t, language, isRTL } = useLanguage();
 
+  const { data: trip } = trpc.trips.get.useQuery({ id: tripId });
   const { data: sites } = trpc.touristSites.list.useQuery({ tripId });
   const { data: hotels } = trpc.hotels.list.useQuery({ tripId });
   const { data: transports } = trpc.transportation.list.useQuery({ tripId });
@@ -239,8 +241,10 @@ export default function TimelineTab({ tripId }: TimelineTabProps) {
 
               {/* Events for this date */}
               <div className={`${isRTL ? 'pr-16' : 'pl-16'} space-y-3`}>
-                {group.events.map((event) => (
-                  <Card key={event.id} className="elegant-card-hover">
+                {group.events.map((event) => {
+                  const dayColor = trip ? getDayColor(trip.startDate, event.date) : null;
+                  return (
+                  <Card key={event.id} className="elegant-card-hover" style={{ backgroundColor: dayColor?.light }}>
                     <CardContent className="p-4">
                       <div className={`flex items-start gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
                         <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${event.color} flex items-center justify-center flex-shrink-0`}>
@@ -258,7 +262,8 @@ export default function TimelineTab({ tripId }: TimelineTabProps) {
                       </div>
                     </CardContent>
                   </Card>
-                ))}
+                  );
+                })}
               </div>
             </div>
           ))}
