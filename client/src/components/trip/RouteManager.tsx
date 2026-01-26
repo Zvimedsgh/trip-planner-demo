@@ -220,8 +220,16 @@ export default function RouteManager({ tripId }: RouteManagerProps) {
                   <Input
                     id="date"
                     type="date"
-                    value={format(new Date(formData.date), "yyyy-MM-dd")}
-                    onChange={(e) => setFormData({ ...formData, date: new Date(e.target.value).getTime() })}
+                    value={formData.date ? format(new Date(formData.date), "yyyy-MM-dd") : ""}
+                    onChange={(e) => {
+                      const dateValue = e.target.value;
+                      if (dateValue) {
+                        const timestamp = new Date(dateValue).getTime();
+                        if (!isNaN(timestamp)) {
+                          setFormData({ ...formData, date: timestamp });
+                        }
+                      }
+                    }}
                     required
                   />
                 </div>

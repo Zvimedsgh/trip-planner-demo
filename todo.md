@@ -617,3 +617,7 @@
 - [ ] 6. Global search - search field for hotels, restaurants, attractions
 - [ ] 7. PDF export - export full trip details to PDF
 - [ ] 8. Real-time notifications - alerts before check-in/flights
+
+## Bug - Route Manager Date Picker
+- [x] Fix RangeError: Invalid time value when trying to select a date in the add/edit route form
+- [x] Root cause: Date picker returns invalid date format that causes crash - fixed with validation
