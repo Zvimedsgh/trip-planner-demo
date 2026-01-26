@@ -249,7 +249,11 @@ export default function TripDetail() {
           <div className="sticky top-16 z-20 bg-background/95 backdrop-blur-sm pb-4 pt-4 border-b border-border mb-6 shadow-sm">
             <TabsList className="w-full flex flex-col h-auto gap-4 bg-transparent p-0">
               {/* Row 1: Daily Tabs with Pastel Colors */}
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-col gap-2">
+                <h3 className="text-sm font-semibold text-muted-foreground px-1">
+                  {language === "he" ? "ימים" : "Days"}
+                </h3>
+                <div className="flex flex-wrap gap-2">
                 {(() => {
                   const daysCount = getDaysCount(trip.startDate, trip.endDate);
                   const pastelColors = [
@@ -271,16 +275,14 @@ export default function TripDetail() {
                       <TabsTrigger
                         key={`day-${dayTimestamp}`}
                         value={`day-${dayTimestamp}`}
-                        className={`flex items-center gap-2 px-3 py-1.5 rounded-md border text-sm transition-all font-medium ${colorClass}`}
+                        className={`flex items-center justify-center gap-1 px-2 py-1.5 rounded-md border text-sm transition-all font-medium min-w-[60px] ${colorClass}`}
                       >
-                        {language === "he" ? `יום ${i + 1}` : `Day ${i + 1}`}
-                        <span className="text-xs hidden sm:inline">
-                          {format(dayDate, "MMM d")}
-                        </span>
+                        <span className="text-base font-bold">{i + 1}</span>
                       </TabsTrigger>
                     );
                   });
                 })()}
+                </div>
               </div>
 
               {/* Row 2: Activity Category Tabs */}
@@ -289,7 +291,7 @@ export default function TripDetail() {
                   <TabsTrigger
                     key={tab.id}
                     value={tab.id}
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg border transition-all bg-slate-100 hover:bg-slate-200 data-[state=active]:bg-slate-400 data-[state=active]:text-slate-950 border-slate-200 data-[state=active]:border-slate-500 data-[state=active]:border-2 data-[state=active]:shadow-lg"
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg border transition-all bg-amber-50 hover:bg-amber-100 data-[state=active]:bg-amber-300 data-[state=active]:text-amber-950 border-amber-200 data-[state=active]:border-amber-600 data-[state=active]:border-[3px] data-[state=active]:shadow-lg"
                   >
                     <tab.icon className="w-4 h-4" />
                     <span className="hidden sm:inline">{tab.label}</span>
@@ -418,7 +420,7 @@ export default function TripDetail() {
       {showScrollTop && (
         <Button
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 z-[100] rounded-full w-14 h-14 p-0 shadow-2xl hover:shadow-xl transition-all hover:scale-110"
+          className="fixed bottom-8 left-8 z-[100] rounded-full w-14 h-14 p-0 shadow-2xl hover:shadow-xl transition-all hover:scale-110"
           size="icon"
         >
           <ArrowRight className={`w-6 h-6 ${isRTL ? 'rotate-90' : '-rotate-90'}`} />

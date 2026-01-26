@@ -587,3 +587,9 @@
 - [x] Fix sticky tabs - tabs stay at top-16 below header
 - [x] Fix active tab highlighting - darker background + thick border + shadow
 - [x] Add pastel colors to activity tabs - slate gray pastel
+
+## Mobile UX Issues - iPhone Testing
+- [x] Activity tabs colored with amber pastel (Hotels, Transportation, etc.)
+- [x] Selected day tab has border-[3px] thick border
+- [x] Scroll-to-top button moved to bottom-left (left-8)
+- [x] Day tabs simplified - only numbers with "Days" header
