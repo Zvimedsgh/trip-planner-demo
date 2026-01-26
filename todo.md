@@ -741,3 +741,8 @@
 - [x] Remove Car Rentals tab from UI
 - [ ] Update transportation form to support car rental specific fields (company, model, pickup/return locations)
 - [ ] Remove car_rentals table from database (after successful migration)
+
+## Budget Tab - Car Rental Migration Fix
+- [x] Remove "Car Rentals" category from Budget tab
+- [x] Verify car rentals (type='car_rental') are counted in Transportation category
+- [x] Update budget calculations to include car_rental in transportation totals

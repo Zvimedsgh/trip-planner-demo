@@ -55,7 +55,6 @@ export default function BudgetTab({ tripId }: BudgetTabProps) {
 
   const { data: hotels, isLoading: hotelsLoading } = trpc.hotels.list.useQuery({ tripId });
   const { data: transports, isLoading: transportsLoading } = trpc.transportation.list.useQuery({ tripId });
-  const { data: carRentals, isLoading: carRentalsLoading } = trpc.carRentals.list.useQuery({ tripId });
   const { data: restaurants, isLoading: restaurantsLoading } = trpc.restaurants.list.useQuery({ tripId });
 
   const updateHotelPayment = trpc.hotels.update.useMutation({
@@ -63,9 +62,6 @@ export default function BudgetTab({ tripId }: BudgetTabProps) {
   });
   const updateTransportPayment = trpc.transportation.update.useMutation({
     onSuccess: () => utils.transportation.list.invalidate({ tripId }),
-  });
-  const updateCarRentalPayment = trpc.carRentals.update.useMutation({
-    onSuccess: () => utils.carRentals.list.invalidate({ tripId }),
   });
   const updateRestaurantPayment = trpc.restaurants.update.useMutation({
     onSuccess: () => utils.restaurants.list.invalidate({ tripId }),
@@ -93,7 +89,7 @@ export default function BudgetTab({ tripId }: BudgetTabProps) {
     fetchRates();
   }, []);
 
-  const isLoading = hotelsLoading || transportsLoading || carRentalsLoading || restaurantsLoading;
+  const isLoading = hotelsLoading || transportsLoading || restaurantsLoading;
 
   if (isLoading) {
     return (
@@ -136,13 +132,6 @@ export default function BudgetTab({ tripId }: BudgetTabProps) {
     if (transport.price) {
       const isPaid = transport.paymentStatus === "paid";
       addToCurrency(transport.currency || "USD", parseFloat(transport.price), isPaid);
-    }
-  });
-
-  carRentals?.forEach(rental => {
-    if (rental.price) {
-      const isPaid = rental.paymentStatus === "paid";
-      addToCurrency(rental.currency || "USD", parseFloat(rental.price), isPaid);
     }
   });
 
@@ -343,44 +332,6 @@ export default function BudgetTab({ tripId }: BudgetTabProps) {
                           onCheckedChange={(checked) => {
                             updateTransportPayment.mutate({
                               id: transport.id,
-                              paymentStatus: checked ? "paid" : "pending",
-                            });
-                          }}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Car Rentals */}
-            {carRentals && carRentals.filter(r => r.price).length > 0 && (
-              <Card className="elegant-card">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-sm flex items-center gap-2">
-                    <Car className="w-4 h-4" />
-                    {t("carRentals")}
-                  </CardTitle>
-                  <CardDescription className="text-xs">
-                    {carRentals.filter(r => r.price).length} {language === "he" ? "השכרות" : "rentals"}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {carRentals.filter(r => r.price).map((rental) => (
-                      <div key={rental.id} className="flex items-center justify-between gap-2 p-2 rounded-lg bg-muted/30">
-                        <div className="flex-1 min-w-0">
-                          <p className="text-xs font-medium truncate">{rental.company}</p>
-                          <p className="text-xs text-muted-foreground">
-                            {formatCurrency(parseFloat(rental.price!), rental.currency || "USD")}
-                          </p>
-                        </div>
-                        <Switch
-                          checked={rental.paymentStatus === "paid"}
-                          onCheckedChange={(checked) => {
-                            updateCarRentalPayment.mutate({
-                              id: rental.id,
                               paymentStatus: checked ? "paid" : "pending",
                             });
                           }}
