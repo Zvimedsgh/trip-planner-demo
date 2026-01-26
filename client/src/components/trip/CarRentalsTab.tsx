@@ -464,12 +464,7 @@ export default function CarRentalsTab({ tripId }: CarRentalsTabProps) {
                       #{rental.confirmationNumber}
                     </span>
                   )}
-                  {rental.price && (
-                    <span className="flex items-center gap-1 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-2 py-1 rounded">
-                      <DollarSign className="w-3 h-3" />
-                      {rental.price} {rental.currency}
-                    </span>
-                  )}
+
                   {rental.website && (
                     <a 
                       href={rental.website} 

@@ -622,11 +622,7 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
                       #{hotel.confirmationNumber}
                     </span>
                   )}
-                  {hotel.price && (
-                    <span className="flex items-center gap-1 bg-white/30 backdrop-blur-sm px-2 py-1 rounded font-medium">
-                      {getCurrencySymbol(hotel.currency || "USD")} {hotel.price} {hotel.currency}
-                    </span>
-                  )}
+
                   {hotel.phone && (
                     <span className="flex items-center gap-1 bg-white/20 backdrop-blur-sm px-2 py-1 rounded">
                       <Phone className="w-3 h-3" />

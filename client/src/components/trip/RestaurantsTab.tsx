@@ -413,12 +413,7 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
                       {restaurant.numberOfDiners}
                     </span>
                   )}
-                  {restaurant.price && (
-                    <span className="flex items-center gap-1 bg-emerald-100 text-emerald-700 px-2 py-1 rounded">
-                      <DollarSign className="w-3 h-3" />
-                      {getCurrencySymbol(restaurant.currency || "USD")}{restaurant.price}
-                    </span>
-                  )}
+
                   {restaurant.website && (
                     <a 
                       href={restaurant.website} 

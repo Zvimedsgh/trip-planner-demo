@@ -615,11 +615,7 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
                       <Clock className="w-3 h-3" />
                       {format(depDate, "HH:mm")}
                     </span>
-                    {transport.price && (
-                      <span className="flex items-center gap-1 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-2 py-1 rounded">
-                        {transport.price} {transport.currency}
-                      </span>
-                    )}
+
                   </div>
                   {transport.flightNumber && (
                     <p className="text-xs text-muted-foreground mt-2">
