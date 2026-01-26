@@ -628,3 +628,16 @@
 - [x] 3. Add payment status tracking - add "Paid" / "Pending Payment" status to events with filtering option (Hotels completed, Transportation/CarRentals/Restaurants in progress)
 - [x] 4. Merge Car Rentals into Transportation - remove Car Rentals tab/category, move all car rental events to Transportation
 - [ ] 5. Remove location subtitle - remove "Bratislava,Slovakia" from trip header subtitle (redundant)
+
+## Route Start Time Feature
+- [x] Add startTime field to routes table in database schema (already existed as 'time' field)
+- [x] Update route creation/edit forms to include time picker (already implemented)
+- [x] Display start time on route cards in Route Manager (already implemented)
+- [x] Display start time in Timeline for route events (already implemented)
+- [x] Verified all functionality is working correctly
+
+## Google Maps Integration for Routes
+- [x] Add "Open in Google Maps" button to route cards in Route Manager
+- [x] Generate Google Maps URL from route name/description
+- [x] Open map in new tab when button clicked
+- [x] Add appropriate icon (ExternalLink)

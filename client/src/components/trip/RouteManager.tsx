@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { Plus, Edit, Trash2, Navigation, Clock, MapPin } from "lucide-react";
+import { Plus, Edit, Trash2, Navigation, Clock, MapPin, ExternalLink } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { format } from "date-fns";
 
@@ -363,6 +363,21 @@ export default function RouteManager({ tripId }: RouteManagerProps) {
                     {route.roadType}
                   </div>
                 )}
+              </div>
+              <div className="mt-4">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full"
+                  onClick={() => {
+                    const routeName = language === "he" && route.nameHe ? route.nameHe : route.name;
+                    const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(routeName)}`;
+                    window.open(googleMapsUrl, "_blank");
+                  }}
+                >
+                  <ExternalLink className="w-4 h-4 mr-2" />
+                  {language === "he" ? "פתח במפות Google" : "Open in Google Maps"}
+                </Button>
               </div>
             </CardContent>
           </Card>
