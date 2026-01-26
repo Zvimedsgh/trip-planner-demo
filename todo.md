@@ -734,3 +734,10 @@
 ## Bug - Long Press Not Working
 - [x] Fix long-press interaction on mobile for document button
 - [x] Long press should open document selection dialog even when document is linked
+
+## Car Rental Migration
+- [x] Add 'car_rental' type to transportation table
+- [x] Migrate existing car_rentals data to transportation table
+- [x] Remove Car Rentals tab from UI
+- [ ] Update transportation form to support car rental specific fields (company, model, pickup/return locations)
+- [ ] Remove car_rentals table from database (after successful migration)

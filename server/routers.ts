@@ -281,7 +281,7 @@ export const appRouter = router({
     create: protectedProcedure
       .input(z.object({
         tripId: z.number(),
-        type: z.enum(["flight", "train", "bus", "ferry", "other"]),
+        type: z.enum(["flight", "train", "bus", "ferry", "car_rental", "other"]),
         flightNumber: z.string().optional(),
         origin: z.string().min(1),
         destination: z.string().min(1),
@@ -300,7 +300,7 @@ export const appRouter = router({
     update: protectedProcedure
       .input(z.object({
         id: z.number(),
-        type: z.enum(["flight", "train", "bus", "ferry", "other"]).optional(),
+        type: z.enum(["flight", "train", "bus", "ferry", "car_rental", "other"]).optional(),
         flightNumber: z.string().optional(),
         origin: z.string().min(1).optional(),
         destination: z.string().min(1).optional(),

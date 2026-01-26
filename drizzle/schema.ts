@@ -97,7 +97,7 @@ export type InsertHotel = typeof hotels.$inferInsert;
 export const transportation = mysqlTable("transportation", {
   id: int("id").autoincrement().primaryKey(),
   tripId: int("tripId").notNull(),
-  type: mysqlEnum("type", ["flight", "train", "bus", "ferry", "other"]).notNull(),
+  type: mysqlEnum("type", ["flight", "train", "bus", "ferry", "car_rental", "other"]).notNull(),
   flightNumber: varchar("flightNumber", { length: 50 }),
   origin: varchar("origin", { length: 255 }).notNull(),
   destination: varchar("destination", { length: 255 }).notNull(),
@@ -109,6 +109,12 @@ export const transportation = mysqlTable("transportation", {
   currency: varchar("currency", { length: 10 }).default("USD"),
   paymentStatus: mysqlEnum("paymentStatus", ["paid", "pending"]).default("pending"),
   notes: text("notes"),
+  // Car rental specific fields
+  company: varchar("company", { length: 255 }), // Rental company name
+  carModel: varchar("carModel", { length: 255 }), // Car model
+  pickupLocation: varchar("pickupLocation", { length: 500 }), // Pickup location
+  returnLocation: varchar("returnLocation", { length: 500 }), // Return location  
+  phone: varchar("phone", { length: 50 }), // Contact phone
   linkedDocumentId: int("linkedDocumentId"), // Explicitly linked document
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),

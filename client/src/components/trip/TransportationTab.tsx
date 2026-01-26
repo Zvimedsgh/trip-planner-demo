@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
-import { ArrowRight, Bus, Calendar, Clock, DollarSign, Edit, ExternalLink, FileText, Loader2, Plane, Plus, RotateCcw, Ship, Train, Trash2 } from "lucide-react";
+import { ArrowRight, Bus, Calendar, Car, Clock, DollarSign, Edit, ExternalLink, FileText, Loader2, Plane, Plus, RotateCcw, Ship, Train, Trash2 } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { toast } from "sonner";
 import { DocumentLinkDialog } from "@/components/DocumentLinkDialog";
@@ -23,6 +23,7 @@ const transportIcons = {
   train: Train,
   bus: Bus,
   ferry: Ship,
+  car_rental: Car,
   other: ArrowRight,
 };
 
@@ -31,10 +32,11 @@ const transportColors = {
   train: "from-green-500 to-emerald-600",
   bus: "from-orange-500 to-amber-600",
   ferry: "from-cyan-500 to-blue-600",
+  car_rental: "from-purple-500 to-pink-600",
   other: "from-gray-500 to-slate-600",
 };
 
-type TransportType = "flight" | "train" | "bus" | "ferry" | "other";
+type TransportType = "flight" | "train" | "bus" | "ferry" | "car_rental" | "other";
 
 export default function TransportationTab({ tripId, tripEndDate }: TransportationTabProps) {
   const { t, language, isRTL } = useLanguage();
@@ -317,6 +319,7 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
             <SelectItem value="train">{t("train")}</SelectItem>
             <SelectItem value="bus">{t("bus")}</SelectItem>
             <SelectItem value="ferry">{t("ferry")}</SelectItem>
+            <SelectItem value="car_rental">{language === 'he' ? 'השכרת רכב' : 'Car Rental'}</SelectItem>
             <SelectItem value="other">{t("other")}</SelectItem>
           </SelectContent>
         </Select>
@@ -603,7 +606,12 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
-                          <h3 className="font-semibold text-white text-sm">{t(transport.type)}</h3>
+                          <h3 className="font-semibold text-white text-sm">
+                            {transport.type === 'car_rental' 
+                              ? (language === 'he' ? 'השכרת רכב' : 'Car Rental')
+                              : t(transport.type as any)
+                            }
+                          </h3>
                           {/* Payment status badge hidden - managed in Budget tab */}
                         </div>
                         <p className="text-xs text-white/80 flex items-center gap-1">
