@@ -593,3 +593,6 @@
 - [x] Selected day tab has border-[3px] thick border
 - [x] Scroll-to-top button moved to bottom-left (left-8)
 - [x] Day tabs simplified - only numbers with "Days" header
+
+## Debug - Cache Issues
+- [ ] Mobile changes not visible on iPhone after checkpoint - investigate server/cache
