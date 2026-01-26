@@ -646,3 +646,8 @@
 - [x] Add start time display to route cards in DailyView (already existed in route subtitle)
 - [x] Add "Open in Google Maps" button to route cards in DailyView
 - [x] Match the styling and functionality from Route Manager
+
+## Route Time Display Position Fix
+- [x] Move route start time from subtitle text to top-right corner of card
+- [x] Match the time display style of other activity cards (hotels, transportation, sites)
+- [x] Display time prominently in top-right with white text and drop-shadow

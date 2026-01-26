@@ -271,22 +271,27 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
       {todayRoute && (
         <Card className={`overflow-hidden bg-gradient-to-br ${routeGradient} text-white shadow-lg border-0`}>
           <CardHeader>
-            <div className="flex items-start gap-3">
-              <div className="w-10 h-10 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center flex-shrink-0">
-                <MapIcon className="w-5 h-5 text-white" />
-              </div>
-              <div className="flex-1">
-                <CardTitle className="text-base font-bold drop-shadow-md">
-                  {language === "he" && todayRoute.nameHe ? todayRoute.nameHe : todayRoute.name}
-                </CardTitle>
-                {(todayRoute.description || todayRoute.descriptionHe) && (
-                  <p className="text-sm text-white/90 mt-1 drop-shadow">
-                    {language === "he" && todayRoute.descriptionHe ? todayRoute.descriptionHe : todayRoute.description}
+            <div className="flex items-start justify-between">
+              <div className="flex items-start gap-3 flex-1">
+                <div className="w-10 h-10 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center flex-shrink-0">
+                  <MapIcon className="w-5 h-5 text-white" />
+                </div>
+                <div className="flex-1">
+                  <CardTitle className="text-base font-bold drop-shadow-md">
+                    {language === "he" && todayRoute.nameHe ? todayRoute.nameHe : todayRoute.name}
+                  </CardTitle>
+                  {(todayRoute.description || todayRoute.descriptionHe) && (
+                    <p className="text-sm text-white/90 mt-1 drop-shadow">
+                      {language === "he" && todayRoute.descriptionHe ? todayRoute.descriptionHe : todayRoute.description}
+                    </p>
+                  )}
+                  <p className="text-xs text-white/80 mt-2">
+                    {language === "he" ? "לחץ על טאב 'מפות מסלול' לצפייה במפה המלאה" : "Click 'Route Maps' tab to view full map"}
                   </p>
-                )}
-                <p className="text-xs text-white/80 mt-2">
-                  {language === "he" ? "לחץ על טאב 'מפות מסלול' לצפייה במפה המלאה" : "Click 'Route Maps' tab to view full map"}
-                </p>
+                </div>
+              </div>
+              <div className="text-right flex-shrink-0">
+                <div className="text-sm font-semibold drop-shadow">{todayRoute.time}</div>
               </div>
             </div>
           </CardHeader>
