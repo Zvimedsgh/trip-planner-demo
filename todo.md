@@ -698,3 +698,6 @@
 - [x] Update ChecklistTab UI with participant filter buttons (All + 5 participants)
 - [x] Add owner selection dropdown in create form
 - [x] Applied SQL migration to drop old columns and add owner column
+
+## Documents Tab Background
+- [x] Add gradient background and decorative pattern to Documents tab for visual variety
