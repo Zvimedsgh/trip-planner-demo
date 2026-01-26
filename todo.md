@@ -685,7 +685,9 @@
 - [x] Ensure data is preserved for future use
 
 ### Checklist System
-- [ ] Create shared checklist visible to all trip participants
-- [ ] Create private checklist for each user
-- [ ] Add UI to switch between shared and private views
-- [ ] Store checklist items with owner/visibility flags in database
+- [x] Create shared checklist visible to all trip participants
+- [x] Create private checklist for each user
+- [x] Add toggle between shared and private views (All/Shared/Private buttons)
+- [x] Update database schema with isPrivate and userId fields
+- [x] Update backend procedures to support private checklists
+- [x] Add "Private task" checkbox in create form in database

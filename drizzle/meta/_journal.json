@@ -176,6 +176,13 @@
       "when": 1769432312389,
       "tag": "0024_overjoyed_scalphunter",
       "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "5",
+      "when": 1769441968577,
+      "tag": "0025_moaning_swordsman",
+      "breakpoints": true
     }
   ]
 }

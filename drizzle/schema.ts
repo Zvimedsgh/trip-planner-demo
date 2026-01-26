@@ -146,6 +146,8 @@ export const checklistItems = mysqlTable("checklist_items", {
   completed: boolean("completed").default(false).notNull(),
   dueDate: bigint("dueDate", { mode: "number" }), // UTC timestamp in ms, optional
   notes: text("notes"),
+  isPrivate: boolean("isPrivate").default(false).notNull(), // true = private to user, false = shared with all
+  userId: int("userId"), // owner of private item, null for shared items
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });

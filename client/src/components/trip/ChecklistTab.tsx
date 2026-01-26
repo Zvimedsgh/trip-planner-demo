@@ -9,7 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
-import { CheckCircle2, Circle, Loader2, Plus, Trash2, Calendar as CalendarIcon, FileText, CreditCard, Package, Heart, DollarSign, MoreHorizontal } from "lucide-react";
+import { CheckCircle2, Circle, Loader2, Plus, Trash2, Calendar as CalendarIcon, FileText, CreditCard, Package, Heart, DollarSign, MoreHorizontal, Users, Lock } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 
@@ -29,6 +29,8 @@ const CATEGORIES = [
 export default function ChecklistTab({ tripId }: ChecklistTabProps) {
   const { t, language, isRTL } = useLanguage();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [viewFilter, setViewFilter] = useState<"all" | "shared" | "private">("all");
+  const [isPrivateChecked, setIsPrivateChecked] = useState(false);
   const formRef = useRef<HTMLDivElement>(null);
 
   const utils = trpc.useUtils();
@@ -66,6 +68,7 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
       category: getValue("category") as any,
       dueDate: getValue("dueDate") ? new Date(getValue("dueDate")).getTime() : undefined,
       notes: getValue("notes"),
+      isPrivate: isPrivateChecked,
     };
   };
 
@@ -96,11 +99,19 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
     return language === "he" ? cat?.labelHe : cat?.labelEn;
   };
 
-  const groupedItems = items?.reduce((acc, item) => {
+  // Filter items based on view
+  const { data: currentUser } = trpc.auth.me.useQuery();
+  const filteredItems = items?.filter(item => {
+    if (viewFilter === "shared") return !item.isPrivate;
+    if (viewFilter === "private") return item.isPrivate && item.userId === currentUser?.id;
+    return true; // "all" shows everything user can see
+  });
+
+  const groupedItems = filteredItems?.reduce((acc, item) => {
     if (!acc[item.category]) acc[item.category] = [];
     acc[item.category].push(item);
     return acc;
-  }, {} as Record<string, typeof items>);
+  }, {} as Record<string, typeof filteredItems>);
 
   const completedCount = items?.filter(i => i.completed).length || 0;
   const totalCount = items?.length || 0;
@@ -119,23 +130,25 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
       {/* Header with progress */}
       <Card>
         <CardContent className="p-6">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h3 className="text-lg font-semibold">{language === "he" ? "רשימת משימות לפני הטיול" : "Pre-Trip Checklist"}</h3>
-              <p className="text-sm text-muted-foreground">
-                {language === "he" 
-                  ? `${completedCount} מתוך ${totalCount} משימות הושלמו`
-                  : `${completedCount} of ${totalCount} tasks completed`
-                }
-              </p>
-            </div>
-            <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
-              <DialogTrigger asChild>
-                <Button>
-                  <Plus className="w-4 h-4 mr-2" />
-                  {language === "he" ? "הוסף משימה" : "Add Task"}
-                </Button>
-              </DialogTrigger>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-semibold">{language === "he" ? "רשימת משימות לפני הטיול" : "Pre-Trip Checklist"}</h3>
+                <p className="text-sm text-muted-foreground">
+                  {language === "he" 
+                    ? `${completedCount} מתוך ${totalCount} משימות הושלמו`
+                    : `${completedCount} of ${totalCount} tasks completed`
+                  }
+                </p>
+              </div>
+              <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+                <DialogTrigger asChild>
+                  <Button>
+                    <Plus className="w-4 h-4 mr-2" />
+                    {language === "he" ? "הוסף משימה" : "Add Task"}
+                  </Button>
+                </DialogTrigger>
+
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>{language === "he" ? "משימה חדשה" : "New Task"}</DialogTitle>
@@ -168,6 +181,16 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
                     <Label htmlFor="notes">{language === "he" ? "הערות" : "Notes"}</Label>
                     <Textarea id="notes" name="notes" rows={3} />
                   </div>
+                  <div className="flex items-center gap-2">
+                    <Checkbox 
+                      id="isPrivate" 
+                      checked={isPrivateChecked}
+                      onCheckedChange={(checked) => setIsPrivateChecked(checked as boolean)}
+                    />
+                    <Label htmlFor="isPrivate" className="cursor-pointer">
+                      {language === "he" ? "משימה פרטית (רק אני רואה)" : "Private task (only I can see)"}
+                    </Label>
+                  </div>
                 </div>
                 <DialogFooter>
                   <Button variant="outline" onClick={() => setIsCreateOpen(false)}>
@@ -180,6 +203,36 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
                 </DialogFooter>
               </DialogContent>
             </Dialog>
+            </div>
+            
+            {/* View filter buttons */}
+            <div className="flex gap-2">
+              <Button
+                variant={viewFilter === "all" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setViewFilter("all")}
+              >
+                {language === "he" ? "הכל" : "All"}
+              </Button>
+              <Button
+                variant={viewFilter === "shared" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setViewFilter("shared")}
+                className="gap-1"
+              >
+                <Users className="w-3 h-3" />
+                {language === "he" ? "משותפות" : "Shared"}
+              </Button>
+              <Button
+                variant={viewFilter === "private" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setViewFilter("private")}
+                className="gap-1"
+              >
+                <Lock className="w-3 h-3" />
+                {language === "he" ? "פרטיות" : "Private"}
+              </Button>
+            </div>
           </div>
           
           {/* Progress bar */}
