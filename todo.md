@@ -691,3 +691,10 @@
 - [x] Update database schema with isPrivate and userId fields
 - [x] Update backend procedures to support private checklists
 - [x] Add "Private task" checkbox in create form in database
+
+## Checklist Participant-Based Lists Redesign
+- [x] Change schema from isPrivate/userId to owner field (enum: shared, yona_tzvi, efi, ruth, michal)
+- [x] Update backend procedures to use owner instead of isPrivate
+- [x] Update ChecklistTab UI with participant filter buttons (All + 5 participants)
+- [x] Add owner selection dropdown in create form
+- [x] Applied SQL migration to drop old columns and add owner column

@@ -26,11 +26,19 @@ const CATEGORIES = [
   { value: "other", icon: MoreHorizontal, labelEn: "Other", labelHe: "אחר" },
 ];
 
+const PARTICIPANTS = [
+  { value: "shared", labelEn: "Shared", labelHe: "משותף" },
+  { value: "yona_tzvi", labelEn: "Yona & Tzvi", labelHe: "יונה וצבי" },
+  { value: "efi", labelEn: "Efi", labelHe: "אפי" },
+  { value: "ruth", labelEn: "Ruth", labelHe: "רות" },
+  { value: "michal", labelEn: "Michal", labelHe: "מיכל" },
+] as const;
+
 export default function ChecklistTab({ tripId }: ChecklistTabProps) {
   const { t, language, isRTL } = useLanguage();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
-  const [viewFilter, setViewFilter] = useState<"all" | "shared" | "private">("all");
-  const [isPrivateChecked, setIsPrivateChecked] = useState(false);
+  const [viewFilter, setViewFilter] = useState<"all" | "shared" | "yona_tzvi" | "efi" | "ruth" | "michal">("all");
+  const [selectedOwner, setSelectedOwner] = useState<"shared" | "yona_tzvi" | "efi" | "ruth" | "michal">("shared");
   const formRef = useRef<HTMLDivElement>(null);
 
   const utils = trpc.useUtils();
@@ -68,7 +76,7 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
       category: getValue("category") as any,
       dueDate: getValue("dueDate") ? new Date(getValue("dueDate")).getTime() : undefined,
       notes: getValue("notes"),
-      isPrivate: isPrivateChecked,
+      owner: selectedOwner,
     };
   };
 
@@ -100,11 +108,9 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
   };
 
   // Filter items based on view
-  const { data: currentUser } = trpc.auth.me.useQuery();
   const filteredItems = items?.filter(item => {
-    if (viewFilter === "shared") return !item.isPrivate;
-    if (viewFilter === "private") return item.isPrivate && item.userId === currentUser?.id;
-    return true; // "all" shows everything user can see
+    if (viewFilter === "all") return true;
+    return item.owner === viewFilter;
   });
 
   const groupedItems = filteredItems?.reduce((acc, item) => {
@@ -181,15 +187,20 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
                     <Label htmlFor="notes">{language === "he" ? "הערות" : "Notes"}</Label>
                     <Textarea id="notes" name="notes" rows={3} />
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Checkbox 
-                      id="isPrivate" 
-                      checked={isPrivateChecked}
-                      onCheckedChange={(checked) => setIsPrivateChecked(checked as boolean)}
-                    />
-                    <Label htmlFor="isPrivate" className="cursor-pointer">
-                      {language === "he" ? "משימה פרטית (רק אני רואה)" : "Private task (only I can see)"}
-                    </Label>
+                  <div>
+                    <Label htmlFor="owner">{language === "he" ? "שייך ל" : "Belongs to"}</Label>
+                    <Select value={selectedOwner} onValueChange={(v: any) => setSelectedOwner(v)}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {PARTICIPANTS.map(p => (
+                          <SelectItem key={p.value} value={p.value}>
+                            {language === "he" ? p.labelHe : p.labelEn}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
                 <DialogFooter>
@@ -206,7 +217,7 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
             </div>
             
             {/* View filter buttons */}
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap">
               <Button
                 variant={viewFilter === "all" ? "default" : "outline"}
                 size="sm"
@@ -214,24 +225,16 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
               >
                 {language === "he" ? "הכל" : "All"}
               </Button>
-              <Button
-                variant={viewFilter === "shared" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setViewFilter("shared")}
-                className="gap-1"
-              >
-                <Users className="w-3 h-3" />
-                {language === "he" ? "משותפות" : "Shared"}
-              </Button>
-              <Button
-                variant={viewFilter === "private" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setViewFilter("private")}
-                className="gap-1"
-              >
-                <Lock className="w-3 h-3" />
-                {language === "he" ? "פרטיות" : "Private"}
-              </Button>
+              {PARTICIPANTS.map(p => (
+                <Button
+                  key={p.value}
+                  variant={viewFilter === p.value ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setViewFilter(p.value)}
+                >
+                  {language === "he" ? p.labelHe : p.labelEn}
+                </Button>
+              ))}
             </div>
           </div>
           

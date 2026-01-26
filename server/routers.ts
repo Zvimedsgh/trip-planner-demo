@@ -540,15 +540,9 @@ export const appRouter = router({
         category: z.enum(["documents", "bookings", "packing", "health", "finance", "other"]),
         dueDate: z.number().optional(),
         notes: z.string().optional(),
-        isPrivate: z.boolean().optional(),
+        owner: z.enum(["shared", "yona_tzvi", "efi", "ruth", "michal"]).optional(),
       }))
-      .mutation(({ ctx, input }) => {
-        const data = {
-          ...input,
-          userId: input.isPrivate ? ctx.user.id : null,
-        };
-        return db.createChecklistItem(data);
-      }),
+      .mutation(({ input }) => db.createChecklistItem(input)),
     
     update: protectedProcedure
       .input(z.object({
@@ -558,15 +552,11 @@ export const appRouter = router({
         completed: z.boolean().optional(),
         dueDate: z.number().optional(),
         notes: z.string().optional(),
-        isPrivate: z.boolean().optional(),
+        owner: z.enum(["shared", "yona_tzvi", "efi", "ruth", "michal"]).optional(),
       }))
-      .mutation(({ ctx, input }) => {
-        const { id, isPrivate, ...data } = input;
-        const updateData = {
-          ...data,
-          ...(isPrivate !== undefined ? { isPrivate, userId: isPrivate ? ctx.user.id : null } : {}),
-        };
-        return db.updateChecklistItem(id, updateData);
+      .mutation(({ input }) => {
+        const { id, ...data } = input;
+        return db.updateChecklistItem(id, data);
       }),
     
     delete: protectedProcedure
