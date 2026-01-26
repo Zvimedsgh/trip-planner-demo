@@ -391,6 +391,7 @@ export const appRouter = router({
         website: z.string().optional(),
         price: z.string().optional(),
         currency: z.string().optional(),
+        paymentStatus: z.enum(["paid", "pending"]).optional(),
         notes: z.string().optional(),
       }))
       .mutation(({ input }) => db.createRestaurant(input)),
@@ -408,6 +409,7 @@ export const appRouter = router({
         website: z.string().optional(),
         price: z.string().optional(),
         currency: z.string().optional(),
+        paymentStatus: z.enum(["paid", "pending"]).optional(),
         notes: z.string().optional(),
       }))
       .mutation(({ input }) => {

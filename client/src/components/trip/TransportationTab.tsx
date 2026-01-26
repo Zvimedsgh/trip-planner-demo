@@ -54,12 +54,15 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
     website: useRef<string>(""),
     price: useRef<string>(""),
     currency: useRef<string>("USD"),
+    paymentStatus: useRef<"paid" | "pending">("pending"),
     notes: useRef<string>(""),
   };
   
   // State for controlled selects only (they need re-render)
   const [formType, setFormType] = useState<TransportType>("flight");
   const [formCurrency, setFormCurrency] = useState("USD");
+  const [formPaymentStatus, setFormPaymentStatus] = useState<"paid" | "pending">("pending");
+  const [paymentFilter, setPaymentFilter] = useState<"all" | "paid" | "pending">("all");
   
   // Force re-render trigger
   const [formKey, setFormKey] = useState(0);
@@ -82,9 +85,11 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
     formRefs.website.current = "";
     formRefs.price.current = "";
     formRefs.currency.current = "USD";
+    formRefs.paymentStatus.current = "pending";
     formRefs.notes.current = "";
     setFormType("flight");
     setFormCurrency("USD");
+    setFormPaymentStatus("pending");
     setFormKey(k => k + 1);
   };
 
@@ -178,6 +183,7 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
       website: getInputValue("website") || formRefs.website.current,
       price: getInputValue("price") || formRefs.price.current,
       currency: formCurrency,
+      paymentStatus: formPaymentStatus,
       notes: getInputValue("notes") || formRefs.notes.current,
     };
   };
@@ -252,10 +258,12 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
     formRefs.website.current = transport.website || "";
     formRefs.price.current = transport.price || "";
     formRefs.currency.current = transport.currency || "USD";
+    formRefs.paymentStatus.current = transport.paymentStatus || "pending";
     formRefs.notes.current = transport.notes || "";
     
     setFormType(transport.type);
     setFormCurrency(transport.currency || "USD");
+    setFormPaymentStatus(transport.paymentStatus || "pending");
     setFormKey(k => k + 1);
     setEditingId(transport.id);
   };
@@ -443,6 +451,21 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
             </SelectContent>
           </Select>
         </div>
+        <div className="grid gap-2">
+          <Label>{language === "he" ? "סטטוס תשלום" : "Payment Status"}</Label>
+          <Select value={formPaymentStatus} onValueChange={(v: "paid" | "pending") => {
+            setFormPaymentStatus(v);
+            formRefs.paymentStatus.current = v;
+          }}>
+            <SelectTrigger tabIndex={12}>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="paid">{language === "he" ? "שולם" : "Paid"}</SelectItem>
+              <SelectItem value="pending">{language === "he" ? "ממתין לתשלום" : "Pending Payment"}</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
       
       <div className="grid gap-2">
@@ -463,6 +486,33 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
       <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
         <h2 className="text-xl font-semibold">{t("transportation")}</h2>
         <div className="flex gap-2 flex-wrap">
+          {/* Payment Status Filter */}
+          <div className="flex gap-1 border rounded-lg p-1 bg-muted/30">
+            <Button
+              variant={paymentFilter === "all" ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setPaymentFilter("all")}
+              className="h-7 px-2 text-xs"
+            >
+              {language === "he" ? "הכל" : "All"}
+            </Button>
+            <Button
+              variant={paymentFilter === "paid" ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setPaymentFilter("paid")}
+              className="h-7 px-2 text-xs bg-green-500 hover:bg-green-600 text-white"
+            >
+              {language === "he" ? "שולם" : "Paid"}
+            </Button>
+            <Button
+              variant={paymentFilter === "pending" ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setPaymentFilter("pending")}
+              className="h-7 px-2 text-xs bg-amber-500 hover:bg-amber-600 text-white"
+            >
+              {language === "he" ? "ממתין" : "Pending"}
+            </Button>
+          </div>
           {/* Return Flight Button - only show if there's an outbound flight */}
           {hasOutboundFlight && (
             <Button 
@@ -537,7 +587,12 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
       {/* Transport List - Grid of compact cards */}
       {transports && transports.length > 0 ? (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {transports.map((transport) => {
+          {transports
+            .filter(transport => {
+              if (paymentFilter === "all") return true;
+              return transport.paymentStatus === paymentFilter;
+            })
+            .map((transport) => {
             const Icon = transportIcons[transport.type] || ArrowRight;
             const colorClass = transportColors[transport.type] || transportColors.other;
             const depDate = new Date(transport.departureDate);
@@ -553,8 +608,19 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
                       <div className="w-8 h-8 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
                         <Icon className="w-4 h-4 text-white" />
                       </div>
-                      <div>
-                        <h3 className="font-semibold text-white text-sm">{t(transport.type)}</h3>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <h3 className="font-semibold text-white text-sm">{t(transport.type)}</h3>
+                          {transport.paymentStatus && (
+                            <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium ${
+                              transport.paymentStatus === "paid" 
+                                ? "bg-green-500/90 text-white" 
+                                : "bg-amber-500/90 text-white"
+                            }`}>
+                              {transport.paymentStatus === "paid" ? (language === "he" ? "שולם" : "Paid") : (language === "he" ? "ממתין" : "Pending")}
+                            </span>
+                          )}
+                        </div>
                         <p className="text-xs text-white/80 flex items-center gap-1">
                           {transport.origin} <ArrowRight className="w-2 h-2" /> {transport.destination}
                         </p>

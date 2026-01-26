@@ -36,6 +36,8 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [selectedCurrency, setSelectedCurrency] = useState("USD");
+  const [paymentStatus, setPaymentStatus] = useState<"paid" | "pending">("pending");
+  const [paymentFilter, setPaymentFilter] = useState<"all" | "paid" | "pending">("all");
   const formRef = useRef<HTMLDivElement>(null);
 
   const utils = trpc.useUtils();
@@ -109,6 +111,7 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
       website: values.website || undefined,
       price: values.price || undefined,
       currency: selectedCurrency,
+      paymentStatus: paymentStatus,
       notes: values.notes || undefined,
     });
   };
@@ -133,6 +136,7 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
       website: values.website || undefined,
       price: values.price || undefined,
       currency: selectedCurrency,
+      paymentStatus: paymentStatus,
       notes: values.notes || undefined,
     });
   };
@@ -166,6 +170,7 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
       notes: restaurant.notes || "",
     });
     setSelectedCurrency(restaurant.currency || "USD");
+    setPaymentStatus(restaurant.paymentStatus || "pending");
     setEditingId(restaurant.id);
   };
 
@@ -287,6 +292,18 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
             </SelectContent>
           </Select>
         </div>
+        <div className="grid gap-2">
+          <Label>{language === "he" ? "סטטוס תשלום" : "Payment Status"}</Label>
+          <Select value={paymentStatus} onValueChange={(v: "paid" | "pending") => setPaymentStatus(v)}>
+            <SelectTrigger tabIndex={9}>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="paid">{language === "he" ? "שולם" : "Paid"}</SelectItem>
+              <SelectItem value="pending">{language === "he" ? "ממתין לתשלום" : "Pending Payment"}</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
       <div className="grid gap-2">
         <Label>{t("notes")}</Label>
@@ -304,7 +321,35 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-semibold">{t("restaurants")}</h2>
-        <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+        <div className="flex gap-2">
+          {/* Payment Status Filter */}
+          <div className="flex gap-1 border rounded-lg p-1 bg-muted/30">
+            <Button
+              variant={paymentFilter === "all" ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setPaymentFilter("all")}
+              className="h-7 px-2 text-xs"
+            >
+              {language === "he" ? "הכל" : "All"}
+            </Button>
+            <Button
+              variant={paymentFilter === "paid" ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setPaymentFilter("paid")}
+              className="h-7 px-2 text-xs bg-green-500 hover:bg-green-600 text-white"
+            >
+              {language === "he" ? "שולם" : "Paid"}
+            </Button>
+            <Button
+              variant={paymentFilter === "pending" ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setPaymentFilter("pending")}
+              className="h-7 px-2 text-xs bg-amber-500 hover:bg-amber-600 text-white"
+            >
+              {language === "he" ? "ממתין" : "Pending"}
+            </Button>
+          </div>
+          <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
           <DialogTrigger asChild>
             <Button className="btn-elegant">
               <Plus className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
@@ -325,11 +370,17 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+        </div>
       </div>
 
       {restaurants && restaurants.length > 0 ? (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {restaurants.map((restaurant) => (
+          {restaurants
+            .filter(restaurant => {
+              if (paymentFilter === "all") return true;
+              return restaurant.paymentStatus === paymentFilter;
+            })
+            .map((restaurant) => (
             <Card key={restaurant.id} className="elegant-card-hover">
               <CardHeader className="pb-2">
                 <div className="flex items-start justify-between">
@@ -337,8 +388,21 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
                     <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center">
                       <Utensils className="w-5 h-5 text-white" />
                     </div>
-                    <div>
-                      <CardTitle className="text-lg">{restaurant.name}</CardTitle>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <CardTitle className="text-lg">{restaurant.name}</CardTitle>
+                        {restaurant.paymentStatus && (
+                          <span className={`text-xs px-2 py-0.5 rounded-full ${
+                            restaurant.paymentStatus === "paid" 
+                              ? "bg-green-100 text-green-700" 
+                              : "bg-amber-100 text-amber-700"
+                          }`}>
+                            {restaurant.paymentStatus === "paid" 
+                              ? (language === "he" ? "שולם" : "Paid")
+                              : (language === "he" ? "ממתין" : "Pending")}
+                          </span>
+                        )}
+                      </div>
                       {restaurant.cuisineType && (
                         <CardDescription className="text-xs">{restaurant.cuisineType}</CardDescription>
                       )}
