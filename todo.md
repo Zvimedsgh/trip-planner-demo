@@ -711,3 +711,8 @@
 - [ ] Add "Add Point of Interest" button and form
 - [ ] Add "Find POIs" button for auto-discovery
 - [ ] Support POI types: attraction, restaurant, gas_station, other
+
+## Route Cards Visual Redesign
+- [x] Replace dark gradient backgrounds with light pastel colors
+- [x] Add subtle map pattern to route card backgrounds (dots pattern at 3% opacity)
+- [x] Use colored borders instead of full background fills (left border with matching icon color)

@@ -208,27 +208,42 @@ export function AllRouteMapsTab() {
         {routeMaps.map((route) => (
           <Card
             key={route.id}
-            className={`overflow-hidden bg-gradient-to-br ${route.gradient} text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer group`}
+            className="overflow-hidden bg-white/80 backdrop-blur-sm shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer group relative border-l-4"
+            style={{
+              borderLeftColor: route.gradient.includes('blue') ? '#3b82f6' : route.gradient.includes('purple') ? '#a855f7' : '#10b981',
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%239C92AC' fill-opacity='0.03'%3E%3Cpath d='M0 0h40v40H0z'/%3E%3Ccircle cx='20' cy='20' r='1'/%3E%3Ccircle cx='10' cy='10' r='1'/%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3Ccircle cx='10' cy='30' r='1'/%3E%3Ccircle cx='30' cy='10' r='1'/%3E%3C/g%3E%3C/svg%3E")`,
+              backgroundSize: '40px 40px'
+            }}
             onClick={() => setSelectedRoute(route)}
           >
             <CardContent className="p-6">
               <div className="flex items-start justify-between mb-4">
-                <div className="w-12 h-12 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Navigation className="w-6 h-6 text-white" />
+                <div 
+                  className="w-12 h-12 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform"
+                  style={{
+                    backgroundColor: route.gradient.includes('blue') ? '#dbeafe' : route.gradient.includes('purple') ? '#f3e8ff' : '#d1fae5'
+                  }}
+                >
+                  <Navigation 
+                    className="w-6 h-6"
+                    style={{
+                      color: route.gradient.includes('blue') ? '#3b82f6' : route.gradient.includes('purple') ? '#a855f7' : '#10b981'
+                    }}
+                  />
                 </div>
               </div>
 
-              <h3 className="font-bold text-lg mb-2 drop-shadow-md">
+              <h3 className="font-bold text-lg mb-2 text-gray-900">
                 {language === "he" ? route.title.he : route.title.en}
               </h3>
 
-              <p className="text-sm text-white/90 mb-4 drop-shadow">
+              <p className="text-sm text-gray-600 mb-4">
                 {language === "he" ? route.description.he : route.description.en}
               </p>
 
-              <div className="space-y-2 text-sm">
+              <div className="space-y-2 text-sm text-gray-700">
                 <div className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4" />
+                  <MapPin className="w-4 h-4 text-gray-500" />
                   <span className="font-medium">{route.origin.name}</span>
                 </div>
                 <div className="flex items-center gap-2 pl-6">
@@ -237,8 +252,8 @@ export function AllRouteMapsTab() {
                 </div>
               </div>
 
-              <div className="mt-4 pt-4 border-t border-white/20">
-                <p className="text-xs text-white/80">
+              <div className="mt-4 pt-4 border-t border-gray-200">
+                <p className="text-xs text-gray-500">
                   {route.pois.length} {language === "he" ? "נקודות עניין" : "points of interest"}
                 </p>
               </div>
