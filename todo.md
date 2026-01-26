@@ -730,3 +730,7 @@
 - [x] Add "None" option in DocumentLinkDialog to remove document links
 - [x] Allow users to change auto-matched document links
 - [x] Allow users to remove any document link (auto or manual)
+
+## Bug - Long Press Not Working
+- [x] Fix long-press interaction on mobile for document button
+- [x] Long press should open document selection dialog even when document is linked

@@ -68,7 +68,8 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
   // Document linking state
   const [documentLinkDialogOpen, setDocumentLinkDialogOpen] = useState(false);
   const [linkingTransportId, setLinkingTransportId] = useState<number | null>(null);
-  const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout | null>(null);
+  const longPressTimer = useRef<NodeJS.Timeout | null>(null);
+  const longPressTriggered = useRef(false);
   
   // Force re-render trigger
   const [formKey, setFormKey] = useState(0);
@@ -654,23 +655,29 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
                             onTouchStart={(e) => {
                               // Long press on mobile
                               e.stopPropagation();
-                              const timer = setTimeout(() => {
+                              longPressTriggered.current = false;
+                              longPressTimer.current = setTimeout(() => {
+                                longPressTriggered.current = true;
                                 handleDocumentLink(transport.id);
                               }, 500);
-                              setLongPressTimer(timer);
                             }}
                             onTouchEnd={(e) => {
                               e.stopPropagation();
-                              if (longPressTimer) {
-                                clearTimeout(longPressTimer);
-                                setLongPressTimer(null);
+                              if (longPressTimer.current) {
+                                clearTimeout(longPressTimer.current);
+                                longPressTimer.current = null;
+                              }
+                              // Prevent click if long press was triggered
+                              if (longPressTriggered.current) {
+                                e.preventDefault();
+                                longPressTriggered.current = false;
                               }
                             }}
                             onTouchMove={(e) => {
                               e.stopPropagation();
-                              if (longPressTimer) {
-                                clearTimeout(longPressTimer);
-                                setLongPressTimer(null);
+                              if (longPressTimer.current) {
+                                clearTimeout(longPressTimer.current);
+                                longPressTimer.current = null;
                               }
                             }}
                             title={hasDocument
