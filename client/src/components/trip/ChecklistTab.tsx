@@ -10,7 +10,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
 import { CheckCircle2, Circle, Loader2, Plus, Trash2, Calendar as CalendarIcon, FileText, CreditCard, Package, Heart, DollarSign, MoreHorizontal, Users, Lock } from "lucide-react";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { toast } from "sonner";
 
 interface ChecklistTabProps {
@@ -43,6 +43,7 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
 
   const utils = trpc.useUtils();
   const { data: items, isLoading } = trpc.checklist.list.useQuery({ tripId });
+  const [hasInitialized, setHasInitialized] = useState(false);
 
   const createMutation = trpc.checklist.create.useMutation({
     onSuccess: () => {
@@ -64,6 +65,43 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
       toast.success(language === "he" ? "משימה נמחקה" : "Task deleted");
     },
   });
+
+  // Initialize personal essentials for each participant if they don't have any items yet
+  useEffect(() => {
+    if (!items || hasInitialized || isLoading) return;
+    
+    const personalEssentials = [
+      { title: "Passport", titleHe: "דרכון", category: "documents" as const },
+      { title: "Visa (if required)", titleHe: "ויזה (אם נדרש)", category: "documents" as const },
+      { title: "Travel Insurance", titleHe: "ביטוח נסיעות", category: "documents" as const },
+      { title: "Flight Tickets", titleHe: "כרטיסי טיסה", category: "bookings" as const },
+      { title: "Credit Card", titleHe: "כרטיס אשראי", category: "finance" as const },
+      { title: "Cash (local currency)", titleHe: "מזומן (מטבע מקומי)", category: "finance" as const },
+      { title: "Phone Charger", titleHe: "מטען טלפון", category: "packing" as const },
+      { title: "Medications", titleHe: "תרופות", category: "health" as const },
+      { title: "Toiletries", titleHe: "מוצרי טואלט", category: "packing" as const },
+      { title: "Clothes", titleHe: "בגדים", category: "packing" as const },
+    ];
+
+    const participants: Array<"yona_tzvi" | "efi" | "ruth" | "michal"> = ["yona_tzvi", "efi", "ruth", "michal"];
+    
+    participants.forEach(participant => {
+      const hasItems = items.some(item => item.owner === participant);
+      if (!hasItems) {
+        // Add essentials for this participant
+        personalEssentials.forEach(essential => {
+          createMutation.mutate({
+            tripId,
+            title: language === "he" ? essential.titleHe : essential.title,
+            category: essential.category,
+            owner: participant,
+          });
+        });
+      }
+    });
+    
+    setHasInitialized(true);
+  }, [items, hasInitialized, isLoading, tripId, language, createMutation]);
 
   const getFormValues = () => {
     if (!formRef.current) return null;

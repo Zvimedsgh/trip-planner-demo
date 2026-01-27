@@ -807,3 +807,6 @@
 
 ## Map Links Fix
 - [x] Replace Google Maps links with OpenStreetMap to fix routing issues (Google Maps shows routes from user's current location instead of trip locations)
+
+## Personal Checklist Essentials
+- [x] Add pre-populated essential items to personal checklist (passport, visa, insurance, medications, credit cards, etc.)
