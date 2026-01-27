@@ -827,3 +827,8 @@
 - [x] Add more points of interest to Route 3 (Košice → Vienna)
 - [x] Add more points of interest to Route 4 (Štrbé Pleso day trip)
 - [x] Add more points of interest to Route 5 (Jasná day trip)
+
+## Create Trip Dialog Bug
+- [x] Fix dialog opening with pre-filled "Payment Test Trip" values
+- [x] Make all fields empty and editable by default
+- [x] Set proper default dates (today + reasonable trip duration)

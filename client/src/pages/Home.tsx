@@ -33,6 +33,23 @@ export default function Home() {
   const [newTripDestination, setNewTripDestination] = useState("");
   const [newTripStartDate, setNewTripStartDate] = useState("");
   const [newTripEndDate, setNewTripEndDate] = useState("");
+  
+  // Reset and set default dates when dialog opens (iPhone fix)
+  useEffect(() => {
+    if (createDialogOpen) {
+      // Clear all fields
+      setNewTripName("");
+      setNewTripDestination("");
+      
+      // Set default dates: today and 7 days from now
+      const today = new Date();
+      const nextWeek = new Date();
+      nextWeek.setDate(today.getDate() + 7);
+      
+      setNewTripStartDate(today.toISOString().split('T')[0]);
+      setNewTripEndDate(nextWeek.toISOString().split('T')[0]);
+    }
+  }, [createDialogOpen]);
 
   
   useEffect(() => {
@@ -304,6 +321,7 @@ export default function Home() {
                 placeholder={language === 'he' ? 'למשל: טיול משפחתי לאיטליה' : 'e.g., Family Trip to Italy'}
                 value={newTripName}
                 onChange={(e) => setNewTripName(e.target.value)}
+                autoComplete="off"
               />
             </div>
             <div className="grid gap-2">
@@ -313,6 +331,7 @@ export default function Home() {
                 placeholder={language === 'he' ? 'למשל: רומא, איטליה' : 'e.g., Rome, Italy'}
                 value={newTripDestination}
                 onChange={(e) => setNewTripDestination(e.target.value)}
+                autoComplete="off"
               />
             </div>
             <div className="grid gap-2">
