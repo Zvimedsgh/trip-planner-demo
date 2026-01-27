@@ -760,3 +760,11 @@
 - [x] Routes should not always appear first in day's schedule
 - [x] All items (hotels, transportation, sites, restaurants, routes) should be sorted by time
 - [x] Issue was in DailyView component - routes were rendered separately before activities array
+
+## Bug - Payment Status Display
+- [x] Remove price display from DailyView (Day by Day)
+- [x] Verify Hotels tab has no price display in cards
+- [x] Verify Transportation tab has no price display in cards
+- [x] Verify Restaurants tab has no price display in cards
+- [x] Verify Tourist Sites tab has no price display in cards
+- [x] Price and payment status only appear in Budget tab

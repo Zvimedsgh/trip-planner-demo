@@ -368,11 +368,6 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
                 <div className="flex items-start gap-2">
                   <div className="text-right">
                     <p className="text-sm font-semibold">{format(new Date(activity.time), "HH:mm")}</p>
-                    {activity.price && (
-                      <p className="text-sm font-semibold text-primary mt-1">
-                        {activity.price.amount} {activity.price.currency}
-                      </p>
-                    )}
                   </div>
                   <div className="flex gap-1">
                     {activity.documentUrls?.map((doc, idx) => (
