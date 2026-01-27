@@ -56,6 +56,7 @@ export default function BudgetTab({ tripId }: BudgetTabProps) {
   const { data: hotels, isLoading: hotelsLoading } = trpc.hotels.list.useQuery({ tripId });
   const { data: transports, isLoading: transportsLoading } = trpc.transportation.list.useQuery({ tripId });
   const { data: restaurants, isLoading: restaurantsLoading } = trpc.restaurants.list.useQuery({ tripId });
+  const { data: carRentals, isLoading: carRentalsLoading } = trpc.carRentals.list.useQuery({ tripId });
 
   const updateHotelPayment = trpc.hotels.update.useMutation({
     onSuccess: () => utils.hotels.list.invalidate({ tripId }),
@@ -89,7 +90,7 @@ export default function BudgetTab({ tripId }: BudgetTabProps) {
     fetchRates();
   }, []);
 
-  const isLoading = hotelsLoading || transportsLoading || restaurantsLoading;
+  const isLoading = hotelsLoading || transportsLoading || restaurantsLoading || carRentalsLoading;
 
   if (isLoading) {
     return (
@@ -139,6 +140,13 @@ export default function BudgetTab({ tripId }: BudgetTabProps) {
     if (restaurant.price) {
       const isPaid = restaurant.paymentStatus === "paid";
       addToCurrency(restaurant.currency || "USD", parseFloat(restaurant.price), isPaid);
+    }
+  });
+
+  carRentals?.forEach(rental => {
+    if (rental.price) {
+      const isPaid = rental.paymentStatus === "paid";
+      addToCurrency(rental.currency || "USD", parseFloat(rental.price), isPaid);
     }
   });
 

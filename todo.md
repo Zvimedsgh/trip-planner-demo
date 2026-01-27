@@ -810,3 +810,6 @@
 
 ## Personal Checklist Essentials
 - [x] Add pre-populated essential items to personal checklist (passport, visa, insurance, medications, credit cards, etc.)
+
+## Budget Missing Items Bug
+- [x] Fix Budget tab to include Hilton hotel and Surprice car rental in calculations
