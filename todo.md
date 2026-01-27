@@ -837,3 +837,6 @@
 - [x] Fix image buttons (cover, parking, gallery) opening dangerous URLs in new tabs
 - [x] Change to open images in dialog within the app instead
 - [x] Prevent "Dangerous site" Chrome warnings
+
+## Document Button Bug
+- [x] Fix document button (blue) in hotels not opening after image preview fix

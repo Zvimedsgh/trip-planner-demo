@@ -585,8 +585,8 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
                             e.preventDefault();
                             e.stopPropagation();
                             if (linkedDoc) {
-                              setImagePreviewUrl(linkedDoc.fileUrl);
-                              setImagePreviewOpen(true);
+                              // Open document (PDF) in new tab
+                              window.open(linkedDoc.fileUrl, '_blank');
                             } else {
                               // Open dialog to manually select document
                               handleDocumentLink(hotel.id);
