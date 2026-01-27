@@ -801,3 +801,6 @@
 - [x] Add image upload functionality to restaurants (cover images)
 - [x] Add image upload functionality to tourist sites (cover images)
 - [x] Create hotel image gallery - allow uploading multiple additional images beyond cover and parking
+
+## Car Rental Card UI Fix
+- [x] Remove vehicle type field from car rental cards in Transportation tab to improve text readability
