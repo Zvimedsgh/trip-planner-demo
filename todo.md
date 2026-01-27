@@ -795,3 +795,9 @@
 ## Trip Entry Button Styling
 - [x] Add color to trip entry button on home page
 - [x] Increase font size of trip entry button
+
+## Image Upload Enhancements
+- [x] Add right-click/long-press to replace existing parking images in hotels
+- [x] Add image upload functionality to restaurants (cover images)
+- [x] Add image upload functionality to tourist sites (cover images)
+- [x] Create hotel image gallery - allow uploading multiple additional images beyond cover and parking

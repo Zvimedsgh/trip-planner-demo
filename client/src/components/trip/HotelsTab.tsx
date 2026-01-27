@@ -8,11 +8,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
-import { Calendar, DollarSign, Edit, ExternalLink, FileText, Hotel, Loader2, MapPin, Phone, Plus, Trash2, Upload, Image as ImageIcon, Link2 } from "lucide-react";
+import { Calendar, DollarSign, Edit, ExternalLink, FileText, Hotel, Images, Loader2, MapPin, Phone, Plus, Trash2, Upload, Image as ImageIcon, Link2 } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { DocumentLinkDialog } from "@/components/DocumentLinkDialog";
 import { ImageUploadDialog } from "@/components/ImageUploadDialog";
+import { GalleryManager } from "@/components/GalleryManager";
 
 const CURRENCIES = [
   { code: "USD", symbol: "$", name: "US Dollar" },
@@ -46,6 +47,8 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
   const [documentLinkDialogOpen, setDocumentLinkDialogOpen] = useState(false);
   const [parkingImageDialogOpen, setParkingImageDialogOpen] = useState(false);
   const [uploadingParkingForHotelId, setUploadingParkingForHotelId] = useState<number | null>(null);
+  const [galleryHotelId, setGalleryHotelId] = useState<number | null>(null);
+  const [galleryDialogOpen, setGalleryDialogOpen] = useState(false);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
   const longPressTriggered = useRef(false);
 
@@ -656,6 +659,13 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
                               setParkingImageDialogOpen(true);
                             }
                           }}
+                          onContextMenu={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            // Right-click always opens upload dialog (to replace existing image)
+                            setUploadingParkingForHotelId(hotel.id);
+                            setParkingImageDialogOpen(true);
+                          }}
                           title={hasParkingImage
                             ? (language === 'he' ? 'פתיחת תמונת חניה' : 'Open parking image')
                             : (language === 'he' ? 'אין תמונת חניה' : 'No parking image')
@@ -669,6 +679,18 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
                         </Button>
                       );
                     })()}
+                    <Button 
+                      size="icon" 
+                      variant="ghost" 
+                      className="h-8 w-8 text-white bg-indigo-500/80 hover:bg-indigo-600"
+                      onClick={() => {
+                        setGalleryHotelId(hotel.id);
+                        setGalleryDialogOpen(true);
+                      }}
+                      title={language === 'he' ? 'גלריית תמונות' : 'Image Gallery'}
+                    >
+                      <Images className="w-4 h-4" />
+                    </Button>
                     <Button size="icon" variant="ghost" className="h-8 w-8 text-white bg-amber-500/80 hover:bg-amber-600" onClick={() => openEdit(hotel)}>
                       <Edit className="w-4 h-4" />
                     </Button>
@@ -778,6 +800,22 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
             });
             toast.success(language === 'he' ? 'תמונת החניה הועלתה בהצלחה' : 'Parking image uploaded successfully');
             setUploadingParkingForHotelId(null);
+          }
+        }}
+      />
+
+      {/* Gallery Manager */}
+      <GalleryManager
+        open={galleryDialogOpen}
+        onOpenChange={setGalleryDialogOpen}
+        hotelId={galleryHotelId || 0}
+        currentGallery={galleryHotelId ? JSON.parse(hotels?.find(h => h.id === galleryHotelId)?.gallery || '[]') : []}
+        onUpdate={async (gallery) => {
+          if (galleryHotelId) {
+            await updateMutation.mutateAsync({
+              id: galleryHotelId,
+              gallery: JSON.stringify(gallery),
+            });
           }
         }}
       />

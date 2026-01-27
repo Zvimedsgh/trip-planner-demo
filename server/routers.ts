@@ -169,6 +169,7 @@ export const appRouter = router({
         plannedVisitTime: z.string().optional(),
         website: z.string().optional(),
         notes: z.string().optional(),
+        coverImage: z.string().optional(),
         linkedDocumentId: z.number().nullable().optional(),
       }))
       .mutation(({ input }) => db.createTouristSite(input)),
@@ -184,6 +185,7 @@ export const appRouter = router({
         plannedVisitTime: z.string().optional(),
         website: z.string().optional(),
         notes: z.string().optional(),
+        coverImage: z.string().optional(),
         linkedDocumentId: z.number().nullable().optional(),
       }))
       .mutation(({ input }) => {
@@ -241,6 +243,7 @@ export const appRouter = router({
         paymentStatus: z.enum(["paid", "pending"]).optional(),
         notes: z.string().optional(),
         parkingImage: z.string().optional(),
+        gallery: z.string().optional(), // JSON string of image URLs array
         linkedDocumentId: z.number().nullable().optional(),
       }))
       .mutation(({ input }) => {
@@ -415,6 +418,7 @@ export const appRouter = router({
         currency: z.string().optional(),
         paymentStatus: z.enum(["paid", "pending"]).optional(),
         notes: z.string().optional(),
+        coverImage: z.string().optional(),
         linkedDocumentId: z.number().nullable().optional(),
       }))
       .mutation(({ input }) => db.createRestaurant(input)),
@@ -434,6 +438,7 @@ export const appRouter = router({
         currency: z.string().optional(),
         paymentStatus: z.enum(["paid", "pending"]).optional(),
         notes: z.string().optional(),
+        coverImage: z.string().optional(),
         linkedDocumentId: z.number().nullable().optional(),
       }))
       .mutation(({ input }) => {

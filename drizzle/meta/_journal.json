@@ -204,6 +204,20 @@
       "when": 1769451830498,
       "tag": "0028_cold_mimic",
       "breakpoints": true
+    },
+    {
+      "idx": 29,
+      "version": "5",
+      "when": 1769516084296,
+      "tag": "0029_many_shadowcat",
+      "breakpoints": true
+    },
+    {
+      "idx": 30,
+      "version": "5",
+      "when": 1769518829740,
+      "tag": "0030_fat_joystick",
+      "breakpoints": true
     }
   ]
 }

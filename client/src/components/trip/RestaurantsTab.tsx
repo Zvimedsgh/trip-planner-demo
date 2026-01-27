@@ -8,10 +8,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
-import { Calendar, DollarSign, Edit, ExternalLink, FileText, Loader2, MapPin, Phone, Plus, Trash2, Users, Utensils } from "lucide-react";
+import { Calendar, DollarSign, Edit, ExternalLink, FileText, Image, Loader2, MapPin, Phone, Plus, Trash2, Users, Utensils } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { DocumentLinkDialog } from "@/components/DocumentLinkDialog";
+import { ImageUploadDialog } from "@/components/ImageUploadDialog";
 
 const CURRENCIES = [
   { code: "USD", symbol: "$" },
@@ -42,6 +43,8 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
   const formRef = useRef<HTMLDivElement>(null);
   const [linkingRestaurantId, setLinkingRestaurantId] = useState<number | null>(null);
   const [documentLinkDialogOpen, setDocumentLinkDialogOpen] = useState(false);
+  const [uploadingImageForRestaurantId, setUploadingImageForRestaurantId] = useState<number | null>(null);
+  const [imageUploadDialogOpen, setImageUploadDialogOpen] = useState(false);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
   const longPressTriggered = useRef(false);
 
@@ -459,6 +462,33 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
                         </Button>
                       );
                     })()}
+                    <Button 
+                      size="icon" 
+                      variant="ghost" 
+                      className="h-8 w-8 text-white bg-green-500/80 hover:bg-green-600"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (restaurant.coverImage) {
+                          window.open(restaurant.coverImage, '_blank');
+                        } else {
+                          setUploadingImageForRestaurantId(restaurant.id);
+                          setImageUploadDialogOpen(true);
+                        }
+                      }}
+                      onContextMenu={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setUploadingImageForRestaurantId(restaurant.id);
+                        setImageUploadDialogOpen(true);
+                      }}
+                      title={restaurant.coverImage
+                        ? (language === 'he' ? 'פתיחת תמונה' : 'Open image')
+                        : (language === 'he' ? 'אין תמונה' : 'No image')
+                      }
+                    >
+                      <Image className="w-3 h-3" />
+                    </Button>
                     <Button size="icon" variant="ghost" className="h-7 w-7 text-white bg-amber-500/80 hover:bg-amber-600" onClick={() => openEdit(restaurant)}>
                       <Edit className="w-3 h-3" />
                     </Button>
@@ -546,6 +576,24 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
         tripId={tripId}
         currentDocumentId={linkingRestaurantId ? restaurants?.find(r => r.id === linkingRestaurantId)?.linkedDocumentId : null}
         onSelectDocument={handleDocumentSelect}
+      />
+
+      {/* Image Upload Dialog */}
+      <ImageUploadDialog
+        open={imageUploadDialogOpen}
+        onOpenChange={setImageUploadDialogOpen}
+        title={language === 'he' ? 'העלאת תמונת מסעדה' : 'Upload Restaurant Image'}
+        onUpload={async (imageUrl) => {
+          if (uploadingImageForRestaurantId) {
+            await updateMutation.mutateAsync({
+              id: uploadingImageForRestaurantId,
+              coverImage: imageUrl,
+            });
+            toast.success(language === 'he' ? 'התמונה הועלתה בהצלחה' : 'Image uploaded successfully');
+            setImageUploadDialogOpen(false);
+            setUploadingImageForRestaurantId(null);
+          }
+        }}
       />
     </div>
   );

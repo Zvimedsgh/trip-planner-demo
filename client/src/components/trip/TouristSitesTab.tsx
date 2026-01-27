@@ -7,10 +7,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
-import { Calendar, Clock, Edit, ExternalLink, FileText, Loader2, MapPin, Plus, Trash2 } from "lucide-react";
+import { Calendar, Clock, Edit, ExternalLink, FileText, Image, Loader2, MapPin, Plus, Trash2 } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { DocumentLinkDialog } from "@/components/DocumentLinkDialog";
+import { ImageUploadDialog } from "@/components/ImageUploadDialog";
 
 interface TouristSitesTabProps {
   tripId: number;
@@ -23,6 +24,8 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
   const formRef = useRef<HTMLDivElement>(null);
   const [linkingSiteId, setLinkingSiteId] = useState<number | null>(null);
   const [documentLinkDialogOpen, setDocumentLinkDialogOpen] = useState(false);
+  const [uploadingImageForSiteId, setUploadingImageForSiteId] = useState<number | null>(null);
+  const [imageUploadDialogOpen, setImageUploadDialogOpen] = useState(false);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
   const longPressTriggered = useRef(false);
 
@@ -378,6 +381,33 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
                           </Button>
                         );
                       })()}
+                      <Button 
+                        size="icon" 
+                        variant="ghost" 
+                        className="h-8 w-8 text-white bg-green-500/80 hover:bg-green-600"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          if (site.coverImage) {
+                            window.open(site.coverImage, '_blank');
+                          } else {
+                            setUploadingImageForSiteId(site.id);
+                            setImageUploadDialogOpen(true);
+                          }
+                        }}
+                        onContextMenu={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setUploadingImageForSiteId(site.id);
+                          setImageUploadDialogOpen(true);
+                        }}
+                        title={site.coverImage
+                          ? (language === 'he' ? 'פתיחת תמונה' : 'Open image')
+                          : (language === 'he' ? 'אין תמונה' : 'No image')
+                        }
+                      >
+                        <Image className="w-3 h-3" />
+                      </Button>
                       <Button size="icon" variant="ghost" className="h-7 w-7 text-white bg-amber-500/80 hover:bg-amber-600" onClick={() => openEdit(site)}>
                         <Edit className="w-3 h-3" />
                       </Button>
@@ -462,6 +492,24 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
         tripId={tripId}
         currentDocumentId={linkingSiteId ? sites?.find(s => s.id === linkingSiteId)?.linkedDocumentId : null}
         onSelectDocument={handleDocumentSelect}
+      />
+
+      {/* Image Upload Dialog */}
+      <ImageUploadDialog
+        open={imageUploadDialogOpen}
+        onOpenChange={setImageUploadDialogOpen}
+        title={language === 'he' ? 'העלאת תמונת אתר' : 'Upload Site Image'}
+        onUpload={async (imageUrl) => {
+          if (uploadingImageForSiteId) {
+            await updateMutation.mutateAsync({
+              id: uploadingImageForSiteId,
+              coverImage: imageUrl,
+            });
+            toast.success(language === 'he' ? 'התמונה הועלתה בהצלחה' : 'Image uploaded successfully');
+            setImageUploadDialogOpen(false);
+            setUploadingImageForSiteId(null);
+          }
+        }}
       />
     </div>
   );
