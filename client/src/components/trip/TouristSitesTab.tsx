@@ -10,6 +10,7 @@ import { format } from "date-fns";
 import { Calendar, Clock, Edit, ExternalLink, FileText, Loader2, MapPin, Plus, Trash2 } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
+import { DocumentLinkDialog } from "@/components/DocumentLinkDialog";
 
 interface TouristSitesTabProps {
   tripId: number;
@@ -20,6 +21,10 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const formRef = useRef<HTMLDivElement>(null);
+  const [linkingSiteId, setLinkingSiteId] = useState<number | null>(null);
+  const [documentLinkDialogOpen, setDocumentLinkDialogOpen] = useState(false);
+  const longPressTimer = useRef<NodeJS.Timeout | null>(null);
+  const longPressTriggered = useRef(false);
 
   const utils = trpc.useUtils();
   const { data: sites, isLoading } = trpc.touristSites.list.useQuery({ tripId });
@@ -47,6 +52,22 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
       toast.success(language === "he" ? "האתר נמחק בהצלחה" : "Site deleted successfully");
     },
   });
+
+  const handleDocumentLink = (siteId: number) => {
+    setLinkingSiteId(siteId);
+    setDocumentLinkDialogOpen(true);
+  };
+
+  const handleDocumentSelect = (documentId: number | null) => {
+    if (linkingSiteId) {
+      updateMutation.mutate({
+        id: linkingSiteId,
+        linkedDocumentId: documentId === null ? null : documentId,
+      });
+      setLinkingSiteId(null);
+    }
+    setDocumentLinkDialogOpen(false);
+  };
 
   const getFormValues = () => {
     if (!formRef.current) return null;
@@ -294,11 +315,11 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
                     <div className="flex gap-0.5">
                       {/* Document link button */}
                       {(() => {
-                        const relatedDocs = documents?.filter(doc => 
-                          (doc.category === 'booking' || doc.category === 'other') && 
-                          (doc.name.toLowerCase().includes(site.name.toLowerCase()) ||
-                           (site.address && doc.name.toLowerCase().includes(site.address.toLowerCase())))
-                        );
+                        // Only use explicitly linked documents
+                        const linkedDoc = site.linkedDocumentId 
+                          ? documents?.find(doc => doc.id === site.linkedDocumentId)
+                          : null;
+                        
                         return (
                           <Button 
                             size="icon" 
@@ -307,15 +328,50 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
                             onClick={(e) => {
                               e.preventDefault();
                               e.stopPropagation();
-                              if (relatedDocs && relatedDocs.length > 0) {
-                                window.open(relatedDocs[0].fileUrl, '_blank');
+                              if (linkedDoc) {
+                                window.open(linkedDoc.fileUrl, '_blank');
                               } else {
-                                toast.info(language === 'he' ? 'אין מסמך' : 'No document');
+                                // Open dialog to manually select document
+                                handleDocumentLink(site.id);
                               }
                             }}
-                            title={relatedDocs && relatedDocs.length > 0 
-                              ? (language === 'he' ? 'פתיחת מסמך' : 'Open document')
-                              : (language === 'he' ? 'אין מסמך' : 'No document')
+                            onContextMenu={(e) => {
+                              // Right-click opens dialog
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handleDocumentLink(site.id);
+                            }}
+                            onTouchStart={(e) => {
+                              // Long press on mobile
+                              e.stopPropagation();
+                              longPressTriggered.current = false;
+                              longPressTimer.current = setTimeout(() => {
+                                longPressTriggered.current = true;
+                                handleDocumentLink(site.id);
+                              }, 500);
+                            }}
+                            onTouchEnd={(e) => {
+                              e.stopPropagation();
+                              if (longPressTimer.current) {
+                                clearTimeout(longPressTimer.current);
+                                longPressTimer.current = null;
+                              }
+                              // Prevent click if long press was triggered
+                              if (longPressTriggered.current) {
+                                e.preventDefault();
+                                longPressTriggered.current = false;
+                              }
+                            }}
+                            onTouchMove={(e) => {
+                              e.stopPropagation();
+                              if (longPressTimer.current) {
+                                clearTimeout(longPressTimer.current);
+                                longPressTimer.current = null;
+                              }
+                            }}
+                            title={linkedDoc
+                              ? (language === 'he' ? 'פתיחת מסמך (לחץ ארוך לשינוי)' : 'Open document (long press to change)')
+                              : (language === 'he' ? 'קישור מסמך' : 'Link document')
                             }
                           >
                             <FileText className="w-3 h-3" />
@@ -398,6 +454,15 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Document Link Dialog */}
+      <DocumentLinkDialog
+        open={documentLinkDialogOpen}
+        onOpenChange={setDocumentLinkDialogOpen}
+        tripId={tripId}
+        currentDocumentId={linkingSiteId ? sites?.find(s => s.id === linkingSiteId)?.linkedDocumentId : null}
+        onSelectDocument={handleDocumentSelect}
+      />
     </div>
   );
 }

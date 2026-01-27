@@ -8,9 +8,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
-import { Calendar, DollarSign, Edit, ExternalLink, FileText, Hotel, Loader2, MapPin, Phone, Plus, Trash2, Upload, Image as ImageIcon } from "lucide-react";
+import { Calendar, DollarSign, Edit, ExternalLink, FileText, Hotel, Loader2, MapPin, Phone, Plus, Trash2, Upload, Image as ImageIcon, Link2 } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
+import { DocumentLinkDialog } from "@/components/DocumentLinkDialog";
 
 const CURRENCIES = [
   { code: "USD", symbol: "$", name: "US Dollar" },
@@ -40,6 +41,10 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
   const formRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploadingHotelId, setUploadingHotelId] = useState<number | null>(null);
+  const [linkingHotelId, setLinkingHotelId] = useState<number | null>(null);
+  const [documentLinkDialogOpen, setDocumentLinkDialogOpen] = useState(false);
+  const longPressTimer = useRef<NodeJS.Timeout | null>(null);
+  const longPressTriggered = useRef(false);
 
   const utils = trpc.useUtils();
   const { data: hotels, isLoading } = trpc.hotels.list.useQuery({ tripId });
@@ -84,6 +89,22 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
     },
   });
   
+  const handleDocumentLink = (hotelId: number) => {
+    setLinkingHotelId(hotelId);
+    setDocumentLinkDialogOpen(true);
+  };
+
+  const handleDocumentSelect = (documentId: number | null) => {
+    if (linkingHotelId) {
+      updateMutation.mutate({
+        id: linkingHotelId,
+        linkedDocumentId: documentId === null ? null : documentId,
+      });
+      setLinkingHotelId(null);
+    }
+    setDocumentLinkDialogOpen(false);
+  };
+
   const handleParkingImageUpload = async (hotelId: number, file: File) => {
     if (!file.type.startsWith('image/')) {
       toast.error(language === "he" ? "יש לבחור קובץ תמונה" : "Please select an image file");
@@ -540,14 +561,13 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
                     </div>
                   </div>
                   <div className="flex flex-wrap gap-1">
-                    {/* Link to related documents (excluding parking images) */}
+                    {/* Document link button */}
                     {(() => {
-                      const relatedDocs = documents?.filter(doc => 
-                        (doc.category === 'booking' || doc.category === 'other') && 
-                        !doc.name.toLowerCase().includes('parking') &&
-                        (doc.name.toLowerCase().includes(hotel.name.toLowerCase()) ||
-                         (hotel.address && doc.name.toLowerCase().includes(hotel.address.toLowerCase())))
-                      );
+                      // Only use explicitly linked documents
+                      const linkedDoc = hotel.linkedDocumentId 
+                        ? documents?.find(doc => doc.id === hotel.linkedDocumentId)
+                        : null;
+                      
                       return (
                         <Button 
                           size="icon" 
@@ -556,17 +576,50 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
                           onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
-                            if (relatedDocs && relatedDocs.length > 0) {
-                              // Open the first document
-                              window.open(relatedDocs[0].fileUrl, '_blank');
+                            if (linkedDoc) {
+                              window.open(linkedDoc.fileUrl, '_blank');
                             } else {
-                              // Show toast message
-                              toast.info(language === 'he' ? 'אין מסמך' : 'No document');
+                              // Open dialog to manually select document
+                              handleDocumentLink(hotel.id);
                             }
                           }}
-                          title={relatedDocs && relatedDocs.length > 0 
-                            ? (language === 'he' ? 'פתיחת מסמך' : 'Open document')
-                            : (language === 'he' ? 'אין מסמך' : 'No document')
+                          onContextMenu={(e) => {
+                            // Right-click opens dialog
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleDocumentLink(hotel.id);
+                          }}
+                          onTouchStart={(e) => {
+                            // Long press on mobile
+                            e.stopPropagation();
+                            longPressTriggered.current = false;
+                            longPressTimer.current = setTimeout(() => {
+                              longPressTriggered.current = true;
+                              handleDocumentLink(hotel.id);
+                            }, 500);
+                          }}
+                          onTouchEnd={(e) => {
+                            e.stopPropagation();
+                            if (longPressTimer.current) {
+                              clearTimeout(longPressTimer.current);
+                              longPressTimer.current = null;
+                            }
+                            // Prevent click if long press was triggered
+                            if (longPressTriggered.current) {
+                              e.preventDefault();
+                              longPressTriggered.current = false;
+                            }
+                          }}
+                          onTouchMove={(e) => {
+                            e.stopPropagation();
+                            if (longPressTimer.current) {
+                              clearTimeout(longPressTimer.current);
+                              longPressTimer.current = null;
+                            }
+                          }}
+                          title={linkedDoc
+                            ? (language === 'he' ? 'פתיחת מסמך (לחץ ארוך לשינוי)' : 'Open document (long press to change)')
+                            : (language === 'he' ? 'קישור מסמך' : 'Link document')
                           }
                         >
                           <FileText className="w-4 h-4" />
@@ -696,6 +749,15 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Document Link Dialog */}
+      <DocumentLinkDialog
+        open={documentLinkDialogOpen}
+        onOpenChange={setDocumentLinkDialogOpen}
+        tripId={tripId}
+        currentDocumentId={linkingHotelId ? hotels?.find(h => h.id === linkingHotelId)?.linkedDocumentId : null}
+        onSelectDocument={handleDocumentSelect}
+      />
     </div>
   );
 }

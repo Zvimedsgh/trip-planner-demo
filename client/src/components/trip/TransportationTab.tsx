@@ -186,7 +186,7 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
     if (linkingTransportId) {
       updateMutation.mutate({
         id: linkingTransportId,
-        linkedDocumentId: documentId || undefined,
+        linkedDocumentId: documentId === null ? null : documentId,
       });
       setLinkingTransportId(null);
     }
@@ -749,20 +749,10 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
                     <div className="flex gap-0.5">
                       {/* Document link button */}
                       {(() => {
-                        // Check for explicitly linked document first
+                        // Only use explicitly linked documents
                         const linkedDoc = transport.linkedDocumentId 
                           ? documents?.find(doc => doc.id === transport.linkedDocumentId)
                           : null;
-                        
-                        // Fall back to automatic matching if no explicit link
-                        const autoMatchedDocs = !linkedDoc ? documents?.filter(doc => 
-                          (doc.category === 'booking' || doc.category === 'other') && 
-                          (doc.name.toLowerCase().includes(transport.origin.toLowerCase()) ||
-                           doc.name.toLowerCase().includes(transport.destination.toLowerCase()) ||
-                           (transport.confirmationNumber && doc.name.toLowerCase().includes(transport.confirmationNumber.toLowerCase())))
-                        ) : null;
-                        
-                        const hasDocument = linkedDoc || (autoMatchedDocs && autoMatchedDocs.length > 0);
                         
                         return (
                           <Button 
@@ -774,8 +764,6 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
                               e.stopPropagation();
                               if (linkedDoc) {
                                 window.open(linkedDoc.fileUrl, '_blank');
-                              } else if (autoMatchedDocs && autoMatchedDocs.length > 0) {
-                                window.open(autoMatchedDocs[0].fileUrl, '_blank');
                               } else {
                                 // Open dialog to manually select document
                                 handleDocumentLink(transport.id);
@@ -815,7 +803,7 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
                                 longPressTimer.current = null;
                               }
                             }}
-                            title={hasDocument
+                            title={linkedDoc
                               ? (language === 'he' ? 'פתיחת מסמך (לחץ ארוך לשינוי)' : 'Open document (long press to change)')
                               : (language === 'he' ? 'קישור מסמך' : 'Link document')
                             }

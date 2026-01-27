@@ -403,7 +403,7 @@ export default function Trips() {
                       </span>
                     </div>
                     <Link href={`/trip/${trip.id}`}>
-                      <Button className="w-full group/btn bg-white text-primary hover:bg-white/90 shadow-md hover:shadow-lg transition-all">
+                      <Button className="w-full group/btn bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all text-base font-semibold">
                         {t("tripDetails")}
                         <ArrowRight className={`w-4 h-4 ${isRTL ? 'mr-2 rotate-180' : 'ml-2'} group-hover/btn:translate-x-1 transition-transform`} />
                       </Button>

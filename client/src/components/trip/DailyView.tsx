@@ -61,12 +61,11 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
         checkInDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
         checkInTimestamp = checkInDate.getTime();
       }
-      const relatedDocs = documents?.filter(doc => 
-        (doc.category === 'booking' || doc.category === 'other') && 
-        (doc.name.toLowerCase().includes(h.name.toLowerCase()) || 
-         doc.name.toLowerCase().includes('hotel') ||
-         (h.address && doc.name.toLowerCase().includes(h.address.toLowerCase())))
-      ).map(doc => ({ url: doc.fileUrl, name: doc.name })) || [];
+      // Only use explicitly linked documents
+      const linkedDoc = h.linkedDocumentId 
+        ? documents?.find(doc => doc.id === h.linkedDocumentId)
+        : null;
+      const relatedDocs = linkedDoc ? [{ url: linkedDoc.fileUrl, name: linkedDoc.name }] : [];
       activities.push({
         id: h.id,
         type: "hotel-checkin",
@@ -89,12 +88,11 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
         checkOutDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
         checkOutTimestamp = checkOutDate.getTime();
       }
-      const relatedDocs = documents?.filter(doc => 
-        (doc.category === 'booking' || doc.category === 'other') && 
-        (doc.name.toLowerCase().includes(h.name.toLowerCase()) || 
-         doc.name.toLowerCase().includes('hotel') ||
-         (h.address && doc.name.toLowerCase().includes(h.address.toLowerCase())))
-      ).map(doc => ({ url: doc.fileUrl, name: doc.name })) || [];
+      // Only use explicitly linked documents
+      const linkedDoc = h.linkedDocumentId 
+        ? documents?.find(doc => doc.id === h.linkedDocumentId)
+        : null;
+      const relatedDocs = linkedDoc ? [{ url: linkedDoc.fileUrl, name: linkedDoc.name }] : [];
       activities.push({
         id: h.id + 10000,
         type: "hotel-checkout",
@@ -113,6 +111,12 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
   // Transportation
   transportation?.forEach(t => {
     if (isOnDay(t.departureDate)) {
+      // Only use explicitly linked documents
+      const linkedDoc = t.linkedDocumentId 
+        ? documents?.find(doc => doc.id === t.linkedDocumentId)
+        : null;
+      const relatedDocs = linkedDoc ? [{ url: linkedDoc.fileUrl, name: linkedDoc.name }] : [];
+      
       activities.push({
         id: t.id,
         type: "transportation",
@@ -126,6 +130,7 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
           t.arrivalDate ? `${language === "he" ? "נחיתה:" : "Arrival:"} ${format(new Date(t.arrivalDate), "HH:mm")}` : ""
         ].filter(Boolean),
         price: t.price ? { amount: parseFloat(t.price), currency: t.currency || "EUR" } : undefined,
+        documentUrls: relatedDocs.length > 0 ? relatedDocs : undefined,
         website: t.website || undefined
       });
     }
@@ -188,6 +193,12 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
         visitDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
         visitTimestamp = visitDate.getTime();
       }
+      // Only use explicitly linked documents
+      const linkedDoc = s.linkedDocumentId 
+        ? documents?.find(doc => doc.id === s.linkedDocumentId)
+        : null;
+      const relatedDocs = linkedDoc ? [{ url: linkedDoc.fileUrl, name: linkedDoc.name }] : [];
+      
       activities.push({
         id: s.id,
         type: "site",
@@ -196,6 +207,7 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
         title: s.name,
         details: [s.address, s.description, s.openingHours].filter((d): d is string => Boolean(d)),
         price: undefined,
+        documentUrls: relatedDocs.length > 0 ? relatedDocs : undefined,
         website: s.website || undefined
       });
     }
@@ -212,6 +224,12 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
         reservationDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
         reservationTimestamp = reservationDate.getTime();
       }
+      // Only use explicitly linked documents
+      const linkedDoc = r.linkedDocumentId 
+        ? documents?.find(doc => doc.id === r.linkedDocumentId)
+        : null;
+      const relatedDocs = linkedDoc ? [{ url: linkedDoc.fileUrl, name: linkedDoc.name }] : [];
+      
       activities.push({
         id: r.id,
         type: "restaurant",
@@ -224,6 +242,7 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
           r.numberOfDiners ? `${r.numberOfDiners} ${language === "he" ? "סועדים" : "diners"}` : ""
         ].filter(Boolean) as string[],
         price: r.price ? { amount: parseFloat(r.price), currency: r.currency || "EUR" } : undefined,
+        documentUrls: relatedDocs.length > 0 ? relatedDocs : undefined,
         website: r.website || undefined
       });
     }

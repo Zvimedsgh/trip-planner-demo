@@ -768,3 +768,17 @@
 - [x] Verify Restaurants tab has no price display in cards
 - [x] Verify Tourist Sites tab has no price display in cards
 - [x] Price and payment status only appear in Budget tab
+
+## Trip Entry Page Styling
+- [ ] Color the "Trip Details" button with gradient or accent color
+- [ ] Increase font size of "Trip Details" button for better visibility
+
+## Document Linking System Bugs
+- [ ] Fix "None" option in DocumentLinkDialog - not removing document links
+- [ ] Fix document matching showing wrong documents (Vienna parking appearing everywhere)
+- [ ] Fix "No document" message appearing even when document is linked
+- [ ] Add document link button to Hotels tab cards
+- [ ] Add document link button to Sites tab cards
+- [ ] Add document link button to Restaurants tab cards
+- [ ] Add document link button to Timeline activities
+- [ ] Ensure all document link buttons support manual selection dialog
