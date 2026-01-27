@@ -813,3 +813,7 @@
 
 ## Budget Missing Items Bug
 - [x] Fix Budget tab to include Hilton hotel and Surprice car rental in calculations
+
+## Background Image Display
+- [x] Add coverImage background display to restaurant cards
+- [x] Add coverImage background display to document cards

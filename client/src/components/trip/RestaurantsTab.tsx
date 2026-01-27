@@ -379,8 +379,15 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
               return restaurant.paymentStatus === paymentFilter;
             })
             .map((restaurant) => (
-            <Card key={restaurant.id} className="elegant-card-hover">
-              <CardHeader className="pb-2">
+            <Card key={restaurant.id} className="elegant-card-hover relative overflow-hidden">
+              {/* Background Image */}
+              {restaurant.coverImage && (
+                <div 
+                  className="absolute inset-0 bg-cover bg-center opacity-20"
+                  style={{ backgroundImage: `url(${restaurant.coverImage})` }}
+                />
+              )}
+              <CardHeader className="pb-2 relative z-10">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-2">
                     <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center">

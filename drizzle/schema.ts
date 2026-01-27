@@ -234,6 +234,7 @@ export const documents = mysqlTable("documents", {
   mimeType: varchar("mimeType", { length: 100 }),
   tags: text("tags"), // JSON array of tags
   notes: text("notes"),
+  coverImage: varchar("coverImage", { length: 500 }),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });

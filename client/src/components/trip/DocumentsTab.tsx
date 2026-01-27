@@ -342,8 +342,15 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
                     {docsInCategory.map((doc) => {
                       const pastelBg = categoryPastelBg[doc.category];
                       return (
-                        <Card key={doc.id} data-document-id={doc.id} className={`elegant-card-hover ${pastelBg}`}>
-                          <CardHeader className="pb-2">
+                        <Card key={doc.id} data-document-id={doc.id} className={`elegant-card-hover relative overflow-hidden ${pastelBg}`}>
+                          {/* Background Image */}
+                          {doc.coverImage && (
+                            <div 
+                              className="absolute inset-0 bg-cover bg-center opacity-20"
+                              style={{ backgroundImage: `url(${doc.coverImage})` }}
+                            />
+                          )}
+                          <CardHeader className="pb-2 relative z-10">
                             <div className="flex items-start justify-between">
                               <div>
                                 <CardTitle className="text-sm font-medium line-clamp-1">{doc.name}</CardTitle>
