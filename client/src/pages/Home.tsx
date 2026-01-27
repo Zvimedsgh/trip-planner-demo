@@ -11,12 +11,29 @@ import {
 } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { useState, useEffect } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
 
 export default function Home() {
   const { user, loading, isAuthenticated } = useAuth();
   const { t, language, setLanguage, isRTL } = useLanguage();
   const [, navigate] = useLocation();
   const [scrollY, setScrollY] = useState(0);
+  const [createDialogOpen, setCreateDialogOpen] = useState(false);
+  const [newTripName, setNewTripName] = useState("");
+  const [newTripDestination, setNewTripDestination] = useState("");
+  const [newTripStartDate, setNewTripStartDate] = useState("");
+  const [newTripEndDate, setNewTripEndDate] = useState("");
+
   
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -27,6 +44,35 @@ export default function Home() {
   const { data: trips } = trpc.trips.list.useQuery(undefined, {
     enabled: isAuthenticated,
   });
+  
+  const createTripMutation = trpc.trips.create.useMutation({
+    onSuccess: (newTrip) => {
+      toast.success(language === 'he' ? 'הטיול נוצר בהצלחה!' : 'Trip created successfully!');
+      setCreateDialogOpen(false);
+      setNewTripName("");
+      setNewTripDestination("");
+      setNewTripStartDate("");
+      setNewTripEndDate("");
+      navigate(`/trip/${newTrip.id}`);
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+  
+  const handleCreateTrip = () => {
+    if (!newTripName || !newTripDestination || !newTripStartDate || !newTripEndDate) {
+      toast.error(language === 'he' ? 'נא למלא את כל השדות' : 'Please fill in all fields');
+      return;
+    }
+    
+    createTripMutation.mutate({
+      name: newTripName,
+      destination: newTripDestination,
+      startDate: new Date(newTripStartDate).getTime(),
+      endDate: new Date(newTripEndDate).getTime(),
+    });
+  };
   
   const slovakiaTrip = trips?.find(trip => 
     trip.destination.toLowerCase().includes('slovakia') || 
@@ -161,7 +207,7 @@ export default function Home() {
                 <Card 
                   key={index}
                   className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer h-80"
-                  onClick={() => isAuthenticated ? navigate('/trips') : window.location.href = getLoginUrl()}
+                  onClick={() => isAuthenticated ? setCreateDialogOpen(true) : window.location.href = getLoginUrl()}
                   style={{ transform: `translateY(${scrollY * (0.05 + index * 0.025)}px)` }}
                 >
                   <img 
@@ -240,6 +286,64 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Create Trip Dialog */}
+      <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>{language === 'he' ? 'צור טיול חדש' : 'Create New Trip'}</DialogTitle>
+            <DialogDescription>
+              {language === 'he' ? 'הזן את פרטי הטיול החדש שלך' : 'Enter the details of your new trip'}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-2">
+              <Label htmlFor="name">{language === 'he' ? 'שם הטיול' : 'Trip Name'}</Label>
+              <Input
+                id="name"
+                placeholder={language === 'he' ? 'למשל: טיול משפחתי לאיטליה' : 'e.g., Family Trip to Italy'}
+                value={newTripName}
+                onChange={(e) => setNewTripName(e.target.value)}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="destination">{language === 'he' ? 'יעד' : 'Destination'}</Label>
+              <Input
+                id="destination"
+                placeholder={language === 'he' ? 'למשל: רומא, איטליה' : 'e.g., Rome, Italy'}
+                value={newTripDestination}
+                onChange={(e) => setNewTripDestination(e.target.value)}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="startDate">{language === 'he' ? 'תאריך התחלה' : 'Start Date'}</Label>
+              <Input
+                id="startDate"
+                type="date"
+                value={newTripStartDate}
+                onChange={(e) => setNewTripStartDate(e.target.value)}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="endDate">{language === 'he' ? 'תאריך סיום' : 'End Date'}</Label>
+              <Input
+                id="endDate"
+                type="date"
+                value={newTripEndDate}
+                onChange={(e) => setNewTripEndDate(e.target.value)}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setCreateDialogOpen(false)}>
+              {language === 'he' ? 'ביטול' : 'Cancel'}
+            </Button>
+            <Button onClick={handleCreateTrip} disabled={createTripMutation.isPending}>
+              {createTripMutation.isPending ? (language === 'he' ? 'יוצר...' : 'Creating...') : (language === 'he' ? 'צור טיול' : 'Create Trip')}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Footer */}
       <footer className="py-8 px-4 border-t border-border">

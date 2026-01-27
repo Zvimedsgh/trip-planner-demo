@@ -817,3 +817,6 @@
 ## Background Image Display
 - [x] Add coverImage background display to restaurant cards
 - [x] Add coverImage background display to document cards
+
+## Homepage Placeholder Cards Bug
+- [x] Fix "My Next Trip" placeholder cards - make them clickable to create new trip and remove test text below them
