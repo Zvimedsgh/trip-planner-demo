@@ -49,6 +49,8 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
   const [uploadingParkingForHotelId, setUploadingParkingForHotelId] = useState<number | null>(null);
   const [galleryHotelId, setGalleryHotelId] = useState<number | null>(null);
   const [galleryDialogOpen, setGalleryDialogOpen] = useState(false);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+  const [imagePreviewOpen, setImagePreviewOpen] = useState(false);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
   const longPressTriggered = useRef(false);
 
@@ -583,7 +585,8 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
                             e.preventDefault();
                             e.stopPropagation();
                             if (linkedDoc) {
-                              window.open(linkedDoc.fileUrl, '_blank');
+                              setImagePreviewUrl(linkedDoc.fileUrl);
+                              setImagePreviewOpen(true);
                             } else {
                               // Open dialog to manually select document
                               handleDocumentLink(hotel.id);
@@ -650,9 +653,11 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
                             e.preventDefault();
                             e.stopPropagation();
                             if (hotel.parkingImage) {
-                              window.open(hotel.parkingImage, '_blank');
+                              setImagePreviewUrl(hotel.parkingImage);
+                              setImagePreviewOpen(true);
                             } else if (parkingDocs && parkingDocs.length > 0) {
-                              window.open(parkingDocs[0].fileUrl, '_blank');
+                              setImagePreviewUrl(parkingDocs[0].fileUrl);
+                              setImagePreviewOpen(true);
                             } else {
                               // Open upload dialog
                               setUploadingParkingForHotelId(hotel.id);
@@ -819,6 +824,29 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
           }
         }}
       />
+
+      {/* Image Preview Dialog */}
+      <Dialog open={imagePreviewOpen} onOpenChange={setImagePreviewOpen}>
+        <DialogContent className="max-w-4xl">
+          <DialogHeader>
+            <DialogTitle>{language === 'he' ? 'תצוגת תמונה' : 'Image Preview'}</DialogTitle>
+          </DialogHeader>
+          <div className="flex items-center justify-center">
+            {imagePreviewUrl && (
+              <img 
+                src={imagePreviewUrl} 
+                alt="Preview" 
+                className="max-w-full max-h-[70vh] object-contain rounded-lg"
+              />
+            )}
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setImagePreviewOpen(false)}>
+              {language === 'he' ? 'סגור' : 'Close'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

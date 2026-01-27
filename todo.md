@@ -832,3 +832,8 @@
 - [x] Fix dialog opening with pre-filled "Payment Test Trip" values
 - [x] Make all fields empty and editable by default
 - [x] Set proper default dates (today + reasonable trip duration)
+
+## Image Button Security Bug
+- [x] Fix image buttons (cover, parking, gallery) opening dangerous URLs in new tabs
+- [x] Change to open images in dialog within the app instead
+- [x] Prevent "Dangerous site" Chrome warnings
