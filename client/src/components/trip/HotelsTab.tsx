@@ -12,6 +12,7 @@ import { Calendar, DollarSign, Edit, ExternalLink, FileText, Hotel, Loader2, Map
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { DocumentLinkDialog } from "@/components/DocumentLinkDialog";
+import { ImageUploadDialog } from "@/components/ImageUploadDialog";
 
 const CURRENCIES = [
   { code: "USD", symbol: "$", name: "US Dollar" },
@@ -43,6 +44,8 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
   const [uploadingHotelId, setUploadingHotelId] = useState<number | null>(null);
   const [linkingHotelId, setLinkingHotelId] = useState<number | null>(null);
   const [documentLinkDialogOpen, setDocumentLinkDialogOpen] = useState(false);
+  const [parkingImageDialogOpen, setParkingImageDialogOpen] = useState(false);
+  const [uploadingParkingForHotelId, setUploadingParkingForHotelId] = useState<number | null>(null);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
   const longPressTriggered = useRef(false);
 
@@ -648,7 +651,9 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
                             } else if (parkingDocs && parkingDocs.length > 0) {
                               window.open(parkingDocs[0].fileUrl, '_blank');
                             } else {
-                              toast.info(language === 'he' ? 'אין תמונת חניה' : 'No parking image');
+                              // Open upload dialog
+                              setUploadingParkingForHotelId(hotel.id);
+                              setParkingImageDialogOpen(true);
                             }
                           }}
                           title={hasParkingImage
@@ -757,6 +762,24 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
         tripId={tripId}
         currentDocumentId={linkingHotelId ? hotels?.find(h => h.id === linkingHotelId)?.linkedDocumentId : null}
         onSelectDocument={handleDocumentSelect}
+      />
+
+      {/* Parking Image Upload Dialog */}
+      <ImageUploadDialog
+        open={parkingImageDialogOpen}
+        onOpenChange={setParkingImageDialogOpen}
+        title={language === 'he' ? 'העלאת תמונת חניה' : 'Upload Parking Image'}
+        currentImageUrl={uploadingParkingForHotelId ? hotels?.find(h => h.id === uploadingParkingForHotelId)?.parkingImage : null}
+        onUpload={async (imageUrl) => {
+          if (uploadingParkingForHotelId) {
+            await updateMutation.mutateAsync({
+              id: uploadingParkingForHotelId,
+              parkingImage: imageUrl,
+            });
+            toast.success(language === 'he' ? 'תמונת החניה הועלתה בהצלחה' : 'Parking image uploaded successfully');
+            setUploadingParkingForHotelId(null);
+          }
+        }}
       />
     </div>
   );

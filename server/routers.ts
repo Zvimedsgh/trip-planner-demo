@@ -240,6 +240,7 @@ export const appRouter = router({
         category: z.string().optional(),
         paymentStatus: z.enum(["paid", "pending"]).optional(),
         notes: z.string().optional(),
+        parkingImage: z.string().optional(),
         linkedDocumentId: z.number().nullable().optional(),
       }))
       .mutation(({ input }) => {
@@ -848,6 +849,31 @@ export const appRouter = router({
         const trip = await db.getTripById(input.tripId, ctx.user.id);
         if (!trip) throw new Error('Trip not found or access denied');
         return db.getActivityLog(input.tripId, input.limit);
+      }),
+  }),
+
+  // ============ STORAGE ============
+  storage: router({
+    uploadImage: protectedProcedure
+      .input(z.object({
+        fileName: z.string(),
+        fileData: z.string(), // Base64 data URL
+        contentType: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        // Extract base64 data from data URL
+        const base64Data = input.fileData.split(',')[1] || input.fileData;
+        const buffer = Buffer.from(base64Data, 'base64');
+        
+        // Generate unique file name
+        const extension = input.contentType.split('/')[1] || 'jpg';
+        const fileName = `${nanoid()}.${extension}`;
+        const fileKey = `images/${fileName}`;
+        
+        // Upload to S3
+        const result = await storagePut(fileKey, buffer, input.contentType);
+        
+        return { url: result.url, key: result.key };
       }),
   }),
 });

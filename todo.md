@@ -782,3 +782,9 @@
 - [ ] Add document link button to Restaurants tab cards
 - [ ] Add document link button to Timeline activities
 - [ ] Ensure all document link buttons support manual selection dialog
+
+## Parking Image Upload Feature
+- [x] Fix parking image upload button in HotelsTab - currently only shows toast message
+- [x] Create image upload dialog component with S3 upload functionality
+- [x] Integrate upload dialog into parking image button click handler
+- [x] Test image upload and verify images are saved to S3 and URL stored in database
