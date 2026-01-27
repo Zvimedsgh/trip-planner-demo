@@ -788,3 +788,10 @@
 - [x] Create image upload dialog component with S3 upload functionality
 - [x] Integrate upload dialog into parking image button click handler
 - [x] Test image upload and verify images are saved to S3 and URL stored in database
+
+## Timeline Duplicate Bug
+- [ ] Fix duplicate transportation entries in Timeline - CAR RENTAL and SURPRICE showing as separate items when they are the same transportation
+
+## Trip Entry Button Styling
+- [x] Add color to trip entry button on home page
+- [x] Increase font size of trip entry button

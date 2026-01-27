@@ -93,13 +93,16 @@ export default function TimelineTab({ tripId }: TimelineTabProps) {
     });
   });
 
-  // Transportation
+  // Transportation (exclude car_rental type as it's handled by carRentals table)
   transports.forEach((transport) => {
+    // Skip car_rental type to avoid duplicates with carRentals table
+    if (transport.type === 'car_rental') return;
+    
     events.push({
       id: `transport-${transport.id}`,
       type: "transport",
       date: transport.departureDate,
-      title: `${transport.type === 'car_rental' ? 'Car Rental' : t(transport.type as any)}: ${transport.origin} → ${transport.destination}`,
+      title: `${t(transport.type as any)}: ${transport.origin} → ${transport.destination}`,
       subtitle: transport.confirmationNumber ? `#${transport.confirmationNumber}` : undefined,
       icon: transportIcons[transport.type] || Plane,
       color: "from-blue-500 to-indigo-600",

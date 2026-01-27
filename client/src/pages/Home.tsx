@@ -147,9 +147,9 @@ export default function Home() {
                           {getDaysCount(slovakiaTrip.startDate, slovakiaTrip.endDate)} {t("days")}
                         </span>
                       </div>
-                      <Button className="w-full bg-white text-primary hover:bg-white/90">
+                      <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 text-lg font-semibold py-6">
                         {t("tripDetails")}
-                        <ArrowRight className={`w-4 h-4 ${isRTL ? 'mr-2 rotate-180' : 'ml-2'}`} />
+                        <ArrowRight className={`w-5 h-5 ${isRTL ? 'mr-2 rotate-180' : 'ml-2'}`} />
                       </Button>
                     </div>
                   </div>
