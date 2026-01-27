@@ -371,12 +371,12 @@ export default function RouteManager({ tripId }: RouteManagerProps) {
                   className="w-full"
                   onClick={() => {
                     const routeName = language === "he" && route.nameHe ? route.nameHe : route.name;
-                    const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(routeName)}`;
-                    window.open(googleMapsUrl, "_blank");
+                    const osmUrl = `https://www.openstreetmap.org/search?query=${encodeURIComponent(routeName)}`;
+                    window.open(osmUrl, "_blank");
                   }}
                 >
                   <ExternalLink className="w-4 h-4 mr-2" />
-                  {language === "he" ? "פתח במפות Google" : "Open in Google Maps"}
+                  {language === "he" ? "פתח במפה" : "Open in Map"}
                 </Button>
               </div>
             </CardContent>

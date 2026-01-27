@@ -804,3 +804,6 @@
 
 ## Car Rental Card UI Fix
 - [x] Remove vehicle type field from car rental cards in Transportation tab to improve text readability
+
+## Map Links Fix
+- [x] Replace Google Maps links with OpenStreetMap to fix routing issues (Google Maps shows routes from user's current location instead of trip locations)

@@ -357,13 +357,13 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
               <CardContent>
                 <button
                   onClick={() => {
-                    const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(activity.title)}`;
-                    window.open(googleMapsUrl, "_blank");
+                    const osmUrl = `https://www.openstreetmap.org/search?query=${encodeURIComponent(activity.title)}`;
+                    window.open(osmUrl, "_blank");
                   }}
                   className="w-full bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors"
                 >
                   <ExternalLink className="w-4 h-4" />
-                  {language === "he" ? "פתח במפות Google" : "Open in Google Maps"}
+                  {language === "he" ? "פתח במפה" : "Open in Map"}
                 </button>
               </CardContent>
             </Card>
