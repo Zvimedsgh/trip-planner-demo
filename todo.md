@@ -820,3 +820,10 @@
 
 ## Homepage Placeholder Cards Bug
 - [x] Fix "My Next Trip" placeholder cards - make them clickable to create new trip and remove test text below them
+
+## Route Maps Enhancement
+- [x] Add more points of interest to Route 1 (Bratislava → Liptovský Mikuláš)
+- [x] Add more points of interest to Route 2 (Liptovský Mikuláš → Košice)
+- [x] Add more points of interest to Route 3 (Košice → Vienna)
+- [x] Add more points of interest to Route 4 (Štrbé Pleso day trip)
+- [x] Add more points of interest to Route 5 (Jasná day trip)

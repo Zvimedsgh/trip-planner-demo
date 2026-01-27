@@ -31,16 +31,40 @@ const routeMaps: RouteMap[] = [
     origin: { lat: 48.1486, lng: 17.1077, name: "Bratislava" },
     destination: { lat: 49.0833, lng: 19.6167, name: "Liptovský Mikuláš" },
     waypoints: [
+      { location: { lat: 48.3081, lng: 18.0878 }, stopover: true }, // Nitra
       { location: { lat: 48.7164, lng: 19.1517 }, stopover: true }, // Banská Bystrica
     ],
     pois: [
+      // Cities & Towns
       { lat: 48.7164, lng: 19.1517, name: "Banská Bystrica", type: "city" },
+      { lat: 48.3081, lng: 18.0878, name: "Nitra", type: "city" },
+      
+      // Castles & Historic Sites
+      { lat: 48.8944, lng: 18.0447, name: "Trenčín Castle", type: "attraction" },
+      { lat: 49.1833, lng: 18.8667, name: "Strečno Castle", type: "attraction" },
+      { lat: 48.4589, lng: 18.8928, name: "Banská Štiavnica (UNESCO Mining Town)", type: "attraction" },
+      { lat: 48.4589, lng: 18.8928, name: "Kalvária Banská Štiavnica", type: "attraction" },
+      
+      // Villages
+      { lat: 49.0833, lng: 19.4167, name: "Vlkolínec (UNESCO Village)", type: "attraction" },
+      
+      // Museums & Culture
+      { lat: 48.0833, lng: 17.2167, name: "Danubiana Art Museum", type: "attraction" },
+      
+      // Gas Stations
       { lat: 48.3, lng: 17.5, name: "OMV Gas Station", type: "gas" },
       { lat: 48.7, lng: 19.1, name: "Shell Gas Station", type: "gas" },
       { lat: 48.9, lng: 19.5, name: "MOL Gas Station", type: "gas" },
+      { lat: 48.5, lng: 18.2, name: "Shell Gas Station Nitra", type: "gas" },
+      { lat: 48.85, lng: 18.1, name: "OMV Trenčín", type: "gas" },
+      
+      // Restaurants
       { lat: 48.4, lng: 17.8, name: "Highway Restaurant", type: "restaurant" },
       { lat: 48.7164, lng: 19.1517, name: "Banská Bystrica Restaurant", type: "restaurant" },
       { lat: 48.95, lng: 19.45, name: "Mountain View Restaurant", type: "restaurant" },
+      { lat: 48.3081, lng: 18.0878, name: "Nitra Traditional Restaurant", type: "restaurant" },
+      { lat: 48.8944, lng: 18.0447, name: "Trenčín Castle Restaurant", type: "restaurant" },
+      { lat: 48.4589, lng: 18.8928, name: "Banská Štiavnica Miner's Tavern", type: "restaurant" },
     ],
   },
   {
@@ -61,17 +85,37 @@ const routeMaps: RouteMap[] = [
       { location: { lat: 48.9972, lng: 20.5597 }, stopover: true }, // Spiš Castle area
     ],
     pois: [
+      // Slovenský Raj National Park
       { lat: 48.9333, lng: 20.3833, name: "Slovenský Raj National Park", type: "attraction" },
-      { lat: 48.9167, lng: 20.4, name: "Dobšinská Ice Cave", type: "attraction" },
-      { lat: 48.9972, lng: 20.5597, name: "Spiš Castle", type: "attraction" },
-      { lat: 49.0, lng: 20.3, name: "Slovak Paradise Gorges", type: "attraction" },
+      { lat: 48.9167, lng: 20.4, name: "Dobšinská Ice Cave (UNESCO)", type: "attraction" },
+      { lat: 48.9333, lng: 20.3833, name: "Tomášovský výhľad Viewpoint", type: "attraction" },
+      { lat: 48.9333, lng: 20.3833, name: "Suchá Belá Gorge", type: "attraction" },
+      { lat: 48.9333, lng: 20.3833, name: "Prielom Hornádu Gorge", type: "attraction" },
+      { lat: 48.9333, lng: 20.3833, name: "Via Ferrata Kyseľ", type: "attraction" },
+      { lat: 48.9333, lng: 20.3833, name: "Sovia skala (Owl Rock)", type: "attraction" },
+      { lat: 48.9333, lng: 20.3833, name: "Havrania skala (Raven Rock)", type: "attraction" },
+      { lat: 48.9333, lng: 20.3833, name: "Kvačianska Valley", type: "attraction" },
+      
+      // Historic Sites
+      { lat: 48.9972, lng: 20.5597, name: "Spiš Castle (UNESCO)", type: "attraction" },
+      { lat: 48.9972, lng: 20.5597, name: "Levoča Medieval Town (UNESCO)", type: "attraction" },
+      { lat: 49.0, lng: 21.2, name: "Prešov Historic Town", type: "attraction" },
+      { lat: 49.3, lng: 21.3, name: "Bardejov (UNESCO Town)", type: "attraction" },
+      
+      // Gas Stations
       { lat: 49.1, lng: 20.1, name: "Shell Gas Station", type: "gas" },
       { lat: 48.93, lng: 20.5, name: "OMV Gas Station", type: "gas" },
       { lat: 48.8, lng: 20.8, name: "MOL Gas Station", type: "gas" },
+      { lat: 49.0, lng: 20.3, name: "Shell Čingov", type: "gas" },
+      { lat: 48.95, lng: 20.55, name: "OMV Spiš", type: "gas" },
+      
+      // Restaurants
       { lat: 48.95, lng: 20.35, name: "Mountain Restaurant", type: "restaurant" },
       { lat: 48.93, lng: 20.4, name: "Slovenský Raj Restaurant", type: "restaurant" },
       { lat: 48.85, lng: 21.0, name: "Highway Restaurant", type: "restaurant" },
       { lat: 48.75, lng: 21.15, name: "Košice Approach Restaurant", type: "restaurant" },
+      { lat: 48.9972, lng: 20.5597, name: "Spiš Castle Restaurant", type: "restaurant" },
+      { lat: 48.9972, lng: 20.5597, name: "Levoča Traditional Restaurant", type: "restaurant" },
     ],
   },
   {
@@ -91,14 +135,33 @@ const routeMaps: RouteMap[] = [
       { location: { lat: 48.1486, lng: 17.1077 }, stopover: true }, // Bratislava
     ],
     pois: [
+      // Vienna Attractions
       { lat: 48.2082, lng: 16.3738, name: "Schönbrunn Palace", type: "attraction" },
       { lat: 48.2085, lng: 16.3794, name: "Belvedere Palace", type: "attraction" },
+      { lat: 48.2082, lng: 16.3738, name: "St. Stephen's Cathedral", type: "attraction" },
+      
+      // Bratislava (stopover)
+      { lat: 48.1486, lng: 17.1077, name: "Bratislava Castle", type: "attraction" },
+      { lat: 48.1486, lng: 17.1077, name: "Bratislava Old Town", type: "attraction" },
+      
+      // Hungarian Side (optional detour)
+      { lat: 47.9, lng: 20.4, name: "Aggtelek Cave (Hungary)", type: "attraction" },
+      { lat: 47.9, lng: 20.4, name: "Eger Castle (Hungary)", type: "attraction" },
+      
+      // Gas Stations
       { lat: 48.5, lng: 18.0, name: "Shell Gas Station", type: "gas" },
       { lat: 48.35, lng: 17.2, name: "OMV Gas Station", type: "gas" },
       { lat: 48.25, lng: 16.8, name: "MOL Gas Station", type: "gas" },
+      { lat: 48.6, lng: 20.5, name: "Shell Košice Exit", type: "gas" },
+      { lat: 48.15, lng: 17.1, name: "OMV Bratislava", type: "gas" },
+      { lat: 48.22, lng: 16.5, name: "Shell Vienna Approach", type: "gas" },
+      
+      // Restaurants
       { lat: 48.3, lng: 17.5, name: "Highway Restaurant", type: "restaurant" },
       { lat: 48.4, lng: 17.8, name: "Bratislava Approach Restaurant", type: "restaurant" },
       { lat: 48.22, lng: 16.5, name: "Vienna Exit Restaurant", type: "restaurant" },
+      { lat: 48.1486, lng: 17.1077, name: "Bratislava Old Town Restaurant", type: "restaurant" },
+      { lat: 48.2082, lng: 16.3738, name: "Vienna Traditional Restaurant", type: "restaurant" },
     ],
   },
   {
@@ -118,13 +181,25 @@ const routeMaps: RouteMap[] = [
       { location: { lat: 49.1, lng: 19.85 }, stopover: true }, // Scenic viewpoint
     ],
     pois: [
-      { lat: 49.1194, lng: 20.0611, name: "Štrbské Pleso Lake", type: "attraction" },
+      // High Tatras Attractions
+      { lat: 49.1194, lng: 20.0611, name: "Štrbé Pleso Lake", type: "attraction" },
       { lat: 49.15, lng: 20.15, name: "Lomnický štít Cable Car", type: "attraction" },
+      { lat: 49.12, lng: 20.1, name: "Tatranská Lomnica", type: "attraction" },
+      { lat: 49.14, lng: 20.13, name: "Starý Smokovec", type: "attraction" },
+      { lat: 49.13, lng: 20.08, name: "Hrebienok Funicular", type: "attraction" },
+      { lat: 49.18, lng: 20.08, name: "Gerlachovský štít (View)", type: "attraction" },
+      
+      // Gas Stations
       { lat: 49.1, lng: 19.9, name: "Shell Gas Station", type: "gas" },
       { lat: 49.08, lng: 19.85, name: "OMV Gas Station", type: "gas" },
-      { lat: 49.12, lng: 20.05, name: "Štrbské Pleso Restaurant", type: "restaurant" },
+      { lat: 49.12, lng: 20.0, name: "MOL Tatras", type: "gas" },
+      
+      // Restaurants
+      { lat: 49.12, lng: 20.05, name: "Štrbé Pleso Restaurant", type: "restaurant" },
       { lat: 49.1194, lng: 20.0611, name: "Lakeside Café", type: "restaurant" },
       { lat: 49.1, lng: 19.95, name: "Mountain View Restaurant", type: "restaurant" },
+      { lat: 49.15, lng: 20.15, name: "Tatranská Lomnica Restaurant", type: "restaurant" },
+      { lat: 49.14, lng: 20.13, name: "Starý Smokovec Traditional", type: "restaurant" },
     ],
   },
   {
@@ -144,14 +219,26 @@ const routeMaps: RouteMap[] = [
       { location: { lat: 49.05, lng: 19.6 }, stopover: true }, // Demänovská Cave
     ],
     pois: [
+      // Jasná & Caves
       { lat: 49.0333, lng: 19.5833, name: "Jasná Ski Resort", type: "attraction" },
       { lat: 49.0444, lng: 19.5833, name: "Demänovská Ice Cave", type: "attraction" },
       { lat: 49.0444, lng: 19.5833, name: "Demänovská Cave of Liberty", type: "attraction" },
+      { lat: 49.0444, lng: 19.5833, name: "Demänovská Cave System", type: "attraction" },
+      { lat: 49.0333, lng: 19.5833, name: "Chopok Peak Cable Car", type: "attraction" },
+      { lat: 49.0333, lng: 19.5833, name: "Low Tatras Hiking Trails", type: "attraction" },
+      { lat: 49.05, lng: 19.6, name: "Liptovská Mara Lake", type: "attraction" },
+      
+      // Gas Stations
       { lat: 49.06, lng: 19.6, name: "Shell Gas Station", type: "gas" },
       { lat: 49.075, lng: 19.61, name: "OMV Gas Station", type: "gas" },
+      { lat: 49.05, lng: 19.59, name: "MOL Demänovská", type: "gas" },
+      
+      // Restaurants
       { lat: 49.04, lng: 19.59, name: "Jasná Restaurant", type: "restaurant" },
       { lat: 49.0333, lng: 19.5833, name: "Ski Resort Restaurant", type: "restaurant" },
       { lat: 49.05, lng: 19.6, name: "Cave Entrance Café", type: "restaurant" },
+      { lat: 49.0333, lng: 19.5833, name: "Chopok Summit Restaurant", type: "restaurant" },
+      { lat: 49.0444, lng: 19.5833, name: "Traditional Slovak Tavern", type: "restaurant" },
     ],
   },
   {
