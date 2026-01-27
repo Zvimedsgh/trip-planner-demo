@@ -840,3 +840,6 @@
 
 ## Document Button Bug
 - [x] Fix document button (blue) in hotels not opening after image preview fix
+
+## Route Maps Dialog Bug
+- [x] Fix Route Maps tab - clicking on route card shows strange map instead of proper Google Maps with route and waypoints
