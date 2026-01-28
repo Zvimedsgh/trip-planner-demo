@@ -939,3 +939,6 @@
 - [x] Apply rainbow colors to each letter (red, orange, yellow, green, blue, purple, pink)
 - [x] Increase date font size
 - [x] Center align all header content
+
+## Fix Rainbow Title on Home Page
+- [x] Apply rainbow-colored title styling to trip card on home page (matching trip details page)

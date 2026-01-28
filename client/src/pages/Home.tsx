@@ -197,13 +197,37 @@ export default function Home() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
                   <div className="relative h-full flex flex-col justify-between p-6">
-                    <div className="text-white">
-                      <h3 className="text-2xl font-bold mb-2">{slovakiaTrip.name}</h3>
+                    <div className="text-white text-center">
+                      {/* Rainbow colored title */}
+                      <h3 className="text-3xl font-bold mb-2 leading-tight">
+                        {/* Line 1: The Gorens' */}
+                        <div className="mb-1">
+                          {"The Gorens'".split('').map((char, i) => {
+                            const colors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#a855f7', '#ec4899'];
+                            return (
+                              <span key={i} style={{ color: colors[i % colors.length] }}>
+                                {char}
+                              </span>
+                            );
+                          })}
+                        </div>
+                        {/* Line 2: Roots Trip to Slovakia */}
+                        <div>
+                          {"Roots Trip to Slovakia".split('').map((char, i) => {
+                            const colors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#a855f7', '#ec4899'];
+                            return (
+                              <span key={i} style={{ color: colors[i % colors.length] }}>
+                                {char}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      </h3>
                     </div>
                     <div className="space-y-3">
-                      <div className="flex items-center gap-2 text-sm text-white/90">
-                        <Calendar className="w-4 h-4" />
-                        <span>
+                      <div className="flex items-center gap-2 text-base text-white/90 justify-center">
+                        <Calendar className="w-5 h-5" />
+                        <span className="font-semibold">
                           {format(new Date(slovakiaTrip.startDate), "MMM d")} - {format(new Date(slovakiaTrip.endDate), "MMM d, yyyy")}
                         </span>
                         <span className="text-xs bg-white/20 text-white px-2 py-0.5 rounded-full">
