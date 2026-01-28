@@ -897,3 +897,8 @@
 - [x] Show payment summary: Total / Paid / Remaining
 - [x] Update budget calculations to use actual payments instead of full prices
 - [x] Test payment tracking for all activity types
+
+## Checklist Form Validation Bug
+- [x] Fix "Please fill in all required fields" error in New Task dialog
+- [x] Ensure form can be submitted with valid data
+- [x] Test task creation flow

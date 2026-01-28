@@ -39,6 +39,7 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [viewFilter, setViewFilter] = useState<"all" | "shared" | "yona_tzvi" | "efi" | "ruth" | "michal">("all");
   const [selectedOwner, setSelectedOwner] = useState<"shared" | "yona_tzvi" | "efi" | "ruth" | "michal">("shared");
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
   const formRef = useRef<HTMLDivElement>(null);
 
   const utils = trpc.useUtils();
@@ -111,7 +112,7 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
     };
     return {
       title: getValue("title"),
-      category: getValue("category") as any,
+      category: selectedCategory as any,
       dueDate: getValue("dueDate") ? new Date(getValue("dueDate")).getTime() : undefined,
       notes: getValue("notes"),
       owner: selectedOwner,
@@ -129,6 +130,10 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
       tripId,
       ...values,
     });
+    
+    // Reset form
+    setSelectedCategory("");
+    setSelectedOwner("shared");
   };
 
   const toggleComplete = (id: number, completed: boolean) => {
@@ -204,7 +209,7 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
                   </div>
                   <div>
                     <Label htmlFor="category">{language === "he" ? "קטגוריה" : "Category"} *</Label>
-                    <Select name="category">
+                    <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                       <SelectTrigger>
                         <SelectValue placeholder={language === "he" ? "בחר קטגוריה" : "Select category"} />
                       </SelectTrigger>
