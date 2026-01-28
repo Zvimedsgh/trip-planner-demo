@@ -926,3 +926,9 @@
 - [x] Update PaymentsTab to exclude car_rentals from query
 - [x] Verify no duplicates appear in Payments tab
 - [x] Test that car rentals still appear correctly in Transportation tab
+
+## Fix Car Rental Card Display Issues
+- [x] Change card title to show company name instead of notes
+- [x] Hide notes from card display (show only in edit dialog)
+- [x] Fix Payments tab to show "Surprice - Car Rental" instead of notes text
+- [x] Test that card is readable and clean

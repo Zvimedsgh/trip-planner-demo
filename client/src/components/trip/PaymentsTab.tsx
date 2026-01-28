@@ -36,12 +36,14 @@ export default function PaymentsTab({ tripId }: PaymentsTabProps) {
       .map(t => ({
         id: t.id,
         type: "transportation" as const,
-        name: `${t.origin} → ${t.destination}`,
+        name: t.type === 'car_rental' && t.company 
+          ? `${t.company} - Car Rental`
+          : `${t.origin} → ${t.destination}`,
         price: parseFloat(t.price!),
         currency: t.currency || "USD",
-        icon: Plane,
-        color: "text-green-600",
-        bgColor: "bg-green-50 dark:bg-green-900/20",
+        icon: t.type === 'car_rental' ? Car : Plane,
+        color: t.type === 'car_rental' ? "text-purple-600" : "text-green-600",
+        bgColor: t.type === 'car_rental' ? "bg-purple-50 dark:bg-purple-900/20" : "bg-green-50 dark:bg-green-900/20",
       })),
 
     ...restaurants
