@@ -953,3 +953,8 @@
 - [x] Reorganize text layout: move overflow text (beyond first 2 lines) to center between activity name and time
 - [x] Remove Card default py-6 padding by adding py-0 gap-0 override
 - [x] Remove CardHeader px-6 horizontal padding (changed to px-3)
+
+## Activity Tab Buttons Text Overflow Fix
+- [x] Reduce horizontal padding on tab buttons to move text to edges (px-3 → px-1.5)
+- [x] Reduce font size (text-xs → text-[10px])
+- [x] Ensure all tab button text stays within boundaries (added max-w-[68px] and overflow-hidden)
