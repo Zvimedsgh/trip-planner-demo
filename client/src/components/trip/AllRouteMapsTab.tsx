@@ -363,6 +363,10 @@ export function AllRouteMapsTab() {
               {selectedRoute && (
                 <MapView
                   onMapReady={(map: any) => {
+                    if (!window.google || !window.google.maps) {
+                      console.error('Google Maps not loaded');
+                      return;
+                    }
                     const google = window.google;
                     const directionsService = new google.maps.DirectionsService();
                     const directionsRenderer = new google.maps.DirectionsRenderer({

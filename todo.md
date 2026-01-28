@@ -843,3 +843,7 @@
 
 ## Route Maps Dialog Bug
 - [x] Fix Route Maps tab - clicking on route card shows strange map instead of proper Google Maps with route and waypoints
+- [x] Debug why Google Maps still not loading after adding routes library - investigate console errors and API loading
+
+## Route Manager Map Bug
+- [x] Fix "Open Map" button in Route Manager tab showing bad map instead of proper Google Maps

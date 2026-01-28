@@ -371,8 +371,10 @@ export default function RouteManager({ tripId }: RouteManagerProps) {
                   className="w-full"
                   onClick={() => {
                     const routeName = language === "he" && route.nameHe ? route.nameHe : route.name;
-                    const osmUrl = `https://www.openstreetmap.org/search?query=${encodeURIComponent(routeName)}`;
-                    window.open(osmUrl, "_blank");
+                    // Remove "Route X: " prefix for better Google Maps search
+                    const cleanRouteName = routeName.replace(/^Route \d+:\s*/i, '');
+                    const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cleanRouteName)}`;
+                    window.open(googleMapsUrl, "_blank");
                   }}
                 >
                   <ExternalLink className="w-4 h-4 mr-2" />
