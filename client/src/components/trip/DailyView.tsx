@@ -367,11 +367,12 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
                       // Use Google Maps Directions API
                       const origin = encodeURIComponent(parts[0]);
                       const destination = encodeURIComponent(parts[1]);
-                      const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}`;
+                      // Add region=SK to force Slovakia context and show local POIs
+                      const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&region=SK`;
                       window.open(googleMapsUrl, "_blank");
                     } else {
                       // Fallback to search if format doesn't match
-                      const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(activity.title)}`;
+                      const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(activity.title)}&region=SK`;
                       window.open(googleMapsUrl, "_blank");
                     }
                   }}

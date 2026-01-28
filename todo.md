@@ -874,3 +874,8 @@
 ## Day 2 Route Link Nominatim Issue
 - [x] Fix route link in Day 2 view that still shows Nominatim/OpenStreetMap
 - [x] Ensure all route links use Google Maps Directions consistently
+
+## Google Maps Showing Wrong Location POIs
+- [x] Fix Google Maps Directions showing gas stations from Israel instead of Slovakia
+- [x] Force location context to be based on route origin/destination (Slovakia)
+- [x] Test that POIs (gas stations, restaurants) appear from correct country
