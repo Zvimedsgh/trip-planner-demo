@@ -951,3 +951,4 @@
 ## Daily View Activity Cards Improvements
 - [x] Reduce card height for all activities in daily view
 - [x] Reorganize text layout: move overflow text (beyond first 2 lines) to center between activity name and time
+- [x] Clear Vite cache and force rebuild
