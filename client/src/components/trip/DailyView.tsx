@@ -389,18 +389,21 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
         // Regular activity rendering
         return (
           <Card key={`${activity.type}-${activity.id}`} className={bgColor}>
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-3">
-                  <Icon className="w-5 h-5 text-primary" />
-                  <div>
-                    <CardTitle className="text-base">{activity.title}</CardTitle>
+            <CardHeader className="py-3">
+              <div className="flex items-start justify-between gap-3">
+                {/* Left: Icon + Title */}
+                <div className="flex items-start gap-2 flex-1 min-w-0">
+                  <Icon className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                  <div className="flex-1 min-w-0">
+                    <CardTitle className="text-sm font-semibold leading-tight">{activity.title}</CardTitle>
                     {activity.subtitle && (
-                      <p className="text-sm text-muted-foreground mt-1">{activity.subtitle}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5 leading-tight">{activity.subtitle}</p>
                     )}
                   </div>
                 </div>
-                <div className="flex items-start gap-2">
+                
+                {/* Right: Time + Action Buttons */}
+                <div className="flex items-start gap-2 flex-shrink-0">
                   <div className="text-right">
                     <p className="text-sm font-semibold">{format(new Date(activity.time), "HH:mm")}</p>
                   </div>
@@ -409,34 +412,36 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
                       <button
                         key={idx}
                         onClick={() => window.open(doc.url, '_blank')}
-                        className="p-1.5 rounded bg-blue-500/80 hover:bg-blue-600 text-white transition-colors"
+                        className="p-1 rounded bg-blue-500/80 hover:bg-blue-600 text-white transition-colors"
                         title={doc.name}
                       >
-                        <FileText className="w-3.5 h-3.5" />
+                        <FileText className="w-3 h-3" />
                       </button>
                     ))}
                     {activity.website && (
                       <button
                         onClick={() => window.open(activity.website, '_blank')}
-                        className="p-1.5 rounded bg-green-500/80 hover:bg-green-600 text-white transition-colors"
+                        className="p-1 rounded bg-green-500/80 hover:bg-green-600 text-white transition-colors"
                         title={language === "he" ? "פתיחת אתר" : "Open website"}
                       >
-                        <ExternalLink className="w-3.5 h-3.5" />
+                        <ExternalLink className="w-3 h-3" />
                       </button>
                     )}
                   </div>
                 </div>
               </div>
-            </CardHeader>
-            {activity.details.length > 0 && (
-              <CardContent className="pt-0">
-                <div className="space-y-1 text-sm text-muted-foreground">
-                  {activity.details.map((detail, idx) => (
-                    <p key={idx}>{detail}</p>
-                  ))}
+              
+              {/* Center: Details (moved from CardContent) */}
+              {activity.details.length > 0 && (
+                <div className="mt-2 pt-2 border-t border-border/50">
+                  <div className="space-y-0.5 text-xs text-muted-foreground">
+                    {activity.details.map((detail, idx) => (
+                      <p key={idx} className="leading-tight">{detail}</p>
+                    ))}
+                  </div>
                 </div>
-              </CardContent>
-            )}
+              )}
+            </CardHeader>
           </Card>
         );
       })}

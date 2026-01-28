@@ -947,3 +947,7 @@
 - [x] Strengthen tab colors (make them more vibrant and visible)
 - [x] Restructure tab buttons to 2 rows: icon on top, text below
 - [x] Prevent text overflow in tab buttons (keep text within boundaries)
+
+## Daily View Activity Cards Improvements
+- [x] Reduce card height for all activities in daily view
+- [x] Reorganize text layout: move overflow text (beyond first 2 lines) to center between activity name and time
