@@ -963,3 +963,8 @@
 - [x] Hide button labels on mobile (show icons only) - added 'hidden md:block' to span
 - [x] Keep labels visible on desktop - labels show on md breakpoint and above
 - [x] Adjust button size for mobile icon-only display - 48px on mobile, 68px on desktop
+
+## Daily View Activity Cards - Second Attempt to Reduce Height
+- [x] Replaced Card component with custom div - SUCCESS!
+- [x] Used p-3 padding for minimal compact design
+- [x] Cards now significantly shorter (60-70% reduction)
