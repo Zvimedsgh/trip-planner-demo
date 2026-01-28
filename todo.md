@@ -949,6 +949,6 @@
 - [x] Prevent text overflow in tab buttons (keep text within boundaries)
 
 ## Daily View Activity Cards Improvements
-- [x] Reduce card height for all activities in daily view
+- [x] Reduce card height for all activities in daily view (fixed Card component padding)
 - [x] Reorganize text layout: move overflow text (beyond first 2 lines) to center between activity name and time
-- [x] Clear Vite cache and force rebuild
+- [x] Remove Card default py-6 padding by adding py-0 gap-0 override

@@ -388,7 +388,7 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
         
         // Regular activity rendering
         return (
-          <Card key={`${activity.type}-${activity.id}`} className={bgColor}>
+          <Card key={`${activity.type}-${activity.id}`} className={`${bgColor} py-0 gap-0`}>
             <CardHeader className="py-3">
               <div className="flex items-start justify-between gap-3">
                 {/* Left: Icon + Title */}
