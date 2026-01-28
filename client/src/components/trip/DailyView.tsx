@@ -388,7 +388,8 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
         
         // Regular activity rendering
         return (
-          <div key={`${activity.type}-${activity.id}`} className={`${bgColor} rounded-lg border border-border bg-card text-card-foreground shadow-sm p-3`}>
+          <Card key={`${activity.type}-${activity.id}`} className={`${bgColor}`} style={{ padding: '12px', gap: '0' }}>
+            <CardHeader className="p-0" style={{ padding: '0', gap: '0' }}>
               <div className="flex items-start justify-between gap-3">
                 {/* Left: Icon + Title */}
                 <div className="flex items-start gap-2 flex-1 min-w-0">
@@ -440,7 +441,8 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
                   </div>
                 </div>
               )}
-          </div>
+            </CardHeader>
+          </Card>
         );
       })}
     </div>
