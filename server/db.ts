@@ -254,6 +254,103 @@ export async function getTripByShareToken(shareToken: string): Promise<Trip | un
   return result[0];
 }
 
+// ============ TRIP CLONING ============
+
+export async function cloneTrip(tripId: number, newOwnerId: number): Promise<Trip> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  // Get the original trip
+  const originalTrip = await db.select().from(trips).where(eq(trips.id, tripId)).limit(1);
+  if (!originalTrip[0]) throw new Error("Trip not found");
+  
+  // Create new trip with sanitized data
+  const newTripData: InsertTrip = {
+    userId: newOwnerId,
+    name: originalTrip[0].name + " (Copy)",
+    destination: originalTrip[0].destination,
+    startDate: originalTrip[0].startDate,
+    endDate: originalTrip[0].endDate,
+    description: originalTrip[0].description,
+    coverImage: originalTrip[0].coverImage,
+    isTemplate: false,
+  };
+  
+  const result = await db.insert(trips).values(newTripData);
+  const newTripId = Number(result[0].insertId);
+  
+  // Clone all activities (without identifying information)
+  const originalSites = await db.select().from(touristSites).where(eq(touristSites.tripId, tripId));
+  for (const site of originalSites) {
+    await db.insert(touristSites).values({
+      tripId: newTripId,
+      name: site.name,
+      address: "", // Remove identifying info
+      description: site.description,
+      plannedVisitDate: site.plannedVisitDate,
+      notes: "", // Remove identifying info
+    });
+  }
+  
+  const originalHotels = await db.select().from(hotels).where(eq(hotels.tripId, tripId));
+  for (const hotel of originalHotels) {
+    await db.insert(hotels).values({
+      tripId: newTripId,
+      name: hotel.name,
+      address: "", // Remove identifying info
+      checkInDate: hotel.checkInDate,
+      checkOutDate: hotel.checkOutDate,
+      confirmationNumber: "", // Remove identifying info
+      price: hotel.price,
+      currency: hotel.currency,
+      notes: "", // Remove identifying info
+    });
+  }
+  
+  const originalTransportation = await db.select().from(transportation).where(eq(transportation.tripId, tripId));
+  for (const transport of originalTransportation) {
+    await db.insert(transportation).values({
+      tripId: newTripId,
+      type: transport.type,
+      origin: transport.origin,
+      destination: transport.destination,
+      departureDate: transport.departureDate,
+      arrivalDate: transport.arrivalDate,
+      confirmationNumber: "", // Remove identifying info
+      price: transport.price,
+      currency: transport.currency,
+      notes: "", // Remove identifying info
+    });
+  }
+  
+  const originalRestaurants = await db.select().from(restaurants).where(eq(restaurants.tripId, tripId));
+  for (const restaurant of originalRestaurants) {
+    await db.insert(restaurants).values({
+      tripId: newTripId,
+      name: restaurant.name,
+      address: "", // Remove identifying info
+      cuisineType: restaurant.cuisineType,
+      reservationDate: restaurant.reservationDate,
+      numberOfDiners: restaurant.numberOfDiners,
+      notes: "", // Remove identifying info
+    });
+  }
+  
+  // Get the newly created trip
+  const newTrip = await db.select().from(trips).where(eq(trips.id, newTripId)).limit(1);
+  return newTrip[0];
+}
+
+export async function setTripTemplate(tripId: number, userId: number, isTemplate: boolean): Promise<Trip | undefined> {
+  const db = await getDb();
+  if (!db) return undefined;
+  
+  await db.update(trips).set({ isTemplate }).where(and(eq(trips.id, tripId), eq(trips.userId, userId)));
+  
+  const result = await db.select().from(trips).where(eq(trips.id, tripId)).limit(1);
+  return result[0];
+}
+
 // ============ TOURIST SITES QUERIES ============
 
 export async function createTouristSite(data: InsertTouristSite): Promise<TouristSite> {

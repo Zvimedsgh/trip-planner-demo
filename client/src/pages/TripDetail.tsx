@@ -120,6 +120,26 @@ export default function TripDetail() {
     },
   });
   
+  const cloneTrip = trpc.trips.clone.useMutation({
+    onSuccess: (newTrip) => {
+      toast.success(language === "he" ? "הטיול שוכפל בהצלחה!" : "Trip cloned successfully!");
+      navigate(`/trip/${newTrip.id}`);
+    },
+    onError: () => {
+      toast.error(language === "he" ? "שגיאה בשכפול הטיול" : "Error cloning trip");
+    },
+  });
+  
+  const setTemplate = trpc.trips.setTemplate.useMutation({
+    onSuccess: () => {
+      refetch();
+      toast.success(language === "he" ? "הטיול עודכן" : "Trip updated");
+    },
+    onError: () => {
+      toast.error(language === "he" ? "שגיאה בעדכון הטיול" : "Error updating trip");
+    },
+  });
+  
   const shareUrl = trip?.shareToken 
     ? `${window.location.origin}/shared/${trip.shareToken}`
     : null;
@@ -211,6 +231,33 @@ export default function TripDetail() {
               <Share2 className="w-4 h-4" />
               <span className="hidden sm:inline">{language === "he" ? "שתף" : "Share"}</span>
             </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => cloneTrip.mutate({ id: tripId })}
+              disabled={cloneTrip.isPending}
+              className="flex items-center gap-2"
+            >
+              <Copy className="w-4 h-4" />
+              <span className="hidden sm:inline">{language === "he" ? "שכפל טיול" : "Clone Trip"}</span>
+            </Button>
+            {trip && trip.userId === user?.id && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setTemplate.mutate({ id: tripId, isTemplate: !trip.isTemplate })}
+                disabled={setTemplate.isPending}
+                className="flex items-center gap-2"
+              >
+                <Check className="w-4 h-4" />
+                <span className="hidden sm:inline">
+                  {trip.isTemplate 
+                    ? (language === "he" ? "ביטול תבנית" : "Remove Template")
+                    : (language === "he" ? "הפוך לתבנית" : "Set as Template")
+                  }
+                </span>
+              </Button>
+            )}
             <Button
               variant="ghost"
               size="sm"

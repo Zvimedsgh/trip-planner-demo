@@ -969,3 +969,20 @@
 - [x] Modified Card component source file - FAILED (still has padding)
 - [x] Use inline styles to force padding removal - SUCCESS!
 - [x] Cards now compact with 12px padding on Card, 0px on CardHeader
+
+## Trip Cloning Feature (Template System)
+- [ ] Add isTemplate boolean field to trips table
+- [ ] Create cloneTrip tRPC procedure (copies structure without identifying info)
+- [ ] Add "Use This Template" button in trip details page (visible to non-owners)
+- [ ] Implement logic to sanitize identifying information during cloning
+- [ ] Add toggle in trip settings to mark trip as public template
+- [ ] Test cloning functionality with sample trip
+
+## Trip Cloning Feature (Template System)
+- [x] Add isTemplate field to trips table
+- [x] Create cloneTrip tRPC procedure
+- [x] Remove identifying information when cloning (addresses, confirmation numbers, notes)
+- [x] Add "Clone Trip" button in trip details page (now visible to all for testing)
+- [x] Add "Set as Template" button for owners
+- [x] Test cloning functionality - SUCCESS (trip 30001 → 330001)
+- [ ] Write vitest tests for clone functionality

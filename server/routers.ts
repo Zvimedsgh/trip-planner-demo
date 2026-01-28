@@ -107,6 +107,20 @@ export const appRouter = router({
         
         return { url };
       }),
+    
+    // Clone trip as template
+    clone: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        return db.cloneTrip(input.id, ctx.user.id);
+      }),
+    
+    // Toggle template status
+    setTemplate: protectedProcedure
+      .input(z.object({ id: z.number(), isTemplate: z.boolean() }))
+      .mutation(async ({ ctx, input }) => {
+        return db.setTripTemplate(input.id, ctx.user.id, input.isTemplate);
+      }),
   }),
 
   // ============ PUBLIC SHARED TRIP DATA ============
