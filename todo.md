@@ -902,3 +902,9 @@
 - [x] Fix "Please fill in all required fields" error in New Task dialog
 - [x] Ensure form can be submitted with valid data
 - [x] Test task creation flow
+
+## Duplicate Car Rentals in Payments Tab
+- [x] Query database to find car rental records in both car_rentals and transportation tables
+- [x] Remove duplicate car rentals from transportation table (keep only in car_rentals)
+- [x] Verify Payments tab shows each car rental only once
+- [x] Test that all car rentals display correctly
