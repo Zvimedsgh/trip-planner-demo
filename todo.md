@@ -855,3 +855,22 @@
 ## Remove "Route" Prefix from Display
 - [x] Remove "Route 1:", "Route 2:" etc from day view display
 - [x] Keep clean format like "Bratislava → Liptovský Mikuláš"
+
+## Route Manager Open in Map Persistent Issue
+- [ ] Debug why Open in Map still shows OpenStreetMap after code changes and cache clear
+- [ ] Verify code changes were properly saved and deployed
+- [ ] Test actual URL being opened by the button
+
+## Route Manager Code Not Updating in Browser
+- [x] Debug why RouteManager.tsx changes don't take effect despite server restart and hard refresh - Resolved by server restart + browser restart
+- [x] Check Vite caching or build process issues - Edge browser cache was the issue
+- [x] Implement permanent fix to ensure code updates are reflected immediately - Server restart clears cache
+
+## Route Manager Directions Improvement
+- [x] Change Open in Map to show Google Maps Directions (not search) with origin and destination
+- [x] Parse route name to extract origin and destination automatically
+- [x] Display full route with waypoints for planning purposes
+
+## Day 2 Route Link Nominatim Issue
+- [x] Fix route link in Day 2 view that still shows Nominatim/OpenStreetMap
+- [x] Ensure all route links use Google Maps Directions consistently

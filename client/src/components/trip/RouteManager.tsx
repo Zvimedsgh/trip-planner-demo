@@ -371,10 +371,23 @@ export default function RouteManager({ tripId }: RouteManagerProps) {
                   className="w-full"
                   onClick={() => {
                     const routeName = language === "he" && route.nameHe ? route.nameHe : route.name;
-                    // Remove "Route X: " prefix for better Google Maps search
+                    // Remove "Route X: " prefix
                     const cleanRouteName = routeName.replace(/^Route \d+:\s*/i, '');
-                    const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cleanRouteName)}`;
-                    window.open(googleMapsUrl, "_blank");
+                    // Parse origin and destination from route name (format: "Origin → Destination")
+                    const parts = cleanRouteName.split(/→|->/).map(p => p.trim());
+                    if (parts.length >= 2) {
+                      // Use Google Maps Directions API
+                      const origin = encodeURIComponent(parts[0]);
+                      const destination = encodeURIComponent(parts[1]);
+                      const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}`;
+                      console.log('[RouteManager] Opening Google Maps Directions:', googleMapsUrl);
+                      window.open(googleMapsUrl, "_blank");
+                    } else {
+                      // Fallback to search if format doesn't match
+                      const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cleanRouteName)}`;
+                      console.log('[RouteManager] Opening Google Maps Search (fallback):', googleMapsUrl);
+                      window.open(googleMapsUrl, "_blank");
+                    }
                   }}
                 >
                   <ExternalLink className="w-4 h-4 mr-2" />

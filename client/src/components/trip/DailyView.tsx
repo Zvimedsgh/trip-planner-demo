@@ -361,8 +361,19 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
               <CardContent>
                 <button
                   onClick={() => {
-                    const osmUrl = `https://www.openstreetmap.org/search?query=${encodeURIComponent(activity.title)}`;
-                    window.open(osmUrl, "_blank");
+                    // Parse origin and destination from route name (format: "Origin → Destination")
+                    const parts = activity.title.split(/→|->/).map(p => p.trim());
+                    if (parts.length >= 2) {
+                      // Use Google Maps Directions API
+                      const origin = encodeURIComponent(parts[0]);
+                      const destination = encodeURIComponent(parts[1]);
+                      const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}`;
+                      window.open(googleMapsUrl, "_blank");
+                    } else {
+                      // Fallback to search if format doesn't match
+                      const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(activity.title)}`;
+                      window.open(googleMapsUrl, "_blank");
+                    }
                   }}
                   className="w-full bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors"
                 >
