@@ -57,6 +57,7 @@ export default function BudgetTab({ tripId }: BudgetTabProps) {
   const { data: transports, isLoading: transportsLoading } = trpc.transportation.list.useQuery({ tripId });
   const { data: restaurants, isLoading: restaurantsLoading } = trpc.restaurants.list.useQuery({ tripId });
   const { data: carRentals, isLoading: carRentalsLoading } = trpc.carRentals.list.useQuery({ tripId });
+  const { data: allPayments = [], isLoading: paymentsLoading } = trpc.payments.getTripPayments.useQuery({ tripId });
 
   const updateHotelPayment = trpc.hotels.update.useMutation({
     onSuccess: () => utils.hotels.list.invalidate({ tripId }),
@@ -90,7 +91,7 @@ export default function BudgetTab({ tripId }: BudgetTabProps) {
     fetchRates();
   }, []);
 
-  const isLoading = hotelsLoading || transportsLoading || restaurantsLoading || carRentalsLoading;
+  const isLoading = hotelsLoading || transportsLoading || restaurantsLoading || carRentalsLoading || paymentsLoading;
 
   if (isLoading) {
     return (
@@ -121,32 +122,67 @@ export default function BudgetTab({ tripId }: BudgetTabProps) {
     currencyTotals[currency].total += amount;
   };
 
-  // Process all expenses
+  // Helper to get total payments for an activity
+  const getActivityPayments = (activityType: string, activityId: number) => {
+    return allPayments
+      .filter(p => p.activityType === activityType && p.activityId === activityId)
+      .reduce((sum, p) => {
+        // Group by currency
+        const amount = parseFloat(p.amount);
+        return { ...sum, [p.currency]: (sum[p.currency] || 0) + amount };
+      }, {} as Record<string, number>);
+  };
+
+  // Process all expenses with actual payments
   hotels?.forEach(hotel => {
     if (hotel.price) {
-      const isPaid = hotel.paymentStatus === "paid";
-      addToCurrency(hotel.currency || "USD", parseFloat(hotel.price), isPaid);
+      const totalPrice = parseFloat(hotel.price);
+      const currency = hotel.currency || "USD";
+      const payments = getActivityPayments("hotel", hotel.id);
+      const paidAmount = payments[currency] || 0;
+      const unpaidAmount = totalPrice - paidAmount;
+      
+      if (paidAmount > 0) addToCurrency(currency, paidAmount, true);
+      if (unpaidAmount > 0) addToCurrency(currency, unpaidAmount, false);
     }
   });
 
   transports?.forEach(transport => {
     if (transport.price) {
-      const isPaid = transport.paymentStatus === "paid";
-      addToCurrency(transport.currency || "USD", parseFloat(transport.price), isPaid);
+      const totalPrice = parseFloat(transport.price);
+      const currency = transport.currency || "USD";
+      const payments = getActivityPayments("transportation", transport.id);
+      const paidAmount = payments[currency] || 0;
+      const unpaidAmount = totalPrice - paidAmount;
+      
+      if (paidAmount > 0) addToCurrency(currency, paidAmount, true);
+      if (unpaidAmount > 0) addToCurrency(currency, unpaidAmount, false);
     }
   });
 
   restaurants?.forEach(restaurant => {
     if (restaurant.price) {
-      const isPaid = restaurant.paymentStatus === "paid";
-      addToCurrency(restaurant.currency || "USD", parseFloat(restaurant.price), isPaid);
+      const totalPrice = parseFloat(restaurant.price);
+      const currency = restaurant.currency || "USD";
+      const payments = getActivityPayments("restaurant", restaurant.id);
+      const paidAmount = payments[currency] || 0;
+      const unpaidAmount = totalPrice - paidAmount;
+      
+      if (paidAmount > 0) addToCurrency(currency, paidAmount, true);
+      if (unpaidAmount > 0) addToCurrency(currency, unpaidAmount, false);
     }
   });
 
   carRentals?.forEach(rental => {
     if (rental.price) {
-      const isPaid = rental.paymentStatus === "paid";
-      addToCurrency(rental.currency || "USD", parseFloat(rental.price), isPaid);
+      const totalPrice = parseFloat(rental.price);
+      const currency = rental.currency || "USD";
+      const payments = getActivityPayments("car_rental", rental.id);
+      const paidAmount = payments[currency] || 0;
+      const unpaidAmount = totalPrice - paidAmount;
+      
+      if (paidAmount > 0) addToCurrency(currency, paidAmount, true);
+      if (unpaidAmount > 0) addToCurrency(currency, unpaidAmount, false);
     }
   });
 

@@ -857,6 +857,70 @@ export const appRouter = router({
       }),
   }),
 
+  // ============ PAYMENTS ============
+  payments: router({
+    create: protectedProcedure
+      .input(z.object({
+        tripId: z.number(),
+        activityType: z.enum(["hotel", "transportation", "car_rental", "restaurant", "tourist_site", "other"]),
+        activityId: z.number(),
+        amount: z.number(),
+        currency: z.string(),
+        paymentDate: z.number(),
+        paymentMethod: z.string().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const trip = await db.getTripById(input.tripId, ctx.user.id);
+        if (!trip) throw new Error('Trip not found or access denied');
+        return db.createPayment({
+          ...input,
+          amount: input.amount.toString(),
+        });
+      }),
+    
+    getActivityPayments: protectedProcedure
+      .input(z.object({
+        activityType: z.string(),
+        activityId: z.number(),
+      }))
+      .query(async ({ input }) => {
+        return db.getActivityPayments(input.activityType, input.activityId);
+      }),
+    
+    getTripPayments: protectedProcedure
+      .input(z.object({ tripId: z.number() }))
+      .query(async ({ ctx, input }) => {
+        const trip = await db.getTripById(input.tripId, ctx.user.id);
+        if (!trip) throw new Error('Trip not found or access denied');
+        return db.getTripPayments(input.tripId);
+      }),
+    
+    update: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        amount: z.number().optional(),
+        currency: z.string().optional(),
+        paymentDate: z.number().optional(),
+        paymentMethod: z.string().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { id, amount, ...rest } = input;
+        const data = {
+          ...rest,
+          ...(amount !== undefined && { amount: amount.toString() }),
+        };
+        return db.updatePayment(id, data);
+      }),
+    
+    delete: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        return db.deletePayment(input.id);
+      }),
+  }),
+
   // ============ STORAGE ============
   storage: router({
     uploadImage: protectedProcedure

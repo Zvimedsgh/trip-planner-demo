@@ -879,3 +879,21 @@
 - [x] Fix Google Maps Directions showing gas stations from Israel instead of Slovakia
 - [x] Force location context to be based on route origin/destination (Slovakia)
 - [x] Test that POIs (gas stations, restaurants) appear from correct country
+
+## Fix All Map Buttons to Use Google Maps Directions
+- [ ] Search for all "Open in Map" button instances in codebase
+- [ ] Verify DailyView route buttons use Directions (not search)
+- [ ] Ensure all buttons include region=SK parameter
+- [ ] Test that Google Maps shows POIs along route automatically
+
+## Multi-Payment System for Deposits and Installments
+- [x] Design payments table schema (date, amount, currency, payment method, notes)
+- [x] Link payments to activities (hotels, transportation, car rentals, restaurants)
+- [x] Create database helpers for payment CRUD operations
+- [x] Create tRPC procedures for payment management
+- [x] Build PaymentManager component for activity cards
+- [x] Create PaymentsTab for centralized payment management
+- [x] Add "Add Payment" button and dialog
+- [x] Show payment summary: Total / Paid / Remaining
+- [x] Update budget calculations to use actual payments instead of full prices
+- [x] Test payment tracking for all activity types

@@ -14,7 +14,8 @@ import {
   tripCollaborators, InsertTripCollaborator, TripCollaborator,
   activityLog, InsertActivityLog, ActivityLog,
   routes, InsertRoute, Route,
-  routePointsOfInterest, InsertRoutePointOfInterest, RoutePointOfInterest
+  routePointsOfInterest, InsertRoutePointOfInterest, RoutePointOfInterest,
+  payments, InsertPayment, Payment
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -865,4 +866,76 @@ export async function getActivityLog(tripId: number, limit: number = 50) {
       email: a.userEmail,
     },
   }));
+}
+
+// ============ PAYMENTS ============
+
+export async function createPayment(data: InsertPayment): Promise<Payment> {
+  const db = await getDb();
+  if (!db) throw new Error('Database connection failed');
+  
+  const [payment] = await db.insert(payments).values(data).$returningId();
+  const created = await getPaymentById(payment.id);
+  if (!created) throw new Error('Failed to create payment');
+  return created;
+}
+
+export async function getPaymentById(id: number): Promise<Payment | null> {
+  const db = await getDb();
+  if (!db) return null;
+  
+  const [payment] = await db
+    .select()
+    .from(payments)
+    .where(eq(payments.id, id))
+    .limit(1);
+  
+  return payment || null;
+}
+
+export async function getActivityPayments(activityType: string, activityId: number): Promise<Payment[]> {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return db
+    .select()
+    .from(payments)
+    .where(
+      and(
+        eq(payments.activityType, activityType as any),
+        eq(payments.activityId, activityId)
+      )
+    )
+    .orderBy(payments.paymentDate);
+}
+
+export async function getTripPayments(tripId: number): Promise<Payment[]> {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return db
+    .select()
+    .from(payments)
+    .where(eq(payments.tripId, tripId))
+    .orderBy(payments.paymentDate);
+}
+
+export async function updatePayment(id: number, data: Partial<InsertPayment>): Promise<Payment | null> {
+  const db = await getDb();
+  if (!db) return null;
+  
+  await db
+    .update(payments)
+    .set(data)
+    .where(eq(payments.id, id));
+  
+  return getPaymentById(id);
+}
+
+export async function deletePayment(id: number): Promise<boolean> {
+  const db = await getDb();
+  if (!db) return false;
+  
+  await db.delete(payments).where(eq(payments.id, id));
+  return true;
 }

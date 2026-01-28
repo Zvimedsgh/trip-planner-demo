@@ -321,3 +321,24 @@ export const activityLog = mysqlTable("activity_log", {
 
 export type ActivityLog = typeof activityLog.$inferSelect;
 export type InsertActivityLog = typeof activityLog.$inferInsert;
+
+/**
+ * Payments table - tracks all payments for trip activities
+ * Supports deposits, installments, and multiple payment methods
+ */
+export const payments = mysqlTable("payments", {
+  id: int("id").autoincrement().primaryKey(),
+  tripId: int("tripId").notNull(),
+  activityType: mysqlEnum("activityType", ["hotel", "transportation", "car_rental", "restaurant", "tourist_site", "other"]).notNull(),
+  activityId: int("activityId").notNull(), // ID of the related activity
+  amount: decimal("amount", { precision: 10, scale: 2 }).notNull(),
+  currency: varchar("currency", { length: 10 }).notNull().default("USD"),
+  paymentDate: bigint("paymentDate", { mode: "number" }).notNull(), // UTC timestamp in ms
+  paymentMethod: varchar("paymentMethod", { length: 50 }), // e.g., "Credit Card", "Bank Transfer", "Cash", "PayPal"
+  notes: text("notes"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Payment = typeof payments.$inferSelect;
+export type InsertPayment = typeof payments.$inferInsert;
