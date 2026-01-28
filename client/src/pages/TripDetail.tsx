@@ -227,22 +227,44 @@ export default function TripDetail() {
       <main className="container py-8">
         {/* Trip Header */}
         <div className="elegant-card p-6 mb-8">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <h1 className="text-3xl font-bold mb-2">{trip.name}</h1>
-              <div className="flex flex-wrap items-center gap-4 text-muted-foreground">
+          <div className="flex flex-col items-center text-center gap-4">
+            <div className="w-full">
+              {/* Rainbow colored title */}
+              <div className="mb-4">
+                <h1 className="text-4xl md:text-5xl font-bold mb-2">
+                  {"The Gorens'".split('').map((char, i) => {
+                    const colors = ['#FF6B6B', '#FFA500', '#FFD700', '#4CAF50', '#2196F3', '#9C27B0', '#E91E63'];
+                    return (
+                      <span key={i} style={{ color: colors[i % colors.length] }}>
+                        {char}
+                      </span>
+                    );
+                  })}
+                </h1>
+                <h2 className="text-3xl md:text-4xl font-bold">
+                  {"Roots Trip to Slovakia".split('').map((char, i) => {
+                    const colors = ['#FF6B6B', '#FFA500', '#FFD700', '#4CAF50', '#2196F3', '#9C27B0', '#E91E63'];
+                    return (
+                      <span key={i} style={{ color: colors[i % colors.length] }}>
+                        {char}
+                      </span>
+                    );
+                  })}
+                </h2>
+              </div>
+              <div className="flex flex-wrap items-center justify-center gap-4 text-muted-foreground">
                 <div className="flex items-center gap-1">
-                  <Calendar className="w-4 h-4" />
-                  <span>
+                  <Calendar className="w-5 h-5" />
+                  <span className="text-lg font-medium">
                     {format(new Date(trip.startDate), "MMM d")} - {format(new Date(trip.endDate), "MMM d, yyyy")}
                   </span>
                 </div>
-                <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
+                <span className="bg-primary/10 text-primary px-4 py-2 rounded-full text-base font-medium">
                   {getDaysCount(trip.startDate, trip.endDate)} {t("days")}
                 </span>
               </div>
               {trip.description && (
-                <p className="mt-4 text-muted-foreground">{trip.description}</p>
+                <p className="mt-4 text-muted-foreground text-center">{trip.description}</p>
               )}
             </div>
           </div>

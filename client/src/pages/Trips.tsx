@@ -383,9 +383,34 @@ export default function Trips() {
                   </div>
                   
                   {/* Top section - Title and destination */}
-                  <div className="text-white">
-                    <h3 className="text-xl font-bold mb-1">{trip.name}</h3>
-                    <div className="flex items-center gap-1 text-white/90 text-sm">
+                  <div className="text-white text-center">
+                    {trip.name === "Goren Roots Trip to Slovakia" ? (
+                      <div className="mb-2">
+                        <h3 className="text-lg font-bold mb-0.5">
+                          {"The Gorens'".split('').map((char, i) => {
+                            const colors = ['#FF6B6B', '#FFA500', '#FFD700', '#4CAF50', '#2196F3', '#9C27B0', '#E91E63'];
+                            return (
+                              <span key={i} style={{ color: colors[i % colors.length] }}>
+                                {char}
+                              </span>
+                            );
+                          })}
+                        </h3>
+                        <h4 className="text-base font-bold">
+                          {"Roots Trip to Slovakia".split('').map((char, i) => {
+                            const colors = ['#FF6B6B', '#FFA500', '#FFD700', '#4CAF50', '#2196F3', '#9C27B0', '#E91E63'];
+                            return (
+                              <span key={i} style={{ color: colors[i % colors.length] }}>
+                                {char}
+                              </span>
+                            );
+                          })}
+                        </h4>
+                      </div>
+                    ) : (
+                      <h3 className="text-xl font-bold mb-1">{trip.name}</h3>
+                    )}
+                    <div className="flex items-center justify-center gap-1 text-white/90 text-sm">
                       <MapPin className="w-4 h-4" />
                       {trip.destination}
                     </div>

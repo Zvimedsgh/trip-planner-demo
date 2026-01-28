@@ -933,3 +933,9 @@
 - [x] Move all notes text to notes field only
 - [x] Fix card code to display company and car model instead of pickup/return locations
 - [x] Verify card displays company name cleanly in UI
+
+## Trip Title Header Styling
+- [x] Change title to two lines: "The Gorens'" and "Roots Trip to Slovakia"
+- [x] Apply rainbow colors to each letter (red, orange, yellow, green, blue, purple, pink)
+- [x] Increase date font size
+- [x] Center align all header content
