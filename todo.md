@@ -958,3 +958,8 @@
 - [x] Reduce horizontal padding on tab buttons to move text to edges (px-3 → px-1.5)
 - [x] Reduce font size (text-xs → text-[10px])
 - [x] Ensure all tab button text stays within boundaries (added max-w-[68px] and overflow-hidden)
+
+## Activity Tab Buttons Mobile Optimization
+- [x] Hide button labels on mobile (show icons only) - added 'hidden md:block' to span
+- [x] Keep labels visible on desktop - labels show on md breakpoint and above
+- [x] Adjust button size for mobile icon-only display - 48px on mobile, 68px on desktop
