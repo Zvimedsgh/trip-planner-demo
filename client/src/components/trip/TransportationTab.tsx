@@ -732,9 +732,9 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
                         {transport.type === 'car_rental' ? (
                           <>
                             <p className="text-xs text-white/90 font-medium">{transport.company}</p>
-                            <p className="text-xs text-white/80 flex items-center gap-1">
-                              {transport.pickupLocation} <ArrowRight className="w-2 h-2" /> {transport.returnLocation}
-                            </p>
+                            {transport.carModel && (
+                              <p className="text-xs text-white/70">{transport.carModel}</p>
+                            )}
                           </>
                         ) : (
                           <p className="text-xs text-white/80 flex items-center gap-1">

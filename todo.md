@@ -928,7 +928,8 @@
 - [x] Test that car rentals still appear correctly in Transportation tab
 
 ## Fix Car Rental Card Display Issues
-- [x] Change card title to show company name instead of notes
-- [x] Hide notes from card display (show only in edit dialog)
-- [x] Fix Payments tab to show "Surprice - Car Rental" instead of notes text
-- [x] Test that card is readable and clean
+- [x] Query database to verify current car rental field values
+- [x] Correctly update origin/destination fields to "BTS Airport"
+- [x] Move all notes text to notes field only
+- [x] Fix card code to display company and car model instead of pickup/return locations
+- [x] Verify card displays company name cleanly in UI
