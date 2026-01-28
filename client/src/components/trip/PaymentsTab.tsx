@@ -14,7 +14,6 @@ export default function PaymentsTab({ tripId }: PaymentsTabProps) {
   
   const { data: hotels = [] } = trpc.hotels.list.useQuery({ tripId });
   const { data: transportation = [] } = trpc.transportation.list.useQuery({ tripId });
-  const { data: carRentals = [] } = trpc.carRentals.list.useQuery({ tripId });
   const { data: restaurants = [] } = trpc.restaurants.list.useQuery({ tripId });
   const { data: touristSites = [] } = trpc.touristSites.list.useQuery({ tripId });
 
@@ -44,18 +43,7 @@ export default function PaymentsTab({ tripId }: PaymentsTabProps) {
         color: "text-green-600",
         bgColor: "bg-green-50 dark:bg-green-900/20",
       })),
-    ...carRentals
-      .filter(c => c.price && parseFloat(c.price) > 0)
-      .map(c => ({
-        id: c.id,
-        type: "car_rental" as const,
-        name: `${c.company} - Car Rental`,
-        price: parseFloat(c.price!),
-        currency: c.currency || "USD",
-        icon: Car,
-        color: "text-purple-600",
-        bgColor: "bg-purple-50 dark:bg-purple-900/20",
-      })),
+
     ...restaurants
       .filter(r => r.price && parseFloat(r.price) > 0)
       .map(r => ({
