@@ -908,3 +908,15 @@
 - [x] Remove duplicate car rentals from transportation table (keep only in car_rentals)
 - [x] Verify Payments tab shows each car rental only once
 - [x] Test that all car rentals display correctly
+
+## Restore Car Rental to Transportation Tab
+- [x] Query car_rentals table to get Surprice rental data
+- [x] Insert car rental back into transportation table with correct data
+- [x] Verify car rental appears in Transportation tab
+- [x] Ensure no duplicates in Payments tab
+
+## Restore Car Rental to Transportation Tab
+- [x] Query car_rentals table to get Surprice rental data
+- [x] Insert car rental back into transportation table with correct data
+- [x] Verify car rental appears in Transportation tab
+- [x] Ensure no duplicates in Payments tab
