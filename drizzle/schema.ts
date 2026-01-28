@@ -32,7 +32,6 @@ export const trips = mysqlTable("trips", {
   description: text("description"),
   coverImage: varchar("coverImage", { length: 500 }),
   shareToken: varchar("shareToken", { length: 32 }).unique(), // Public share link token
-  isTemplate: boolean("isTemplate").default(false).notNull(), // Can be cloned by others
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
