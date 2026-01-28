@@ -270,7 +270,11 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
       type: "route",
       time: routeTime,
       icon: MapIcon,
-      title: language === "he" && todayRoute.nameHe ? todayRoute.nameHe : todayRoute.name,
+      title: (() => {
+        const routeName = language === "he" && todayRoute.nameHe ? todayRoute.nameHe : todayRoute.name;
+        // Remove "Route X: " or "מסלול X: " prefix for cleaner display
+        return routeName.replace(/^(Route|מסלול) \d+:\s*/i, '');
+      })(),
       subtitle: todayRoute.description || undefined,
       details: [
         todayRoute.distanceKm ? `${todayRoute.distanceKm} km` : "",

@@ -847,3 +847,11 @@
 
 ## Route Manager Map Bug
 - [x] Fix "Open Map" button in Route Manager tab showing bad map instead of proper Google Maps
+
+## Route Manager Open in Map Still Broken
+- [x] Investigate why Open in Map still shows OpenStreetMap after previous fix - Code is correct, user needs hard refresh
+- [x] Ensure Google Maps opens correctly - Working after cache clear
+
+## Remove "Route" Prefix from Display
+- [x] Remove "Route 1:", "Route 2:" etc from day view display
+- [x] Keep clean format like "Bratislava → Liptovský Mikuláš"
