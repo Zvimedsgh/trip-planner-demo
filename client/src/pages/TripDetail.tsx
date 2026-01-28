@@ -161,19 +161,19 @@ export default function TripDetail() {
   };
 
   const tabs = [
-    { id: "hotels", label: t("hotels"), icon: Hotel, color: "bg-blue-50 hover:bg-blue-100 data-[state=active]:bg-blue-300 data-[state=active]:text-blue-950 border-blue-200 data-[state=active]:border-blue-600" },
-    { id: "transport", label: t("transportation"), icon: Plane, color: "bg-purple-50 hover:bg-purple-100 data-[state=active]:bg-purple-300 data-[state=active]:text-purple-950 border-purple-200 data-[state=active]:border-purple-600" },
+    { id: "hotels", label: t("hotels"), icon: Hotel, color: "bg-blue-200 hover:bg-blue-300 data-[state=active]:bg-blue-500 data-[state=active]:text-white border-blue-300 data-[state=active]:border-blue-700" },
+    { id: "transport", label: t("transportation"), icon: Plane, color: "bg-purple-200 hover:bg-purple-300 data-[state=active]:bg-purple-500 data-[state=active]:text-white border-purple-300 data-[state=active]:border-purple-700" },
     // { id: "cars", label: t("carRentals"), icon: Car, color: "bg-red-50 hover:bg-red-100 data-[state=active]:bg-red-300 data-[state=active]:text-red-950 border-red-200 data-[state=active]:border-red-600" }, // Removed - merged into Transportation
-    { id: "sites", label: t("touristSites"), icon: MapPin, color: "bg-green-50 hover:bg-green-100 data-[state=active]:bg-green-300 data-[state=active]:text-green-950 border-green-200 data-[state=active]:border-green-600" },
-    { id: "restaurants", label: t("restaurants"), icon: Utensils, color: "bg-orange-50 hover:bg-orange-100 data-[state=active]:bg-orange-300 data-[state=active]:text-orange-950 border-orange-200 data-[state=active]:border-orange-600" },
-    { id: "documents", label: t("documents"), icon: FileText, color: "bg-slate-50 hover:bg-slate-100 data-[state=active]:bg-slate-300 data-[state=active]:text-slate-950 border-slate-200 data-[state=active]:border-slate-600" },
-    { id: "timeline", label: t("timeline"), icon: Clock, color: "bg-cyan-50 hover:bg-cyan-100 data-[state=active]:bg-cyan-300 data-[state=active]:text-cyan-950 border-cyan-200 data-[state=active]:border-cyan-600" },
-    { id: "routes", label: language === "he" ? "מפות מסלול" : "Route Maps", icon: Map, color: "bg-teal-50 hover:bg-teal-100 data-[state=active]:bg-teal-300 data-[state=active]:text-teal-950 border-teal-200 data-[state=active]:border-teal-600" },
-    { id: "route_manager", label: language === "he" ? "ניהול מסלולים" : "Route Manager", icon: Navigation, color: "bg-indigo-50 hover:bg-indigo-100 data-[state=active]:bg-indigo-300 data-[state=active]:text-indigo-950 border-indigo-200 data-[state=active]:border-indigo-600" },
+    { id: "sites", label: t("touristSites"), icon: MapPin, color: "bg-green-200 hover:bg-green-300 data-[state=active]:bg-green-500 data-[state=active]:text-white border-green-300 data-[state=active]:border-green-700" },
+    { id: "restaurants", label: t("restaurants"), icon: Utensils, color: "bg-orange-200 hover:bg-orange-300 data-[state=active]:bg-orange-500 data-[state=active]:text-white border-orange-300 data-[state=active]:border-orange-700" },
+    { id: "documents", label: t("documents"), icon: FileText, color: "bg-slate-200 hover:bg-slate-300 data-[state=active]:bg-slate-500 data-[state=active]:text-white border-slate-300 data-[state=active]:border-slate-700" },
+    { id: "timeline", label: t("timeline"), icon: Clock, color: "bg-cyan-200 hover:bg-cyan-300 data-[state=active]:bg-cyan-500 data-[state=active]:text-white border-cyan-300 data-[state=active]:border-cyan-700" },
+    { id: "routes", label: language === "he" ? "מפות מסלול" : "Route Maps", icon: Map, color: "bg-teal-200 hover:bg-teal-300 data-[state=active]:bg-teal-500 data-[state=active]:text-white border-teal-300 data-[state=active]:border-teal-700" },
+    { id: "route_manager", label: language === "he" ? "ניהול מסלולים" : "Route Manager", icon: Navigation, color: "bg-indigo-200 hover:bg-indigo-300 data-[state=active]:bg-indigo-500 data-[state=active]:text-white border-indigo-300 data-[state=active]:border-indigo-700" },
     // { id: "daytrips", label: t("dayTrips"), icon: ArrowRight, color: "bg-pink-50 hover:bg-pink-100 data-[state=active]:bg-pink-300 data-[state=active]:text-pink-950 border-pink-200 data-[state=active]:border-pink-600" }, // Hidden temporarily
-    { id: "checklist", label: language === "he" ? "רשימת משימות" : "Checklist", icon: CheckSquare, color: "bg-lime-50 hover:bg-lime-100 data-[state=active]:bg-lime-300 data-[state=active]:text-lime-950 border-lime-200 data-[state=active]:border-lime-600" },
-    { id: "payments", label: language === "he" ? "תשלומים" : "Payments", icon: DollarSign, color: "bg-emerald-50 hover:bg-emerald-100 data-[state=active]:bg-emerald-300 data-[state=active]:text-emerald-950 border-emerald-200 data-[state=active]:border-emerald-600" },
-    { id: "budget", label: t("budget"), icon: DollarSign, color: "bg-amber-50 hover:bg-amber-100 data-[state=active]:bg-amber-300 data-[state=active]:text-amber-950 border-amber-200 data-[state=active]:border-amber-600" },
+    { id: "checklist", label: language === "he" ? "רשימת משימות" : "Checklist", icon: CheckSquare, color: "bg-lime-200 hover:bg-lime-300 data-[state=active]:bg-lime-500 data-[state=active]:text-white border-lime-300 data-[state=active]:border-lime-700" },
+    { id: "payments", label: language === "he" ? "תשלומים" : "Payments", icon: DollarSign, color: "bg-emerald-200 hover:bg-emerald-300 data-[state=active]:bg-emerald-500 data-[state=active]:text-white border-emerald-300 data-[state=active]:border-emerald-700" },
+    { id: "budget", label: t("budget"), icon: DollarSign, color: "bg-amber-200 hover:bg-amber-300 data-[state=active]:bg-amber-500 data-[state=active]:text-white border-amber-300 data-[state=active]:border-amber-700" },
   ];
 
   return (
@@ -322,10 +322,10 @@ export default function TripDetail() {
                   <TabsTrigger
                     key={tab.id}
                     value={tab.id}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-all data-[state=active]:border-[3px] data-[state=active]:shadow-lg ${tab.color}`}
+                    className={`flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-lg border transition-all data-[state=active]:border-[3px] data-[state=active]:shadow-lg min-w-[70px] ${tab.color}`}
                   >
-                    <tab.icon className="w-4 h-4" />
-                    <span className="hidden sm:inline">{tab.label}</span>
+                    <tab.icon className="w-5 h-5" />
+                    <span className="text-xs font-medium text-center leading-tight max-w-[70px] break-words">{tab.label}</span>
                   </TabsTrigger>
                 ))}
               </div>

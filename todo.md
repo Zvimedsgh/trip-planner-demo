@@ -942,3 +942,8 @@
 
 ## Fix Rainbow Title on Home Page
 - [x] Apply rainbow-colored title styling to trip card on home page (matching trip details page)
+
+## Activity Tabs UI Improvements
+- [x] Strengthen tab colors (make them more vibrant and visible)
+- [x] Restructure tab buttons to 2 rows: icon on top, text below
+- [x] Prevent text overflow in tab buttons (keep text within boundaries)
