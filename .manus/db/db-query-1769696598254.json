@@ -1,0 +1,80 @@
+{
+  "query": "SELECT id, name, destination, startDate, endDate FROM trips ORDER BY id DESC LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, destination, startDate, endDate FROM trips ORDER BY id DESC LIMIT 10;",
+  "rows": [
+    {
+      "id": "390003",
+      "name": "For you",
+      "destination": "Paris, france",
+      "startDate": "1769731200000",
+      "endDate": "1770076800000"
+    },
+    {
+      "id": "390002",
+      "name": "Test",
+      "destination": "Paris, france",
+      "startDate": "1769731200000",
+      "endDate": "1770249600000"
+    },
+    {
+      "id": "390001",
+      "name": "Test",
+      "destination": "Paris, france",
+      "startDate": "1769731200000",
+      "endDate": "1770249600000"
+    },
+    {
+      "id": "360001",
+      "name": "ניסיון",
+      "destination": "פריז",
+      "startDate": "1769644800000",
+      "endDate": "1769817600000"
+    },
+    {
+      "id": "330001",
+      "name": "Goren Roots Trip to Slovakia (Copy)",
+      "destination": "Bratislava,Slovakia",
+      "startDate": "1788220800000",
+      "endDate": "1788948000000"
+    },
+    {
+      "id": "300001",
+      "name": "Payment Test Trip",
+      "destination": "Test Destination",
+      "startDate": "1769602151322",
+      "endDate": "1770206951322"
+    },
+    {
+      "id": "240002",
+      "name": "Payment Test Trip",
+      "destination": "Test City",
+      "startDate": "1769447430219",
+      "endDate": "1769533830219"
+    },
+    {
+      "id": "240001",
+      "name": "Payment Test Trip",
+      "destination": "Test City",
+      "startDate": "1769447403009",
+      "endDate": "1769533803009"
+    },
+    {
+      "id": "210001",
+      "name": "Payment Test Trip",
+      "destination": "Test City",
+      "startDate": "1769434972628",
+      "endDate": "1769521372628"
+    },
+    {
+      "id": "60003",
+      "name": "Test Trip for Checklist",
+      "destination": "Test Destination",
+      "startDate": "1769175279796",
+      "endDate": "1769780079796"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tdestination\tstartDate\tendDate\n390003\tFor you\tParis, france\t1769731200000\t1770076800000\n390002\tTest\tParis, france\t1769731200000\t1770249600000\n390001\tTest\tParis, france\t1769731200000\t1770249600000\n360001\tניסיון\tפריז\t1769644800000\t1769817600000\n330001\tGoren Roots Trip to Slovakia (Copy)\tBratislava,Slovakia\t1788220800000\t1788948000000\n300001\tPayment Test Trip\tTest Destination\t1769602151322\t1770206951322\n240002\tPayment Test Trip\tTest City\t1769447430219\t1769533830219\n240001\tPayment Test Trip\tTest City\t1769447403009\t1769533803009\n210001\tPayment Test Trip\tTest City\t1769434972628\t1769521372628\n60003\tTest Trip for Checklist\tTest Destination\t1769175279796\t1769780079796\n",
+  "stderr": "",
+  "execution_time_ms": 1537
+}

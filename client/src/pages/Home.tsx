@@ -91,10 +91,18 @@ export default function Home() {
     });
   };
   
-  const slovakiaTrip = trips?.find(trip => 
-    trip.destination.toLowerCase().includes('slovakia') || 
-    trip.destination.toLowerCase().includes('bratislava')
-  );
+  // Get destination image based on destination name
+  const getDestinationImage = (destination: string): string => {
+    const dest = destination.toLowerCase();
+    if (dest.includes('slovakia') || dest.includes('bratislava')) return '/slovakia.jpg';
+    if (dest.includes('paris') || dest.includes('france')) return '/travel-2.jpg';
+    if (dest.includes('greece') || dest.includes('athens')) return '/travel-3.jpg';
+    if (dest.includes('italy') || dest.includes('rome')) return '/travel-1.jpg';
+    return '/travel-1.jpg'; // default
+  };
+
+  // Sort trips by start date (most recent first)
+  const sortedTrips = trips ? [...trips].sort((a, b) => b.startDate - a.startDate) : [];
   
   const getDaysCount = (start: number, end: number) => {
     return Math.ceil((end - start) / (1000 * 60 * 60 * 24));
@@ -183,55 +191,38 @@ export default function Home() {
             
             {/* Trip Cards Gallery */}
             <div className="relative grid md:grid-cols-3 gap-6">
-              {/* Slovakia Trip Card (if exists) */}
-              {slovakiaTrip ? (
+              {/* Display all trips dynamically */}
+              {sortedTrips.map((trip, index) => (
                 <Card 
+                  key={trip.id}
                   className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer h-80"
-                  onClick={() => navigate(`/trip/${slovakiaTrip.id}`)}
-                  style={{ transform: `translateY(${scrollY * 0.1}px)` }}
+                  onClick={() => navigate(`/trip/${trip.id}`)}
+                  style={{ transform: `translateY(${scrollY * (0.05 + (index % 3) * 0.025)}px)` }}
                 >
                   <img 
-                    src={slovakiaTrip.coverImage || '/slovakia.jpg'} 
-                    alt={slovakiaTrip.name}
+                    src={trip.coverImage || getDestinationImage(trip.destination)} 
+                    alt={trip.name}
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
                   <div className="relative h-full flex flex-col justify-between p-6">
                     <div className="text-white text-center">
-                      {/* Rainbow colored title */}
                       <h3 className="text-3xl font-bold mb-2 leading-tight">
-                        {/* Line 1: The Gorens' */}
-                        <div className="mb-1">
-                          {"The Gorens'".split('').map((char, i) => {
-                            const colors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#a855f7', '#ec4899'];
-                            return (
-                              <span key={i} style={{ color: colors[i % colors.length] }}>
-                                {char}
-                              </span>
-                            );
-                          })}
-                        </div>
-                        {/* Line 2: Roots Trip to Slovakia */}
-                        <div>
-                          {"Roots Trip to Slovakia".split('').map((char, i) => {
-                            const colors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#a855f7', '#ec4899'];
-                            return (
-                              <span key={i} style={{ color: colors[i % colors.length] }}>
-                                {char}
-                              </span>
-                            );
-                          })}
-                        </div>
+                        {trip.name}
                       </h3>
+                      <div className="flex items-center gap-2 justify-center text-white/90">
+                        <MapPin className="w-4 h-4" />
+                        <span className="text-sm">{trip.destination}</span>
+                      </div>
                     </div>
                     <div className="space-y-3">
                       <div className="flex items-center gap-2 text-base text-white/90 justify-center">
                         <Calendar className="w-5 h-5" />
                         <span className="font-semibold">
-                          {format(new Date(slovakiaTrip.startDate), "MMM d")} - {format(new Date(slovakiaTrip.endDate), "MMM d, yyyy")}
+                          {format(new Date(trip.startDate), "MMM d")} - {format(new Date(trip.endDate), "MMM d, yyyy")}
                         </span>
                         <span className="text-xs bg-white/20 text-white px-2 py-0.5 rounded-full">
-                          {getDaysCount(slovakiaTrip.startDate, slovakiaTrip.endDate)} {t("days")}
+                          {getDaysCount(trip.startDate, trip.endDate)} {t("days")}
                         </span>
                       </div>
                       <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 text-lg font-semibold py-6">
@@ -241,31 +232,28 @@ export default function Home() {
                     </div>
                   </div>
                 </Card>
-              ) : null}
-              
-              {/* My Next Trip Placeholder Cards */}
-              {[1, 2].map((index) => (
-                <Card 
-                  key={index}
-                  className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer h-80"
-                  onClick={() => isAuthenticated ? setCreateDialogOpen(true) : window.location.href = getLoginUrl()}
-                  style={{ transform: `translateY(${scrollY * (0.05 + index * 0.025)}px)` }}
-                >
-                  <img 
-                    src={index === 1 ? '/travel-2.jpg' : '/travel-3.jpg'} 
-                    alt="My Next Trip"
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-                  <div className="relative h-full flex flex-col items-center justify-center p-6 text-white">
-                    <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                      <Plus className="w-8 h-8" />
-                    </div>
-                    <h3 className="text-2xl font-bold mb-2">{language === 'he' ? 'הטיול הבא שלי' : 'My Next Trip'}</h3>
-                    <p className="text-white/80 text-sm text-center">{language === 'he' ? 'לחץ להתחלת תכנון טיול חדש' : 'Click to start planning a new trip'}</p>
-                  </div>
-                </Card>
               ))}
+              
+              {/* Add New Trip Card */}
+              <Card 
+                className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer h-80"
+                onClick={() => isAuthenticated ? setCreateDialogOpen(true) : window.location.href = getLoginUrl()}
+                style={{ transform: `translateY(${scrollY * 0.05}px)` }}
+              >
+                <img 
+                  src='/travel-3.jpg' 
+                  alt="Create New Trip"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                <div className="relative h-full flex flex-col items-center justify-center p-6 text-white">
+                  <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <Plus className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-2">{language === 'he' ? 'טיול חדש' : 'New Trip'}</h3>
+                  <p className="text-white/80 text-sm text-center">{language === 'he' ? 'לחץ להתחלת תכנון טיול חדש' : 'Click to start planning a new trip'}</p>
+                </div>
+              </Card>
 
             </div>
           </div>

@@ -7,7 +7,7 @@ import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
 import { 
   ArrowLeft, Calendar, Car, DollarSign, FileText, Globe, 
-  Hotel, Loader2, MapPin, Plane, Utensils, Clock, ArrowRight, Share2, Copy, Check, X, Map, CheckSquare, Navigation
+  Hotel, Loader2, MapPin, Plane, Utensils, Clock, ArrowRight, Share2, Copy, Check, X, Map, CheckSquare, Navigation, Trash2
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import {
@@ -48,6 +48,8 @@ export default function TripDetail() {
   const [copied, setCopied] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [defaultTab, setDefaultTab] = useState<string>("hotels");
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deleteConfirmation, setDeleteConfirmation] = useState("");
   const [highlightedActivityId, setHighlightedActivityId] = useState<number | null>(null);
   const [hasInitialized, setHasInitialized] = useState(false);
   
@@ -120,6 +122,26 @@ export default function TripDetail() {
       toast.success(language === "he" ? "קישור שיתוף בוטל" : "Share link revoked");
     },
   });
+
+  const deleteTrip = trpc.trips.delete.useMutation({
+    onSuccess: () => {
+      toast.success(language === "he" ? "הטיול נמחק בהצלחה" : "Trip deleted successfully");
+      navigate("/trips");
+    },
+    onError: () => {
+      toast.error(language === "he" ? "שגיאה במחיקת הטיול" : "Error deleting trip");
+    },
+  });
+
+  const handleDeleteTrip = () => {
+    if (deleteConfirmation.toLowerCase() === "delete" || deleteConfirmation === "מחק") {
+      deleteTrip.mutate({ id: tripId });
+      setDeleteDialogOpen(false);
+      setDeleteConfirmation("");
+    } else {
+      toast.error(language === "he" ? 'הקלד "מחק" לאישור' : 'Type "delete" to confirm');
+    }
+  };
   
   const shareUrl = trip?.shareToken 
     ? `${window.location.origin}/shared/${trip.shareToken}`
@@ -212,6 +234,17 @@ export default function TripDetail() {
               <Share2 className="w-4 h-4" />
               <span className="hidden sm:inline">{language === "he" ? "שתף" : "Share"}</span>
             </Button>
+            {trip?.userId === user?.id && (
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={() => setDeleteDialogOpen(true)}
+                className="flex items-center gap-2"
+              >
+                <Trash2 className="w-4 h-4" />
+                <span className="hidden sm:inline">{language === "he" ? "מחק" : "Delete"}</span>
+              </Button>
+            )}
             <Button
               variant="ghost"
               size="sm"
@@ -460,6 +493,65 @@ export default function TripDetail() {
                 {language === "he" ? "צור קישור שיתוף" : "Create Share Link"}
               </Button>
             )}
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Trip Dialog */}
+      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-destructive">
+              <Trash2 className="w-5 h-5" />
+              {language === "he" ? "מחק טיול" : "Delete Trip"}
+            </DialogTitle>
+            <DialogDescription>
+              {language === "he" 
+                ? "פעולה זו לא ניתנת לביטול! כל הנתונים ימחקו לצמיתות."
+                : "This action cannot be undone! All data will be permanently deleted."
+              }
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">
+                {language === "he" 
+                  ? 'הקלד "מחק" לאישור:'
+                  : 'Type "delete" to confirm:'
+                }
+              </label>
+              <Input
+                value={deleteConfirmation}
+                onChange={(e) => setDeleteConfirmation(e.target.value)}
+                placeholder={language === "he" ? "מחק" : "delete"}
+                className="text-center font-bold"
+              />
+            </div>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                className="flex-1"
+                onClick={() => {
+                  setDeleteDialogOpen(false);
+                  setDeleteConfirmation("");
+                }}
+              >
+                {language === "he" ? "ביטול" : "Cancel"}
+              </Button>
+              <Button
+                variant="destructive"
+                className="flex-1"
+                onClick={handleDeleteTrip}
+                disabled={deleteTrip.isPending}
+              >
+                <Trash2 className="w-4 h-4 mr-2" />
+                {deleteTrip.isPending 
+                  ? (language === "he" ? "מוחק..." : "Deleting...") 
+                  : (language === "he" ? "מחק לצמיתות" : "Delete Permanently")
+                }
+              </Button>
+            </div>
           </div>
         </DialogContent>
       </Dialog>

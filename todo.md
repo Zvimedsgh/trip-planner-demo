@@ -982,3 +982,15 @@
 - [x] Update Details button to scroll to specific activity in tab (not just show all activities)
 - [x] Add highlight/flash animation to target activity card
 - [x] Implement smooth scroll behavior
+
+## Bug - Home Page Not Showing All Trips
+- [x] Fix home page to display ALL trips dynamically (not just Slovakia trip)
+- [x] Remove hardcoded "My Next Trip" placeholder cards
+- [x] Show all user's trips in chronological order
+- [x] Add background images for more destinations (Paris, Greece, etc.)
+
+## Feature - Delete Trip with Double Confirmation
+- [x] Add delete button to trip detail page (red button in header, owner only)
+- [x] Implement double confirmation dialog (type "delete" or "מחק" to confirm)
+- [x] Delete trip and all related data via backend procedure
+- [x] Redirect to home page after deletion
