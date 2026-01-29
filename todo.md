@@ -969,3 +969,11 @@
 - [x] Modified Card component source file - FAILED (still has padding)
 - [x] Use inline styles to force padding removal - SUCCESS!
 - [x] Cards now compact with 12px padding on Card, 0px on CardHeader
+
+## BETA User Feedback (January 29, 2026)
+- [x] Remove "All" button from Checklist tab (unnecessary)
+- [x] Enlarge activity buttons to span the width of the days section (flex-1 with min-w-80px)
+- [x] Fix iPhone translation to Hebrew issue (default to English, save to localStorage)
+- [x] Link daily activities to their detailed information (Details button switches to appropriate tab)
+- [x] Fix missing Route 4 on Day 3 (changed from find() to filter() to show all routes)
+- [ ] Item 6 (incomplete feedback item)

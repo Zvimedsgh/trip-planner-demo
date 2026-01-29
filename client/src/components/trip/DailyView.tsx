@@ -7,6 +7,7 @@ import { Hotel, Plane, Car, MapPin, Utensils, Calendar, FileText, ExternalLink, 
 interface DailyViewProps {
   tripId: number;
   date: number; // Unix timestamp for the day
+  onTabChange?: (tabId: string) => void; // Callback to switch tabs
 }
 
 type Activity = {
@@ -23,7 +24,7 @@ type Activity = {
   routeData?: any; // Store full route data for rendering
 };
 
-export default function DailyView({ tripId, date }: DailyViewProps) {
+export default function DailyView({ tripId, date, onTabChange }: DailyViewProps) {
   const { language } = useLanguage();
   
   // Fetch all data for this trip
@@ -248,9 +249,9 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
     }
   });
 
-  // Add route to activities if exists for this day
-  const todayRoute = routesData?.find(r => isOnDay(r.date));
-  if (todayRoute) {
+  // Add ALL routes for this day (not just the first one)
+  const todayRoutes = routesData?.filter(r => isOnDay(r.date)) || [];
+  todayRoutes.forEach(todayRoute => {
     // Parse route time or default to end of day if no time
     let routeTime = date; // Default to start of day
     if (todayRoute.time) {
@@ -282,7 +283,7 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
       ].filter(Boolean) as string[],
       routeData: todayRoute // Store for custom rendering
     });
-  }
+  });
   
   // Sort activities by time
   activities.sort((a, b) => a.time - b.time);
@@ -408,6 +409,32 @@ export default function DailyView({ tripId, date }: DailyViewProps) {
                     <p className="text-sm font-semibold">{format(new Date(activity.time), "HH:mm")}</p>
                   </div>
                   <div className="flex gap-1">
+                    {/* Details button - navigates to appropriate tab */}
+                    {onTabChange && (
+                      <button
+                        onClick={() => {
+                          // Map activity type to tab ID
+                          const tabMap: Record<string, string> = {
+                            "hotel-checkin": "hotels",
+                            "hotel-checkout": "hotels",
+                            "transportation": "transportation",
+                            "car-pickup": "transportation",
+                            "car-return": "transportation",
+                            "site": "sites",
+                            "restaurant": "restaurants",
+                            "route": "route-manager"
+                          };
+                          const targetTab = tabMap[activity.type];
+                          if (targetTab) {
+                            onTabChange(targetTab);
+                          }
+                        }}
+                        className="p-1 rounded bg-primary/80 hover:bg-primary text-white transition-colors"
+                        title={language === "he" ? "פרטים" : "Details"}
+                      >
+                        <ExternalLink className="w-3 h-3" />
+                      </button>
+                    )}
                     {activity.documentUrls?.map((doc, idx) => (
                       <button
                         key={idx}

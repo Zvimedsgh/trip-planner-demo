@@ -232,6 +232,20 @@
       "when": 1769601474818,
       "tag": "0032_yellow_gwen_stacy",
       "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "5",
+      "when": 1769615877711,
+      "tag": "0033_needy_apocalypse",
+      "breakpoints": true
+    },
+    {
+      "idx": 34,
+      "version": "5",
+      "when": 1769617061035,
+      "tag": "0034_chunky_misty_knight",
+      "breakpoints": true
     }
   ]
 }

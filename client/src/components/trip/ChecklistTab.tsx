@@ -37,7 +37,7 @@ const PARTICIPANTS = [
 export default function ChecklistTab({ tripId }: ChecklistTabProps) {
   const { t, language, isRTL } = useLanguage();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
-  const [viewFilter, setViewFilter] = useState<"all" | "shared" | "yona_tzvi" | "efi" | "ruth" | "michal">("all");
+  const [viewFilter, setViewFilter] = useState<"all" | "shared" | "yona_tzvi" | "efi" | "ruth" | "michal">("shared");
   const [selectedOwner, setSelectedOwner] = useState<"shared" | "yona_tzvi" | "efi" | "ruth" | "michal">("shared");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const formRef = useRef<HTMLDivElement>(null);
@@ -261,13 +261,6 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
             
             {/* View filter buttons */}
             <div className="flex gap-2 flex-wrap">
-              <Button
-                variant={viewFilter === "all" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setViewFilter("all")}
-              >
-                {language === "he" ? "הכל" : "All"}
-              </Button>
               {PARTICIPANTS.map(p => (
                 <Button
                   key={p.value}

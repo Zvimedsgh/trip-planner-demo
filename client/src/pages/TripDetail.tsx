@@ -322,7 +322,7 @@ export default function TripDetail() {
                   <TabsTrigger
                     key={tab.id}
                     value={tab.id}
-                    className={`flex flex-col items-center justify-center gap-0.5 px-2 py-2 rounded-lg border transition-all data-[state=active]:border-[3px] data-[state=active]:shadow-lg md:min-w-[68px] md:max-w-[68px] min-w-[48px] max-w-[48px] ${tab.color}`}
+                    className={`flex flex-col items-center justify-center gap-0.5 px-2 py-2 rounded-lg border transition-all data-[state=active]:border-[3px] data-[state=active]:shadow-lg flex-1 min-w-[80px] ${tab.color}`}
                   >
                     <tab.icon className="w-5 h-5" />
                     <span className="hidden md:block text-[10px] font-medium text-center leading-tight break-words overflow-hidden">{tab.label}</span>
@@ -340,7 +340,7 @@ export default function TripDetail() {
             const dayTimestamp = dayDate.getTime();
             return (
               <TabsContent key={`day-content-${dayTimestamp}`} value={`day-${dayTimestamp}`}>
-                <DailyView tripId={tripId} date={dayTimestamp} />
+                <DailyView tripId={tripId} date={dayTimestamp} onTabChange={setDefaultTab} />
               </TabsContent>
             );
           })}
