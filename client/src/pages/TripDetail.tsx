@@ -48,6 +48,7 @@ export default function TripDetail() {
   const [copied, setCopied] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [defaultTab, setDefaultTab] = useState<string>("hotels");
+  const [highlightedActivityId, setHighlightedActivityId] = useState<number | null>(null);
   const [hasInitialized, setHasInitialized] = useState(false);
   
   // Auto-select current day or first day (only on mount)
@@ -340,25 +341,36 @@ export default function TripDetail() {
             const dayTimestamp = dayDate.getTime();
             return (
               <TabsContent key={`day-content-${dayTimestamp}`} value={`day-${dayTimestamp}`}>
-                <DailyView tripId={tripId} date={dayTimestamp} onTabChange={setDefaultTab} />
+                <DailyView 
+                  tripId={tripId} 
+                  date={dayTimestamp} 
+                  onTabChange={(tabId, activityId) => {
+                    setDefaultTab(tabId);
+                    if (activityId) {
+                      setHighlightedActivityId(activityId);
+                      // Clear highlight after 3 seconds
+                      setTimeout(() => setHighlightedActivityId(null), 3000);
+                    }
+                  }} 
+                />
               </TabsContent>
             );
           })}
 
           <TabsContent value="sites">
-            <TouristSitesTab tripId={tripId} />
+            <TouristSitesTab tripId={tripId} highlightedId={highlightedActivityId} />
           </TabsContent>
 
           <TabsContent value="hotels">
-            <HotelsTab tripId={tripId} />
+            <HotelsTab tripId={tripId} highlightedId={highlightedActivityId} />
           </TabsContent>
 
           <TabsContent value="transport">
-            <TransportationTab tripId={tripId} />
+            <TransportationTab tripId={tripId} highlightedId={highlightedActivityId} />
           </TabsContent>
 
           <TabsContent value="restaurants">
-            <RestaurantsTab tripId={tripId} />
+            <RestaurantsTab tripId={tripId} highlightedId={highlightedActivityId} />
           </TabsContent>
 
           <TabsContent value="documents">

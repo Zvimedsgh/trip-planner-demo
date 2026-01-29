@@ -7,7 +7,7 @@ import { Hotel, Plane, Car, MapPin, Utensils, Calendar, FileText, ExternalLink, 
 interface DailyViewProps {
   tripId: number;
   date: number; // Unix timestamp for the day
-  onTabChange?: (tabId: string) => void; // Callback to switch tabs
+  onTabChange?: (tabId: string, activityId?: number) => void; // Callback to switch tabs with optional activity ID
 }
 
 type Activity = {
@@ -426,7 +426,14 @@ export default function DailyView({ tripId, date, onTabChange }: DailyViewProps)
                           };
                           const targetTab = tabMap[activity.type];
                           if (targetTab) {
-                            onTabChange(targetTab);
+                            // Get the real activity ID (remove offset for checkout/return)
+                            let realActivityId = activity.id;
+                            if (activity.type === "hotel-checkout") {
+                              realActivityId = activity.id - 10000;
+                            } else if (activity.type === "car-return") {
+                              realActivityId = activity.id - 20000;
+                            }
+                            onTabChange(targetTab, realActivityId);
                           }
                         }}
                         className="p-1 rounded bg-primary/80 hover:bg-primary text-white transition-colors"

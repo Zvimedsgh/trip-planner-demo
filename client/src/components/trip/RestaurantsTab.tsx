@@ -9,7 +9,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
 import { Calendar, DollarSign, Edit, ExternalLink, FileText, Image, Loader2, MapPin, Phone, Plus, Trash2, Users, Utensils } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { DocumentLinkDialog } from "@/components/DocumentLinkDialog";
 import { ImageUploadDialog } from "@/components/ImageUploadDialog";
@@ -31,9 +31,10 @@ const CURRENCIES = [
 
 interface RestaurantsTabProps {
   tripId: number;
+  highlightedId?: number | null;
 }
 
-export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
+export default function RestaurantsTab({ tripId, highlightedId }: RestaurantsTabProps) {
   const { t, language, isRTL } = useLanguage();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -51,6 +52,18 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
   const utils = trpc.useUtils();
   const { data: restaurants, isLoading } = trpc.restaurants.list.useQuery({ tripId });
   const { data: documents } = trpc.documents.list.useQuery({ tripId });
+
+  // Scroll to highlighted restaurant
+  useEffect(() => {
+    if (highlightedId) {
+      const element = document.getElementById(`restaurant-${highlightedId}`);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+      }
+    }
+  }, [highlightedId]);
 
   const createMutation = trpc.restaurants.create.useMutation({
     onSuccess: () => {
@@ -379,7 +392,13 @@ export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
               return restaurant.paymentStatus === paymentFilter;
             })
             .map((restaurant) => (
-            <Card key={restaurant.id} className="elegant-card-hover relative overflow-hidden">
+            <Card 
+              key={restaurant.id} 
+              id={`restaurant-${restaurant.id}`}
+              className={`elegant-card-hover relative overflow-hidden ${
+                highlightedId === restaurant.id ? 'ring-4 ring-yellow-400 animate-pulse' : ''
+              }`}
+            >
               {/* Background Image */}
               {restaurant.coverImage && (
                 <div 

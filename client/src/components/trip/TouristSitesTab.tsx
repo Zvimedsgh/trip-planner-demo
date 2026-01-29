@@ -8,16 +8,17 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
 import { Calendar, Clock, Edit, ExternalLink, FileText, Image, Loader2, MapPin, Plus, Trash2 } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { DocumentLinkDialog } from "@/components/DocumentLinkDialog";
 import { ImageUploadDialog } from "@/components/ImageUploadDialog";
 
 interface TouristSitesTabProps {
   tripId: number;
+  highlightedId?: number | null;
 }
 
-export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
+export default function TouristSitesTab({ tripId, highlightedId }: TouristSitesTabProps) {
   const { t, language, isRTL } = useLanguage();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -32,6 +33,18 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
   const utils = trpc.useUtils();
   const { data: sites, isLoading } = trpc.touristSites.list.useQuery({ tripId });
   const { data: documents } = trpc.documents.list.useQuery({ tripId });
+
+  // Scroll to highlighted site
+  useEffect(() => {
+    if (highlightedId) {
+      const element = document.getElementById(`site-${highlightedId}`);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+      }
+    }
+  }, [highlightedId]);
 
   const createMutation = trpc.touristSites.create.useMutation({
     onSuccess: () => {
@@ -292,7 +305,13 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
             const gradient = gradients[index % gradients.length];
             
             return (
-              <Card key={site.id} className="elegant-card-hover overflow-hidden">
+              <Card 
+                key={site.id} 
+                id={`site-${site.id}`}
+                className={`elegant-card-hover overflow-hidden ${
+                  highlightedId === site.id ? 'ring-4 ring-yellow-400 animate-pulse' : ''
+                }`}
+              >
                 {/* Header with image or gradient */}
                 <div 
                   className={`h-24 relative ${!bgImage ? `bg-gradient-to-r ${gradient}` : ''}`}

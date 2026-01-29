@@ -977,3 +977,8 @@
 - [x] Link daily activities to their detailed information (Details button switches to appropriate tab)
 - [x] Fix missing Route 4 on Day 3 (changed from find() to filter() to show all routes)
 - [ ] Item 6 (incomplete feedback item)
+
+## Enhancement - Details Button Scroll to Specific Activity
+- [x] Update Details button to scroll to specific activity in tab (not just show all activities)
+- [x] Add highlight/flash animation to target activity card
+- [x] Implement smooth scroll behavior

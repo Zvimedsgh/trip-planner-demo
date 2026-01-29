@@ -9,7 +9,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
 import { Calendar, DollarSign, Edit, ExternalLink, FileText, Hotel, Images, Loader2, MapPin, Phone, Plus, Trash2, Upload, Image as ImageIcon, Link2 } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { DocumentLinkDialog } from "@/components/DocumentLinkDialog";
 import { ImageUploadDialog } from "@/components/ImageUploadDialog";
@@ -32,9 +32,10 @@ const CURRENCIES = [
 
 interface HotelsTabProps {
   tripId: number;
+  highlightedId?: number | null;
 }
 
-export default function HotelsTab({ tripId }: HotelsTabProps) {
+export default function HotelsTab({ tripId, highlightedId }: HotelsTabProps) {
   const { t, language, isRTL } = useLanguage();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -57,6 +58,18 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
   const utils = trpc.useUtils();
   const { data: hotels, isLoading } = trpc.hotels.list.useQuery({ tripId });
   const { data: documents } = trpc.documents.list.useQuery({ tripId });
+
+  // Scroll to highlighted hotel
+  useEffect(() => {
+    if (highlightedId) {
+      const element = document.getElementById(`hotel-${highlightedId}`);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+      }
+    }
+  }, [highlightedId]);
 
   const createMutation = trpc.hotels.create.useMutation({
     onSuccess: () => {
@@ -532,7 +545,13 @@ export default function HotelsTab({ tripId }: HotelsTabProps) {
             }
             
             return (
-            <Card key={hotel.id} className={`overflow-hidden ${!hotelImage ? `bg-gradient-to-br ${gradient}` : ''} text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative group`}>
+            <Card 
+              key={hotel.id} 
+              id={`hotel-${hotel.id}`}
+              className={`overflow-hidden ${!hotelImage ? `bg-gradient-to-br ${gradient}` : ''} text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative group ${
+                highlightedId === hotel.id ? 'ring-4 ring-yellow-400 animate-pulse' : ''
+              }`}
+            >
               {/* Background image if available */}
               {hotelImage && (
                 <>

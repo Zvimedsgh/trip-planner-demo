@@ -16,6 +16,7 @@ import { DocumentLinkDialog } from "@/components/DocumentLinkDialog";
 interface TransportationTabProps {
   tripId: number;
   tripEndDate?: number;
+  highlightedId?: number | null;
 }
 
 const transportIcons = {
@@ -38,7 +39,7 @@ const transportColors = {
 
 type TransportType = "flight" | "train" | "bus" | "ferry" | "car_rental" | "other";
 
-export default function TransportationTab({ tripId, tripEndDate }: TransportationTabProps) {
+export default function TransportationTab({ tripId, tripEndDate, highlightedId }: TransportationTabProps) {
   const { t, language, isRTL } = useLanguage();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -86,6 +87,18 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
   const { data: transports, isLoading } = trpc.transportation.list.useQuery({ tripId });
   const { data: documents } = trpc.documents.list.useQuery({ tripId });
   const { data: trip } = trpc.trips.get.useQuery({ id: tripId });
+
+  // Scroll to highlighted transportation
+  useEffect(() => {
+    if (highlightedId) {
+      const element = document.getElementById(`transport-${highlightedId}`);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+      }
+    }
+  }, [highlightedId]);
 
   const resetForm = () => {
     formRefs.type.current = "flight";
@@ -710,7 +723,13 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
             const arrDate = transport.arrivalDate ? new Date(transport.arrivalDate) : null;
             
             return (
-              <Card key={transport.id} className="elegant-card-hover overflow-hidden">
+              <Card 
+                key={transport.id} 
+                id={`transport-${transport.id}`}
+                className={`elegant-card-hover overflow-hidden ${
+                  highlightedId === transport.id ? 'ring-4 ring-yellow-400 animate-pulse' : ''
+                }`}
+              >
                 {/* Colorful header */}
                 <div className={`h-16 bg-gradient-to-r ${colorClass} relative`}>
                   <div className="absolute inset-0 bg-black/10" />
