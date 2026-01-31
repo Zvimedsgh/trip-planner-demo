@@ -1009,3 +1009,9 @@
 - [ ] Investigate why new trips inherit route maps from Slovakia trip
 - [ ] Fix trip creation to start with empty routes
 - [ ] Ensure only trip metadata is created, not related data (routes, hotels, etc.)
+
+## CRITICAL BUG - All Trips Show Same Hardcoded Title
+- [ ] Investigate why all trips display "The Gorens' Roots Trip to Slovakia" regardless of actual name
+- [ ] Check if trip names are being saved correctly during creation
+- [ ] Verify getTripById returns correct trip data
+- [ ] Fix frontend to display correct trip.name from database
