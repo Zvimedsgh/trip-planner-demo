@@ -266,7 +266,7 @@ export default function TripDetail() {
               {/* Rainbow colored title */}
               <div className="mb-4">
                 <h1 className="text-4xl md:text-5xl font-bold mb-2">
-                  {"The Gorens'".split('').map((char, i) => {
+                  {trip.name.split('').map((char, i) => {
                     const colors = ['#FF6B6B', '#FFA500', '#FFD700', '#4CAF50', '#2196F3', '#9C27B0', '#E91E63'];
                     return (
                       <span key={i} style={{ color: colors[i % colors.length] }}>
@@ -275,16 +275,10 @@ export default function TripDetail() {
                     );
                   })}
                 </h1>
-                <h2 className="text-3xl md:text-4xl font-bold">
-                  {"Roots Trip to Slovakia".split('').map((char, i) => {
-                    const colors = ['#FF6B6B', '#FFA500', '#FFD700', '#4CAF50', '#2196F3', '#9C27B0', '#E91E63'];
-                    return (
-                      <span key={i} style={{ color: colors[i % colors.length] }}>
-                        {char}
-                      </span>
-                    );
-                  })}
-                </h2>
+                <div className="flex items-center justify-center gap-2 text-2xl md:text-3xl text-muted-foreground">
+                  <MapPin className="w-6 h-6" />
+                  <span>{trip.destination}</span>
+                </div>
               </div>
               <div className="flex flex-wrap items-center justify-center gap-4 text-muted-foreground">
                 <div className="flex items-center gap-1">

@@ -994,3 +994,18 @@
 - [x] Implement double confirmation dialog (type "delete" or "מחק" to confirm)
 - [x] Delete trip and all related data via backend procedure
 - [x] Redirect to home page after deletion
+
+## Bug - Trip Title Shows "Goren's etc." Instead of Actual Name
+- [x] Fix trip detail page header to display actual trip name from database
+- [x] Remove hardcoded "The Gorens'" rainbow text
+- [x] Use trip.name and trip.destination from database
+
+## Bug - Collaborator Invitation UI Confusing When No Users Exist
+- [x] Show clear message with "Copy App Link" button
+- [x] Add helpful text explaining users must sign up first
+- [x] Improve "No users found" message with guidance
+
+## Bug - New Trips Copy Route Maps from Existing Trip
+- [ ] Investigate why new trips inherit route maps from Slovakia trip
+- [ ] Fix trip creation to start with empty routes
+- [ ] Ensure only trip metadata is created, not related data (routes, hotels, etc.)

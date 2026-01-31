@@ -136,6 +136,30 @@ export default function CollaboratorsDialog({ tripId, isOwner }: CollaboratorsDi
               <UserPlus className="w-4 h-4" />
               {language === "he" ? "הזמן משתמש חדש" : "Invite New User"}
             </h3>
+            {/* Helper message when no users exist */}
+            <div className="bg-muted/50 p-3 rounded-md text-sm space-y-2">
+              <p className="text-muted-foreground">
+                {language === "he" 
+                  ? "כדי להזמין משתמשים, שלח להם את הקישור לאפליקציה:"
+                  : "To invite users, send them the app link:"}
+              </p>
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full"
+                onClick={() => {
+                  navigator.clipboard.writeText(window.location.origin);
+                  toast.success(language === "he" ? "הקישור הועתק!" : "Link copied!");
+                }}
+              >
+                {language === "he" ? "העתק קישור לאפליקציה" : "Copy App Link"}
+              </Button>
+              <p className="text-xs text-muted-foreground">
+                {language === "he"
+                  ? "לאחר שיתחברו, תוכל לחפש אותם כאן ולהזמין אותם לטיול."
+                  : "After they sign up, you can search for them here and invite them to the trip."}
+              </p>
+            </div>
             <div className="grid grid-cols-[1fr_auto_auto] gap-2">
               <div className="relative" onClick={(e) => e.stopPropagation()}>
                 <Label htmlFor="userName">
@@ -158,8 +182,15 @@ export default function CollaboratorsDialog({ tripId, isOwner }: CollaboratorsDi
                         {language === "he" ? "מחפש..." : "Searching..."}
                       </div>
                     ) : !searchResults || searchResults.length === 0 ? (
-                      <div className="p-3 text-center text-sm text-muted-foreground">
-                        {language === "he" ? "לא נמצאו משתמשים" : "No users found"}
+                      <div className="p-3 text-center text-sm">
+                        <p className="text-muted-foreground mb-2">
+                          {language === "he" ? "לא נמצאו משתמשים" : "No users found"}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {language === "he" 
+                            ? "שלח קישור לחברים כדי שיתחברו תחילה"
+                            : "Send app link to friends so they can sign up first"}
+                        </p>
                       </div>
                     ) : (
                       searchResults.map((user) => (
