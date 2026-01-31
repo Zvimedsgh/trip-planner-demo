@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -22,6 +22,11 @@ export default function RouteManager({ tripId }: RouteManagerProps) {
   const [editingRoute, setEditingRoute] = useState<any>(null);
   
   const { data: routes, refetch } = trpc.routes.list.useQuery({ tripId });
+  
+  // Force refetch when tripId changes to prevent cache collision
+  useEffect(() => {
+    refetch();
+  }, [tripId, refetch]);
   
   const [formData, setFormData] = useState({
     name: "",

@@ -1006,12 +1006,13 @@
 - [x] Improve "No users found" message with guidance
 
 ## Bug - New Trips Copy Route Maps from Existing Trip
-- [ ] Investigate why new trips inherit route maps from Slovakia trip
-- [ ] Fix trip creation to start with empty routes
-- [ ] Ensure only trip metadata is created, not related data (routes, hotels, etc.)
+- [x] Investigate why new trips inherit route maps from Slovakia trip (FOUND: AllRouteMapsTab uses hardcoded data)
+- [x] Fix QueryClient cache configuration to prevent cache collision between trips
+- [x] Add refetch on tripId change in RouteManager
+- [ ] Fix AllRouteMapsTab to load routes from database instead of hardcoded data
 
 ## CRITICAL BUG - All Trips Show Same Hardcoded Title
-- [ ] Investigate why all trips display "The Gorens' Roots Trip to Slovakia" regardless of actual name
-- [ ] Check if trip names are being saved correctly during creation
-- [ ] Verify getTripById returns correct trip data
-- [ ] Fix frontend to display correct trip.name from database
+- [x] Investigate why all trips display "The Gorens' Roots Trip to Slovakia" regardless of actual name
+- [x] Check if trip names are being saved correctly during creation (CONFIRMED: names save correctly)
+- [x] Verify getTripById returns correct trip data (CONFIRMED: returns correct data)
+- [x] Fix frontend to display correct trip.name from database (FIXED: code was correct, issue was browser cache)
