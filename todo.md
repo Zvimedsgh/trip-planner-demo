@@ -1009,7 +1009,7 @@
 - [x] Investigate why new trips inherit route maps from Slovakia trip (FOUND: AllRouteMapsTab uses hardcoded data)
 - [x] Fix QueryClient cache configuration to prevent cache collision between trips
 - [x] Add refetch on tripId change in RouteManager
-- [ ] Fix AllRouteMapsTab to load routes from database instead of hardcoded data
+- [x] Fix AllRouteMapsTab to load routes from database instead of hardcoded data
 
 ## CRITICAL BUG - All Trips Show Same Hardcoded Title
 - [x] Investigate why all trips display "The Gorens' Roots Trip to Slovakia" regardless of actual name

@@ -409,7 +409,7 @@ export default function TripDetail() {
           </TabsContent>
 
           <TabsContent value="routes">
-            <AllRouteMapsTab />
+            <AllRouteMapsTab tripId={tripId} />
           </TabsContent>
 
           <TabsContent value="route_manager">
