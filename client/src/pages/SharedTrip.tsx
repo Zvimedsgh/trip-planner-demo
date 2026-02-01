@@ -232,7 +232,7 @@ export default function SharedTrip() {
   };
 
   const getDaysDiff = (start: number, end: number) => {
-    return Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+    return Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
   };
 
   const getNights = (checkIn: number, checkOut: number) => {

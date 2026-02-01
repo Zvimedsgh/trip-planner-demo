@@ -1016,3 +1016,14 @@
 - [x] Check if trip names are being saved correctly during creation (CONFIRMED: names save correctly)
 - [x] Verify getTripById returns correct trip data (CONFIRMED: returns correct data)
 - [x] Fix frontend to display correct trip.name from database (FIXED: code was correct, issue was browser cache)
+
+## User Guide Documentation
+- [x] Create comprehensive user guide in Hebrew
+- [x] Cover all main features (trips, hotels, transportation, routes, etc.)
+- [x] Include step-by-step instructions
+- [x] Explain sharing and collaboration features
+
+## Bug - Trip Duration Calculation
+- [x] Fix trip duration calculation to count both start and end dates
+- [x] Example: Feb 4-7 should show "4 days" not "3 days"
+- [x] Update calculation logic to be inclusive of both dates

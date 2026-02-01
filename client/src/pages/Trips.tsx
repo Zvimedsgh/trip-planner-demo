@@ -128,7 +128,7 @@ export default function Trips() {
   };
 
   const getDaysCount = (start: number, end: number) => {
-    return Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+    return Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
   };
 
   const uploadImageMutation = trpc.trips.uploadCoverImage.useMutation({
