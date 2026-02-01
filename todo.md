@@ -33,3 +33,9 @@
 - [x] Subtitle removed from all pages (Home.tsx, SharedTrip.tsx, Trips.tsx, TripDetail.tsx)
 - [ ] Files still not opening - need to debug presigned URL implementation
 - [ ] Test both fixes after publishing
+
+## Fix Document File Opening
+- [ ] Check server logs for errors when opening documents
+- [ ] Debug presigned URL generation logic
+- [ ] Verify S3 key extraction from fileUrl
+- [ ] Test document opening after fix

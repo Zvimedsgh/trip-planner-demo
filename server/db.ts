@@ -440,6 +440,14 @@ export async function createDocument(data: InsertDocument): Promise<Document> {
   return inserted[0];
 }
 
+export async function getDocument(id: number): Promise<Document | undefined> {
+  const db = await getDb();
+  if (!db) return undefined;
+  
+  const result = await db.select().from(documents).where(eq(documents.id, id)).limit(1);
+  return result[0];
+}
+
 export async function getTripDocuments(tripId: number): Promise<Document[]> {
   const db = await getDb();
   if (!db) return [];

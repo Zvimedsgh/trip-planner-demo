@@ -35,6 +35,42 @@ async function startServer() {
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
+  
+  // Document download proxy endpoint
+  app.get("/api/documents/:id/download", async (req, res) => {
+    try {
+      const { getDocument } = await import("../db");
+      const { storageGet } = await import("../storage");
+      
+      const documentId = parseInt(req.params.id);
+      const document = await getDocument(documentId);
+      
+      if (!document) {
+        return res.status(404).json({ error: "Document not found" });
+      }
+      
+      // Get presigned URL from storage
+      const { url: presignedUrl } = await storageGet(document.fileKey, 3600);
+      
+      // Fetch the file from S3 using the presigned URL
+      const fileResponse = await fetch(presignedUrl);
+      
+      if (!fileResponse.ok) {
+        return res.status(500).json({ error: "Failed to fetch file from storage" });
+      }
+      
+      // Stream the file to the client
+      res.setHeader("Content-Type", document.mimeType || "application/octet-stream");
+      res.setHeader("Content-Disposition", `inline; filename="${document.name}"`);
+      
+      const buffer = await fileResponse.arrayBuffer();
+      res.send(Buffer.from(buffer));
+    } catch (error) {
+      console.error("[Document Download] Error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+  
   // tRPC API
   app.use(
     "/api/trpc",

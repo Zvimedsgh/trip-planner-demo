@@ -488,15 +488,11 @@ export const appRouter = router({
       .mutation(({ input }) => db.deleteDocument(input.id)),
     
     getDownloadUrl: protectedProcedure
-      .input(z.object({ fileUrl: z.string() }))
+      .input(z.object({ documentId: z.number() }))
       .query(async ({ input }) => {
-        // Extract S3 key from CloudFront URL
-        // URL format: https://xxx.cloudfront.net/key/path/file.ext
-        const url = new URL(input.fileUrl);
-        const fileKey = url.pathname.substring(1); // Remove leading slash
-        
-        const { url: presignedUrl } = await storageGet(fileKey);
-        return { url: presignedUrl };
+        // Return a server proxy endpoint that will stream the file
+        // This avoids the CloudFront access denied issue
+        return { url: `/api/documents/${input.documentId}/download` };
       }),
     
     upload: protectedProcedure

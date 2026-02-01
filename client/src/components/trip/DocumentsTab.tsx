@@ -394,14 +394,14 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
                             <button
                               onClick={async () => {
                                 try {
-                                  const result = await utils.client.documents.getDownloadUrl.query({ fileUrl: doc.fileUrl });
+                                  const result = await utils.client.documents.getDownloadUrl.query({ documentId: doc.id });
                                   if (result?.url) {
                                     window.open(result.url, '_blank');
                                   } else {
                                     toast.error(language === "he" ? "לא ניתן לקבל קישור לקובץ" : "Could not get file link");
                                   }
                                 } catch (error) {
-                                  console.error('Error fetching download URL:', error);
+                                  console.error('[DocumentsTab] Error:', error);
                                   toast.error(language === "he" ? "שגיאה בפתיחת הקובץ" : "Error opening file");
                                 }
                               }}
