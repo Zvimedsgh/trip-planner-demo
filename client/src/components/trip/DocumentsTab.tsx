@@ -24,6 +24,7 @@ const categoryIcons = {
   ticket: Ticket,
   restaurant: Utensils,
   hotel: Hotel,
+  flights: Ticket,
   other: File,
 };
 
@@ -35,6 +36,7 @@ const categoryColors = {
   ticket: "from-rose-500 to-pink-600",
   restaurant: "from-orange-500 to-red-600",
   hotel: "from-cyan-500 to-blue-600",
+  flights: "from-sky-500 to-blue-600",
   other: "from-gray-500 to-slate-600",
 };
 
@@ -46,10 +48,11 @@ const categoryPastelBg = {
   ticket: "bg-rose-50",
   restaurant: "bg-orange-50",
   hotel: "bg-cyan-50",
+  flights: "bg-sky-50",
   other: "bg-gray-50",
 };
 
-type CategoryType = "passport" | "visa" | "insurance" | "booking" | "ticket" | "restaurant" | "hotel" | "other";
+type CategoryType = "passport" | "visa" | "insurance" | "booking" | "ticket" | "restaurant" | "hotel" | "flights" | "other";
 
 export default function DocumentsTab({ tripId }: DocumentsTabProps) {
   const { t, language, isRTL } = useLanguage();
@@ -73,7 +76,7 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
   const { data: documents, isLoading } = trpc.documents.list.useQuery({ tripId });
 
   // Track which folders are open (all open by default)
-  const [openFolders, setOpenFolders] = useState<Set<CategoryType>>(new Set<CategoryType>(["passport", "visa", "insurance", "booking", "ticket", "restaurant", "hotel", "other"]));
+  const [openFolders, setOpenFolders] = useState<Set<CategoryType>>(new Set<CategoryType>(["passport", "visa", "insurance", "booking", "ticket", "restaurant", "hotel", "flights", "other"]));
 
   const toggleFolder = (category: CategoryType) => {
     setOpenFolders(prev => {
@@ -190,7 +193,7 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
       tags: doc.tags || "",
       notes: doc.notes || "",
     });
-    setEditCategory(doc.category);
+    setEditCategory(doc.category as CategoryType);
     setEditingId(doc.id);
   };
 
@@ -268,6 +271,7 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
                     <SelectItem value="ticket">{t("ticket")}</SelectItem>
                     <SelectItem value="restaurant">{t("restaurant")}</SelectItem>
                     <SelectItem value="hotel">{t("hotel")}</SelectItem>
+                    <SelectItem value="flights">{t("flights")}</SelectItem>
                     <SelectItem value="other">{t("other")}</SelectItem>
                   </SelectContent>
                 </Select>
@@ -445,6 +449,7 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
                   <SelectItem value="ticket">{t("ticket")}</SelectItem>
                   <SelectItem value="restaurant">{t("restaurant")}</SelectItem>
                   <SelectItem value="hotel">{t("hotel")}</SelectItem>
+                  <SelectItem value="flights">{t("flights")}</SelectItem>
                   <SelectItem value="other">{t("other")}</SelectItem>
                 </SelectContent>
               </Select>
