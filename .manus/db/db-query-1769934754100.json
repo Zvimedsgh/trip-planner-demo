@@ -1,0 +1,40 @@
+{
+  "query": "SELECT id, name, fileUrl, fileKey FROM documents LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, fileUrl, fileKey FROM documents LIMIT 5;",
+  "rows": [
+    {
+      "id": "30001",
+      "name": "Private holiday house Vivendi",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/SB_ds8LrLBWCLJZhtMPAG-מלון מיקולש.pdf",
+      "fileKey": "documents/1/30001/SB_ds8LrLBWCLJZhtMPAG-מלון מיקולש.pdf"
+    },
+    {
+      "id": "30002",
+      "name": "הסעה מהשדה בברטיסלבה למלון בעיר",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/cYWNC1MfiJAL2nOZPCRxW-הסעה מהשדה בברטיסלבה למלון בעיר",
+      "fileKey": "documents/1/30001/cYWNC1MfiJAL2nOZPCRxW-הסעה מהשדה בברטיסלבה למלון בעיר"
+    },
+    {
+      "id": "30003",
+      "name": "Surprice",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/r4rGuVBztLmwOXarlfUZ1-Rental voucher - D012504317 - רכב שכור",
+      "fileKey": "documents/1/30001/r4rGuVBztLmwOXarlfUZ1-Rental voucher - D012504317 - רכב שכור"
+    },
+    {
+      "id": "60001",
+      "name": "Charming & Cozy Ambiente Apartments",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/0UiL-tSVWikghFFgQcaNJ-מלון בברטיסלבה",
+      "fileKey": "documents/1/30001/0UiL-tSVWikghFFgQcaNJ-מלון בברטיסלבה"
+    },
+    {
+      "id": "90001",
+      "name": "myNext - Johannesgasse Apartments",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/pFrSjQo5wCaqdqoI8HATm-myNext - Johannesse Aparments.pdf",
+      "fileKey": "documents/1/30001/pFrSjQo5wCaqdqoI8HATm-myNext - Johannesse Aparments.pdf"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tfileUrl\tfileKey\n30001\tPrivate holiday house Vivendi\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/SB_ds8LrLBWCLJZhtMPAG-מלון מיקולש.pdf\tdocuments/1/30001/SB_ds8LrLBWCLJZhtMPAG-מלון מיקולש.pdf\n30002\tהסעה מהשדה בברטיסלבה למלון בעיר\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/cYWNC1MfiJAL2nOZPCRxW-הסעה מהשדה בברטיסלבה למלון בעיר\tdocuments/1/30001/cYWNC1MfiJAL2nOZPCRxW-הסעה מהשדה בברטיסלבה למלון בעיר\n30003\tSurprice\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/r4rGuVBztLmwOXarlfUZ1-Rental voucher - D012504317 - רכב שכור\tdocuments/1/30001/r4rGuVBztLmwOXarlfUZ1-Rental voucher - D012504317 - רכב שכור\n60001\tCharming & Cozy Ambiente Apartments\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/0UiL-tSVWikghFFgQcaNJ-מלון בברטיסלבה\tdocuments/1/30001/0UiL-tSVWikghFFgQcaNJ-מלון בברטיסלבה\n90001\tmyNext - Johannesgasse Apartments\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/pFrSjQo5wCaqdqoI8HATm-myNext - Johannesse Aparments.pdf\tdocuments/1/30001/pFrSjQo5wCaqdqoI8HATm-myNext - Johannesse Aparments.pdf\n",
+  "stderr": "",
+  "execution_time_ms": 1527
+}

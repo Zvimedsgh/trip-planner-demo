@@ -4,7 +4,7 @@ import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import * as db from "./db";
-import { storagePut } from "./storage";
+import { storagePut, storageGet } from "./storage";
 import { nanoid } from "nanoid";
 
 export const appRouter = router({
@@ -486,6 +486,13 @@ export const appRouter = router({
     delete: protectedProcedure
       .input(z.object({ id: z.number() }))
       .mutation(({ input }) => db.deleteDocument(input.id)),
+    
+    getDownloadUrl: protectedProcedure
+      .input(z.object({ fileKey: z.string() }))
+      .query(async ({ input }) => {
+        const { url } = await storageGet(input.fileKey);
+        return { url };
+      }),
     
     upload: protectedProcedure
       .input(z.object({
