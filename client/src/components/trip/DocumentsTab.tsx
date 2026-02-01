@@ -392,18 +392,9 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
                               </div>
                             )}
                             <button
-                              onClick={async () => {
-                                try {
-                                  const result = await utils.client.documents.getDownloadUrl.query({ documentId: doc.id });
-                                  if (result?.url) {
-                                    window.open(result.url, '_blank');
-                                  } else {
-                                    toast.error(language === "he" ? "לא ניתן לקבל קישור לקובץ" : "Could not get file link");
-                                  }
-                                } catch (error) {
-                                  console.error('[DocumentsTab] Error:', error);
-                                  toast.error(language === "he" ? "שגיאה בפתיחת הקובץ" : "Error opening file");
-                                }
+                              onClick={() => {
+                                // Open file URL directly - same as other tabs (HotelsTab, etc.)
+                                window.open(doc.fileUrl, '_blank');
                               }}
                               className="inline-flex items-center gap-1 text-sm text-primary hover:underline cursor-pointer bg-transparent border-none p-0"
                             >

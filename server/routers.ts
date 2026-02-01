@@ -487,14 +487,6 @@ export const appRouter = router({
       .input(z.object({ id: z.number() }))
       .mutation(({ input }) => db.deleteDocument(input.id)),
     
-    getDownloadUrl: protectedProcedure
-      .input(z.object({ documentId: z.number() }))
-      .query(async ({ input }) => {
-        // Return a server proxy endpoint that will stream the file
-        // This avoids the CloudFront access denied issue
-        return { url: `/api/documents/${input.documentId}/download` };
-      }),
-    
     upload: protectedProcedure
       .input(z.object({
         tripId: z.number(),
