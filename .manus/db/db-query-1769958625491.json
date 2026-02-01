@@ -1,0 +1,16 @@
+{
+  "query": "SELECT id, name, destination, shareToken FROM trips WHERE name LIKE '%אופיר%' OR name LIKE '%רות%' OR destination LIKE '%אתונה%';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, destination, shareToken FROM trips WHERE name LIKE '%אופיר%' OR name LIKE '%רות%' OR destination LIKE '%אתונה%';",
+  "rows": [
+    {
+      "id": "510001",
+      "name": "רות ואופיר לאתונה",
+      "destination": "Athens,Greece",
+      "shareToken": "NULL"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tdestination\tshareToken\n510001\tרות ואופיר לאתונה\tAthens,Greece\tNULL\n",
+  "stderr": "",
+  "execution_time_ms": 1565
+}
