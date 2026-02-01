@@ -210,10 +210,7 @@ export default function Home() {
                       <h3 className="text-3xl font-bold mb-2 leading-tight">
                         {trip.name}
                       </h3>
-                      <div className="flex items-center gap-2 justify-center text-white/90">
-                        <MapPin className="w-4 h-4" />
-                        <span className="text-sm">{trip.destination}</span>
-                      </div>
+
                     </div>
                     <div className="space-y-3">
                       <div className="flex items-center gap-2 text-base text-white/90 justify-center">

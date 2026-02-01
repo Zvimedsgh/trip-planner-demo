@@ -265,10 +265,7 @@ export default function SharedTrip() {
                 {trip.name}
               </h1>
               <div className="flex flex-wrap items-center gap-3 text-white/90">
-                <span className="flex items-center gap-1.5 bg-white/20 rounded-full px-3 py-1 text-sm">
-                  <MapPin className="h-4 w-4" />
-                  {trip.destination}
-                </span>
+
                 <span className="flex items-center gap-1.5 bg-white/20 rounded-full px-3 py-1 text-sm">
                   <Calendar className="h-4 w-4" />
                   {formatDateShort(trip.startDate)} - {formatDateShort(trip.endDate)}

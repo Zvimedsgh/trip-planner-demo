@@ -410,10 +410,7 @@ export default function Trips() {
                     ) : (
                       <h3 className="text-xl font-bold mb-1">{trip.name}</h3>
                     )}
-                    <div className="flex items-center justify-center gap-1 text-white/90 text-sm">
-                      <MapPin className="w-4 h-4" />
-                      {trip.destination}
-                    </div>
+
                   </div>
                   
                   {/* Bottom section - Date and button */}

@@ -28,3 +28,8 @@
 - [x] Find where "Bratislava, Slovakia" subtitle is displayed
 - [x] Remove the subtitle from trip display (line 278-281 in TripDetail.tsx)
 - [x] Ready for testing
+
+## Critical Issues After Latest Checkpoint
+- [x] Subtitle removed from all pages (Home.tsx, SharedTrip.tsx, Trips.tsx, TripDetail.tsx)
+- [ ] Files still not opening - need to debug presigned URL implementation
+- [ ] Test both fixes after publishing
