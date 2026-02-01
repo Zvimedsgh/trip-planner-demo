@@ -18,6 +18,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Link, useParams, useLocation } from "wouter";
 import TouristSitesTab from "@/components/trip/TouristSitesTab";
@@ -143,9 +144,8 @@ export default function TripDetail() {
     }
   };
   
-  const shareUrl = trip?.shareToken 
-    ? `${window.location.origin}/shared/${trip.shareToken}`
-    : null;
+  const shareUrl = trip?.shareToken ? `${window.location.origin}/shared/${trip.shareToken}` : null;
+  const inviteUrl = trip?.shareToken ? `${window.location.origin}/invite/${trip.shareToken}` : null;
   
   const copyToClipboard = async () => {
     if (shareUrl) {
@@ -441,8 +441,8 @@ export default function TripDetail() {
             </DialogTitle>
             <DialogDescription>
               {language === "he" 
-                ? "צור קישור ציבורי לצפייה בטיול. כל מי שיש לו את הקישור יוכל לראות את הטיול (ללא אפשרות עריכה)."
-                : "Create a public link to view this trip. Anyone with the link can see the trip (read-only)."
+                ? "שתף את הטיול עם אחרים. בחר בין קישור לצפייה בלבד או קישור הזמנה שמוסיף משתתפים אוטומטית."
+                : "Share this trip with others. Choose between a view-only link or an invite link that automatically adds participants."
               }
             </DialogDescription>
           </DialogHeader>
@@ -450,20 +450,68 @@ export default function TripDetail() {
           <div className="space-y-4 py-4">
             {shareUrl ? (
               <>
-                <div className="flex items-center gap-2">
-                  <Input
-                    value={shareUrl}
-                    readOnly
-                    className="flex-1 text-sm"
-                  />
-                  <Button
-                    size="icon"
-                    variant="outline"
-                    onClick={copyToClipboard}
-                  >
-                    {copied ? <Check className="w-4 h-4 text-green-600" /> : <Copy className="w-4 h-4" />}
-                  </Button>
+                {/* View-Only Link */}
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">
+                    {language === "he" ? "קישור לצפייה בלבד" : "View-Only Link"}
+                  </Label>
+                  <p className="text-xs text-muted-foreground">
+                    {language === "he" 
+                      ? "כל מי שיש לו את הקישור יוכל לראות את הטיול (ללא אפשרות עריכה)"
+                      : "Anyone with this link can view the trip (read-only)"
+                    }
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <Input
+                      value={shareUrl}
+                      readOnly
+                      className="flex-1 text-sm"
+                    />
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      onClick={() => {
+                        navigator.clipboard.writeText(shareUrl);
+                        toast.success(language === "he" ? "הקישור הועתק" : "Link copied");
+                      }}
+                    >
+                      <Copy className="w-4 h-4" />
+                    </Button>
+                  </div>
                 </div>
+
+                {/* Invite Link */}
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">
+                    {language === "he" ? "קישור הזמנה (מומלץ)" : "Invite Link (Recommended)"}
+                  </Label>
+                  <p className="text-xs text-muted-foreground">
+                    {language === "he" 
+                      ? "מי שיקליק על הקישור יתווסף אוטומטית כמשתתף בטיול לאחר ההתחברות"
+                      : "Anyone who clicks this link will be automatically added as a participant after signing in"
+                    }
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <Input
+                      value={inviteUrl || ""}
+                      readOnly
+                      className="flex-1 text-sm"
+                    />
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      onClick={() => {
+                        if (inviteUrl) {
+                          navigator.clipboard.writeText(inviteUrl);
+                          toast.success(language === "he" ? "קישור ההזמנה הועתק" : "Invite link copied");
+                        }
+                      }}
+                    >
+                      <Copy className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+
                 <Button
                   variant="destructive"
                   className="w-full"
@@ -471,7 +519,7 @@ export default function TripDetail() {
                   disabled={revokeShareLink.isPending}
                 >
                   <X className="w-4 h-4 mr-2" />
-                  {language === "he" ? "בטל קישור שיתוף" : "Revoke Share Link"}
+                  {language === "he" ? "בטל קישורי שיתוף" : "Revoke Share Links"}
                 </Button>
               </>
             ) : (
@@ -481,7 +529,7 @@ export default function TripDetail() {
                 disabled={generateShareLink.isPending}
               >
                 <Share2 className="w-4 h-4 mr-2" />
-                {language === "he" ? "צור קישור שיתוף" : "Create Share Link"}
+                {language === "he" ? "צור קישורי שיתוף" : "Create Share Links"}
               </Button>
             )}
           </div>

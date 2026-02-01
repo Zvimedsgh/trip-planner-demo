@@ -855,6 +855,35 @@ export const appRouter = router({
         if (!trip) throw new Error('Trip not found or access denied');
         return db.getActivityLog(input.tripId, input.limit);
       }),
+    
+    // Join trip via invite link
+    joinViaInvite: protectedProcedure
+      .input(z.object({ token: z.string() }))
+      .mutation(async ({ ctx, input }) => {
+        const trip = await db.getTripByShareToken(input.token);
+        if (!trip) throw new Error('Invalid invite link');
+        
+        // Check if user is already owner
+        if (trip.userId === ctx.user.id) {
+          return { tripId: trip.id, alreadyMember: true };
+        }
+        
+        // Check if user is already a collaborator
+        const existing = await db.getUserCollaboratorPermission(trip.id, ctx.user.id);
+        if (existing) {
+          return { tripId: trip.id, alreadyMember: true };
+        }
+        
+        // Add user as collaborator with can_edit permission
+        await db.addTripCollaborator({
+          tripId: trip.id,
+          userId: ctx.user.id,
+          permission: 'can_edit',
+          invitedBy: trip.userId, // Trip owner invited them
+        });
+        
+        return { tripId: trip.id, alreadyMember: false };
+      }),
   }),
 
   // ============ PAYMENTS ============
