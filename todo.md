@@ -45,3 +45,9 @@
 - [ ] Check InviteLink page authentication flow
 - [ ] Verify joinViaInvite endpoint is working correctly
 - [ ] Test invite link with new user account
+
+## Critical Bug - Share Link Generation Returns Null
+- [x] Debug why generateShareLink returns null - mutation doesn't return the token
+- [x] Fix generateShareLink mutation to return token value
+- [x] Update frontend to handle returned token
+- [x] Test with multiple trips - WORKING! Links are generated successfully

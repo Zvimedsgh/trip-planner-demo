@@ -76,7 +76,10 @@ export const appRouter = router({
     // Sharing endpoints
     generateShareLink: protectedProcedure
       .input(z.object({ id: z.number() }))
-      .mutation(({ ctx, input }) => db.generateShareToken(input.id, ctx.user.id)),
+      .mutation(async ({ ctx, input }) => {
+        const token = await db.generateShareToken(input.id, ctx.user.id);
+        return { token };
+      }),
     
     revokeShareLink: protectedProcedure
       .input(z.object({ id: z.number() }))
