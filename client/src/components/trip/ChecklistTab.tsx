@@ -28,17 +28,15 @@ const CATEGORIES = [
 
 const PARTICIPANTS = [
   { value: "shared", labelEn: "Shared", labelHe: "משותף" },
-  { value: "yona_tzvi", labelEn: "Yona & Tzvi", labelHe: "יונה וצבי" },
-  { value: "efi", labelEn: "Efi", labelHe: "אפי" },
+  { value: "ofir", labelEn: "Ofir", labelHe: "אופיר" },
   { value: "ruth", labelEn: "Ruth", labelHe: "רות" },
-  { value: "michal", labelEn: "Michal", labelHe: "מיכל" },
 ] as const;
 
 export default function ChecklistTab({ tripId }: ChecklistTabProps) {
   const { t, language, isRTL } = useLanguage();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
-  const [viewFilter, setViewFilter] = useState<"all" | "shared" | "yona_tzvi" | "efi" | "ruth" | "michal">("shared");
-  const [selectedOwner, setSelectedOwner] = useState<"shared" | "yona_tzvi" | "efi" | "ruth" | "michal">("shared");
+  const [viewFilter, setViewFilter] = useState<"all" | "shared" | "ofir" | "ruth">("shared");
+  const [selectedOwner, setSelectedOwner] = useState<"shared" | "ofir" | "ruth">("shared");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const formRef = useRef<HTMLDivElement>(null);
 
@@ -84,7 +82,7 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
       { title: "Clothes", titleHe: "בגדים", category: "packing" as const },
     ];
 
-    const participants: Array<"yona_tzvi" | "efi" | "ruth" | "michal"> = ["yona_tzvi", "efi", "ruth", "michal"];
+    const participants: Array<"ofir" | "ruth"> = ["ofir", "ruth"];
     
     participants.forEach(participant => {
       const hasItems = items.some(item => item.owner === participant);

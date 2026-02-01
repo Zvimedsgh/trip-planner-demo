@@ -267,6 +267,13 @@
       "when": 1769925463583,
       "tag": "0037_huge_luke_cage",
       "breakpoints": true
+    },
+    {
+      "idx": 38,
+      "version": "5",
+      "when": 1769955356964,
+      "tag": "0038_chemical_exodus",
+      "breakpoints": true
     }
   ]
 }

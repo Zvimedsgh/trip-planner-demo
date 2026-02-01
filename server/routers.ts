@@ -569,7 +569,7 @@ export const appRouter = router({
         category: z.enum(["documents", "bookings", "packing", "health", "finance", "other"]),
         dueDate: z.number().optional(),
         notes: z.string().optional(),
-        owner: z.enum(["shared", "yona_tzvi", "efi", "ruth", "michal"]).optional(),
+        owner: z.enum(["shared", "ofir", "ruth"]).optional(),
       }))
       .mutation(({ input }) => db.createChecklistItem(input)),
     
@@ -581,7 +581,7 @@ export const appRouter = router({
         completed: z.boolean().optional(),
         dueDate: z.number().optional(),
         notes: z.string().optional(),
-        owner: z.enum(["shared", "yona_tzvi", "efi", "ruth", "michal"]).optional(),
+        owner: z.enum(["shared", "ofir", "ruth"]).optional(),
       }))
       .mutation(({ input }) => {
         const { id, ...data } = input;
