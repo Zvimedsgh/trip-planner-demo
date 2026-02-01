@@ -275,10 +275,7 @@ export default function TripDetail() {
                     );
                   })}
                 </h1>
-                <div className="flex items-center justify-center gap-2 text-2xl md:text-3xl text-muted-foreground">
-                  <MapPin className="w-6 h-6" />
-                  <span>{trip.destination}</span>
-                </div>
+
               </div>
               <div className="flex flex-wrap items-center justify-center gap-4 text-muted-foreground">
                 <div className="flex items-center gap-1">

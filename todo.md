@@ -23,3 +23,8 @@
 - [x] Use storageGet() to generate presigned URL
 - [x] Update DocumentsTab to call new endpoint
 - [x] Ready to test after publishing
+
+## Bug - Destination Subtitle Reappeared
+- [x] Find where "Bratislava, Slovakia" subtitle is displayed
+- [x] Remove the subtitle from trip display (line 278-281 in TripDetail.tsx)
+- [x] Ready for testing
