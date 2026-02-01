@@ -17,10 +17,18 @@ export default function InviteLink() {
     { enabled: !!token }
   );
 
+  const utils = trpc.useUtils();
+  
   const joinTripMutation = trpc.collaborators.joinViaInvite.useMutation({
-    onSuccess: (data) => {
-      // Redirect to the trip page
-      navigate(`/trip/${data.tripId}`);
+    onSuccess: async (data) => {
+      // Invalidate all trip-related queries to refresh permissions
+      await utils.trips.invalidate();
+      await utils.collaborators.invalidate();
+      
+      // Small delay to ensure queries are refreshed
+      setTimeout(() => {
+        navigate(`/trip/${data.tripId}`);
+      }, 500);
     },
     onError: (error) => {
       console.error("Failed to join trip:", error);

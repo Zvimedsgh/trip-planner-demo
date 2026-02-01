@@ -39,3 +39,9 @@
 - [ ] Debug presigned URL generation logic
 - [ ] Verify S3 key extraction from fileUrl
 - [ ] Test document opening after fix
+
+## Bug - Invite Link Permission Error
+- [ ] Debug why invite link shows "permission denied" when users click it
+- [ ] Check InviteLink page authentication flow
+- [ ] Verify joinViaInvite endpoint is working correctly
+- [ ] Test invite link with new user account
