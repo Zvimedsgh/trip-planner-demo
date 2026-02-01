@@ -391,20 +391,15 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
                                 ))}
                               </div>
                             )}
-                            <button
-                              onClick={async () => {
-                                try {
-                                  const { url } = await utils.client.documents.getDownloadUrl.query({ fileKey: doc.fileKey });
-                                  window.open(url, '_blank');
-                                } catch (error) {
-                                  toast.error(language === "he" ? "שגיאה בפתיחת הקובץ" : "Error opening file");
-                                }
-                              }}
-                              className="inline-flex items-center gap-1 text-sm text-primary hover:underline cursor-pointer"
+                            <a 
+                              href={doc.fileUrl} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
                             >
                               <ExternalLink className="w-3 h-3" />
                               {language === "he" ? "פתח קובץ" : "Open file"}
-                            </button>
+                            </a>
                           </CardContent>
                         </Card>
                       );

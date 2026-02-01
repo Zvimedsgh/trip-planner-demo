@@ -14,3 +14,6 @@
 - [x] Add getDownloadUrl endpoint that returns presigned URLs
 - [x] Update DocumentsTab to use presigned URLs instead of direct CloudFront URLs
 - [x] Test document upload and access
+- [x] Debug why file reading still doesn't work (fileKey field doesn't exist)
+- [x] Reverted to using fileUrl directly
+- [ ] Note: If Access Denied persists, need to implement presigned URL generation from fileUrl
