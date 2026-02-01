@@ -1,0 +1,1 @@
+ALTER TABLE `documents` MODIFY COLUMN `category` enum('passport','visa','insurance','booking','ticket','restaurant','hotel','flights','other') NOT NULL;

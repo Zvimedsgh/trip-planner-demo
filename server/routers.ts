@@ -461,7 +461,7 @@ export const appRouter = router({
       .input(z.object({
         tripId: z.number(),
         name: z.string().min(1),
-        category: z.enum(["passport", "visa", "insurance", "booking", "ticket", "restaurant", "hotel", "other"]),
+        category: z.enum(["passport", "visa", "insurance", "booking", "ticket", "restaurant", "hotel", "flights", "other"]),
         fileUrl: z.string(),
         fileKey: z.string(),
         mimeType: z.string().optional(),
@@ -474,7 +474,7 @@ export const appRouter = router({
       .input(z.object({
         id: z.number(),
         name: z.string().min(1).optional(),
-        category: z.enum(["passport", "visa", "insurance", "booking", "ticket", "restaurant", "hotel", "other"]).optional(),
+        category: z.enum(["passport", "visa", "insurance", "booking", "ticket", "restaurant", "hotel", "flights", "other"]).optional(),
         tags: z.string().optional(),
         notes: z.string().optional(),
       }))
@@ -493,7 +493,7 @@ export const appRouter = router({
         fileName: z.string(),
         fileData: z.string(), // base64
         mimeType: z.string(),
-        category: z.enum(["passport", "visa", "insurance", "booking", "ticket", "restaurant", "hotel", "other"]),
+        category: z.enum(["passport", "visa", "insurance", "booking", "ticket", "restaurant", "hotel", "flights", "other"]),
         tags: z.string().optional(),
         notes: z.string().optional(),
       }))

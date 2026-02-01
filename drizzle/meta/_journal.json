@@ -246,6 +246,27 @@
       "when": 1769617061035,
       "tag": "0034_chunky_misty_knight",
       "breakpoints": true
+    },
+    {
+      "idx": 35,
+      "version": "5",
+      "when": 1769923568714,
+      "tag": "0035_motionless_luckman",
+      "breakpoints": true
+    },
+    {
+      "idx": 36,
+      "version": "5",
+      "when": 1769925096227,
+      "tag": "0036_aromatic_triathlon",
+      "breakpoints": true
+    },
+    {
+      "idx": 37,
+      "version": "5",
+      "when": 1769925463583,
+      "tag": "0037_huge_luke_cage",
+      "breakpoints": true
     }
   ]
 }
