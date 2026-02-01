@@ -1,0 +1,14 @@
+{
+  "query": "SELECT fileKey, fileUrl FROM documents LIMIT 1;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT fileKey, fileUrl FROM documents LIMIT 1;",
+  "rows": [
+    {
+      "fileKey": "documents/1/30001/SB_ds8LrLBWCLJZhtMPAG-מלון מיקולש.pdf",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/SB_ds8LrLBWCLJZhtMPAG-מלון מיקולש.pdf"
+    }
+  ],
+  "messages": [],
+  "stdout": "fileKey\tfileUrl\ndocuments/1/30001/SB_ds8LrLBWCLJZhtMPAG-מלון מיקולש.pdf\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/SB_ds8LrLBWCLJZhtMPAG-מלון מיקולש.pdf\n",
+  "stderr": "",
+  "execution_time_ms": 1653
+}

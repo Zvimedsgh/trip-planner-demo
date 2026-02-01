@@ -40,7 +40,7 @@ async function startServer() {
   app.get("/api/documents/:id/download", async (req, res) => {
     try {
       const { getDocument } = await import("../db");
-      const { storageGet } = await import("../storage");
+      const { ENV } = await import("./env");
       
       const documentId = parseInt(req.params.id);
       const document = await getDocument(documentId);
@@ -49,19 +49,29 @@ async function startServer() {
         return res.status(404).json({ error: "Document not found" });
       }
       
-      // Get presigned URL from storage
-      const { url: presignedUrl } = await storageGet(document.fileKey, 3600);
+      // Fetch file directly from Manus Storage API using authenticated request
+      // Storage API expects path in format: {uid}/{filePath}
+      const downloadUrl = new URL("v1/storage/download", ENV.forgeApiUrl.replace(/\/+$/, "") + "/");
+      const fullPath = `${ENV.ownerOpenId}/${document.fileKey}`;
+      downloadUrl.searchParams.set("path", fullPath);
       
-      // Fetch the file from S3 using the presigned URL
-      const fileResponse = await fetch(presignedUrl);
+      console.log("[Document Download] Fetching from Storage API:", downloadUrl.toString());
+      
+      const fileResponse = await fetch(downloadUrl, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${ENV.forgeApiKey}`,
+        },
+      });
       
       if (!fileResponse.ok) {
+        console.error("[Document Download] Storage API error:", fileResponse.status, await fileResponse.text());
         return res.status(500).json({ error: "Failed to fetch file from storage" });
       }
       
       // Stream the file to the client
       res.setHeader("Content-Type", document.mimeType || "application/octet-stream");
-      res.setHeader("Content-Disposition", `inline; filename="${document.name}"`);
+      res.setHeader("Content-Disposition", `inline; filename="${encodeURIComponent(document.name)}"`);
       
       const buffer = await fileResponse.arrayBuffer();
       res.send(Buffer.from(buffer));
