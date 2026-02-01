@@ -17,3 +17,9 @@
 - [x] Debug why file reading still doesn't work (fileKey field doesn't exist)
 - [x] Reverted to using fileUrl directly
 - [ ] Note: If Access Denied persists, need to implement presigned URL generation from fileUrl
+
+## Fix Document Access with Presigned URLs
+- [x] Implement server endpoint to extract S3 key from fileUrl
+- [x] Use storageGet() to generate presigned URL
+- [x] Update DocumentsTab to call new endpoint
+- [x] Ready to test after publishing

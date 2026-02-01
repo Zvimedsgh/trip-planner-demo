@@ -391,15 +391,25 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
                                 ))}
                               </div>
                             )}
-                            <a 
-                              href={doc.fileUrl} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
+                            <button
+                              onClick={async () => {
+                                try {
+                                  const result = await utils.client.documents.getDownloadUrl.query({ fileUrl: doc.fileUrl });
+                                  if (result?.url) {
+                                    window.open(result.url, '_blank');
+                                  } else {
+                                    toast.error(language === "he" ? "לא ניתן לקבל קישור לקובץ" : "Could not get file link");
+                                  }
+                                } catch (error) {
+                                  console.error('Error fetching download URL:', error);
+                                  toast.error(language === "he" ? "שגיאה בפתיחת הקובץ" : "Error opening file");
+                                }
+                              }}
+                              className="inline-flex items-center gap-1 text-sm text-primary hover:underline cursor-pointer bg-transparent border-none p-0"
                             >
                               <ExternalLink className="w-3 h-3" />
                               {language === "he" ? "פתח קובץ" : "Open file"}
-                            </a>
+                            </button>
                           </CardContent>
                         </Card>
                       );
