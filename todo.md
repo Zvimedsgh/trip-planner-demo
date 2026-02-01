@@ -1027,9 +1027,3 @@
 - [x] Fix trip duration calculation to count both start and end dates
 - [x] Example: Feb 4-7 should show "4 days" not "3 days"
 - [x] Update calculation logic to be inclusive of both dates
-
-## Documents - Add Flights Category
-- [x] Add 'flights' category to document schema
-- [x] Update DocumentsTab to include flights in category dropdown
-- [x] Update database enum to include flights
-- [x] Add translations for flights in English and Hebrew
