@@ -65,3 +65,9 @@
 - [x] Add tooltips to edit/delete buttons in RestaurantsTab
 - [x] Add tooltips to edit/delete buttons in DocumentsTab
 - [x] Test tooltips work on hover - Code implemented correctly, tooltips should appear on mouse hover
+
+## Bug - Misleading Tooltip Text for Document Upload
+- [x] Find document upload button tooltip that says "long press to change"
+- [x] Change tooltip text to "right-click to change" (more accurate)
+- [x] Update both Hebrew and English versions in all tabs (Hotels, Transportation, Sites, Restaurants)
+- [x] Test that tooltip shows correct text - Verified: now shows "right-click to change" instead of "long press"

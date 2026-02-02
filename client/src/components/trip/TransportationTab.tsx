@@ -821,7 +821,7 @@ export default function TransportationTab({ tripId, tripEndDate, highlightedId }
                               }
                             }}
                             title={linkedDoc
-                              ? (language === 'he' ? 'פתיחת מסמך (לחץ ארוך לשינוי)' : 'Open document (long press to change)')
+                              ? (language === 'he' ? 'פתיחת מסמך (לחיצה ימנית לשינוי)' : 'Open document (right-click to change)')
                               : (language === 'he' ? 'קישור מסמך' : 'Link document')
                             }
                           >
