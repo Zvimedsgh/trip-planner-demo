@@ -11,6 +11,7 @@ import { format } from "date-fns";
 import { Calendar, DollarSign, Edit, ExternalLink, FileText, Hotel, Images, Loader2, MapPin, Phone, Plus, Trash2, Upload, Image as ImageIcon, Link2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { DocumentLinkDialog } from "@/components/DocumentLinkDialog";
 import { ImageUploadDialog } from "@/components/ImageUploadDialog";
 import { GalleryManager } from "@/components/GalleryManager";
@@ -715,21 +716,35 @@ export default function HotelsTab({ tripId, highlightedId }: HotelsTabProps) {
                     >
                       <Images className="w-4 h-4" />
                     </Button>
-                    <Button size="icon" variant="ghost" className="h-8 w-8 text-white bg-amber-500/80 hover:bg-amber-600" onClick={() => openEdit(hotel)}>
-                      <Edit className="w-4 h-4" />
-                    </Button>
-                    <Button 
-                      size="icon" 
-                      variant="ghost" 
-                      className="h-8 w-8 text-white bg-red-500/80 hover:bg-red-600"
-                      onClick={() => {
-                        if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את המלון?" : "Are you sure you want to delete this hotel?")) {
-                          deleteMutation.mutate({ id: hotel.id });
-                        }
-                      }}
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button size="icon" variant="ghost" className="h-8 w-8 text-white bg-amber-500/80 hover:bg-amber-600" onClick={() => openEdit(hotel)}>
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{language === 'he' ? 'ערוך מלון' : 'Edit hotel'}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button 
+                          size="icon" 
+                          variant="ghost" 
+                          className="h-8 w-8 text-white bg-red-500/80 hover:bg-red-600"
+                          onClick={() => {
+                            if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את המלון?" : "Are you sure you want to delete this hotel?")) {
+                              deleteMutation.mutate({ id: hotel.id });
+                            }
+                          }}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{language === 'he' ? 'מחק מלון' : 'Delete hotel'}</p>
+                      </TooltipContent>
+                    </Tooltip>
                   </div>
                 </div>
                 

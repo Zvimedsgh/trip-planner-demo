@@ -57,3 +57,11 @@
 - [x] Fixed Slovakia trip dates in database to correct UTC timestamps
 - [x] Fixed date conversion in Home.tsx and Trips.tsx to use UTC midnight
 - [x] All new trips will now store dates as UTC midnight to prevent timezone issues
+
+## UX Enhancement - Add Tooltips to Icon Buttons
+- [x] Add tooltips to edit/delete buttons in HotelsTab
+- [x] Add tooltips to edit/delete buttons in TransportationTab
+- [x] Add tooltips to edit/delete buttons in TouristSitesTab
+- [x] Add tooltips to edit/delete buttons in RestaurantsTab
+- [x] Add tooltips to edit/delete buttons in DocumentsTab
+- [x] Test tooltips work on hover - Code implemented correctly, tooltips should appear on mouse hover

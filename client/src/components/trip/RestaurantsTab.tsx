@@ -11,6 +11,7 @@ import { format } from "date-fns";
 import { Calendar, DollarSign, Edit, ExternalLink, FileText, Image, Loader2, MapPin, Phone, Plus, Trash2, Users, Utensils } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { DocumentLinkDialog } from "@/components/DocumentLinkDialog";
 import { ImageUploadDialog } from "@/components/ImageUploadDialog";
 
@@ -515,21 +516,35 @@ export default function RestaurantsTab({ tripId, highlightedId }: RestaurantsTab
                     >
                       <Image className="w-3 h-3" />
                     </Button>
-                    <Button size="icon" variant="ghost" className="h-7 w-7 text-white bg-amber-500/80 hover:bg-amber-600" onClick={() => openEdit(restaurant)}>
-                      <Edit className="w-3 h-3" />
-                    </Button>
-                    <Button 
-                      size="icon" 
-                      variant="ghost" 
-                      className="h-7 w-7 text-white bg-red-500/80 hover:bg-red-600"
-                      onClick={() => {
-                        if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את המסעדה?" : "Are you sure you want to delete this restaurant?")) {
-                          deleteMutation.mutate({ id: restaurant.id });
-                        }
-                      }}
-                    >
-                      <Trash2 className="w-3 h-3" />
-                    </Button>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button size="icon" variant="ghost" className="h-7 w-7 text-white bg-amber-500/80 hover:bg-amber-600" onClick={() => openEdit(restaurant)}>
+                          <Edit className="w-3 h-3" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{language === 'he' ? 'ערוך מסעדה' : 'Edit restaurant'}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button 
+                          size="icon" 
+                          variant="ghost" 
+                          className="h-7 w-7 text-white bg-red-500/80 hover:bg-red-600"
+                          onClick={() => {
+                            if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את המסעדה?" : "Are you sure you want to delete this restaurant?")) {
+                              deleteMutation.mutate({ id: restaurant.id });
+                            }
+                          }}
+                        >
+                          <Trash2 className="w-3 h-3" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{language === 'he' ? 'מחק מסעדה' : 'Delete restaurant'}</p>
+                      </TooltipContent>
+                    </Tooltip>
                   </div>
                 </div>
               </CardHeader>

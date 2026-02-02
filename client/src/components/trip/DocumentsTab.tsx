@@ -11,6 +11,7 @@ import { format } from "date-fns";
 import { Edit, ExternalLink, File, FileText, Loader2, Plus, Shield, Ticket, Trash2, Upload, Hotel, Utensils } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface DocumentsTabProps {
   tripId: number;
@@ -363,21 +364,35 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
                                 </CardDescription>
                               </div>
                               <div className="flex gap-1">
-                                <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => openEdit(doc)}>
-                                  <Edit className="w-4 h-4" />
-                                </Button>
-                                <Button 
-                                  size="icon" 
-                                  variant="ghost" 
-                                  className="h-8 w-8 text-destructive"
-                                  onClick={() => {
-                                    if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את המסמך?" : "Are you sure you want to delete this document?")) {
-                                      deleteMutation.mutate({ id: doc.id });
-                                    }
-                                  }}
-                                >
-                                  <Trash2 className="w-4 h-4" />
-                                </Button>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => openEdit(doc)}>
+                                      <Edit className="w-4 h-4" />
+                                    </Button>
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>{language === 'he' ? 'ערוך מסמך' : 'Edit document'}</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <Button 
+                                      size="icon" 
+                                      variant="ghost" 
+                                      className="h-8 w-8 text-destructive hover:text-destructive"
+                                      onClick={() => {
+                                        if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את המסמך?" : "Are you sure you want to delete this document?")) {
+                                          deleteMutation.mutate({ id: doc.id });
+                                        }
+                                      }}
+                                    >
+                                      <Trash2 className="w-4 h-4" />
+                                    </Button>
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>{language === 'he' ? 'מחק מסמך' : 'Delete document'}</p>
+                                  </TooltipContent>
+                                </Tooltip>
                               </div>
                             </div>
                           </CardHeader>

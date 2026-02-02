@@ -10,6 +10,7 @@ import { format } from "date-fns";
 import { Calendar, Clock, Edit, ExternalLink, FileText, Image, Loader2, MapPin, Plus, Trash2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { DocumentLinkDialog } from "@/components/DocumentLinkDialog";
 import { ImageUploadDialog } from "@/components/ImageUploadDialog";
 
@@ -427,21 +428,35 @@ export default function TouristSitesTab({ tripId, highlightedId }: TouristSitesT
                       >
                         <Image className="w-3 h-3" />
                       </Button>
-                      <Button size="icon" variant="ghost" className="h-7 w-7 text-white bg-amber-500/80 hover:bg-amber-600" onClick={() => openEdit(site)}>
-                        <Edit className="w-3 h-3" />
-                      </Button>
-                      <Button 
-                        size="icon" 
-                        variant="ghost" 
-                        className="h-7 w-7 text-white bg-red-500/80 hover:bg-red-600"
-                        onClick={() => {
-                        if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את האתר?" : "Are you sure you want to delete this site?")) {
-                          deleteMutation.mutate({ id: site.id });
-                        }
-                      }}
-                      >
-                        <Trash2 className="w-3 h-3" />
-                      </Button>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button size="icon" variant="ghost" className="h-7 w-7 text-white bg-amber-500/80 hover:bg-amber-600" onClick={() => openEdit(site)}>
+                            <Edit className="w-3 h-3" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>{language === 'he' ? 'ערוך אתר' : 'Edit site'}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button 
+                            size="icon" 
+                            variant="ghost" 
+                            className="h-7 w-7 text-white bg-red-500/80 hover:bg-red-600"
+                            onClick={() => {
+                              if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את האתר?" : "Are you sure you want to delete this site?")) {
+                                deleteMutation.mutate({ id: site.id });
+                              }
+                            }}
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>{language === 'he' ? 'מחק אתר' : 'Delete site'}</p>
+                        </TooltipContent>
+                      </Tooltip>
                     </div>
                   </div>
                 </div>

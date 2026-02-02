@@ -11,6 +11,7 @@ import { format } from "date-fns";
 import { ArrowRight, Bus, Calendar, Car, Clock, DollarSign, Edit, ExternalLink, FileText, Loader2, Plane, Plus, RotateCcw, Ship, Train, Trash2 } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { toast } from "sonner";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { DocumentLinkDialog } from "@/components/DocumentLinkDialog";
 
 interface TransportationTabProps {
@@ -828,16 +829,30 @@ export default function TransportationTab({ tripId, tripEndDate, highlightedId }
                           </Button>
                         );
                       })()}
-                      <Button size="icon" variant="ghost" className="h-7 w-7 text-white bg-amber-500/80 hover:bg-amber-600" onClick={() => openEdit(transport)}>
-                        <Edit className="w-3 h-3" />
-                      </Button>
-                      <Button size="icon" variant="ghost" className="h-7 w-7 text-white bg-red-500/80 hover:bg-red-600" onClick={() => {
-                        if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את הטיסה/הסעה?" : "Are you sure you want to delete this transportation?")) {
-                          deleteMutation.mutate({ id: transport.id });
-                        }
-                      }}>
-                        <Trash2 className="w-3 h-3" />
-                      </Button>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button size="icon" variant="ghost" className="h-7 w-7 text-white bg-amber-500/80 hover:bg-amber-600" onClick={() => openEdit(transport)}>
+                            <Edit className="w-3 h-3" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>{language === 'he' ? 'ערוך תחבורה' : 'Edit transportation'}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button size="icon" variant="ghost" className="h-7 w-7 text-white bg-red-500/80 hover:bg-red-600" onClick={() => {
+                            if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את התחבורה?" : "Are you sure you want to delete this transportation?")) {
+                              deleteMutation.mutate({ id: transport.id });
+                            }
+                          }}>
+                            <Trash2 className="w-3 h-3" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>{language === 'he' ? 'מחק תחבורה' : 'Delete transportation'}</p>
+                        </TooltipContent>
+                      </Tooltip>
                     </div>
                   </div>
                 </div>
