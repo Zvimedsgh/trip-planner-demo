@@ -86,8 +86,8 @@ export default function Trips() {
     createMutation.mutate({
       name: formData.name,
       destination: formData.destination,
-      startDate: new Date(formData.startDate).getTime(),
-      endDate: new Date(formData.endDate).getTime(),
+      startDate: new Date(formData.startDate + 'T00:00:00.000Z').getTime(),
+      endDate: new Date(formData.endDate + 'T00:00:00.000Z').getTime(),
       description: formData.description || undefined,
     });
   };
@@ -102,8 +102,8 @@ export default function Trips() {
       id: editingTrip,
       name: formData.name,
       destination: formData.destination,
-      startDate: new Date(formData.startDate).getTime(),
-      endDate: new Date(formData.endDate).getTime(),
+      startDate: new Date(formData.startDate + 'T00:00:00.000Z').getTime(),
+      endDate: new Date(formData.endDate + 'T00:00:00.000Z').getTime(),
       description: formData.description || undefined,
     });
   };

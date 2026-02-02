@@ -51,3 +51,9 @@
 - [x] Fix generateShareLink mutation to return token value
 - [x] Update frontend to handle returned token
 - [x] Test with multiple trips - WORKING! Links are generated successfully
+
+## Bug - Trip Duration Showing Wrong Number of Days
+- [x] Debug Slovakia trip showing 10 days instead of 9 (Sep 1-9) - timezone issue
+- [x] Fixed Slovakia trip dates in database to correct UTC timestamps
+- [x] Fixed date conversion in Home.tsx and Trips.tsx to use UTC midnight
+- [x] All new trips will now store dates as UTC midnight to prevent timezone issues

@@ -1,0 +1,17 @@
+{
+  "query": "SELECT id, name, startDate, endDate, (endDate - startDate) / (1000 * 60 * 60 * 24) as days_diff FROM trips WHERE name LIKE '%Slovakia%';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, startDate, endDate, (endDate - startDate) / (1000 * 60 * 60 * 24) as days_diff FROM trips WHERE name LIKE '%Slovakia%';",
+  "rows": [
+    {
+      "id": "30001",
+      "name": "Goren Roots Trip to Slovakia",
+      "startDate": "1788220800000",
+      "endDate": "1788948000000",
+      "days_diff": "8.4167"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tstartDate\tendDate\tdays_diff\n30001\tGoren Roots Trip to Slovakia\t1788220800000\t1788948000000\t8.4167\n",
+  "stderr": "",
+  "execution_time_ms": 1521
+}

@@ -86,8 +86,8 @@ export default function Home() {
     createTripMutation.mutate({
       name: newTripName,
       destination: newTripDestination,
-      startDate: new Date(newTripStartDate).getTime(),
-      endDate: new Date(newTripEndDate).getTime(),
+      startDate: new Date(newTripStartDate + 'T00:00:00.000Z').getTime(),
+      endDate: new Date(newTripEndDate + 'T00:00:00.000Z').getTime(),
     });
   };
   
