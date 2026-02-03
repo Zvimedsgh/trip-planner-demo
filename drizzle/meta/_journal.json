@@ -274,6 +274,13 @@
       "when": 1769955356964,
       "tag": "0038_chemical_exodus",
       "breakpoints": true
+    },
+    {
+      "idx": 39,
+      "version": "5",
+      "when": 1770125068074,
+      "tag": "0039_classy_landau",
+      "breakpoints": true
     }
   ]
 }

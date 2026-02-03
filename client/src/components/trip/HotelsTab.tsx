@@ -589,6 +589,34 @@ export default function HotelsTab({ tripId, highlightedId }: HotelsTabProps) {
                     </div>
                   </div>
                   <div className="flex flex-wrap gap-1">
+                    {/* Document count badge */}
+                    {(() => {
+                      const docCount = documents?.filter(d => d.hotelId === hotel.id).length || 0;
+                      if (docCount === 0) return null;
+                      return (
+                        <a
+                          href={`#documents-hotel-${hotel.id}`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            // Switch to documents tab and filter by this hotel
+                            const documentsTab = document.querySelector('[value="documents"]') as HTMLButtonElement;
+                            if (documentsTab) {
+                              documentsTab.click();
+                              // Wait for tab to render, then trigger hotel filter
+                              setTimeout(() => {
+                                const hotelFilterBtn = document.querySelector(`[data-hotel-filter="${hotel.id}"]`) as HTMLButtonElement;
+                                if (hotelFilterBtn) hotelFilterBtn.click();
+                              }, 100);
+                            }
+                          }}
+                          className="h-8 px-2.5 rounded-md bg-purple-500/80 hover:bg-purple-600 text-white text-xs font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
+                          title={language === 'he' ? `${docCount} מסמכים` : `${docCount} documents`}
+                        >
+                          <FileText className="w-3.5 h-3.5" />
+                          {docCount}
+                        </a>
+                      );
+                    })()}
                     {/* Document link button */}
                     {(() => {
                       // Only use explicitly linked documents

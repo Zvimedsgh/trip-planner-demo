@@ -499,6 +499,7 @@ export const appRouter = router({
         category: z.enum(["passport", "visa", "insurance", "booking", "ticket", "restaurant", "hotel", "flights", "other"]),
         tags: z.string().optional(),
         notes: z.string().optional(),
+        hotelId: z.number().optional(),
       }))
       .mutation(async ({ ctx, input }) => {
         const buffer = Buffer.from(input.fileData, "base64");
@@ -514,6 +515,7 @@ export const appRouter = router({
           mimeType: input.mimeType,
           tags: input.tags,
           notes: input.notes,
+          hotelId: input.hotelId,
         });
       }),
   }),

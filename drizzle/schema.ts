@@ -235,6 +235,7 @@ export const documents = mysqlTable("documents", {
   tags: text("tags"), // JSON array of tags
   notes: text("notes"),
   coverImage: varchar("coverImage", { length: 500 }),
+  hotelId: int("hotelId"), // Optional link to specific hotel
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });

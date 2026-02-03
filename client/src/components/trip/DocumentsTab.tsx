@@ -66,6 +66,9 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [createCategory, setCreateCategory] = useState<CategoryType>("other");
   const [editCategory, setEditCategory] = useState<CategoryType>("other");
+  const [createHotelId, setCreateHotelId] = useState<number | null>(null);
+  const [editHotelId, setEditHotelId] = useState<number | null>(null);
+  const [hotelFilter, setHotelFilter] = useState<number | null>(null); // null = show all
 
   const [editDefaults, setEditDefaults] = useState({
     name: "",
@@ -75,6 +78,7 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
 
   const utils = trpc.useUtils();
   const { data: documents, isLoading } = trpc.documents.list.useQuery({ tripId });
+  const { data: hotels } = trpc.hotels.list.useQuery({ tripId });
 
   // Track which folders are open (all open by default)
   const [openFolders, setOpenFolders] = useState<Set<CategoryType>>(new Set<CategoryType>(["passport", "visa", "insurance", "booking", "ticket", "restaurant", "hotel", "flights", "other"]));
@@ -91,12 +95,17 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
     });
   };
 
+  // Filter documents by hotel if filter is active
+  const filteredDocuments = documents?.filter(doc => 
+    hotelFilter === null || doc.hotelId === hotelFilter
+  );
+
   // Group documents by category
-  const documentsByCategory = documents?.reduce((acc, doc) => {
+  const documentsByCategory = filteredDocuments?.reduce((acc, doc) => {
     if (!acc[doc.category]) acc[doc.category] = [];
     acc[doc.category].push(doc);
     return acc;
-  }, {} as Record<CategoryType, typeof documents>);
+  }, {} as Record<CategoryType, typeof filteredDocuments>);
 
   const uploadMutation = trpc.documents.upload.useMutation({
     onSuccess: () => {
@@ -167,6 +176,7 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
         category: createCategory,
         tags: getFormValue("tags") || undefined,
         notes: getFormValue("notes") || undefined,
+        hotelId: createHotelId || undefined,
       });
     };
     reader.readAsDataURL(selectedFile);
@@ -218,7 +228,7 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
         }}
       />
       <div className="relative">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-semibold">{t("documents")}</h2>
         <Dialog open={isCreateOpen} onOpenChange={(open) => {
           setIsCreateOpen(open);
@@ -278,6 +288,25 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
                 </Select>
               </div>
               <div className="grid gap-2">
+                <Label>{language === "he" ? "קישור למלון (אופציונלי)" : "Link to Hotel (Optional)"}</Label>
+                <Select 
+                  value={createHotelId?.toString() || "none"} 
+                  onValueChange={(v) => setCreateHotelId(v === "none" ? null : Number(v))}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder={language === "he" ? "ללא קישור" : "No link"} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">{language === "he" ? "ללא קישור" : "No link"}</SelectItem>
+                    {hotels?.map((hotel) => (
+                      <SelectItem key={hotel.id} value={hotel.id.toString()}>
+                        {hotel.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid gap-2">
                 <Label>{t("tags")}</Label>
                 <Input
                   name="tags"
@@ -305,7 +334,44 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
         </Dialog>
       </div>
 
-      {documents && documents.length > 0 ? (
+      {/* Hotel Filter Buttons */}
+      {hotels && hotels.length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-4">
+          <Button
+            variant={hotelFilter === null ? "default" : "outline"}
+            size="sm"
+            onClick={() => setHotelFilter(null)}
+          >
+            {language === "he" ? "כל המסמכים" : "All Documents"}
+            {documents && (
+              <span className="ml-2 px-1.5 py-0.5 text-xs rounded-full bg-background/20">
+                {documents.length}
+              </span>
+            )}
+          </Button>
+          {hotels.map((hotel) => {
+            const count = documents?.filter(d => d.hotelId === hotel.id).length || 0;
+            if (count === 0) return null;
+            return (
+              <Button
+                key={hotel.id}
+                variant={hotelFilter === hotel.id ? "default" : "outline"}
+                size="sm"
+                onClick={() => setHotelFilter(hotel.id)}
+                data-hotel-filter={hotel.id}
+              >
+                <Hotel className="w-3 h-3 mr-1.5" />
+                {hotel.name}
+                <span className="ml-2 px-1.5 py-0.5 text-xs rounded-full bg-background/20">
+                  {count}
+                </span>
+              </Button>
+            );
+          })}
+        </div>
+      )}
+
+      {filteredDocuments && filteredDocuments.length > 0 ? (
         <div className="space-y-4">
           {(Object.keys(categoryIcons) as CategoryType[]).map((category) => {
             const docsInCategory = documentsByCategory?.[category] || [];

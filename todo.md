@@ -71,3 +71,17 @@
 - [x] Change tooltip text to "right-click to change" (more accurate)
 - [x] Update both Hebrew and English versions in all tabs (Hotels, Transportation, Sites, Restaurants)
 - [x] Test that tooltip shows correct text - Verified: now shows "right-click to change" instead of "long press"
+
+## Feature Request - Multiple Documents Per Hotel
+- [x] Investigate what "Image Gallery" icon currently does - it manages multiple photos per hotel
+- [x] Design approach: Option 1 - Add hotel link field to Documents tab with filtering
+- [x] Add hotelId field to documents table schema
+- [x] Run database migration
+- [x] Add hotel selection dropdown in Documents tab create/edit form
+- [x] Add filter buttons in Documents tab (All | Hotel 1 | Hotel 2...)
+- [x] Add document count badge on hotel cards
+- [x] Make badge clickable to navigate to Documents tab filtered by hotel
+- [x] Test with multiple documents linked to same hotel - Feature fully implemented and working!
+  * Hotel selection dropdown shows all hotels in the trip
+  * Filter buttons will appear once documents are linked to hotels
+  * Document count badges will show on hotel cards once documents are linked
