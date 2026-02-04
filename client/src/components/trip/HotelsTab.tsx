@@ -34,9 +34,10 @@ const CURRENCIES = [
 interface HotelsTabProps {
   tripId: number;
   highlightedId?: number | null;
+  onNavigateToDocuments?: (hotelId: number) => void;
 }
 
-export default function HotelsTab({ tripId, highlightedId }: HotelsTabProps) {
+export default function HotelsTab({ tripId, highlightedId, onNavigateToDocuments }: HotelsTabProps) {
   const { t, language, isRTL } = useLanguage();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -594,19 +595,15 @@ export default function HotelsTab({ tripId, highlightedId }: HotelsTabProps) {
                       const docCount = documents?.filter(d => d.hotelId === hotel.id).length || 0;
                       if (docCount === 0) return null;
                       return (
-                        <a
-                          href={`#documents-hotel-${hotel.id}`}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            // Switch to documents tab and filter by this hotel
-                            const documentsTab = document.querySelector('[value="documents"]') as HTMLButtonElement;
-                            if (documentsTab) {
-                              documentsTab.click();
+                        <button
+                          onClick={() => {
+                            if (onNavigateToDocuments) {
+                              onNavigateToDocuments(hotel.id);
                               // Wait for tab to render, then trigger hotel filter
                               setTimeout(() => {
                                 const hotelFilterBtn = document.querySelector(`[data-hotel-filter="${hotel.id}"]`) as HTMLButtonElement;
                                 if (hotelFilterBtn) hotelFilterBtn.click();
-                              }, 100);
+                              }, 200);
                             }
                           }}
                           className="h-8 px-2.5 rounded-md bg-purple-500/80 hover:bg-purple-600 text-white text-xs font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
@@ -614,7 +611,7 @@ export default function HotelsTab({ tripId, highlightedId }: HotelsTabProps) {
                         >
                           <FileText className="w-3.5 h-3.5" />
                           {docCount}
-                        </a>
+                        </button>
                       );
                     })()}
                     {/* Document link button */}

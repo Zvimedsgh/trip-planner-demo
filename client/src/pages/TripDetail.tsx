@@ -386,7 +386,7 @@ export default function TripDetail() {
           </TabsContent>
 
           <TabsContent value="hotels">
-            <HotelsTab tripId={tripId} highlightedId={highlightedActivityId} />
+            <HotelsTab tripId={tripId} highlightedId={highlightedActivityId} onNavigateToDocuments={(hotelId) => setDefaultTab('documents')} />
           </TabsContent>
 
           <TabsContent value="transport">

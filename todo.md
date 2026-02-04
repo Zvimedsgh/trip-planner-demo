@@ -85,3 +85,16 @@
   * Hotel selection dropdown shows all hotels in the trip
   * Filter buttons will appear once documents are linked to hotels
   * Document count badges will show on hotel cards once documents are linked
+
+## Bug - Multiple Documents Feature Not Showing on Published Site
+- [ ] Check published site to see what's missing
+- [ ] Verify hotel dropdown appears in Documents upload dialog
+- [ ] Verify filter buttons appear in Documents tab
+- [ ] Check if there's a deployment or build issue
+- [ ] Fix and test in preview before republishing
+
+## Bug - Purple Document Badge Not Navigating to Documents Tab
+- [x] Debug why clicking purple badge on hotel card doesn't navigate - DOM manipulation not reliable
+- [x] Check if tab switching logic is working - replaced with React callback
+- [x] Fix navigation implementation - using onNavigateToDocuments prop
+- [x] Test on Charming & Cosy hotel - WORKING PERFECTLY! Badge navigates to Documents tab and auto-filters
