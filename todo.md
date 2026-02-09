@@ -168,3 +168,11 @@
 - [x] Store location data instead of route data in mapData
 - [x] Update map display to show area instead of route line
 - [x] Test with various route names (Spa, Vivendi Waterpark, etc.)
+
+## Feature - Show Route Lines Between Cities
+- [x] Check current route naming patterns in database
+- [x] Update logic to detect city-to-city routes (with arrow)
+- [x] For city routes: show driving route line on map
+- [x] For single locations: show marker only
+- [x] Use city names (not specific hotel addresses)
+- [ ] Plan for future: add POI markers along routes

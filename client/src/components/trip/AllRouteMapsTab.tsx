@@ -181,11 +181,16 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
               <div className="flex-1 rounded-lg overflow-hidden border-2 border-gray-200">
                 <MapView
                   initialCenter={(() => {
-                    // Parse mapData to get location coordinates
+                    // Parse mapData to get initial center
                     if (selectedRoute.mapData) {
                       try {
                         const mapConfig = JSON.parse(selectedRoute.mapData);
-                        if (mapConfig?.location?.coordinates) {
+                        // For routes, use origin location
+                        if (mapConfig?.type === 'route' && mapConfig?.origin?.location) {
+                          return mapConfig.origin.location;
+                        }
+                        // For single locations, use coordinates
+                        if (mapConfig?.type === 'location' && mapConfig?.location?.coordinates) {
                           return mapConfig.location.coordinates;
                         }
                       } catch (e) {
@@ -195,7 +200,21 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
                     // Default to Slovakia center if no mapData
                     return { lat: 48.6690, lng: 19.6990 };
                   })()}
-                  initialZoom={13}
+                  initialZoom={(() => {
+                    // Parse mapData to determine zoom level
+                    if (selectedRoute.mapData) {
+                      try {
+                        const mapConfig = JSON.parse(selectedRoute.mapData);
+                        // Routes need wider view
+                        if (mapConfig?.type === 'route') return 8;
+                        // Locations can be closer
+                        if (mapConfig?.type === 'location') return 13;
+                      } catch (e) {
+                        // Ignore
+                      }
+                    }
+                    return 10;
+                  })()}
                   onMapReady={(map: any) => {
                     const google = (window as any).google;
                     // Parse mapData if it exists
@@ -208,8 +227,27 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
                       }
                     }
                     
-                    // If we have location data, show marker
-                    if (mapConfig?.location?.coordinates) {
+                    if (mapConfig?.type === 'route') {
+                      // ROUTE: Show driving directions with blue line
+                      const directionsService = new google.maps.DirectionsService();
+                      const directionsRenderer = new google.maps.DirectionsRenderer({
+                        map: map,
+                        suppressMarkers: false,
+                      });
+                      
+                      const request: google.maps.DirectionsRequest = {
+                        origin: mapConfig.origin.location,
+                        destination: mapConfig.destination.location,
+                        travelMode: google.maps.TravelMode.DRIVING,
+                      };
+                      
+                      directionsService.route(request, (result: any, status: any) => {
+                        if (status === google.maps.DirectionsStatus.OK && result) {
+                          directionsRenderer.setDirections(result);
+                        }
+                      });
+                    } else if (mapConfig?.type === 'location') {
+                      // LOCATION: Show single marker
                       const marker = new google.maps.marker.AdvancedMarkerElement({
                         map: map,
                         position: mapConfig.location.coordinates,
