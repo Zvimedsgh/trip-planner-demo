@@ -98,3 +98,14 @@
 - [x] Check if tab switching logic is working - replaced with React callback
 - [x] Fix navigation implementation - using onNavigateToDocuments prop
 - [x] Test on Charming & Cosy hotel - WORKING PERFECTLY! Badge navigates to Documents tab and auto-filters
+
+## Feature - Dynamic Traveler Management System
+- [x] Design trip_travelers table schema (tripId, name, identifier, sortOrder)
+- [x] Add trip_travelers table to drizzle/schema.ts
+- [x] Run database migration (created table manually via SQL)
+- [ ] Create UI component for managing travelers in trip settings
+- [ ] Update ChecklistTab to read travelers from database instead of hard-coded enum
+- [ ] Migrate existing checklist data to use new traveler system
+- [x] Add default travelers for Slovakia trip (Shared, Tzvi & Yona, Efi, Ruth, Michal)
+- [ ] Test creating new trips with custom travelers
+- [ ] Test checklist assignment with dynamic travelers

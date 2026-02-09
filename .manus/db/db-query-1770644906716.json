@@ -1,0 +1,9 @@
+{
+  "query": "CREATE TABLE `trip_travelers` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`tripId` int NOT NULL,\n\t`name` varchar(100) NOT NULL,\n\t`identifier` varchar(50) NOT NULL,\n\t`sortOrder` int NOT NULL DEFAULT 0,\n\t`createdAt` timestamp NOT NULL DEFAULT (now()),\n\t`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,\n\tCONSTRAINT `trip_travelers_id` PRIMARY KEY(`id`)\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute CREATE TABLE `trip_travelers` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`tripId` int NOT NULL,\n\t`name` varchar(100) NOT NULL,\n\t`identifier` varchar(50) NOT NULL,\n\t`sortOrder` int NOT NULL DEFAULT 0,\n\t`createdAt` timestamp NOT NULL DEFAULT (now()),\n\t`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,\n\tCONSTRAINT `trip_travelers_id` PRIMARY KEY(`id`)\n);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1636
+}

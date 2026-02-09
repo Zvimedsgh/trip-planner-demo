@@ -263,6 +263,22 @@ export type TripCollaborator = typeof tripCollaborators.$inferSelect;
 export type InsertTripCollaborator = typeof tripCollaborators.$inferInsert;
 
 /**
+ * Trip travelers table - manages travelers/participants for each trip
+ */
+export const tripTravelers = mysqlTable("trip_travelers", {
+  id: int("id").autoincrement().primaryKey(),
+  tripId: int("tripId").notNull(),
+  name: varchar("name", { length: 100 }).notNull(), // Display name (e.g., "Tzvi & Yona", "Efi", "Ruth")
+  identifier: varchar("identifier", { length: 50 }).notNull(), // Unique identifier for checklist assignment (e.g., "tzvi_yona", "efi")
+  sortOrder: int("sortOrder").default(0).notNull(), // Display order in UI
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type TripTraveler = typeof tripTravelers.$inferSelect;
+export type InsertTripTraveler = typeof tripTravelers.$inferInsert;
+
+/**
  * Routes table - driving routes between destinations
  */
 export const routes = mysqlTable("trip_routes", {
