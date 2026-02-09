@@ -638,7 +638,7 @@ export const appRouter = router({
 
   // ============ ROUTES ============
   routes: router({
-    // Generate route data from route name (origin → destination)
+    // Generate location data from route name (geocoding)
     generateRouteFromName: protectedProcedure
       .input(z.object({ routeId: z.number() }))
       .mutation(async ({ ctx, input }) => {
@@ -648,53 +648,51 @@ export const appRouter = router({
         const trip = await db.getTripById(route.tripId, ctx.user.id);
         if (!trip) throw new Error('Trip not found or access denied');
         
-        // Parse route name to extract origin and destination
-        // Format: "Origin → Destination" or "Origin -> Destination"
-        const parts = route.name.split(/→|->/).map(p => p.trim());
-        if (parts.length !== 2) {
-          throw new Error('Route name must be in format: "Origin → Destination"');
+        // Extract location name from route name
+        // Handle formats: "Day 3: Spa", "Vivendi Waterpark Dešenova", "Route 1: City → City"
+        let locationName = route.name;
+        
+        // Remove "Day X:" prefix if exists
+        locationName = locationName.replace(/^Day \d+:\s*/i, '');
+        
+        // Remove "Route X:" prefix if exists
+        locationName = locationName.replace(/^Route \d+:\s*/i, '');
+        
+        // If contains arrow, take the first part (origin)
+        if (locationName.includes('→') || locationName.includes('->')) {
+          const parts = locationName.split(/→|->/).map(p => p.trim());
+          locationName = parts[0];
         }
         
-        const [origin, destination] = parts;
-        
-        // Call Google Maps Directions API
+        // Call Google Maps Geocoding API to get location
         const { makeRequest } = await import('./_core/map');
-        const directionsResult = await makeRequest<any>(
-          '/maps/api/directions/json',
+        const geocodingResult = await makeRequest<any>(
+          '/maps/api/geocode/json',
           {
-            origin,
-            destination,
-            mode: 'driving',
+            address: `${locationName}, Slovakia`, // Add country for better results
           }
         );
         
-        if (directionsResult.status !== 'OK' || !directionsResult.routes?.[0]) {
-          throw new Error(`Failed to get directions: ${directionsResult.status}`);
+        if (geocodingResult.status !== 'OK' || !geocodingResult.results?.[0]) {
+          throw new Error(`Failed to find location: ${geocodingResult.status}`);
         }
         
-        const routeData = directionsResult.routes[0];
-        const leg = routeData.legs[0];
+        const location = geocodingResult.results[0];
         
-        // Create mapData object
+        // Create mapData object with location info
         const mapData = {
-          origin: {
-            address: leg.start_address,
-            location: leg.start_location,
+          location: {
+            name: locationName,
+            address: location.formatted_address,
+            coordinates: location.geometry.location,
+            placeId: location.place_id,
           },
-          destination: {
-            address: leg.end_address,
-            location: leg.end_location,
-          },
-          distance: leg.distance,
-          duration: leg.duration,
-          polyline: routeData.overview_polyline.points,
+          type: 'location', // Not a route, just a location
         };
         
         // Update route with mapData
         await db.updateRoute(input.routeId, {
           mapData: JSON.stringify(mapData),
-          distanceKm: (leg.distance.value / 1000).toFixed(1),
-          estimatedDuration: Math.round(leg.duration.value / 60), // minutes
         });
         
         return { success: true, mapData };

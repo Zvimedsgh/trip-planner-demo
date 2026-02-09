@@ -161,3 +161,10 @@
 - [x] Add error handling with retry option
 - [x] Test with Slovakia routes
 - [x] Fix map center to show correct location instead of San Francisco
+
+## Feature - Change Route Maps to Location-Based Maps
+- [x] Update generateRouteFromName to use geocoding instead of directions
+- [x] Extract city name from route name (handle various formats)
+- [x] Store location data instead of route data in mapData
+- [x] Update map display to show area instead of route line
+- [x] Test with various route names (Spa, Vivendi Waterpark, etc.)

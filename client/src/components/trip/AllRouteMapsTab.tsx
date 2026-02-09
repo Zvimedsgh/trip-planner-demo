@@ -4,7 +4,7 @@ import { MapView } from "../Map";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { MapPin, Navigation, Calendar, Clock } from "lucide-react";
+import { MapPin, Calendar, Clock } from "lucide-react";
 import { format } from "date-fns";
 
 interface AllRouteMapsTabProps {
@@ -24,7 +24,7 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
     refetch();
   }, [tripId, refetch]);
   
-  // Handle route card click - generate route if needed before opening dialog
+  // Handle route card click - generate location if needed before opening dialog
   const handleRouteClick = async (route: any) => {
     // If route already has mapData, just open it
     if (route.mapData) {
@@ -32,7 +32,7 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
       return;
     }
     
-    // Otherwise, generate the route first
+    // Otherwise, generate the location first
     setGeneratingRoute(true);
     try {
       await generateRouteMutation.mutateAsync({ routeId: route.id });
@@ -44,10 +44,10 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
         setSelectedRoute(updatedRoute);
       }
     } catch (error: any) {
-      console.error("Failed to generate route:", error);
+      console.error("Failed to generate location:", error);
       alert(language === "he" 
-        ? `שגיאה ביצירת מסלול: ${error.message || "נסה שוב מאוחר יותר"}`
-        : `Failed to generate route: ${error.message || "Please try again later"}`
+        ? `שגיאה במציאת המיקום: ${error.message || "נסה שוב מאוחר יותר"}`
+        : `Failed to find location: ${error.message || "Please try again later"}`
       );
     } finally {
       setGeneratingRoute(false);
@@ -60,15 +60,15 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
       <div className="flex flex-col items-center justify-center py-16 px-4">
         <div className="text-center space-y-4 max-w-md">
           <div className="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
-            <Navigation className="w-12 h-12 text-blue-600" />
+            <MapPin className="w-12 h-12 text-blue-600" />
           </div>
           <h3 className="text-2xl font-semibold text-gray-800">
-            {language === "he" ? "אין מסלולים עדיין" : "No Routes Yet"}
+            {language === "he" ? "אין מיקומים עדיין" : "No Locations Yet"}
           </h3>
           <p className="text-gray-600">
             {language === "he" 
-              ? "עבור לטאב 'Route Manager' כדי להוסיף מסלולי נסיעה לטיול שלך"
-              : "Go to 'Route Manager' tab to add driving routes to your trip"}
+              ? "עבור לטאב 'Route Manager' כדי להוסיף מיקומים ופעילויות לטיול שלך"
+              : "Go to 'Route Manager' tab to add locations and activities to your trip"}
           </p>
         </div>
       </div>
@@ -95,12 +95,12 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
       {/* Header */}
       <div className="relative z-10">
         <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-          {language === "he" ? "מפות מסלולים" : "Route Maps"}
+          {language === "he" ? "מפות מיקומים" : "Location Maps"}
         </h2>
         <p className="text-gray-600 mt-2">
           {language === "he" 
-            ? "לחץ על כרטיס כדי לראות את המפה המלאה עם נקודות עניין"
-            : "Click on a card to view the full map with points of interest"}
+            ? "לחץ על כרטיס כדי לראות את המפה של המיקום"
+            : "Click on a card to view the location on the map"}
         </p>
       </div>
 
@@ -110,18 +110,18 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
           <div className="bg-white rounded-lg p-8 text-center space-y-4 max-w-sm">
             <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto" />
             <p className="text-gray-800 font-semibold text-lg">
-              {language === "he" ? "יוצר מסלול..." : "Generating route..."}
+              {language === "he" ? "מחפש מיקום..." : "Finding location..."}
             </p>
             <p className="text-gray-600 text-sm">
               {language === "he" 
-                ? "מחשב את המסלול עם Google Maps"
-                : "Calculating route with Google Maps"}
+                ? "מאתר את המיקום עם Google Maps"
+                : "Locating with Google Maps"}
             </p>
           </div>
         </div>
       )}
 
-      {/* Route Cards Grid */}
+      {/* Location Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
         {routes.map((route, index) => {
           const gradient = gradients[index % gradients.length];
@@ -136,7 +136,7 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
             >
               <div className={`h-32 bg-gradient-to-br ${gradient} flex items-center justify-center relative overflow-hidden`}>
                 <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-all duration-300" />
-                <Navigation className="w-16 h-16 text-white drop-shadow-lg transform group-hover:rotate-45 transition-transform duration-300" />
+                <MapPin className="w-16 h-16 text-white drop-shadow-lg transform group-hover:scale-110 transition-transform duration-300" />
               </div>
               <CardContent className="p-4 space-y-3">
                 <h3 className="font-bold text-lg text-gray-800 line-clamp-2 min-h-[3.5rem]">
@@ -160,16 +160,6 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
                     <span>{route.time}</span>
                   </div>
                 )}
-                
-                {route.distanceKm && (
-                  <div className="flex items-center gap-2 text-sm text-gray-500">
-                    <MapPin className="w-4 h-4" />
-                    <span>
-                      {route.distanceKm} km
-                      {route.estimatedDuration && ` • ${Math.floor(route.estimatedDuration / 60)}h ${route.estimatedDuration % 60}m`}
-                    </span>
-                  </div>
-                )}
               </CardContent>
             </Card>
           );
@@ -191,21 +181,21 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
               <div className="flex-1 rounded-lg overflow-hidden border-2 border-gray-200">
                 <MapView
                   initialCenter={(() => {
-                    // Parse mapData to get initial center
+                    // Parse mapData to get location coordinates
                     if (selectedRoute.mapData) {
                       try {
                         const mapConfig = JSON.parse(selectedRoute.mapData);
-                        if (mapConfig?.origin?.location) {
-                          return mapConfig.origin.location;
+                        if (mapConfig?.location?.coordinates) {
+                          return mapConfig.location.coordinates;
                         }
                       } catch (e) {
                         console.error("Failed to parse mapData:", e);
                       }
                     }
-                    // Default to San Francisco if no mapData
-                    return { lat: 37.7749, lng: -122.4194 };
+                    // Default to Slovakia center if no mapData
+                    return { lat: 48.6690, lng: 19.6990 };
                   })()}
-                  initialZoom={8}
+                  initialZoom={13}
                   onMapReady={(map: any) => {
                     const google = (window as any).google;
                     // Parse mapData if it exists
@@ -218,56 +208,34 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
                       }
                     }
                     
-                    // If we have map configuration with origin/destination, show directions
-                    if (mapConfig?.origin && mapConfig?.destination) {
-                      const directionsService = new google.maps.DirectionsService();
-                      const directionsRenderer = new google.maps.DirectionsRenderer({
+                    // If we have location data, show marker
+                    if (mapConfig?.location?.coordinates) {
+                      const marker = new google.maps.marker.AdvancedMarkerElement({
                         map: map,
-                        suppressMarkers: false,
+                        position: mapConfig.location.coordinates,
+                        title: mapConfig.location.name,
                       });
                       
-                      const request: google.maps.DirectionsRequest = {
-                        origin: mapConfig.origin.location,
-                        destination: mapConfig.destination.location,
-                        travelMode: google.maps.TravelMode.DRIVING,
-                      };
-                      
-                      directionsService.route(request, (result: any, status: any) => {
-                        if (status === google.maps.DirectionsStatus.OK && result) {
-                          directionsRenderer.setDirections(result);
-                        }
+                      // Add info window with location details
+                      const infoWindow = new google.maps.InfoWindow({
+                        content: `<div style="padding: 10px; max-width: 300px;">
+                          <h3 style="font-weight: bold; margin-bottom: 5px; font-size: 16px;">${mapConfig.location.name}</h3>
+                          <p style="color: #666; font-size: 14px; margin: 0;">${mapConfig.location.address}</p>
+                        </div>`,
                       });
                       
-                      // Add POI markers if they exist
-                      if (mapConfig.pois && Array.isArray(mapConfig.pois)) {
-                        mapConfig.pois.forEach((poi: any) => {
-                          const markerColor = 
-                            poi.type === "gas" ? "#3B82F6" : // blue
-                            poi.type === "attraction" ? "#EF4444" : // red
-                            poi.type === "restaurant" ? "#10B981" : // green
-                            "#6B7280"; // gray
-                          
-                          new google.maps.Marker({
-                            position: { lat: poi.lat, lng: poi.lng },
-                            map: map,
-                            title: poi.name,
-                            icon: {
-                              path: google.maps.SymbolPath.CIRCLE,
-                              scale: 8,
-                              fillColor: markerColor,
-                              fillOpacity: 0.9,
-                              strokeColor: "#FFFFFF",
-                              strokeWeight: 2,
-                            },
-                          });
-                        });
-                      }
+                      marker.addListener("click", () => {
+                        infoWindow.open(map, marker);
+                      });
+                      
+                      // Open info window by default
+                      infoWindow.open(map, marker);
                     } else {
                       // No map data - show a simple message
                       const infoWindow = new google.maps.InfoWindow({
                         content: `<div style="padding: 10px;">
                           <h3 style="font-weight: bold; margin-bottom: 5px;">${selectedRoute.name}</h3>
-                          <p style="color: #666;">${language === "he" ? "אין נתוני מפה זמינים למסלול זה" : "No map data available for this route"}</p>
+                          <p style="color: #666;">${language === "he" ? "אין נתוני מיקום זמינים" : "No location data available"}</p>
                         </div>`,
                         position: map.getCenter(),
                       });
@@ -277,7 +245,7 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
                 />
               </div>
               
-              {/* Route Info */}
+              {/* Location Info */}
               <div className="bg-gray-50 rounded-lg p-4 space-y-2">
                 {selectedRoute.description && (
                   <p className="text-gray-700">
@@ -293,15 +261,6 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
                     <div className="flex items-center gap-2">
                       <Clock className="w-4 h-4" />
                       <span>{selectedRoute.time}</span>
-                    </div>
-                  )}
-                  {selectedRoute.distanceKm && (
-                    <div className="flex items-center gap-2">
-                      <MapPin className="w-4 h-4" />
-                      <span>
-                        {selectedRoute.distanceKm} km
-                        {selectedRoute.estimatedDuration && ` • ${Math.floor(selectedRoute.estimatedDuration / 60)}h ${selectedRoute.estimatedDuration % 60}m`}
-                      </span>
                     </div>
                   )}
                 </div>
