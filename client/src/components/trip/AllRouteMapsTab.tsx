@@ -14,7 +14,7 @@ interface AllRouteMapsTabProps {
 export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
   const { language } = useLanguage();
   const [selectedRoute, setSelectedRoute] = useState<any | null>(null);
-  const [generatingRoute, setGeneratingRoute] = useState<number | null>(null);
+  const [generatingRoute, setGeneratingRoute] = useState(false);
   
   const { data: routes, refetch } = trpc.routes.list.useQuery({ tripId });
   const generateRouteMutation = trpc.routes.generateRouteFromName.useMutation();
@@ -23,6 +23,36 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
   useEffect(() => {
     refetch();
   }, [tripId, refetch]);
+  
+  // Handle route card click - generate route if needed before opening dialog
+  const handleRouteClick = async (route: any) => {
+    // If route already has mapData, just open it
+    if (route.mapData) {
+      setSelectedRoute(route);
+      return;
+    }
+    
+    // Otherwise, generate the route first
+    setGeneratingRoute(true);
+    try {
+      await generateRouteMutation.mutateAsync({ routeId: route.id });
+      // Refetch to get updated route with mapData
+      const updatedRoutes = await refetch();
+      // Find the updated route
+      const updatedRoute = updatedRoutes.data?.find((r: any) => r.id === route.id);
+      if (updatedRoute) {
+        setSelectedRoute(updatedRoute);
+      }
+    } catch (error: any) {
+      console.error("Failed to generate route:", error);
+      alert(language === "he" 
+        ? `שגיאה ביצירת מסלול: ${error.message || "נסה שוב מאוחר יותר"}`
+        : `Failed to generate route: ${error.message || "Please try again later"}`
+      );
+    } finally {
+      setGeneratingRoute(false);
+    }
+  };
   
   // If no routes exist, show empty state
   if (!routes || routes.length === 0) {
@@ -74,6 +104,23 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
         </p>
       </div>
 
+      {/* Loading overlay */}
+      {generatingRoute && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-8 text-center space-y-4 max-w-sm">
+            <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto" />
+            <p className="text-gray-800 font-semibold text-lg">
+              {language === "he" ? "יוצר מסלול..." : "Generating route..."}
+            </p>
+            <p className="text-gray-600 text-sm">
+              {language === "he" 
+                ? "מחשב את המסלול עם Google Maps"
+                : "Calculating route with Google Maps"}
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Route Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
         {routes.map((route, index) => {
@@ -85,7 +132,7 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
             <Card
               key={route.id}
               className="cursor-pointer hover:shadow-2xl transition-all duration-300 hover:scale-105 overflow-hidden group"
-              onClick={() => setSelectedRoute(route)}
+              onClick={() => handleRouteClick(route)}
             >
               <div className={`h-32 bg-gradient-to-br ${gradient} flex items-center justify-center relative overflow-hidden`}>
                 <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-all duration-300" />
@@ -142,18 +189,24 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
             <div className="flex flex-col h-full gap-4">
               {/* Map Container */}
               <div className="flex-1 rounded-lg overflow-hidden border-2 border-gray-200">
-                {generatingRoute === selectedRoute.id ? (
-                  <div className="flex items-center justify-center h-full bg-gray-50">
-                    <div className="text-center space-y-4">
-                      <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto" />
-                      <p className="text-gray-600 font-medium">
-                        {language === "he" ? "יוצר מסלול..." : "Generating route..."}
-                      </p>
-                    </div>
-                  </div>
-                ) : (
-                  <MapView
-                    onMapReady={async (map: any) => {
+                <MapView
+                  initialCenter={(() => {
+                    // Parse mapData to get initial center
+                    if (selectedRoute.mapData) {
+                      try {
+                        const mapConfig = JSON.parse(selectedRoute.mapData);
+                        if (mapConfig?.origin?.location) {
+                          return mapConfig.origin.location;
+                        }
+                      } catch (e) {
+                        console.error("Failed to parse mapData:", e);
+                      }
+                    }
+                    // Default to San Francisco if no mapData
+                    return { lat: 37.7749, lng: -122.4194 };
+                  })()}
+                  initialZoom={8}
+                  onMapReady={(map: any) => {
                     const google = (window as any).google;
                     // Parse mapData if it exists
                     let mapConfig = null;
@@ -165,29 +218,6 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
                       }
                     }
                     
-                    // If no mapData, generate it automatically
-                    if (!selectedRoute.mapData) {
-                      setGeneratingRoute(selectedRoute.id);
-                      try {
-                        await generateRouteMutation.mutateAsync({ routeId: selectedRoute.id });
-                        await refetch();
-                        // The component will re-render with new data
-                      } catch (error: any) {
-                        console.error("Failed to generate route:", error);
-                        const infoWindow = new google.maps.InfoWindow({
-                          content: `<div style="padding: 10px;">
-                            <h3 style="font-weight: bold; margin-bottom: 5px; color: #EF4444;">${language === "he" ? "שגיאה" : "Error"}</h3>
-                            <p style="color: #666;">${error.message || (language === "he" ? "לא ניתן ליצור מסלול" : "Failed to generate route")}</p>
-                          </div>`,
-                          position: map.getCenter(),
-                        });
-                        infoWindow.open(map);
-                      } finally {
-                        setGeneratingRoute(null);
-                      }
-                      return;
-                    }
-                    
                     // If we have map configuration with origin/destination, show directions
                     if (mapConfig?.origin && mapConfig?.destination) {
                       const directionsService = new google.maps.DirectionsService();
@@ -197,9 +227,8 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
                       });
                       
                       const request: google.maps.DirectionsRequest = {
-                        origin: mapConfig.origin,
-                        destination: mapConfig.destination,
-                        waypoints: mapConfig.waypoints || [],
+                        origin: mapConfig.origin.location,
+                        destination: mapConfig.destination.location,
                         travelMode: google.maps.TravelMode.DRIVING,
                       };
                       
@@ -244,9 +273,8 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
                       });
                       infoWindow.open(map);
                     }
-                    }}
-                  />
-                )}
+                  }}
+                />
               </div>
               
               {/* Route Info */}

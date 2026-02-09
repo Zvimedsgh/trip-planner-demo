@@ -154,3 +154,10 @@
 - [x] Save mapData to routes table
 - [x] Modify AllRouteMapsTab to auto-generate routes when mapData is NULL
 - [x] Test with Slovakia routes (Bratislava → Liptovský Mikuláš)
+
+## Bug - Route Generation Takes Too Long
+- [x] Investigate why Google Maps API call is slow/timing out
+- [x] Add timeout handling to prevent infinite loading
+- [x] Add error handling with retry option
+- [x] Test with Slovakia routes
+- [x] Fix map center to show correct location instead of San Francisco
