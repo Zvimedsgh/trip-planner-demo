@@ -69,7 +69,7 @@ export async function copyDemoTripToUser(userId: number) {
   // Create new trip for user
   const newTripResult = await db.insert(trips).values({
     userId,
-    name: trip.name,
+    name: "Discover Slovakia",
     destination: trip.destination,
     startDate: trip.startDate,
     endDate: trip.endDate,

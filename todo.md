@@ -177,3 +177,15 @@
 - [x] Check if Vite/Express routing is protecting /demo - Not the issue
 - [x] Find and fix the actual authentication gate - Fixed in main.tsx redirectToLoginIfUnauthorized function
 - [x] Added /demo, /invite/, and /instructions to public routes list
+
+## Bug - /demo Returns 403 Forbidden on Published Site
+- [ ] Investigate server-side 403 error (not client-side redirect)
+- [ ] Check for server middleware blocking /demo
+- [ ] Check Manus platform protection rules
+- [ ] Find and fix the actual server-side blocker
+
+## Task - Remove Personal Info from Demo Trip
+- [x] Change demo trip name from "Goren Roots Trip to Slovakia" to generic name - Changed to "Discover Slovakia"
+- [x] Test demo mode with updated trip name - WORKING!
+- [ ] Create sample documents instead of copying real ones (next checkpoint)
+- [ ] Remove personal names from other components if needed
