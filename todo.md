@@ -187,5 +187,7 @@
 ## Task - Remove Personal Info from Demo Trip
 - [x] Change demo trip name from "Goren Roots Trip to Slovakia" to generic name - Changed to "Discover Slovakia"
 - [x] Test demo mode with updated trip name - WORKING!
-- [ ] Create sample documents instead of copying real ones (next checkpoint)
-- [ ] Remove personal names from other components if needed
+- [x] Replace copyDocuments with createSampleDocuments in demo.ts
+- [x] Create 4 sample documents with placeholder URLs (Passport, Insurance, Hotel, Flights)
+- [x] Test demo with sample documents - WORKING!
+- [ ] Remove personal names from other components if needed (future task)

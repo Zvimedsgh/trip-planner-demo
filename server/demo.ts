@@ -85,7 +85,7 @@ export async function copyDemoTripToUser(userId: number) {
     copyTransportation(db, DEMO_TRIP_ID, newTripId),
     copyTouristSites(db, DEMO_TRIP_ID, newTripId),
     copyRestaurants(db, DEMO_TRIP_ID, newTripId),
-    copyDocuments(db, DEMO_TRIP_ID, newTripId),
+    createSampleDocuments(db, newTripId),
     copyDayTrips(db, DEMO_TRIP_ID, newTripId),
     copyChecklistItems(db, DEMO_TRIP_ID, newTripId),
     copyRoutes(db, DEMO_TRIP_ID, newTripId),
@@ -142,6 +142,51 @@ async function copyDocuments(db: any, fromTripId: number, toTripId: number) {
   for (const item of items) {
     const { id, ...data } = item;
     await db.insert(documents).values({ ...data, tripId: toTripId });
+  }
+}
+
+async function createSampleDocuments(db: any, tripId: number) {
+  const sampleDocs = [
+    {
+      tripId,
+      name: "Sample Passport Copy",
+      category: "passport" as const,
+      fileUrl: "https://example.com/sample-passport.pdf",
+      fileKey: "demo/sample-passport.pdf",
+      mimeType: "application/pdf",
+      notes: "This is a sample document for demonstration purposes",
+    },
+    {
+      tripId,
+      name: "Sample Flight Booking",
+      category: "flights" as const,
+      fileUrl: "https://example.com/sample-flight-booking.pdf",
+      fileKey: "demo/sample-flight-booking.pdf",
+      mimeType: "application/pdf",
+      notes: "Example flight booking confirmation",
+    },
+    {
+      tripId,
+      name: "Sample Hotel Confirmation",
+      category: "hotel" as const,
+      fileUrl: "https://example.com/sample-hotel-confirmation.pdf",
+      fileKey: "demo/sample-hotel-confirmation.pdf",
+      mimeType: "application/pdf",
+      notes: "Example hotel reservation",
+    },
+    {
+      tripId,
+      name: "Sample Travel Insurance",
+      category: "insurance" as const,
+      fileUrl: "https://example.com/sample-insurance.pdf",
+      fileKey: "demo/sample-insurance.pdf",
+      mimeType: "application/pdf",
+      notes: "Example travel insurance policy",
+    },
+  ];
+
+  for (const doc of sampleDocs) {
+    await db.insert(documents).values(doc);
   }
 }
 
