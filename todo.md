@@ -125,3 +125,9 @@
 - [x] Tested on both preview and published site - FIXED!
 - [x] Published site now shows clean home page with only "New Trip" option
 - [x] Direct trip link shows correct "Goren Roots Trip to Slovakia" with all original data
+
+## Bug - Collaborators Cannot Access Trip
+- [ ] Check if Efi and Michal still exist as collaborators in tripCollaborators table
+- [ ] Verify their user accounts exist in users table
+- [ ] Re-add collaborators if they were deleted
+- [ ] Test that collaborators can access trip on published site
