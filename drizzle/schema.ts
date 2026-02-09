@@ -11,10 +11,6 @@ export const users = mysqlTable("users", {
   loginMethod: varchar("loginMethod", { length: 64 }),
   role: mysqlEnum("role", ["user", "admin"]).default("user").notNull(),
   preferredLanguage: mysqlEnum("preferredLanguage", ["en", "he"]).default("en").notNull(),
-  isDemoUser: boolean("isDemoUser").default(false).notNull(),
-  demoStartDate: bigint("demoStartDate", { mode: "number" }), // UTC timestamp in ms when demo started
-  demoExpiryDate: bigint("demoExpiryDate", { mode: "number" }), // UTC timestamp in ms when demo expires
-  maxTrips: int("maxTrips"), // null for full users (unlimited), 2 for demo users
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
   lastSignedIn: timestamp("lastSignedIn").defaultNow().notNull(),

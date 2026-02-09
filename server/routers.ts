@@ -6,45 +6,9 @@ import { z } from "zod";
 import * as db from "./db";
 import { storagePut, storageGet } from "./storage";
 import { nanoid } from "nanoid";
-import * as demo from "./demo";
-import { sdk } from "./_core/sdk";
 
 export const appRouter = router({
   system: systemRouter,
-  
-  // ============ DEMO ============
-  demo: router({
-    getStatus: protectedProcedure.query(async ({ ctx }) => {
-      const daysRemaining = await demo.getDemoTimeRemaining(ctx.user.id);
-      const isExpired = await demo.isDemoExpired(ctx.user.id);
-      return {
-        isDemoUser: ctx.user.isDemoUser,
-        daysRemaining,
-        isExpired,
-      };
-    }),
-    
-    initialize: publicProcedure.mutation(async ({ ctx }) => {
-      // Generate unique openId for demo user
-      const demoOpenId = `demo_${nanoid()}`;
-      
-      // Create or get demo user
-      const demoUser = await demo.getOrCreateDemoUser(demoOpenId);
-      
-      // Copy Slovakia trip (ID 30001) to demo user
-      await demo.copyDemoTripToUser(demoUser.id);
-      
-      // Set session cookie for demo user
-      const sessionToken = await sdk.createSessionToken(demoOpenId, {
-        name: "Demo User",
-        expiresInMs: 8 * 24 * 60 * 60 * 1000, // 8 days
-      });
-      const cookieOptions = getSessionCookieOptions(ctx.req);
-      ctx.res.cookie(COOKIE_NAME, sessionToken, { ...cookieOptions, maxAge: 8 * 24 * 60 * 60 * 1000 });
-      
-      return { success: true, userId: demoUser.id };
-    }),
-  }),
   
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
@@ -88,14 +52,7 @@ export const appRouter = router({
         description: z.string().optional(),
         coverImage: z.string().optional(),
       }))
-      .mutation(async ({ ctx, input }) => {
-        // Check if demo user has reached trip limit
-        const canCreate = await demo.canCreateTrip(ctx.user.id);
-        if (!canCreate.allowed) {
-          throw new Error(canCreate.reason || "Cannot create trip");
-        }
-        return db.createTrip({ ...input, userId: ctx.user.id });
-      }),
+      .mutation(({ ctx, input }) => db.createTrip({ ...input, userId: ctx.user.id })),
     
     update: protectedProcedure
       .input(z.object({

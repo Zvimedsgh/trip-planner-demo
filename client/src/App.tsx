@@ -11,17 +11,11 @@ import TripDetail from "./pages/TripDetail";
 import SharedTrip from "./pages/SharedTrip";
 import Instructions from "./pages/Instructions";
 import InviteLink from "./pages/InviteLink";
-import Demo from "./pages/Demo";
-import DemoDocumentPlaceholder from "./pages/DemoDocumentPlaceholder";
-import { DemoBanner } from "./components/DemoBanner";
-import { DemoExpiryDialog } from "./components/DemoExpiryDialog";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
-      <Route path="/demo" component={Demo} />
-      <Route path="/demo-document-placeholder" component={DemoDocumentPlaceholder} />
       <Route path="/trips" component={Trips} />
       <Route path="/trip/:id" component={TripDetail} />
       <Route path="/shared/:token" component={SharedTrip} />
@@ -39,8 +33,6 @@ function App() {
       <ThemeProvider defaultTheme="light">
         <LanguageProvider>
           <TooltipProvider>
-            <DemoBanner />
-            <DemoExpiryDialog />
             <Toaster />
             <Router />
           </TooltipProvider>

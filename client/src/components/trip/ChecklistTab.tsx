@@ -26,16 +26,14 @@ const CATEGORIES = [
   { value: "other", icon: MoreHorizontal, labelEn: "Other", labelHe: "אחר" },
 ];
 
-const getParticipants = (isDemoMode: boolean) => [
+const PARTICIPANTS = [
   { value: "shared", labelEn: "Shared", labelHe: "משותף" },
-  { value: "ofir", labelEn: isDemoMode ? "Traveler 1" : "Ofir", labelHe: isDemoMode ? "נוסע 1" : "אופיר" },
-  { value: "ruth", labelEn: isDemoMode ? "Traveler 2" : "Ruth", labelHe: isDemoMode ? "נוסע 2" : "רות" },
+  { value: "ofir", labelEn: "Ofir", labelHe: "אופיר" },
+  { value: "ruth", labelEn: "Ruth", labelHe: "רות" },
 ] as const;
 
 export default function ChecklistTab({ tripId }: ChecklistTabProps) {
   const { t, language, isRTL } = useLanguage();
-  const { data: currentUser } = trpc.auth.me.useQuery();
-  const isDemoMode = currentUser?.isDemoUser === true;
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [viewFilter, setViewFilter] = useState<"all" | "shared" | "ofir" | "ruth">("shared");
   const [selectedOwner, setSelectedOwner] = useState<"shared" | "ofir" | "ruth">("shared");
@@ -237,7 +235,7 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        {getParticipants(isDemoMode).map(p => (
+                        {PARTICIPANTS.map(p => (
                           <SelectItem key={p.value} value={p.value}>
                             {language === "he" ? p.labelHe : p.labelEn}
                           </SelectItem>
@@ -261,7 +259,7 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
             
             {/* View filter buttons */}
             <div className="flex gap-2 flex-wrap">
-              {getParticipants(isDemoMode).map(p => (
+              {PARTICIPANTS.map(p => (
                 <Button
                   key={p.value}
                   variant={viewFilter === p.value ? "default" : "outline"}

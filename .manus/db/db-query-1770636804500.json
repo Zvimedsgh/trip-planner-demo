@@ -1,9 +1,0 @@
-{
-  "query": "SELECT * FROM checklist_items WHERE tripId IN (SELECT id FROM trips WHERE userId IN (SELECT id FROM users WHERE role = 'demo')) LIMIT 20;",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT * FROM checklist_items WHERE tripId IN (SELECT id FROM trips WHERE userId IN (SELECT id FROM users WHERE role = 'demo')) LIMIT 20;",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 1647
-}
