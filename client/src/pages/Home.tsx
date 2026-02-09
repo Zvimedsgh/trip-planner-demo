@@ -11,12 +11,46 @@ import {
 } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { useState, useEffect } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
 
 export default function Home() {
   const { user, loading, isAuthenticated } = useAuth();
   const { t, language, setLanguage, isRTL } = useLanguage();
   const [, navigate] = useLocation();
   const [scrollY, setScrollY] = useState(0);
+  const [createDialogOpen, setCreateDialogOpen] = useState(false);
+  const [newTripName, setNewTripName] = useState("");
+  const [newTripDestination, setNewTripDestination] = useState("");
+  const [newTripStartDate, setNewTripStartDate] = useState("");
+  const [newTripEndDate, setNewTripEndDate] = useState("");
+  
+  // Reset and set default dates when dialog opens (iPhone fix)
+  useEffect(() => {
+    if (createDialogOpen) {
+      // Clear all fields
+      setNewTripName("");
+      setNewTripDestination("");
+      
+      // Set default dates: today and 7 days from now
+      const today = new Date();
+      const nextWeek = new Date();
+      nextWeek.setDate(today.getDate() + 7);
+      
+      setNewTripStartDate(today.toISOString().split('T')[0]);
+      setNewTripEndDate(nextWeek.toISOString().split('T')[0]);
+    }
+  }, [createDialogOpen]);
+
   
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -28,13 +62,50 @@ export default function Home() {
     enabled: isAuthenticated,
   });
   
-  const slovakiaTrip = trips?.find(trip => 
-    trip.destination.toLowerCase().includes('slovakia') || 
-    trip.destination.toLowerCase().includes('bratislava')
-  );
+  const createTripMutation = trpc.trips.create.useMutation({
+    onSuccess: (newTrip) => {
+      toast.success(language === 'he' ? 'הטיול נוצר בהצלחה!' : 'Trip created successfully!');
+      setCreateDialogOpen(false);
+      setNewTripName("");
+      setNewTripDestination("");
+      setNewTripStartDate("");
+      setNewTripEndDate("");
+      navigate(`/trip/${newTrip.id}`);
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+  
+  const handleCreateTrip = () => {
+    if (!newTripName || !newTripDestination || !newTripStartDate || !newTripEndDate) {
+      toast.error(language === 'he' ? 'נא למלא את כל השדות' : 'Please fill in all fields');
+      return;
+    }
+    
+    createTripMutation.mutate({
+      name: newTripName,
+      destination: newTripDestination,
+      startDate: new Date(newTripStartDate + 'T00:00:00.000Z').getTime(),
+      endDate: new Date(newTripEndDate + 'T00:00:00.000Z').getTime(),
+    });
+  };
+  
+  // Get destination image based on destination name
+  const getDestinationImage = (destination: string): string => {
+    const dest = destination.toLowerCase();
+    if (dest.includes('slovakia') || dest.includes('bratislava')) return '/slovakia.jpg';
+    if (dest.includes('paris') || dest.includes('france')) return '/travel-2.jpg';
+    if (dest.includes('greece') || dest.includes('athens')) return '/travel-3.jpg';
+    if (dest.includes('italy') || dest.includes('rome')) return '/travel-1.jpg';
+    return '/travel-1.jpg'; // default
+  };
+
+  // Sort trips by start date (most recent first)
+  const sortedTrips = trips ? [...trips].sort((a, b) => b.startDate - a.startDate) : [];
   
   const getDaysCount = (start: number, end: number) => {
-    return Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+    return Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
   };
 
   const features = [
@@ -120,65 +191,66 @@ export default function Home() {
             
             {/* Trip Cards Gallery */}
             <div className="relative grid md:grid-cols-3 gap-6">
-              {/* Slovakia Trip Card (if exists) */}
-              {slovakiaTrip ? (
+              {/* Display all trips dynamically */}
+              {sortedTrips.map((trip, index) => (
                 <Card 
+                  key={trip.id}
                   className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer h-80"
-                  onClick={() => navigate(`/trip/${slovakiaTrip.id}`)}
-                  style={{ transform: `translateY(${scrollY * 0.1}px)` }}
+                  onClick={() => navigate(`/trip/${trip.id}`)}
+                  style={{ transform: `translateY(${scrollY * (0.05 + (index % 3) * 0.025)}px)` }}
                 >
                   <img 
-                    src={slovakiaTrip.coverImage || '/slovakia.jpg'} 
-                    alt={slovakiaTrip.name}
+                    src={trip.coverImage || getDestinationImage(trip.destination)} 
+                    alt={trip.name}
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
                   <div className="relative h-full flex flex-col justify-between p-6">
-                    <div className="text-white">
-                      <h3 className="text-2xl font-bold mb-2">{slovakiaTrip.name}</h3>
+                    <div className="text-white text-center">
+                      <h3 className="text-3xl font-bold mb-2 leading-tight">
+                        {trip.name}
+                      </h3>
+
                     </div>
                     <div className="space-y-3">
-                      <div className="flex items-center gap-2 text-sm text-white/90">
-                        <Calendar className="w-4 h-4" />
-                        <span>
-                          {format(new Date(slovakiaTrip.startDate), "MMM d")} - {format(new Date(slovakiaTrip.endDate), "MMM d, yyyy")}
+                      <div className="flex items-center gap-2 text-base text-white/90 justify-center">
+                        <Calendar className="w-5 h-5" />
+                        <span className="font-semibold">
+                          {format(new Date(trip.startDate), "MMM d")} - {format(new Date(trip.endDate), "MMM d, yyyy")}
                         </span>
                         <span className="text-xs bg-white/20 text-white px-2 py-0.5 rounded-full">
-                          {getDaysCount(slovakiaTrip.startDate, slovakiaTrip.endDate)} {t("days")}
+                          {getDaysCount(trip.startDate, trip.endDate)} {t("days")}
                         </span>
                       </div>
-                      <Button className="w-full bg-white text-primary hover:bg-white/90">
+                      <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 text-lg font-semibold py-6">
                         {t("tripDetails")}
-                        <ArrowRight className={`w-4 h-4 ${isRTL ? 'mr-2 rotate-180' : 'ml-2'}`} />
+                        <ArrowRight className={`w-5 h-5 ${isRTL ? 'mr-2 rotate-180' : 'ml-2'}`} />
                       </Button>
                     </div>
                   </div>
                 </Card>
-              ) : null}
-              
-              {/* My Next Trip Placeholder Cards */}
-              {[1, 2].map((index) => (
-                <Card 
-                  key={index}
-                  className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer h-80"
-                  onClick={() => isAuthenticated ? navigate('/trips') : window.location.href = getLoginUrl()}
-                  style={{ transform: `translateY(${scrollY * (0.05 + index * 0.025)}px)` }}
-                >
-                  <img 
-                    src={index === 1 ? '/travel-2.jpg' : '/travel-3.jpg'} 
-                    alt="My Next Trip"
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-                  <div className="relative h-full flex flex-col items-center justify-center p-6 text-white">
-                    <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                      <Plus className="w-8 h-8" />
-                    </div>
-                    <h3 className="text-2xl font-bold mb-2">{language === 'he' ? 'הטיול הבא שלי' : 'My Next Trip'}</h3>
-                    <p className="text-white/80 text-sm text-center">{language === 'he' ? 'לחץ להתחלת תכנון טיול חדש' : 'Click to start planning a new trip'}</p>
-                  </div>
-                </Card>
               ))}
+              
+              {/* Add New Trip Card */}
+              <Card 
+                className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer h-80"
+                onClick={() => isAuthenticated ? setCreateDialogOpen(true) : window.location.href = getLoginUrl()}
+                style={{ transform: `translateY(${scrollY * 0.05}px)` }}
+              >
+                <img 
+                  src='/travel-3.jpg' 
+                  alt="Create New Trip"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                <div className="relative h-full flex flex-col items-center justify-center p-6 text-white">
+                  <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <Plus className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-2">{language === 'he' ? 'טיול חדש' : 'New Trip'}</h3>
+                  <p className="text-white/80 text-sm text-center">{language === 'he' ? 'לחץ להתחלת תכנון טיול חדש' : 'Click to start planning a new trip'}</p>
+                </div>
+              </Card>
 
             </div>
           </div>
@@ -240,6 +312,66 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Create Trip Dialog */}
+      <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>{language === 'he' ? 'צור טיול חדש' : 'Create New Trip'}</DialogTitle>
+            <DialogDescription>
+              {language === 'he' ? 'הזן את פרטי הטיול החדש שלך' : 'Enter the details of your new trip'}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-2">
+              <Label htmlFor="name">{language === 'he' ? 'שם הטיול' : 'Trip Name'}</Label>
+              <Input
+                id="name"
+                placeholder={language === 'he' ? 'למשל: טיול משפחתי לאיטליה' : 'e.g., Family Trip to Italy'}
+                value={newTripName}
+                onChange={(e) => setNewTripName(e.target.value)}
+                autoComplete="off"
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="destination">{language === 'he' ? 'יעד' : 'Destination'}</Label>
+              <Input
+                id="destination"
+                placeholder={language === 'he' ? 'למשל: רומא, איטליה' : 'e.g., Rome, Italy'}
+                value={newTripDestination}
+                onChange={(e) => setNewTripDestination(e.target.value)}
+                autoComplete="off"
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="startDate">{language === 'he' ? 'תאריך התחלה' : 'Start Date'}</Label>
+              <Input
+                id="startDate"
+                type="date"
+                value={newTripStartDate}
+                onChange={(e) => setNewTripStartDate(e.target.value)}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="endDate">{language === 'he' ? 'תאריך סיום' : 'End Date'}</Label>
+              <Input
+                id="endDate"
+                type="date"
+                value={newTripEndDate}
+                onChange={(e) => setNewTripEndDate(e.target.value)}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setCreateDialogOpen(false)}>
+              {language === 'he' ? 'ביטול' : 'Cancel'}
+            </Button>
+            <Button onClick={handleCreateTrip} disabled={createTripMutation.isPending}>
+              {createTripMutation.isPending ? (language === 'he' ? 'יוצר...' : 'Creating...') : (language === 'he' ? 'צור טיול' : 'Create Trip')}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Footer */}
       <footer className="py-8 px-4 border-t border-border">

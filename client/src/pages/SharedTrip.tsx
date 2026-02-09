@@ -232,7 +232,7 @@ export default function SharedTrip() {
   };
 
   const getDaysDiff = (start: number, end: number) => {
-    return Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+    return Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
   };
 
   const getNights = (checkIn: number, checkOut: number) => {
@@ -265,10 +265,7 @@ export default function SharedTrip() {
                 {trip.name}
               </h1>
               <div className="flex flex-wrap items-center gap-3 text-white/90">
-                <span className="flex items-center gap-1.5 bg-white/20 rounded-full px-3 py-1 text-sm">
-                  <MapPin className="h-4 w-4" />
-                  {trip.destination}
-                </span>
+
                 <span className="flex items-center gap-1.5 bg-white/20 rounded-full px-3 py-1 text-sm">
                   <Calendar className="h-4 w-4" />
                   {formatDateShort(trip.startDate)} - {formatDateShort(trip.endDate)}

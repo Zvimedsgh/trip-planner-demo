@@ -10,7 +10,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
 import { CheckCircle2, Circle, Loader2, Plus, Trash2, Calendar as CalendarIcon, FileText, CreditCard, Package, Heart, DollarSign, MoreHorizontal, Users, Lock } from "lucide-react";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { toast } from "sonner";
 
 interface ChecklistTabProps {
@@ -28,21 +28,21 @@ const CATEGORIES = [
 
 const PARTICIPANTS = [
   { value: "shared", labelEn: "Shared", labelHe: "משותף" },
-  { value: "yona_tzvi", labelEn: "Yona & Tzvi", labelHe: "יונה וצבי" },
-  { value: "efi", labelEn: "Efi", labelHe: "אפי" },
+  { value: "ofir", labelEn: "Ofir", labelHe: "אופיר" },
   { value: "ruth", labelEn: "Ruth", labelHe: "רות" },
-  { value: "michal", labelEn: "Michal", labelHe: "מיכל" },
 ] as const;
 
 export default function ChecklistTab({ tripId }: ChecklistTabProps) {
   const { t, language, isRTL } = useLanguage();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
-  const [viewFilter, setViewFilter] = useState<"all" | "shared" | "yona_tzvi" | "efi" | "ruth" | "michal">("all");
-  const [selectedOwner, setSelectedOwner] = useState<"shared" | "yona_tzvi" | "efi" | "ruth" | "michal">("shared");
+  const [viewFilter, setViewFilter] = useState<"all" | "shared" | "ofir" | "ruth">("shared");
+  const [selectedOwner, setSelectedOwner] = useState<"shared" | "ofir" | "ruth">("shared");
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
   const formRef = useRef<HTMLDivElement>(null);
 
   const utils = trpc.useUtils();
   const { data: items, isLoading } = trpc.checklist.list.useQuery({ tripId });
+  const [hasInitialized, setHasInitialized] = useState(false);
 
   const createMutation = trpc.checklist.create.useMutation({
     onSuccess: () => {
@@ -65,6 +65,43 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
     },
   });
 
+  // Initialize personal essentials for each participant if they don't have any items yet
+  useEffect(() => {
+    if (!items || hasInitialized || isLoading) return;
+    
+    const personalEssentials = [
+      { title: "Passport", titleHe: "דרכון", category: "documents" as const },
+      { title: "Visa (if required)", titleHe: "ויזה (אם נדרש)", category: "documents" as const },
+      { title: "Travel Insurance", titleHe: "ביטוח נסיעות", category: "documents" as const },
+      { title: "Flight Tickets", titleHe: "כרטיסי טיסה", category: "bookings" as const },
+      { title: "Credit Card", titleHe: "כרטיס אשראי", category: "finance" as const },
+      { title: "Cash (local currency)", titleHe: "מזומן (מטבע מקומי)", category: "finance" as const },
+      { title: "Phone Charger", titleHe: "מטען טלפון", category: "packing" as const },
+      { title: "Medications", titleHe: "תרופות", category: "health" as const },
+      { title: "Toiletries", titleHe: "מוצרי טואלט", category: "packing" as const },
+      { title: "Clothes", titleHe: "בגדים", category: "packing" as const },
+    ];
+
+    const participants: Array<"ofir" | "ruth"> = ["ofir", "ruth"];
+    
+    participants.forEach(participant => {
+      const hasItems = items.some(item => item.owner === participant);
+      if (!hasItems) {
+        // Add essentials for this participant
+        personalEssentials.forEach(essential => {
+          createMutation.mutate({
+            tripId,
+            title: language === "he" ? essential.titleHe : essential.title,
+            category: essential.category,
+            owner: participant,
+          });
+        });
+      }
+    });
+    
+    setHasInitialized(true);
+  }, [items, hasInitialized, isLoading, tripId, language, createMutation]);
+
   const getFormValues = () => {
     if (!formRef.current) return null;
     const getValue = (name: string) => {
@@ -73,7 +110,7 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
     };
     return {
       title: getValue("title"),
-      category: getValue("category") as any,
+      category: selectedCategory as any,
       dueDate: getValue("dueDate") ? new Date(getValue("dueDate")).getTime() : undefined,
       notes: getValue("notes"),
       owner: selectedOwner,
@@ -91,6 +128,10 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
       tripId,
       ...values,
     });
+    
+    // Reset form
+    setSelectedCategory("");
+    setSelectedOwner("shared");
   };
 
   const toggleComplete = (id: number, completed: boolean) => {
@@ -166,7 +207,7 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
                   </div>
                   <div>
                     <Label htmlFor="category">{language === "he" ? "קטגוריה" : "Category"} *</Label>
-                    <Select name="category">
+                    <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                       <SelectTrigger>
                         <SelectValue placeholder={language === "he" ? "בחר קטגוריה" : "Select category"} />
                       </SelectTrigger>
@@ -218,13 +259,6 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
             
             {/* View filter buttons */}
             <div className="flex gap-2 flex-wrap">
-              <Button
-                variant={viewFilter === "all" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setViewFilter("all")}
-              >
-                {language === "he" ? "הכל" : "All"}
-              </Button>
               {PARTICIPANTS.map(p => (
                 <Button
                   key={p.value}

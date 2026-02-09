@@ -7,23 +7,45 @@ import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
-import { Calendar, Clock, Edit, ExternalLink, FileText, Loader2, MapPin, Plus, Trash2 } from "lucide-react";
-import { useRef, useState } from "react";
+import { Calendar, Clock, Edit, ExternalLink, FileText, Image, Loader2, MapPin, Plus, Trash2 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { DocumentLinkDialog } from "@/components/DocumentLinkDialog";
+import { ImageUploadDialog } from "@/components/ImageUploadDialog";
 
 interface TouristSitesTabProps {
   tripId: number;
+  highlightedId?: number | null;
 }
 
-export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
+export default function TouristSitesTab({ tripId, highlightedId }: TouristSitesTabProps) {
   const { t, language, isRTL } = useLanguage();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const formRef = useRef<HTMLDivElement>(null);
+  const [linkingSiteId, setLinkingSiteId] = useState<number | null>(null);
+  const [documentLinkDialogOpen, setDocumentLinkDialogOpen] = useState(false);
+  const [uploadingImageForSiteId, setUploadingImageForSiteId] = useState<number | null>(null);
+  const [imageUploadDialogOpen, setImageUploadDialogOpen] = useState(false);
+  const longPressTimer = useRef<NodeJS.Timeout | null>(null);
+  const longPressTriggered = useRef(false);
 
   const utils = trpc.useUtils();
   const { data: sites, isLoading } = trpc.touristSites.list.useQuery({ tripId });
   const { data: documents } = trpc.documents.list.useQuery({ tripId });
+
+  // Scroll to highlighted site
+  useEffect(() => {
+    if (highlightedId) {
+      const element = document.getElementById(`site-${highlightedId}`);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+      }
+    }
+  }, [highlightedId]);
 
   const createMutation = trpc.touristSites.create.useMutation({
     onSuccess: () => {
@@ -47,6 +69,22 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
       toast.success(language === "he" ? "האתר נמחק בהצלחה" : "Site deleted successfully");
     },
   });
+
+  const handleDocumentLink = (siteId: number) => {
+    setLinkingSiteId(siteId);
+    setDocumentLinkDialogOpen(true);
+  };
+
+  const handleDocumentSelect = (documentId: number | null) => {
+    if (linkingSiteId) {
+      updateMutation.mutate({
+        id: linkingSiteId,
+        linkedDocumentId: documentId === null ? null : documentId,
+      });
+      setLinkingSiteId(null);
+    }
+    setDocumentLinkDialogOpen(false);
+  };
 
   const getFormValues = () => {
     if (!formRef.current) return null;
@@ -268,7 +306,13 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
             const gradient = gradients[index % gradients.length];
             
             return (
-              <Card key={site.id} className="elegant-card-hover overflow-hidden">
+              <Card 
+                key={site.id} 
+                id={`site-${site.id}`}
+                className={`elegant-card-hover overflow-hidden ${
+                  highlightedId === site.id ? 'ring-4 ring-yellow-400 animate-pulse' : ''
+                }`}
+              >
                 {/* Header with image or gradient */}
                 <div 
                   className={`h-24 relative ${!bgImage ? `bg-gradient-to-r ${gradient}` : ''}`}
@@ -294,11 +338,11 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
                     <div className="flex gap-0.5">
                       {/* Document link button */}
                       {(() => {
-                        const relatedDocs = documents?.filter(doc => 
-                          (doc.category === 'booking' || doc.category === 'other') && 
-                          (doc.name.toLowerCase().includes(site.name.toLowerCase()) ||
-                           (site.address && doc.name.toLowerCase().includes(site.address.toLowerCase())))
-                        );
+                        // Only use explicitly linked documents
+                        const linkedDoc = site.linkedDocumentId 
+                          ? documents?.find(doc => doc.id === site.linkedDocumentId)
+                          : null;
+                        
                         return (
                           <Button 
                             size="icon" 
@@ -307,36 +351,112 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
                             onClick={(e) => {
                               e.preventDefault();
                               e.stopPropagation();
-                              if (relatedDocs && relatedDocs.length > 0) {
-                                window.open(relatedDocs[0].fileUrl, '_blank');
+                              if (linkedDoc) {
+                                window.open(linkedDoc.fileUrl, '_blank');
                               } else {
-                                toast.info(language === 'he' ? 'אין מסמך' : 'No document');
+                                // Open dialog to manually select document
+                                handleDocumentLink(site.id);
                               }
                             }}
-                            title={relatedDocs && relatedDocs.length > 0 
-                              ? (language === 'he' ? 'פתיחת מסמך' : 'Open document')
-                              : (language === 'he' ? 'אין מסמך' : 'No document')
+                            onContextMenu={(e) => {
+                              // Right-click opens dialog
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handleDocumentLink(site.id);
+                            }}
+                            onTouchStart={(e) => {
+                              // Long press on mobile
+                              e.stopPropagation();
+                              longPressTriggered.current = false;
+                              longPressTimer.current = setTimeout(() => {
+                                longPressTriggered.current = true;
+                                handleDocumentLink(site.id);
+                              }, 500);
+                            }}
+                            onTouchEnd={(e) => {
+                              e.stopPropagation();
+                              if (longPressTimer.current) {
+                                clearTimeout(longPressTimer.current);
+                                longPressTimer.current = null;
+                              }
+                              // Prevent click if long press was triggered
+                              if (longPressTriggered.current) {
+                                e.preventDefault();
+                                longPressTriggered.current = false;
+                              }
+                            }}
+                            onTouchMove={(e) => {
+                              e.stopPropagation();
+                              if (longPressTimer.current) {
+                                clearTimeout(longPressTimer.current);
+                                longPressTimer.current = null;
+                              }
+                            }}
+                            title={linkedDoc
+                              ? (language === 'he' ? 'פתיחת מסמך (לחיצה ימנית לשינוי)' : 'Open document (right-click to change)')
+                              : (language === 'he' ? 'קישור מסמך' : 'Link document')
                             }
                           >
                             <FileText className="w-3 h-3" />
                           </Button>
                         );
                       })()}
-                      <Button size="icon" variant="ghost" className="h-7 w-7 text-white bg-amber-500/80 hover:bg-amber-600" onClick={() => openEdit(site)}>
-                        <Edit className="w-3 h-3" />
-                      </Button>
                       <Button 
                         size="icon" 
                         variant="ghost" 
-                        className="h-7 w-7 text-white bg-red-500/80 hover:bg-red-600"
-                        onClick={() => {
-                        if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את האתר?" : "Are you sure you want to delete this site?")) {
-                          deleteMutation.mutate({ id: site.id });
+                        className="h-8 w-8 text-white bg-green-500/80 hover:bg-green-600"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          if (site.coverImage) {
+                            window.open(site.coverImage, '_blank');
+                          } else {
+                            setUploadingImageForSiteId(site.id);
+                            setImageUploadDialogOpen(true);
+                          }
+                        }}
+                        onContextMenu={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setUploadingImageForSiteId(site.id);
+                          setImageUploadDialogOpen(true);
+                        }}
+                        title={site.coverImage
+                          ? (language === 'he' ? 'פתיחת תמונה' : 'Open image')
+                          : (language === 'he' ? 'אין תמונה' : 'No image')
                         }
-                      }}
                       >
-                        <Trash2 className="w-3 h-3" />
+                        <Image className="w-3 h-3" />
                       </Button>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button size="icon" variant="ghost" className="h-7 w-7 text-white bg-amber-500/80 hover:bg-amber-600" onClick={() => openEdit(site)}>
+                            <Edit className="w-3 h-3" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>{language === 'he' ? 'ערוך אתר' : 'Edit site'}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button 
+                            size="icon" 
+                            variant="ghost" 
+                            className="h-7 w-7 text-white bg-red-500/80 hover:bg-red-600"
+                            onClick={() => {
+                              if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את האתר?" : "Are you sure you want to delete this site?")) {
+                                deleteMutation.mutate({ id: site.id });
+                              }
+                            }}
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>{language === 'he' ? 'מחק אתר' : 'Delete site'}</p>
+                        </TooltipContent>
+                      </Tooltip>
                     </div>
                   </div>
                 </div>
@@ -398,6 +518,33 @@ export default function TouristSitesTab({ tripId }: TouristSitesTabProps) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Document Link Dialog */}
+      <DocumentLinkDialog
+        open={documentLinkDialogOpen}
+        onOpenChange={setDocumentLinkDialogOpen}
+        tripId={tripId}
+        currentDocumentId={linkingSiteId ? sites?.find(s => s.id === linkingSiteId)?.linkedDocumentId : null}
+        onSelectDocument={handleDocumentSelect}
+      />
+
+      {/* Image Upload Dialog */}
+      <ImageUploadDialog
+        open={imageUploadDialogOpen}
+        onOpenChange={setImageUploadDialogOpen}
+        title={language === 'he' ? 'העלאת תמונת אתר' : 'Upload Site Image'}
+        onUpload={async (imageUrl) => {
+          if (uploadingImageForSiteId) {
+            await updateMutation.mutateAsync({
+              id: uploadingImageForSiteId,
+              coverImage: imageUrl,
+            });
+            toast.success(language === 'he' ? 'התמונה הועלתה בהצלחה' : 'Image uploaded successfully');
+            setImageUploadDialogOpen(false);
+            setUploadingImageForSiteId(null);
+          }
+        }}
+      />
     </div>
   );
 }

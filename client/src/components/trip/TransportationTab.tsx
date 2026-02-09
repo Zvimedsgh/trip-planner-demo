@@ -8,13 +8,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
-import { ArrowRight, Bus, Calendar, Clock, DollarSign, Edit, ExternalLink, FileText, Loader2, Plane, Plus, RotateCcw, Ship, Train, Trash2 } from "lucide-react";
+import { ArrowRight, Bus, Calendar, Car, Clock, DollarSign, Edit, ExternalLink, FileText, Loader2, Plane, Plus, RotateCcw, Ship, Train, Trash2 } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { toast } from "sonner";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { DocumentLinkDialog } from "@/components/DocumentLinkDialog";
 
 interface TransportationTabProps {
   tripId: number;
   tripEndDate?: number;
+  highlightedId?: number | null;
 }
 
 const transportIcons = {
@@ -22,6 +25,7 @@ const transportIcons = {
   train: Train,
   bus: Bus,
   ferry: Ship,
+  car_rental: Car,
   other: ArrowRight,
 };
 
@@ -30,12 +34,13 @@ const transportColors = {
   train: "from-green-500 to-emerald-600",
   bus: "from-orange-500 to-amber-600",
   ferry: "from-cyan-500 to-blue-600",
+  car_rental: "from-purple-500 to-pink-600",
   other: "from-gray-500 to-slate-600",
 };
 
-type TransportType = "flight" | "train" | "bus" | "ferry" | "other";
+type TransportType = "flight" | "train" | "bus" | "ferry" | "car_rental" | "other";
 
-export default function TransportationTab({ tripId, tripEndDate }: TransportationTabProps) {
+export default function TransportationTab({ tripId, tripEndDate, highlightedId }: TransportationTabProps) {
   const { t, language, isRTL } = useLanguage();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -56,6 +61,12 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
     currency: useRef<string>("USD"),
     paymentStatus: useRef<"paid" | "pending">("pending"),
     notes: useRef<string>(""),
+    // Car rental specific fields
+    company: useRef<string>(""),
+    carModel: useRef<string>(""),
+    pickupLocation: useRef<string>(""),
+    returnLocation: useRef<string>(""),
+    phone: useRef<string>(""),
   };
   
   // State for controlled selects only (they need re-render)
@@ -64,6 +75,12 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
   const [formPaymentStatus, setFormPaymentStatus] = useState<"paid" | "pending">("pending");
   const [paymentFilter, setPaymentFilter] = useState<"all" | "paid" | "pending">("all");
   
+  // Document linking state
+  const [documentLinkDialogOpen, setDocumentLinkDialogOpen] = useState(false);
+  const [linkingTransportId, setLinkingTransportId] = useState<number | null>(null);
+  const longPressTimer = useRef<NodeJS.Timeout | null>(null);
+  const longPressTriggered = useRef(false);
+  
   // Force re-render trigger
   const [formKey, setFormKey] = useState(0);
 
@@ -71,6 +88,18 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
   const { data: transports, isLoading } = trpc.transportation.list.useQuery({ tripId });
   const { data: documents } = trpc.documents.list.useQuery({ tripId });
   const { data: trip } = trpc.trips.get.useQuery({ id: tripId });
+
+  // Scroll to highlighted transportation
+  useEffect(() => {
+    if (highlightedId) {
+      const element = document.getElementById(`transport-${highlightedId}`);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+      }
+    }
+  }, [highlightedId]);
 
   const resetForm = () => {
     formRefs.type.current = "flight";
@@ -87,6 +116,11 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
     formRefs.currency.current = "USD";
     formRefs.paymentStatus.current = "pending";
     formRefs.notes.current = "";
+    formRefs.company.current = "";
+    formRefs.carModel.current = "";
+    formRefs.pickupLocation.current = "";
+    formRefs.returnLocation.current = "";
+    formRefs.phone.current = "";
     setFormType("flight");
     setFormCurrency("USD");
     setFormPaymentStatus("pending");
@@ -157,6 +191,21 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
     },
   });
 
+  const handleDocumentLink = (transportId: number) => {
+    setLinkingTransportId(transportId);
+    setDocumentLinkDialogOpen(true);
+  };
+
+  const handleDocumentSelect = (documentId: number | null) => {
+    if (linkingTransportId) {
+      updateMutation.mutate({
+        id: linkingTransportId,
+        linkedDocumentId: documentId === null ? null : documentId,
+      });
+      setLinkingTransportId(null);
+    }
+  };
+
   const combineDateAndTime = (date: string, time: string): number | undefined => {
     if (!date) return undefined;
     const dateTimeStr = time ? `${date}T${time}` : `${date}T00:00`;
@@ -185,15 +234,29 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
       currency: formCurrency,
       paymentStatus: formPaymentStatus,
       notes: getInputValue("notes") || formRefs.notes.current,
+      // Car rental fields
+      company: getInputValue("company") || formRefs.company.current,
+      carModel: getInputValue("carModel") || formRefs.carModel.current,
+      pickupLocation: getInputValue("pickupLocation") || formRefs.pickupLocation.current,
+      returnLocation: getInputValue("returnLocation") || formRefs.returnLocation.current,
+      phone: getInputValue("phone") || formRefs.phone.current,
     };
   };
 
   const handleCreate = () => {
     const values = getFormValues();
     
-    if (!values.origin.trim() || !values.destination.trim() || !values.departureDate) {
-      toast.error(language === "he" ? "נא למלא: מוצא, יעד ותאריך יציאה" : "Please fill: origin, destination and departure date");
-      return;
+    // Validation based on transport type
+    if (values.type === "car_rental") {
+      if (!values.company.trim() || !values.pickupLocation.trim() || !values.returnLocation.trim() || !values.departureDate) {
+        toast.error(language === "he" ? "נא למלא: חברה, מיקום איסוף, מיקום החזרה ותאריך" : "Please fill: company, pickup location, return location and date");
+        return;
+      }
+    } else {
+      if (!values.origin.trim() || !values.destination.trim() || !values.departureDate) {
+        toast.error(language === "he" ? "נא למלא: מוצא, יעד ותאריך יציאה" : "Please fill: origin, destination and departure date");
+        return;
+      }
     }
     
     const departureTimestamp = combineDateAndTime(values.departureDate, values.departureTime);
@@ -202,8 +265,8 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
     createMutation.mutate({
       tripId,
       type: values.type,
-      origin: values.origin.trim(),
-      destination: values.destination.trim(),
+      origin: values.type === "car_rental" ? values.pickupLocation.trim() : values.origin.trim(),
+      destination: values.type === "car_rental" ? values.returnLocation.trim() : values.destination.trim(),
       departureDate: departureTimestamp!,
       arrivalDate: arrivalTimestamp,
       flightNumber: values.flightNumber.trim() || undefined,
@@ -212,15 +275,31 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
       price: values.price || undefined,
       currency: values.currency || undefined,
       notes: values.notes.trim() || undefined,
+      // Car rental specific fields
+      company: values.type === "car_rental" ? values.company.trim() || undefined : undefined,
+      carModel: values.type === "car_rental" ? values.carModel.trim() || undefined : undefined,
+      pickupLocation: values.type === "car_rental" ? values.pickupLocation.trim() || undefined : undefined,
+      returnLocation: values.type === "car_rental" ? values.returnLocation.trim() || undefined : undefined,
+      phone: values.type === "car_rental" ? values.phone.trim() || undefined : undefined,
     });
   };
 
   const handleUpdate = () => {
     const values = getFormValues();
     
-    if (!editingId || !values.origin.trim() || !values.destination.trim() || !values.departureDate) {
-      toast.error(language === "he" ? "נא למלא: מוצא, יעד ותאריך יציאה" : "Please fill: origin, destination and departure date");
-      return;
+    if (!editingId) return;
+    
+    // Validation based on transport type
+    if (values.type === "car_rental") {
+      if (!values.company.trim() || !values.pickupLocation.trim() || !values.returnLocation.trim() || !values.departureDate) {
+        toast.error(language === "he" ? "נא למלא: חברה, מיקום איסוף, מיקום החזרה ותאריך" : "Please fill: company, pickup location, return location and date");
+        return;
+      }
+    } else {
+      if (!values.origin.trim() || !values.destination.trim() || !values.departureDate) {
+        toast.error(language === "he" ? "נא למלא: מוצא, יעד ותאריך יציאה" : "Please fill: origin, destination and departure date");
+        return;
+      }
     }
     
     const departureTimestamp = combineDateAndTime(values.departureDate, values.departureTime);
@@ -229,8 +308,8 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
     updateMutation.mutate({
       id: editingId,
       type: values.type,
-      origin: values.origin.trim(),
-      destination: values.destination.trim(),
+      origin: values.type === "car_rental" ? values.pickupLocation.trim() : values.origin.trim(),
+      destination: values.type === "car_rental" ? values.returnLocation.trim() : values.destination.trim(),
       departureDate: departureTimestamp!,
       arrivalDate: arrivalTimestamp,
       flightNumber: values.flightNumber.trim() || undefined,
@@ -239,6 +318,12 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
       price: values.price || undefined,
       currency: values.currency || undefined,
       notes: values.notes.trim() || undefined,
+      // Car rental specific fields
+      company: values.type === "car_rental" ? values.company.trim() || undefined : undefined,
+      carModel: values.type === "car_rental" ? values.carModel.trim() || undefined : undefined,
+      pickupLocation: values.type === "car_rental" ? values.pickupLocation.trim() || undefined : undefined,
+      returnLocation: values.type === "car_rental" ? values.returnLocation.trim() || undefined : undefined,
+      phone: values.type === "car_rental" ? values.phone.trim() || undefined : undefined,
     });
   };
 
@@ -260,6 +345,12 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
     formRefs.currency.current = transport.currency || "USD";
     formRefs.paymentStatus.current = transport.paymentStatus || "pending";
     formRefs.notes.current = transport.notes || "";
+    // Car rental fields
+    formRefs.company.current = transport.company || "";
+    formRefs.carModel.current = transport.carModel || "";
+    formRefs.pickupLocation.current = transport.pickupLocation || "";
+    formRefs.returnLocation.current = transport.returnLocation || "";
+    formRefs.phone.current = transport.phone || "";
     
     setFormType(transport.type);
     setFormCurrency(transport.currency || "USD");
@@ -295,31 +386,94 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
             <SelectItem value="train">{t("train")}</SelectItem>
             <SelectItem value="bus">{t("bus")}</SelectItem>
             <SelectItem value="ferry">{t("ferry")}</SelectItem>
+            <SelectItem value="car_rental">{language === 'he' ? 'השכרת רכב' : 'Car Rental'}</SelectItem>
             <SelectItem value="other">{t("other")}</SelectItem>
           </SelectContent>
         </Select>
       </div>
       
-      <div className="grid grid-cols-2 gap-4">
-        <div className="grid gap-2">
-          <Label>{t("origin")} *</Label>
-          <Input
-            data-field="origin"
-            tabIndex={2}
-            defaultValue={formRefs.origin.current}
-            onChange={(e) => { formRefs.origin.current = e.target.value; }}
-          />
+      {/* Car Rental Fields */}
+      {formType === "car_rental" && (
+        <>
+          <div className="grid gap-2">
+            <Label>{language === "he" ? "חברה" : "Company"} *</Label>
+            <Input
+              data-field="company"
+              tabIndex={2}
+              defaultValue={formRefs.company.current}
+              onChange={(e) => { formRefs.company.current = e.target.value; }}
+              placeholder={language === "he" ? "הרץ, אלדן, וכו'" : "Hertz, Avis, etc."}
+            />
+          </div>
+          
+          <div className="grid gap-2">
+            <Label>{language === "he" ? "דגם רכב" : "Car Model"}</Label>
+            <Input
+              data-field="carModel"
+              tabIndex={3}
+              defaultValue={formRefs.carModel.current}
+              onChange={(e) => { formRefs.carModel.current = e.target.value; }}
+              placeholder={language === "he" ? "טויוטה קורולה" : "Toyota Corolla"}
+            />
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <div className="grid gap-2">
+              <Label>{language === "he" ? "מיקום איסוף" : "Pickup Location"} *</Label>
+              <Input
+                data-field="pickupLocation"
+                tabIndex={4}
+                defaultValue={formRefs.pickupLocation.current}
+                onChange={(e) => { formRefs.pickupLocation.current = e.target.value; }}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label>{language === "he" ? "מיקום החזרה" : "Return Location"} *</Label>
+              <Input
+                data-field="returnLocation"
+                tabIndex={5}
+                defaultValue={formRefs.returnLocation.current}
+                onChange={(e) => { formRefs.returnLocation.current = e.target.value; }}
+              />
+            </div>
+          </div>
+          
+          <div className="grid gap-2">
+            <Label>{language === "he" ? "טלפון" : "Phone"}</Label>
+            <Input
+              data-field="phone"
+              tabIndex={6}
+              defaultValue={formRefs.phone.current}
+              onChange={(e) => { formRefs.phone.current = e.target.value; }}
+              placeholder="+972-50-1234567"
+            />
+          </div>
+        </>
+      )}
+      
+      {/* Flight/Train/Bus/Ferry/Other Fields */}
+      {formType !== "car_rental" && (
+        <div className="grid grid-cols-2 gap-4">
+          <div className="grid gap-2">
+            <Label>{t("origin")} *</Label>
+            <Input
+              data-field="origin"
+              tabIndex={2}
+              defaultValue={formRefs.origin.current}
+              onChange={(e) => { formRefs.origin.current = e.target.value; }}
+            />
+          </div>
+          <div className="grid gap-2">
+            <Label>{t("destination")} *</Label>
+            <Input
+              data-field="destination"
+              tabIndex={3}
+              defaultValue={formRefs.destination.current}
+              onChange={(e) => { formRefs.destination.current = e.target.value; }}
+            />
+          </div>
         </div>
-        <div className="grid gap-2">
-          <Label>{t("destination")} *</Label>
-          <Input
-            data-field="destination"
-            tabIndex={3}
-            defaultValue={formRefs.destination.current}
-            onChange={(e) => { formRefs.destination.current = e.target.value; }}
-          />
-        </div>
-      </div>
+      )}
       
       {formType === "flight" && (
         <div className="grid gap-2">
@@ -570,7 +724,13 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
             const arrDate = transport.arrivalDate ? new Date(transport.arrivalDate) : null;
             
             return (
-              <Card key={transport.id} className="elegant-card-hover overflow-hidden">
+              <Card 
+                key={transport.id} 
+                id={`transport-${transport.id}`}
+                className={`elegant-card-hover overflow-hidden ${
+                  highlightedId === transport.id ? 'ring-4 ring-yellow-400 animate-pulse' : ''
+                }`}
+              >
                 {/* Colorful header */}
                 <div className={`h-16 bg-gradient-to-r ${colorClass} relative`}>
                   <div className="absolute inset-0 bg-black/10" />
@@ -581,23 +741,36 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
-                          <h3 className="font-semibold text-white text-sm">{t(transport.type)}</h3>
+                          <h3 className="font-semibold text-white text-sm">
+                            {transport.type === 'car_rental' 
+                              ? (language === 'he' ? 'השכרת רכב' : 'Car Rental')
+                              : t(transport.type as any)
+                            }
+                          </h3>
                           {/* Payment status badge hidden - managed in Budget tab */}
                         </div>
-                        <p className="text-xs text-white/80 flex items-center gap-1">
-                          {transport.origin} <ArrowRight className="w-2 h-2" /> {transport.destination}
-                        </p>
+                        {transport.type === 'car_rental' ? (
+                          <>
+                            <p className="text-xs text-white/90 font-medium">{transport.company}</p>
+                            {transport.carModel && (
+                              <p className="text-xs text-white/70">{transport.carModel}</p>
+                            )}
+                          </>
+                        ) : (
+                          <p className="text-xs text-white/80 flex items-center gap-1">
+                            {transport.origin} <ArrowRight className="w-2 h-2" /> {transport.destination}
+                          </p>
+                        )}
                       </div>
                     </div>
                     <div className="flex gap-0.5">
                       {/* Document link button */}
                       {(() => {
-                        const relatedDocs = documents?.filter(doc => 
-                          (doc.category === 'booking' || doc.category === 'other') && 
-                          (doc.name.toLowerCase().includes(transport.origin.toLowerCase()) ||
-                           doc.name.toLowerCase().includes(transport.destination.toLowerCase()) ||
-                           (transport.confirmationNumber && doc.name.toLowerCase().includes(transport.confirmationNumber.toLowerCase())))
-                        );
+                        // Only use explicitly linked documents
+                        const linkedDoc = transport.linkedDocumentId 
+                          ? documents?.find(doc => doc.id === transport.linkedDocumentId)
+                          : null;
+                        
                         return (
                           <Button 
                             size="icon" 
@@ -606,31 +779,80 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
                             onClick={(e) => {
                               e.preventDefault();
                               e.stopPropagation();
-                              if (relatedDocs && relatedDocs.length > 0) {
-                                window.open(relatedDocs[0].fileUrl, '_blank');
+                              if (linkedDoc) {
+                                window.open(linkedDoc.fileUrl, '_blank');
                               } else {
-                                toast.info(language === 'he' ? 'אין מסמך' : 'No document');
+                                // Open dialog to manually select document
+                                handleDocumentLink(transport.id);
                               }
                             }}
-                            title={relatedDocs && relatedDocs.length > 0 
-                              ? (language === 'he' ? 'פתיחת מסמך' : 'Open document')
-                              : (language === 'he' ? 'אין מסמך' : 'No document')
+                            onContextMenu={(e) => {
+                              // Right-click opens dialog
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handleDocumentLink(transport.id);
+                            }}
+                            onTouchStart={(e) => {
+                              // Long press on mobile
+                              e.stopPropagation();
+                              longPressTriggered.current = false;
+                              longPressTimer.current = setTimeout(() => {
+                                longPressTriggered.current = true;
+                                handleDocumentLink(transport.id);
+                              }, 500);
+                            }}
+                            onTouchEnd={(e) => {
+                              e.stopPropagation();
+                              if (longPressTimer.current) {
+                                clearTimeout(longPressTimer.current);
+                                longPressTimer.current = null;
+                              }
+                              // Prevent click if long press was triggered
+                              if (longPressTriggered.current) {
+                                e.preventDefault();
+                                longPressTriggered.current = false;
+                              }
+                            }}
+                            onTouchMove={(e) => {
+                              e.stopPropagation();
+                              if (longPressTimer.current) {
+                                clearTimeout(longPressTimer.current);
+                                longPressTimer.current = null;
+                              }
+                            }}
+                            title={linkedDoc
+                              ? (language === 'he' ? 'פתיחת מסמך (לחיצה ימנית לשינוי)' : 'Open document (right-click to change)')
+                              : (language === 'he' ? 'קישור מסמך' : 'Link document')
                             }
                           >
                             <FileText className="w-3 h-3" />
                           </Button>
                         );
                       })()}
-                      <Button size="icon" variant="ghost" className="h-7 w-7 text-white bg-amber-500/80 hover:bg-amber-600" onClick={() => openEdit(transport)}>
-                        <Edit className="w-3 h-3" />
-                      </Button>
-                      <Button size="icon" variant="ghost" className="h-7 w-7 text-white bg-red-500/80 hover:bg-red-600" onClick={() => {
-                        if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את הטיסה/הסעה?" : "Are you sure you want to delete this transportation?")) {
-                          deleteMutation.mutate({ id: transport.id });
-                        }
-                      }}>
-                        <Trash2 className="w-3 h-3" />
-                      </Button>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button size="icon" variant="ghost" className="h-7 w-7 text-white bg-amber-500/80 hover:bg-amber-600" onClick={() => openEdit(transport)}>
+                            <Edit className="w-3 h-3" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>{language === 'he' ? 'ערוך תחבורה' : 'Edit transportation'}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button size="icon" variant="ghost" className="h-7 w-7 text-white bg-red-500/80 hover:bg-red-600" onClick={() => {
+                            if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את התחבורה?" : "Are you sure you want to delete this transportation?")) {
+                              deleteMutation.mutate({ id: transport.id });
+                            }
+                          }}>
+                            <Trash2 className="w-3 h-3" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>{language === 'he' ? 'מחק תחבורה' : 'Delete transportation'}</p>
+                        </TooltipContent>
+                      </Tooltip>
                     </div>
                   </div>
                 </div>
@@ -683,6 +905,15 @@ export default function TransportationTab({ tripId, tripEndDate }: Transportatio
           </CardContent>
         </Card>
       )}
+
+      {/* Document Link Dialog */}
+      <DocumentLinkDialog
+        open={documentLinkDialogOpen}
+        onOpenChange={setDocumentLinkDialogOpen}
+        tripId={tripId}
+        currentDocumentId={linkingTransportId ? transports?.find(t => t.id === linkingTransportId)?.linkedDocumentId : null}
+        onSelectDocument={handleDocumentSelect}
+      />
     </div>
   );
 }

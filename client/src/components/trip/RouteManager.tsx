@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -22,6 +22,11 @@ export default function RouteManager({ tripId }: RouteManagerProps) {
   const [editingRoute, setEditingRoute] = useState<any>(null);
   
   const { data: routes, refetch } = trpc.routes.list.useQuery({ tripId });
+  
+  // Force refetch when tripId changes to prevent cache collision
+  useEffect(() => {
+    refetch();
+  }, [tripId, refetch]);
   
   const [formData, setFormData] = useState({
     name: "",
@@ -110,7 +115,7 @@ export default function RouteManager({ tripId }: RouteManagerProps) {
       description: formData.description || undefined,
       descriptionHe: formData.descriptionHe || undefined,
       date: formData.date,
-      time: formData.time || undefined,
+      time: formData.time && formData.time.trim() !== "" ? formData.time : undefined,
       distanceKm: formData.distanceKm ? parseFloat(formData.distanceKm) : undefined,
       estimatedDuration: formData.estimatedDuration ? parseInt(formData.estimatedDuration) : undefined,
       roadType: formData.roadType || undefined,
@@ -371,12 +376,28 @@ export default function RouteManager({ tripId }: RouteManagerProps) {
                   className="w-full"
                   onClick={() => {
                     const routeName = language === "he" && route.nameHe ? route.nameHe : route.name;
-                    const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(routeName)}`;
-                    window.open(googleMapsUrl, "_blank");
+                    // Remove "Route X: " prefix
+                    const cleanRouteName = routeName.replace(/^Route \d+:\s*/i, '');
+                    // Parse origin and destination from route name (format: "Origin → Destination")
+                    const parts = cleanRouteName.split(/→|->/).map(p => p.trim());
+                    if (parts.length >= 2) {
+                      // Use Google Maps Directions API
+                      const origin = encodeURIComponent(parts[0]);
+                      const destination = encodeURIComponent(parts[1]);
+                      // Add region=SK to force Slovakia context and show local POIs
+                      const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&region=SK`;
+                      console.log('[RouteManager] Opening Google Maps Directions:', googleMapsUrl);
+                      window.open(googleMapsUrl, "_blank");
+                    } else {
+                      // Fallback to search if format doesn't match
+                      const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cleanRouteName)}&region=SK`;
+                      console.log('[RouteManager] Opening Google Maps Search (fallback):', googleMapsUrl);
+                      window.open(googleMapsUrl, "_blank");
+                    }
                   }}
                 >
                   <ExternalLink className="w-4 h-4 mr-2" />
-                  {language === "he" ? "פתח במפות Google" : "Open in Google Maps"}
+                  {language === "he" ? "פתח במפה" : "Open in Map"}
                 </Button>
               </div>
             </CardContent>

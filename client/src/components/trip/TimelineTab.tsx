@@ -93,13 +93,16 @@ export default function TimelineTab({ tripId }: TimelineTabProps) {
     });
   });
 
-  // Transportation
+  // Transportation (exclude car_rental type as it's handled by carRentals table)
   transports.forEach((transport) => {
+    // Skip car_rental type to avoid duplicates with carRentals table
+    if (transport.type === 'car_rental') return;
+    
     events.push({
       id: `transport-${transport.id}`,
       type: "transport",
       date: transport.departureDate,
-      title: `${t(transport.type)}: ${transport.origin} → ${transport.destination}`,
+      title: `${t(transport.type as any)}: ${transport.origin} → ${transport.destination}`,
       subtitle: transport.confirmationNumber ? `#${transport.confirmationNumber}` : undefined,
       icon: transportIcons[transport.type] || Plane,
       color: "from-blue-500 to-indigo-600",
@@ -164,14 +167,16 @@ export default function TimelineTab({ tripId }: TimelineTabProps) {
   events.sort((a, b) => {
     // Create full timestamps by combining date and time
     const getFullTimestamp = (event: TimelineEvent) => {
-      if (!event.time) return event.date;
+      const eventDate = new Date(event.date);
+      const midnight = new Date(eventDate.getFullYear(), eventDate.getMonth(), eventDate.getDate());
+      
+      if (!event.time) {
+        // Events without time go to end of day (23:59) so they appear last
+        return midnight.getTime() + (23 * 60 * 60 * 1000) + (59 * 60 * 1000);
+      }
       
       // Parse time string (HH:MM)
       const [hours, minutes] = event.time.split(':').map(Number);
-      
-      // Get date at midnight
-      const eventDate = new Date(event.date);
-      const midnight = new Date(eventDate.getFullYear(), eventDate.getMonth(), eventDate.getDate());
       
       // Add hours and minutes
       return midnight.getTime() + (hours * 60 * 60 * 1000) + (minutes * 60 * 1000);

@@ -53,6 +53,8 @@ export const touristSites = mysqlTable("tourist_sites", {
   plannedVisitTime: varchar("plannedVisitTime", { length: 10 }), // HH:MM format
   website: varchar("website", { length: 500 }),
   notes: text("notes"),
+  coverImage: varchar("coverImage", { length: 500 }), // URL to site cover image
+  linkedDocumentId: int("linkedDocumentId"), // Explicitly linked document
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -81,7 +83,9 @@ export const hotels = mysqlTable("hotels", {
   paymentStatus: mysqlEnum("paymentStatus", ["paid", "pending"]).default("pending"),
   coverImage: varchar("coverImage", { length: 500 }),
   parkingImage: varchar("parkingImage", { length: 500 }),
+  gallery: text("gallery"), // JSON array of image URLs
   notes: text("notes"),
+  linkedDocumentId: int("linkedDocumentId"), // Explicitly linked document
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -95,7 +99,7 @@ export type InsertHotel = typeof hotels.$inferInsert;
 export const transportation = mysqlTable("transportation", {
   id: int("id").autoincrement().primaryKey(),
   tripId: int("tripId").notNull(),
-  type: mysqlEnum("type", ["flight", "train", "bus", "ferry", "other"]).notNull(),
+  type: mysqlEnum("type", ["flight", "train", "bus", "ferry", "car_rental", "other"]).notNull(),
   flightNumber: varchar("flightNumber", { length: 50 }),
   origin: varchar("origin", { length: 255 }).notNull(),
   destination: varchar("destination", { length: 255 }).notNull(),
@@ -107,6 +111,13 @@ export const transportation = mysqlTable("transportation", {
   currency: varchar("currency", { length: 10 }).default("USD"),
   paymentStatus: mysqlEnum("paymentStatus", ["paid", "pending"]).default("pending"),
   notes: text("notes"),
+  // Car rental specific fields
+  company: varchar("company", { length: 255 }), // Rental company name
+  carModel: varchar("carModel", { length: 255 }), // Car model
+  pickupLocation: varchar("pickupLocation", { length: 500 }), // Pickup location
+  returnLocation: varchar("returnLocation", { length: 500 }), // Return location  
+  phone: varchar("phone", { length: 50 }), // Contact phone
+  linkedDocumentId: int("linkedDocumentId"), // Explicitly linked document
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -146,7 +157,7 @@ export const checklistItems = mysqlTable("checklist_items", {
   completed: boolean("completed").default(false).notNull(),
   dueDate: bigint("dueDate", { mode: "number" }), // UTC timestamp in ms, optional
   notes: text("notes"),
-  owner: mysqlEnum("owner", ["shared", "yona_tzvi", "efi", "ruth", "michal"]).default("shared").notNull(), // which participant(s) this task belongs to
+  owner: mysqlEnum("owner", ["shared", "ofir", "ruth"]).default("shared").notNull(), // which participant(s) this task belongs to
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -175,6 +186,7 @@ export const carRentals = mysqlTable("car_rentals", {
   currency: varchar("currency", { length: 10 }).default("USD"),
   paymentStatus: mysqlEnum("paymentStatus", ["paid", "pending"]).default("pending"),
   notes: text("notes"),
+  linkedDocumentId: int("linkedDocumentId"), // Explicitly linked document
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -200,6 +212,8 @@ export const restaurants = mysqlTable("restaurants", {
   currency: varchar("currency", { length: 10 }).default("USD"),
   paymentStatus: mysqlEnum("paymentStatus", ["paid", "pending"]).default("pending"),
   notes: text("notes"),
+  coverImage: varchar("coverImage", { length: 500 }), // URL to restaurant cover image
+  linkedDocumentId: int("linkedDocumentId"), // Explicitly linked document
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -214,12 +228,14 @@ export const documents = mysqlTable("documents", {
   id: int("id").autoincrement().primaryKey(),
   tripId: int("tripId").notNull(),
   name: varchar("name", { length: 255 }).notNull(),
-  category: mysqlEnum("category", ["passport", "visa", "insurance", "booking", "ticket", "restaurant", "hotel", "other"]).notNull(),
+  category: mysqlEnum("category", ["passport", "visa", "insurance", "booking", "ticket", "restaurant", "hotel", "flights", "other"]).notNull(),
   fileUrl: varchar("fileUrl", { length: 500 }).notNull(),
   fileKey: varchar("fileKey", { length: 500 }).notNull(),
   mimeType: varchar("mimeType", { length: 100 }),
   tags: text("tags"), // JSON array of tags
   notes: text("notes"),
+  coverImage: varchar("coverImage", { length: 500 }),
+  hotelId: int("hotelId"), // Optional link to specific hotel
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -270,6 +286,27 @@ export type Route = typeof routes.$inferSelect;
 export type InsertRoute = typeof routes.$inferInsert;
 
 /**
+ * Route Points of Interest table - attractions, restaurants, gas stations along routes
+ */
+export const routePointsOfInterest = mysqlTable("route_points_of_interest", {
+  id: int("id").autoincrement().primaryKey(),
+  routeId: int("routeId").notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  nameHe: varchar("nameHe", { length: 255 }),
+  type: mysqlEnum("type", ["attraction", "restaurant", "gas_station", "other"]).notNull(),
+  latitude: decimal("latitude", { precision: 10, scale: 7 }).notNull(),
+  longitude: decimal("longitude", { precision: 10, scale: 7 }).notNull(),
+  address: text("address"),
+  placeId: varchar("placeId", { length: 255 }), // Google Places ID for reference
+  notes: text("notes"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type RoutePointOfInterest = typeof routePointsOfInterest.$inferSelect;
+export type InsertRoutePointOfInterest = typeof routePointsOfInterest.$inferInsert;
+
+/**
  * Activity log table - tracks all user actions on trips
  */
 export const activityLog = mysqlTable("activity_log", {
@@ -285,3 +322,24 @@ export const activityLog = mysqlTable("activity_log", {
 
 export type ActivityLog = typeof activityLog.$inferSelect;
 export type InsertActivityLog = typeof activityLog.$inferInsert;
+
+/**
+ * Payments table - tracks all payments for trip activities
+ * Supports deposits, installments, and multiple payment methods
+ */
+export const payments = mysqlTable("payments", {
+  id: int("id").autoincrement().primaryKey(),
+  tripId: int("tripId").notNull(),
+  activityType: mysqlEnum("activityType", ["hotel", "transportation", "car_rental", "restaurant", "tourist_site", "other"]).notNull(),
+  activityId: int("activityId").notNull(), // ID of the related activity
+  amount: decimal("amount", { precision: 10, scale: 2 }).notNull(),
+  currency: varchar("currency", { length: 10 }).notNull().default("USD"),
+  paymentDate: bigint("paymentDate", { mode: "number" }).notNull(), // UTC timestamp in ms
+  paymentMethod: varchar("paymentMethod", { length: 50 }), // e.g., "Credit Card", "Bank Transfer", "Cash", "PayPal"
+  notes: text("notes"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Payment = typeof payments.$inferSelect;
+export type InsertPayment = typeof payments.$inferInsert;

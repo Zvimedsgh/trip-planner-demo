@@ -1,0 +1,45 @@
+{
+  "query": "SELECT id, name, destination FROM trips ORDER BY id DESC LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, destination FROM trips ORDER BY id DESC LIMIT 10;",
+  "rows": [
+    {
+      "id": "540001",
+      "name": "Test",
+      "destination": "Tlv"
+    },
+    {
+      "id": "510001",
+      "name": "רות ואופיר לאתונה",
+      "destination": "Athens,Greece"
+    },
+    {
+      "id": "300001",
+      "name": "Payment Test Trip",
+      "destination": "Test Destination"
+    },
+    {
+      "id": "60003",
+      "name": "Test Trip for Checklist",
+      "destination": "Test Destination"
+    },
+    {
+      "id": "60002",
+      "name": "Test Collaboration Trip",
+      "destination": "Test Location"
+    },
+    {
+      "id": "60001",
+      "name": "Test Collaboration Trip",
+      "destination": "Test Location"
+    },
+    {
+      "id": "30001",
+      "name": "Goren Roots Trip to Slovakia",
+      "destination": "Bratislava,Slovakia"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tdestination\n540001\tTest\tTlv\n510001\tרות ואופיר לאתונה\tAthens,Greece\n300001\tPayment Test Trip\tTest Destination\n60003\tTest Trip for Checklist\tTest Destination\n60002\tTest Collaboration Trip\tTest Location\n60001\tTest Collaboration Trip\tTest Location\n30001\tGoren Roots Trip to Slovakia\tBratislava,Slovakia\n",
+  "stderr": "",
+  "execution_time_ms": 1555
+}

@@ -1,0 +1,20 @@
+{
+  "query": "SELECT id, type, origin, destination, company, pickupLocation, returnLocation, notes FROM transportation WHERE type = 'car_rental' LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, type, origin, destination, company, pickupLocation, returnLocation, notes FROM transportation WHERE type = 'car_rental' LIMIT 5;",
+  "rows": [
+    {
+      "id": "270001",
+      "type": "car_rental",
+      "origin": "BTS Airport",
+      "destination": "BTS Airport",
+      "company": "Surprice",
+      "pickupLocation": "outside the Arrivals area at the airport",
+      "returnLocation": "clarify drop-off instructions with the supplier upon pick-up",
+      "notes": "outside the Arrivals area at the airport "
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttype\torigin\tdestination\tcompany\tpickupLocation\treturnLocation\tnotes\n270001\tcar_rental\tBTS Airport\tBTS Airport\tSurprice\toutside the Arrivals area at the airport\tclarify drop-off instructions with the supplier upon pick-up\toutside the Arrivals area at the airport \n",
+  "stderr": "",
+  "execution_time_ms": 1538
+}

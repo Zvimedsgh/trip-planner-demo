@@ -1,190 +1,56 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { trpc } from "@/lib/trpc";
 import { MapView } from "../Map";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { MapPin, Navigation } from "lucide-react";
+import { MapPin, Navigation, Calendar, Clock } from "lucide-react";
+import { format } from "date-fns";
 
-type RouteMap = {
-  id: string;
-  title: { en: string; he: string };
-  description: { en: string; he: string };
-  gradient: string;
-  origin: { lat: number; lng: number; name: string };
-  destination: { lat: number; lng: number; name: string };
-  waypoints: Array<{ location: { lat: number; lng: number }; stopover: boolean }>;
-  pois: Array<{ lat: number; lng: number; name: string; type: string }>;
-};
+interface AllRouteMapsTabProps {
+  tripId: number;
+}
 
-const routeMaps: RouteMap[] = [
-  {
-    id: "route1",
-    title: {
-      en: "Route 1: Bratislava → Liptovský Mikuláš (Sep 2)",
-      he: "מסלול 1: ברטיסלבה → ליפטובסקי מיקולאש (2 בספטמבר)"
-    },
-    description: {
-      en: "Day 2: Departure at 19:00 from Bratislava to Liptovský Mikuláš",
-      he: "יום 2: יציאה ב-19:00 מברטיסלבה למיקולאש"
-    },
-    gradient: "from-blue-500 via-indigo-500 to-purple-500",
-    origin: { lat: 48.1486, lng: 17.1077, name: "Bratislava" },
-    destination: { lat: 49.0833, lng: 19.6167, name: "Liptovský Mikuláš" },
-    waypoints: [
-      { location: { lat: 48.7164, lng: 19.1517 }, stopover: true }, // Banská Bystrica
-    ],
-    pois: [
-      { lat: 48.7164, lng: 19.1517, name: "Banská Bystrica", type: "city" },
-      { lat: 48.3, lng: 17.5, name: "OMV Gas Station", type: "gas" },
-      { lat: 48.7, lng: 19.1, name: "Shell Gas Station", type: "gas" },
-      { lat: 48.9, lng: 19.5, name: "MOL Gas Station", type: "gas" },
-      { lat: 48.4, lng: 17.8, name: "Highway Restaurant", type: "restaurant" },
-      { lat: 48.7164, lng: 19.1517, name: "Banská Bystrica Restaurant", type: "restaurant" },
-      { lat: 48.95, lng: 19.45, name: "Mountain View Restaurant", type: "restaurant" },
-    ],
-  },
-  {
-    id: "route2",
-    title: {
-      en: "Route 2: Liptovský Mikuláš → Košice (Sep 5)",
-      he: "מסלול 2: ליפטובסקי מיקולאש → קושיצה (5 בספטמבר)"
-    },
-    description: {
-      en: "Day 5: Journey to Košice via Slovenský Raj",
-      he: "יום 5: מסע לקושיצה דרך סלובנסקי ראי'"
-    },
-    gradient: "from-emerald-500 via-teal-500 to-cyan-500",
-    origin: { lat: 49.0833, lng: 19.6167, name: "Liptovský Mikuláš" },
-    destination: { lat: 48.7164, lng: 21.2611, name: "Košice" },
-    waypoints: [
-      { location: { lat: 48.9333, lng: 20.3833 }, stopover: true }, // Slovenský Raj entrance
-      { location: { lat: 48.9972, lng: 20.5597 }, stopover: true }, // Spiš Castle area
-    ],
-    pois: [
-      { lat: 48.9333, lng: 20.3833, name: "Slovenský Raj National Park", type: "attraction" },
-      { lat: 48.9167, lng: 20.4, name: "Dobšinská Ice Cave", type: "attraction" },
-      { lat: 48.9972, lng: 20.5597, name: "Spiš Castle", type: "attraction" },
-      { lat: 49.0, lng: 20.3, name: "Slovak Paradise Gorges", type: "attraction" },
-      { lat: 49.1, lng: 20.1, name: "Shell Gas Station", type: "gas" },
-      { lat: 48.93, lng: 20.5, name: "OMV Gas Station", type: "gas" },
-      { lat: 48.8, lng: 20.8, name: "MOL Gas Station", type: "gas" },
-      { lat: 48.95, lng: 20.35, name: "Mountain Restaurant", type: "restaurant" },
-      { lat: 48.93, lng: 20.4, name: "Slovenský Raj Restaurant", type: "restaurant" },
-      { lat: 48.85, lng: 21.0, name: "Highway Restaurant", type: "restaurant" },
-      { lat: 48.75, lng: 21.15, name: "Košice Approach Restaurant", type: "restaurant" },
-    ],
-  },
-  {
-    id: "route3",
-    title: {
-      en: "Route 3: Košice → Vienna (Sep 7)",
-      he: "מסלול 3: קושיצה → וינה (7 בספטמבר)"
-    },
-    description: {
-      en: "Day 7: Drive to Vienna",
-      he: "יום 7: נסיעה לוינה"
-    },
-    gradient: "from-amber-500 via-orange-500 to-red-500",
-    origin: { lat: 48.7164, lng: 21.2611, name: "Košice" },
-    destination: { lat: 48.2082, lng: 16.3738, name: "Vienna" },
-    waypoints: [
-      { location: { lat: 48.1486, lng: 17.1077 }, stopover: true }, // Bratislava
-    ],
-    pois: [
-      { lat: 48.2082, lng: 16.3738, name: "Schönbrunn Palace", type: "attraction" },
-      { lat: 48.2085, lng: 16.3794, name: "Belvedere Palace", type: "attraction" },
-      { lat: 48.5, lng: 18.0, name: "Shell Gas Station", type: "gas" },
-      { lat: 48.35, lng: 17.2, name: "OMV Gas Station", type: "gas" },
-      { lat: 48.25, lng: 16.8, name: "MOL Gas Station", type: "gas" },
-      { lat: 48.3, lng: 17.5, name: "Highway Restaurant", type: "restaurant" },
-      { lat: 48.4, lng: 17.8, name: "Bratislava Approach Restaurant", type: "restaurant" },
-      { lat: 48.22, lng: 16.5, name: "Vienna Exit Restaurant", type: "restaurant" },
-    ],
-  },
-  {
-    id: "route4",
-    title: {
-      en: "Route 4: Liptovský Mikuláš → Štrbské Pleso (Sep 3)",
-      he: "מסלול 4: ליפטובסקי מיקולאש → שטרבסקה פלסו (3 בספטמבר)"
-    },
-    description: {
-      en: "Day 3: Round trip to High Tatras mountain lake",
-      he: "יום 3: טיול יום לאגם ההרים בטטרה הגבוהה"
-    },
-    gradient: "from-sky-500 via-blue-500 to-indigo-500",
-    origin: { lat: 49.0833, lng: 19.6167, name: "Liptovský Mikuláš" },
-    destination: { lat: 49.1194, lng: 20.0611, name: "Štrbské Pleso" },
-    waypoints: [
-      { location: { lat: 49.1, lng: 19.85 }, stopover: true }, // Scenic viewpoint
-    ],
-    pois: [
-      { lat: 49.1194, lng: 20.0611, name: "Štrbské Pleso Lake", type: "attraction" },
-      { lat: 49.15, lng: 20.15, name: "Lomnický štít Cable Car", type: "attraction" },
-      { lat: 49.1, lng: 19.9, name: "Shell Gas Station", type: "gas" },
-      { lat: 49.08, lng: 19.85, name: "OMV Gas Station", type: "gas" },
-      { lat: 49.12, lng: 20.05, name: "Štrbské Pleso Restaurant", type: "restaurant" },
-      { lat: 49.1194, lng: 20.0611, name: "Lakeside Café", type: "restaurant" },
-      { lat: 49.1, lng: 19.95, name: "Mountain View Restaurant", type: "restaurant" },
-    ],
-  },
-  {
-    id: "route5",
-    title: {
-      en: "Route 5: Liptovský Mikuláš → Jasná – Demänovská Dolina (Sep 4)",
-      he: "מסלול 5: ליפטובסקי מיקולאש → יאסנה – דמנובסקה דולינה (4 בספטמבר)"
-    },
-    description: {
-      en: "Day 4: Round trip to ski resort and caves",
-      he: "יום 4: טיול יום לאתר סקי ומערות"
-    },
-    gradient: "from-violet-500 via-purple-500 to-fuchsia-500",
-    origin: { lat: 49.0833, lng: 19.6167, name: "Liptovský Mikuláš" },
-    destination: { lat: 49.0333, lng: 19.5833, name: "Jasná – Demänovská Dolina" },
-    waypoints: [
-      { location: { lat: 49.05, lng: 19.6 }, stopover: true }, // Demänovská Cave
-    ],
-    pois: [
-      { lat: 49.0333, lng: 19.5833, name: "Jasná Ski Resort", type: "attraction" },
-      { lat: 49.0444, lng: 19.5833, name: "Demänovská Ice Cave", type: "attraction" },
-      { lat: 49.0444, lng: 19.5833, name: "Demänovská Cave of Liberty", type: "attraction" },
-      { lat: 49.06, lng: 19.6, name: "Shell Gas Station", type: "gas" },
-      { lat: 49.075, lng: 19.61, name: "OMV Gas Station", type: "gas" },
-      { lat: 49.04, lng: 19.59, name: "Jasná Restaurant", type: "restaurant" },
-      { lat: 49.0333, lng: 19.5833, name: "Ski Resort Restaurant", type: "restaurant" },
-      { lat: 49.05, lng: 19.6, name: "Cave Entrance Café", type: "restaurant" },
-    ],
-  },
-  {
-    id: "route6",
-    title: {
-      en: "Route 6: Vienna → Bratislava Airport (Sep 9)",
-      he: "מסלול 6: וינה → שדה התעופה ברטיסלבה (9 בספטמבר)"
-    },
-    description: {
-      en: "Day 9: Departure - Return to Bratislava Airport",
-      he: "יום 9: יציאה - חזרה לשדה התעופה"
-    },
-    gradient: "from-rose-500 via-pink-500 to-purple-500",
-    origin: { lat: 48.2082, lng: 16.3738, name: "Vienna" },
-    destination: { lat: 48.1702, lng: 17.2127, name: "Bratislava Airport" },
-    waypoints: [
-      { location: { lat: 48.1486, lng: 17.1077 }, stopover: false }, // Bratislava city
-    ],
-    pois: [
-      { lat: 48.1702, lng: 17.2127, name: "Bratislava Airport (BTS)", type: "attraction" },
-      { lat: 48.19, lng: 16.8, name: "Shell Gas Station", type: "gas" },
-      { lat: 48.175, lng: 17.05, name: "OMV Gas Station", type: "gas" },
-      { lat: 48.165, lng: 17.15, name: "MOL Gas Station (Airport)", type: "gas" },
-      { lat: 48.15, lng: 17.0, name: "Highway Restaurant", type: "restaurant" },
-      { lat: 48.18, lng: 16.9, name: "Vienna-Bratislava Border Restaurant", type: "restaurant" },
-      { lat: 48.17, lng: 17.18, name: "Airport Café", type: "restaurant" },
-    ],
-  },
-];
-
-export function AllRouteMapsTab() {
+export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
   const { language } = useLanguage();
-  const [selectedRoute, setSelectedRoute] = useState<RouteMap | null>(null);
+  const [selectedRoute, setSelectedRoute] = useState<any | null>(null);
+  
+  const { data: routes, refetch } = trpc.routes.list.useQuery({ tripId });
+  
+  // Force refetch when tripId changes to prevent cache collision
+  useEffect(() => {
+    refetch();
+  }, [tripId, refetch]);
+  
+  // If no routes exist, show empty state
+  if (!routes || routes.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-16 px-4">
+        <div className="text-center space-y-4 max-w-md">
+          <div className="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
+            <Navigation className="w-12 h-12 text-blue-600" />
+          </div>
+          <h3 className="text-2xl font-semibold text-gray-800">
+            {language === "he" ? "אין מסלולים עדיין" : "No Routes Yet"}
+          </h3>
+          <p className="text-gray-600">
+            {language === "he" 
+              ? "עבור לטאב 'Route Manager' כדי להוסיף מסלולי נסיעה לטיול שלך"
+              : "Go to 'Route Manager' tab to add driving routes to your trip"}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  const gradients = [
+    "from-blue-500 via-indigo-500 to-purple-500",
+    "from-emerald-500 via-teal-500 to-cyan-500",
+    "from-amber-500 via-orange-500 to-red-500",
+    "from-pink-500 via-rose-500 to-red-500",
+    "from-violet-500 via-purple-500 to-fuchsia-500",
+    "from-green-500 via-emerald-500 to-teal-500",
+  ];
 
   return (
     <div className="space-y-6 relative">
@@ -193,140 +59,191 @@ export function AllRouteMapsTab() {
         backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
         backgroundSize: '60px 60px'
       }} />
-      <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold mb-2">
-          {language === "he" ? "מפות מסלול" : "Route Maps"}
+
+      {/* Header */}
+      <div className="relative z-10">
+        <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          {language === "he" ? "מפות מסלולים" : "Route Maps"}
         </h2>
-        <p className="text-muted-foreground">
+        <p className="text-gray-600 mt-2">
           {language === "he" 
-            ? "לחץ על כרטיס כדי לצפות במפה המפורטת" 
-            : "Click on a card to view the detailed map"}
+            ? "לחץ על כרטיס כדי לראות את המפה המלאה עם נקודות עניין"
+            : "Click on a card to view the full map with points of interest"}
         </p>
       </div>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {routeMaps.map((route) => (
-          <Card
-            key={route.id}
-            className={`overflow-hidden bg-gradient-to-br ${route.gradient} text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer group`}
-            onClick={() => setSelectedRoute(route)}
-          >
-            <CardContent className="p-6">
-              <div className="flex items-start justify-between mb-4">
-                <div className="w-12 h-12 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Navigation className="w-6 h-6 text-white" />
-                </div>
+      {/* Route Cards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
+        {routes.map((route, index) => {
+          const gradient = gradients[index % gradients.length];
+          const displayName = language === "he" && route.nameHe ? route.nameHe : route.name;
+          const displayDescription = language === "he" && route.descriptionHe ? route.descriptionHe : route.description;
+          
+          return (
+            <Card
+              key={route.id}
+              className="cursor-pointer hover:shadow-2xl transition-all duration-300 hover:scale-105 overflow-hidden group"
+              onClick={() => setSelectedRoute(route)}
+            >
+              <div className={`h-32 bg-gradient-to-br ${gradient} flex items-center justify-center relative overflow-hidden`}>
+                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-all duration-300" />
+                <Navigation className="w-16 h-16 text-white drop-shadow-lg transform group-hover:rotate-45 transition-transform duration-300" />
               </div>
-
-              <h3 className="font-bold text-lg mb-2 drop-shadow-md">
-                {language === "he" ? route.title.he : route.title.en}
-              </h3>
-
-              <p className="text-sm text-white/90 mb-4 drop-shadow">
-                {language === "he" ? route.description.he : route.description.en}
-              </p>
-
-              <div className="space-y-2 text-sm">
-                <div className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4" />
-                  <span className="font-medium">{route.origin.name}</span>
+              <CardContent className="p-4 space-y-3">
+                <h3 className="font-bold text-lg text-gray-800 line-clamp-2 min-h-[3.5rem]">
+                  {displayName}
+                </h3>
+                
+                {displayDescription && (
+                  <p className="text-sm text-gray-600 line-clamp-2">
+                    {displayDescription}
+                  </p>
+                )}
+                
+                <div className="flex items-center gap-2 text-sm text-gray-500">
+                  <Calendar className="w-4 h-4" />
+                  <span>{format(new Date(route.date), "MMM d, yyyy")}</span>
                 </div>
-                <div className="flex items-center gap-2 pl-6">
-                  <span>→</span>
-                  <span className="font-medium">{route.destination.name}</span>
-                </div>
-              </div>
-
-              <div className="mt-4 pt-4 border-t border-white/20">
-                <p className="text-xs text-white/80">
-                  {route.pois.length} {language === "he" ? "נקודות עניין" : "points of interest"}
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+                
+                {route.time && (
+                  <div className="flex items-center gap-2 text-sm text-gray-500">
+                    <Clock className="w-4 h-4" />
+                    <span>{route.time}</span>
+                  </div>
+                )}
+                
+                {route.distanceKm && (
+                  <div className="flex items-center gap-2 text-sm text-gray-500">
+                    <MapPin className="w-4 h-4" />
+                    <span>
+                      {route.distanceKm} km
+                      {route.estimatedDuration && ` • ${Math.floor(route.estimatedDuration / 60)}h ${route.estimatedDuration % 60}m`}
+                    </span>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
 
       {/* Map Dialog */}
       <Dialog open={!!selectedRoute} onOpenChange={(open) => !open && setSelectedRoute(null)}>
-        <DialogContent className="max-w-[95vw] h-[95vh] flex flex-col">
+        <DialogContent className="max-w-[95vw] w-[95vw] h-[95vh] p-6">
           <DialogHeader>
-            <DialogTitle>
-              {selectedRoute && (language === "he" ? selectedRoute.title.he : selectedRoute.title.en)}
+            <DialogTitle className="text-2xl font-bold">
+              {selectedRoute && (language === "he" && selectedRoute.nameHe ? selectedRoute.nameHe : selectedRoute?.name)}
             </DialogTitle>
           </DialogHeader>
-          <div className="flex-1 flex flex-col gap-4 overflow-hidden">
-            {/* Map Container */}
-            <div className="flex-1 rounded-lg overflow-hidden border-2 border-border min-h-[500px]">
-              {selectedRoute && (
+          
+          {selectedRoute && (
+            <div className="flex flex-col h-full gap-4">
+              {/* Map Container */}
+              <div className="flex-1 rounded-lg overflow-hidden border-2 border-gray-200">
                 <MapView
                   onMapReady={(map: any) => {
-                    const google = window.google;
-                    const directionsService = new google.maps.DirectionsService();
-                    const directionsRenderer = new google.maps.DirectionsRenderer({
-                      map,
-                      suppressMarkers: false,
-                    });
-
-                    directionsService.route(
-                      {
-                        origin: selectedRoute.origin,
-                        destination: selectedRoute.destination,
-                        waypoints: selectedRoute.waypoints,
+                    const google = (window as any).google;
+                    // Parse mapData if it exists
+                    let mapConfig = null;
+                    if (selectedRoute.mapData) {
+                      try {
+                        mapConfig = JSON.parse(selectedRoute.mapData);
+                      } catch (e) {
+                        console.error("Failed to parse mapData:", e);
+                      }
+                    }
+                    
+                    // If we have map configuration with origin/destination, show directions
+                    if (mapConfig?.origin && mapConfig?.destination) {
+                      const directionsService = new google.maps.DirectionsService();
+                      const directionsRenderer = new google.maps.DirectionsRenderer({
+                        map: map,
+                        suppressMarkers: false,
+                      });
+                      
+                      const request: google.maps.DirectionsRequest = {
+                        origin: mapConfig.origin,
+                        destination: mapConfig.destination,
+                        waypoints: mapConfig.waypoints || [],
                         travelMode: google.maps.TravelMode.DRIVING,
-                      },
-                      (result: any, status: any) => {
+                      };
+                      
+                      directionsService.route(request, (result: any, status: any) => {
                         if (status === google.maps.DirectionsStatus.OK && result) {
                           directionsRenderer.setDirections(result);
                         }
-                      }
-                    );
-
-                    // Add POI markers
-                    selectedRoute.pois.forEach((poi) => {
-                      new google.maps.Marker({
-                        position: { lat: poi.lat, lng: poi.lng },
-                        map,
-                        title: poi.name,
-                        icon: {
-                          url:
-                            poi.type === "gas"
-                              ? "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-                              : poi.type === "restaurant"
-                              ? "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
-                              : "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
-                        },
                       });
-                    });
+                      
+                      // Add POI markers if they exist
+                      if (mapConfig.pois && Array.isArray(mapConfig.pois)) {
+                        mapConfig.pois.forEach((poi: any) => {
+                          const markerColor = 
+                            poi.type === "gas" ? "#3B82F6" : // blue
+                            poi.type === "attraction" ? "#EF4444" : // red
+                            poi.type === "restaurant" ? "#10B981" : // green
+                            "#6B7280"; // gray
+                          
+                          new google.maps.Marker({
+                            position: { lat: poi.lat, lng: poi.lng },
+                            map: map,
+                            title: poi.name,
+                            icon: {
+                              path: google.maps.SymbolPath.CIRCLE,
+                              scale: 8,
+                              fillColor: markerColor,
+                              fillOpacity: 0.9,
+                              strokeColor: "#FFFFFF",
+                              strokeWeight: 2,
+                            },
+                          });
+                        });
+                      }
+                    } else {
+                      // No map data - show a simple message
+                      const infoWindow = new google.maps.InfoWindow({
+                        content: `<div style="padding: 10px;">
+                          <h3 style="font-weight: bold; margin-bottom: 5px;">${selectedRoute.name}</h3>
+                          <p style="color: #666;">${language === "he" ? "אין נתוני מפה זמינים למסלול זה" : "No map data available for this route"}</p>
+                        </div>`,
+                        position: map.getCenter(),
+                      });
+                      infoWindow.open(map);
+                    }
                   }}
                 />
-              )}
-            </div>
-
-            {/* POI List */}
-            {selectedRoute && selectedRoute.pois.length > 0 && (
-              <div className="border-t pt-4 overflow-y-auto max-h-[200px]">
-                <h3 className="font-semibold mb-3">
-                  {language === "he" ? "נקודות עניין לאורך המסלול" : "Points of Interest Along Route"}
-                </h3>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                  {selectedRoute.pois.map((poi, index) => {
-                    const Icon = poi.type === "gas" ? Navigation : poi.type === "restaurant" ? Navigation : MapPin;
-                    const colorClass = 
-                      poi.type === "gas" ? "text-blue-600" : 
-                      poi.type === "restaurant" ? "text-green-600" : 
-                      "text-red-600";
-                    return (
-                      <div key={index} className="flex items-center gap-2 text-sm">
-                        <Icon className={`w-4 h-4 ${colorClass}`} />
-                        <span className="truncate">{poi.name}</span>
-                      </div>
-                    );
-                  })}
+              </div>
+              
+              {/* Route Info */}
+              <div className="bg-gray-50 rounded-lg p-4 space-y-2">
+                {selectedRoute.description && (
+                  <p className="text-gray-700">
+                    {language === "he" && selectedRoute.descriptionHe ? selectedRoute.descriptionHe : selectedRoute.description}
+                  </p>
+                )}
+                <div className="flex flex-wrap gap-4 text-sm text-gray-600">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="w-4 h-4" />
+                    <span>{format(new Date(selectedRoute.date), "EEEE, MMMM d, yyyy")}</span>
+                  </div>
+                  {selectedRoute.time && (
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-4 h-4" />
+                      <span>{selectedRoute.time}</span>
+                    </div>
+                  )}
+                  {selectedRoute.distanceKm && (
+                    <div className="flex items-center gap-2">
+                      <MapPin className="w-4 h-4" />
+                      <span>
+                        {selectedRoute.distanceKm} km
+                        {selectedRoute.estimatedDuration && ` • ${Math.floor(selectedRoute.estimatedDuration / 60)}h ${selectedRoute.estimatedDuration % 60}m`}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     </div>

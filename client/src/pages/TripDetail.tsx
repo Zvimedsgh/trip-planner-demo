@@ -7,7 +7,7 @@ import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
 import { 
   ArrowLeft, Calendar, Car, DollarSign, FileText, Globe, 
-  Hotel, Loader2, MapPin, Plane, Utensils, Clock, ArrowRight, Share2, Copy, Check, X, Map, CheckSquare, Navigation
+  Hotel, Loader2, MapPin, Plane, Utensils, Clock, ArrowRight, Share2, Copy, Check, X, Map, CheckSquare, Navigation, Trash2
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import {
@@ -18,6 +18,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Link, useParams, useLocation } from "wouter";
 import TouristSitesTab from "@/components/trip/TouristSitesTab";
@@ -34,6 +35,7 @@ import DayTripsTab from "@/components/trip/DayTripsTab";
 import DailyView from "@/components/trip/DailyView";
 import CollaboratorsDialog from "@/components/trip/CollaboratorsDialog";
 import RouteManager from "@/components/trip/RouteManager";
+import PaymentsTab from "@/components/trip/PaymentsTab";
 
 export default function TripDetail() {
   const params = useParams<{ id: string }>();
@@ -47,6 +49,9 @@ export default function TripDetail() {
   const [copied, setCopied] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [defaultTab, setDefaultTab] = useState<string>("hotels");
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deleteConfirmation, setDeleteConfirmation] = useState("");
+  const [highlightedActivityId, setHighlightedActivityId] = useState<number | null>(null);
   const [hasInitialized, setHasInitialized] = useState(false);
   
   // Auto-select current day or first day (only on mount)
@@ -118,10 +123,29 @@ export default function TripDetail() {
       toast.success(language === "he" ? "קישור שיתוף בוטל" : "Share link revoked");
     },
   });
+
+  const deleteTrip = trpc.trips.delete.useMutation({
+    onSuccess: () => {
+      toast.success(language === "he" ? "הטיול נמחק בהצלחה" : "Trip deleted successfully");
+      navigate("/trips");
+    },
+    onError: () => {
+      toast.error(language === "he" ? "שגיאה במחיקת הטיול" : "Error deleting trip");
+    },
+  });
+
+  const handleDeleteTrip = () => {
+    if (deleteConfirmation.toLowerCase() === "delete" || deleteConfirmation === "מחק") {
+      deleteTrip.mutate({ id: tripId });
+      setDeleteDialogOpen(false);
+      setDeleteConfirmation("");
+    } else {
+      toast.error(language === "he" ? 'הקלד "מחק" לאישור' : 'Type "delete" to confirm');
+    }
+  };
   
-  const shareUrl = trip?.shareToken 
-    ? `${window.location.origin}/shared/${trip.shareToken}`
-    : null;
+  const shareUrl = trip?.shareToken ? `${window.location.origin}/shared/${trip.shareToken}` : null;
+  const inviteUrl = trip?.shareToken ? `${window.location.origin}/invite/${trip.shareToken}` : null;
   
   const copyToClipboard = async () => {
     if (shareUrl) {
@@ -156,22 +180,23 @@ export default function TripDetail() {
   }
 
   const getDaysCount = (start: number, end: number) => {
-    return Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+    return Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
   };
 
   const tabs = [
-    { id: "hotels", label: t("hotels"), icon: Hotel, color: "bg-blue-50 hover:bg-blue-100 data-[state=active]:bg-blue-300 data-[state=active]:text-blue-950 border-blue-200 data-[state=active]:border-blue-600" },
-    { id: "transport", label: t("transportation"), icon: Plane, color: "bg-purple-50 hover:bg-purple-100 data-[state=active]:bg-purple-300 data-[state=active]:text-purple-950 border-purple-200 data-[state=active]:border-purple-600" },
+    { id: "hotels", label: t("hotels"), icon: Hotel, color: "bg-blue-200 hover:bg-blue-300 data-[state=active]:bg-blue-500 data-[state=active]:text-white border-blue-300 data-[state=active]:border-blue-700" },
+    { id: "transport", label: t("transportation"), icon: Plane, color: "bg-purple-200 hover:bg-purple-300 data-[state=active]:bg-purple-500 data-[state=active]:text-white border-purple-300 data-[state=active]:border-purple-700" },
     // { id: "cars", label: t("carRentals"), icon: Car, color: "bg-red-50 hover:bg-red-100 data-[state=active]:bg-red-300 data-[state=active]:text-red-950 border-red-200 data-[state=active]:border-red-600" }, // Removed - merged into Transportation
-    { id: "sites", label: t("touristSites"), icon: MapPin, color: "bg-green-50 hover:bg-green-100 data-[state=active]:bg-green-300 data-[state=active]:text-green-950 border-green-200 data-[state=active]:border-green-600" },
-    { id: "restaurants", label: t("restaurants"), icon: Utensils, color: "bg-orange-50 hover:bg-orange-100 data-[state=active]:bg-orange-300 data-[state=active]:text-orange-950 border-orange-200 data-[state=active]:border-orange-600" },
-    { id: "documents", label: t("documents"), icon: FileText, color: "bg-slate-50 hover:bg-slate-100 data-[state=active]:bg-slate-300 data-[state=active]:text-slate-950 border-slate-200 data-[state=active]:border-slate-600" },
-    { id: "timeline", label: t("timeline"), icon: Clock, color: "bg-cyan-50 hover:bg-cyan-100 data-[state=active]:bg-cyan-300 data-[state=active]:text-cyan-950 border-cyan-200 data-[state=active]:border-cyan-600" },
-    { id: "routes", label: language === "he" ? "מפות מסלול" : "Route Maps", icon: Map, color: "bg-teal-50 hover:bg-teal-100 data-[state=active]:bg-teal-300 data-[state=active]:text-teal-950 border-teal-200 data-[state=active]:border-teal-600" },
-    { id: "route_manager", label: language === "he" ? "ניהול מסלולים" : "Route Manager", icon: Navigation, color: "bg-indigo-50 hover:bg-indigo-100 data-[state=active]:bg-indigo-300 data-[state=active]:text-indigo-950 border-indigo-200 data-[state=active]:border-indigo-600" },
+    { id: "sites", label: t("touristSites"), icon: MapPin, color: "bg-green-200 hover:bg-green-300 data-[state=active]:bg-green-500 data-[state=active]:text-white border-green-300 data-[state=active]:border-green-700" },
+    { id: "restaurants", label: t("restaurants"), icon: Utensils, color: "bg-orange-200 hover:bg-orange-300 data-[state=active]:bg-orange-500 data-[state=active]:text-white border-orange-300 data-[state=active]:border-orange-700" },
+    { id: "documents", label: t("documents"), icon: FileText, color: "bg-slate-200 hover:bg-slate-300 data-[state=active]:bg-slate-500 data-[state=active]:text-white border-slate-300 data-[state=active]:border-slate-700" },
+    { id: "timeline", label: t("timeline"), icon: Clock, color: "bg-cyan-200 hover:bg-cyan-300 data-[state=active]:bg-cyan-500 data-[state=active]:text-white border-cyan-300 data-[state=active]:border-cyan-700" },
+    { id: "routes", label: language === "he" ? "מפות מסלול" : "Route Maps", icon: Map, color: "bg-teal-200 hover:bg-teal-300 data-[state=active]:bg-teal-500 data-[state=active]:text-white border-teal-300 data-[state=active]:border-teal-700" },
+    { id: "route_manager", label: language === "he" ? "ניהול מסלולים" : "Route Manager", icon: Navigation, color: "bg-indigo-200 hover:bg-indigo-300 data-[state=active]:bg-indigo-500 data-[state=active]:text-white border-indigo-300 data-[state=active]:border-indigo-700" },
     // { id: "daytrips", label: t("dayTrips"), icon: ArrowRight, color: "bg-pink-50 hover:bg-pink-100 data-[state=active]:bg-pink-300 data-[state=active]:text-pink-950 border-pink-200 data-[state=active]:border-pink-600" }, // Hidden temporarily
-    { id: "checklist", label: language === "he" ? "רשימת משימות" : "Checklist", icon: CheckSquare, color: "bg-lime-50 hover:bg-lime-100 data-[state=active]:bg-lime-300 data-[state=active]:text-lime-950 border-lime-200 data-[state=active]:border-lime-600" },
-    { id: "budget", label: t("budget"), icon: DollarSign, color: "bg-amber-50 hover:bg-amber-100 data-[state=active]:bg-amber-300 data-[state=active]:text-amber-950 border-amber-200 data-[state=active]:border-amber-600" },
+    { id: "checklist", label: language === "he" ? "רשימת משימות" : "Checklist", icon: CheckSquare, color: "bg-lime-200 hover:bg-lime-300 data-[state=active]:bg-lime-500 data-[state=active]:text-white border-lime-300 data-[state=active]:border-lime-700" },
+    { id: "payments", label: language === "he" ? "תשלומים" : "Payments", icon: DollarSign, color: "bg-emerald-200 hover:bg-emerald-300 data-[state=active]:bg-emerald-500 data-[state=active]:text-white border-emerald-300 data-[state=active]:border-emerald-700" },
+    { id: "budget", label: t("budget"), icon: DollarSign, color: "bg-amber-200 hover:bg-amber-300 data-[state=active]:bg-amber-500 data-[state=active]:text-white border-amber-300 data-[state=active]:border-amber-700" },
   ];
 
   return (
@@ -209,6 +234,17 @@ export default function TripDetail() {
               <Share2 className="w-4 h-4" />
               <span className="hidden sm:inline">{language === "he" ? "שתף" : "Share"}</span>
             </Button>
+            {trip?.userId === user?.id && (
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={() => setDeleteDialogOpen(true)}
+                className="flex items-center gap-2"
+              >
+                <Trash2 className="w-4 h-4" />
+                <span className="hidden sm:inline">{language === "he" ? "מחק" : "Delete"}</span>
+              </Button>
+            )}
             <Button
               variant="ghost"
               size="sm"
@@ -225,22 +261,35 @@ export default function TripDetail() {
       <main className="container py-8">
         {/* Trip Header */}
         <div className="elegant-card p-6 mb-8">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <h1 className="text-3xl font-bold mb-2">{trip.name}</h1>
-              <div className="flex flex-wrap items-center gap-4 text-muted-foreground">
+          <div className="flex flex-col items-center text-center gap-4">
+            <div className="w-full">
+              {/* Rainbow colored title */}
+              <div className="mb-4">
+                <h1 className="text-4xl md:text-5xl font-bold mb-2">
+                  {trip.name.split('').map((char, i) => {
+                    const colors = ['#FF6B6B', '#FFA500', '#FFD700', '#4CAF50', '#2196F3', '#9C27B0', '#E91E63'];
+                    return (
+                      <span key={i} style={{ color: colors[i % colors.length] }}>
+                        {char}
+                      </span>
+                    );
+                  })}
+                </h1>
+
+              </div>
+              <div className="flex flex-wrap items-center justify-center gap-4 text-muted-foreground">
                 <div className="flex items-center gap-1">
-                  <Calendar className="w-4 h-4" />
-                  <span>
+                  <Calendar className="w-5 h-5" />
+                  <span className="text-lg font-medium">
                     {format(new Date(trip.startDate), "MMM d")} - {format(new Date(trip.endDate), "MMM d, yyyy")}
                   </span>
                 </div>
-                <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
+                <span className="bg-primary/10 text-primary px-4 py-2 rounded-full text-base font-medium">
                   {getDaysCount(trip.startDate, trip.endDate)} {t("days")}
                 </span>
               </div>
               {trip.description && (
-                <p className="mt-4 text-muted-foreground">{trip.description}</p>
+                <p className="mt-4 text-muted-foreground text-center">{trip.description}</p>
               )}
             </div>
           </div>
@@ -298,10 +347,10 @@ export default function TripDetail() {
                   <TabsTrigger
                     key={tab.id}
                     value={tab.id}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-all data-[state=active]:border-[3px] data-[state=active]:shadow-lg ${tab.color}`}
+                    className={`flex flex-col items-center justify-center gap-0.5 px-2 py-2 rounded-lg border transition-all data-[state=active]:border-[3px] data-[state=active]:shadow-lg flex-1 min-w-[80px] ${tab.color}`}
                   >
-                    <tab.icon className="w-4 h-4" />
-                    <span className="hidden sm:inline">{tab.label}</span>
+                    <tab.icon className="w-5 h-5" />
+                    <span className="hidden md:block text-[10px] font-medium text-center leading-tight break-words overflow-hidden">{tab.label}</span>
                   </TabsTrigger>
                 ))}
               </div>
@@ -316,25 +365,36 @@ export default function TripDetail() {
             const dayTimestamp = dayDate.getTime();
             return (
               <TabsContent key={`day-content-${dayTimestamp}`} value={`day-${dayTimestamp}`}>
-                <DailyView tripId={tripId} date={dayTimestamp} />
+                <DailyView 
+                  tripId={tripId} 
+                  date={dayTimestamp} 
+                  onTabChange={(tabId, activityId) => {
+                    setDefaultTab(tabId);
+                    if (activityId) {
+                      setHighlightedActivityId(activityId);
+                      // Clear highlight after 3 seconds
+                      setTimeout(() => setHighlightedActivityId(null), 3000);
+                    }
+                  }} 
+                />
               </TabsContent>
             );
           })}
 
           <TabsContent value="sites">
-            <TouristSitesTab tripId={tripId} />
+            <TouristSitesTab tripId={tripId} highlightedId={highlightedActivityId} />
           </TabsContent>
 
           <TabsContent value="hotels">
-            <HotelsTab tripId={tripId} />
+            <HotelsTab tripId={tripId} highlightedId={highlightedActivityId} onNavigateToDocuments={(hotelId) => setDefaultTab('documents')} />
           </TabsContent>
 
           <TabsContent value="transport">
-            <TransportationTab tripId={tripId} />
+            <TransportationTab tripId={tripId} highlightedId={highlightedActivityId} />
           </TabsContent>
 
           <TabsContent value="restaurants">
-            <RestaurantsTab tripId={tripId} />
+            <RestaurantsTab tripId={tripId} highlightedId={highlightedActivityId} />
           </TabsContent>
 
           <TabsContent value="documents">
@@ -346,7 +406,7 @@ export default function TripDetail() {
           </TabsContent>
 
           <TabsContent value="routes">
-            <AllRouteMapsTab />
+            <AllRouteMapsTab tripId={tripId} />
           </TabsContent>
 
           <TabsContent value="route_manager">
@@ -359,6 +419,10 @@ export default function TripDetail() {
 
           <TabsContent value="checklist">
             <ChecklistTab tripId={tripId} />
+          </TabsContent>
+
+          <TabsContent value="payments">
+            <PaymentsTab tripId={tripId} />
           </TabsContent>
 
           <TabsContent value="budget">
@@ -377,8 +441,8 @@ export default function TripDetail() {
             </DialogTitle>
             <DialogDescription>
               {language === "he" 
-                ? "צור קישור ציבורי לצפייה בטיול. כל מי שיש לו את הקישור יוכל לראות את הטיול (ללא אפשרות עריכה)."
-                : "Create a public link to view this trip. Anyone with the link can see the trip (read-only)."
+                ? "שתף את הטיול עם אחרים. בחר בין קישור לצפייה בלבד או קישור הזמנה שמוסיף משתתפים אוטומטית."
+                : "Share this trip with others. Choose between a view-only link or an invite link that automatically adds participants."
               }
             </DialogDescription>
           </DialogHeader>
@@ -386,20 +450,68 @@ export default function TripDetail() {
           <div className="space-y-4 py-4">
             {shareUrl ? (
               <>
-                <div className="flex items-center gap-2">
-                  <Input
-                    value={shareUrl}
-                    readOnly
-                    className="flex-1 text-sm"
-                  />
-                  <Button
-                    size="icon"
-                    variant="outline"
-                    onClick={copyToClipboard}
-                  >
-                    {copied ? <Check className="w-4 h-4 text-green-600" /> : <Copy className="w-4 h-4" />}
-                  </Button>
+                {/* View-Only Link */}
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">
+                    {language === "he" ? "קישור לצפייה בלבד" : "View-Only Link"}
+                  </Label>
+                  <p className="text-xs text-muted-foreground">
+                    {language === "he" 
+                      ? "כל מי שיש לו את הקישור יוכל לראות את הטיול (ללא אפשרות עריכה)"
+                      : "Anyone with this link can view the trip (read-only)"
+                    }
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <Input
+                      value={shareUrl}
+                      readOnly
+                      className="flex-1 text-sm"
+                    />
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      onClick={() => {
+                        navigator.clipboard.writeText(shareUrl);
+                        toast.success(language === "he" ? "הקישור הועתק" : "Link copied");
+                      }}
+                    >
+                      <Copy className="w-4 h-4" />
+                    </Button>
+                  </div>
                 </div>
+
+                {/* Invite Link */}
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">
+                    {language === "he" ? "קישור הזמנה (מומלץ)" : "Invite Link (Recommended)"}
+                  </Label>
+                  <p className="text-xs text-muted-foreground">
+                    {language === "he" 
+                      ? "מי שיקליק על הקישור יתווסף אוטומטית כמשתתף בטיול לאחר ההתחברות"
+                      : "Anyone who clicks this link will be automatically added as a participant after signing in"
+                    }
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <Input
+                      value={inviteUrl || ""}
+                      readOnly
+                      className="flex-1 text-sm"
+                    />
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      onClick={() => {
+                        if (inviteUrl) {
+                          navigator.clipboard.writeText(inviteUrl);
+                          toast.success(language === "he" ? "קישור ההזמנה הועתק" : "Invite link copied");
+                        }
+                      }}
+                    >
+                      <Copy className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+
                 <Button
                   variant="destructive"
                   className="w-full"
@@ -407,7 +519,7 @@ export default function TripDetail() {
                   disabled={revokeShareLink.isPending}
                 >
                   <X className="w-4 h-4 mr-2" />
-                  {language === "he" ? "בטל קישור שיתוף" : "Revoke Share Link"}
+                  {language === "he" ? "בטל קישורי שיתוף" : "Revoke Share Links"}
                 </Button>
               </>
             ) : (
@@ -417,9 +529,68 @@ export default function TripDetail() {
                 disabled={generateShareLink.isPending}
               >
                 <Share2 className="w-4 h-4 mr-2" />
-                {language === "he" ? "צור קישור שיתוף" : "Create Share Link"}
+                {language === "he" ? "צור קישורי שיתוף" : "Create Share Links"}
               </Button>
             )}
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Trip Dialog */}
+      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-destructive">
+              <Trash2 className="w-5 h-5" />
+              {language === "he" ? "מחק טיול" : "Delete Trip"}
+            </DialogTitle>
+            <DialogDescription>
+              {language === "he" 
+                ? "פעולה זו לא ניתנת לביטול! כל הנתונים ימחקו לצמיתות."
+                : "This action cannot be undone! All data will be permanently deleted."
+              }
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">
+                {language === "he" 
+                  ? 'הקלד "מחק" לאישור:'
+                  : 'Type "delete" to confirm:'
+                }
+              </label>
+              <Input
+                value={deleteConfirmation}
+                onChange={(e) => setDeleteConfirmation(e.target.value)}
+                placeholder={language === "he" ? "מחק" : "delete"}
+                className="text-center font-bold"
+              />
+            </div>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                className="flex-1"
+                onClick={() => {
+                  setDeleteDialogOpen(false);
+                  setDeleteConfirmation("");
+                }}
+              >
+                {language === "he" ? "ביטול" : "Cancel"}
+              </Button>
+              <Button
+                variant="destructive"
+                className="flex-1"
+                onClick={handleDeleteTrip}
+                disabled={deleteTrip.isPending}
+              >
+                <Trash2 className="w-4 h-4 mr-2" />
+                {deleteTrip.isPending 
+                  ? (language === "he" ? "מוחק..." : "Deleting...") 
+                  : (language === "he" ? "מחק לצמיתות" : "Delete Permanently")
+                }
+              </Button>
+            </div>
           </div>
         </DialogContent>
       </Dialog>

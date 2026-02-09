@@ -4,7 +4,7 @@ import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import * as db from "./db";
-import { storagePut } from "./storage";
+import { storagePut, storageGet } from "./storage";
 import { nanoid } from "nanoid";
 
 export const appRouter = router({
@@ -76,7 +76,10 @@ export const appRouter = router({
     // Sharing endpoints
     generateShareLink: protectedProcedure
       .input(z.object({ id: z.number() }))
-      .mutation(({ ctx, input }) => db.generateShareToken(input.id, ctx.user.id)),
+      .mutation(async ({ ctx, input }) => {
+        const token = await db.generateShareToken(input.id, ctx.user.id);
+        return { token };
+      }),
     
     revokeShareLink: protectedProcedure
       .input(z.object({ id: z.number() }))
@@ -169,6 +172,8 @@ export const appRouter = router({
         plannedVisitTime: z.string().optional(),
         website: z.string().optional(),
         notes: z.string().optional(),
+        coverImage: z.string().optional(),
+        linkedDocumentId: z.number().nullable().optional(),
       }))
       .mutation(({ input }) => db.createTouristSite(input)),
     
@@ -183,6 +188,8 @@ export const appRouter = router({
         plannedVisitTime: z.string().optional(),
         website: z.string().optional(),
         notes: z.string().optional(),
+        coverImage: z.string().optional(),
+        linkedDocumentId: z.number().nullable().optional(),
       }))
       .mutation(({ input }) => {
         const { id, ...data } = input;
@@ -217,6 +224,7 @@ export const appRouter = router({
         category: z.string().optional(),
         paymentStatus: z.enum(["paid", "pending"]).optional(),
         notes: z.string().optional(),
+        linkedDocumentId: z.number().nullable().optional(),
       }))
       .mutation(({ input }) => db.createHotel(input)),
     
@@ -237,6 +245,9 @@ export const appRouter = router({
         category: z.string().optional(),
         paymentStatus: z.enum(["paid", "pending"]).optional(),
         notes: z.string().optional(),
+        parkingImage: z.string().optional(),
+        gallery: z.string().optional(), // JSON string of image URLs array
+        linkedDocumentId: z.number().nullable().optional(),
       }))
       .mutation(({ input }) => {
         const { id, ...data } = input;
@@ -277,7 +288,7 @@ export const appRouter = router({
     create: protectedProcedure
       .input(z.object({
         tripId: z.number(),
-        type: z.enum(["flight", "train", "bus", "ferry", "other"]),
+        type: z.enum(["flight", "train", "bus", "ferry", "car_rental", "other"]),
         flightNumber: z.string().optional(),
         origin: z.string().min(1),
         destination: z.string().min(1),
@@ -289,13 +300,20 @@ export const appRouter = router({
         currency: z.string().optional(),
         paymentStatus: z.enum(["paid", "pending"]).optional(),
         notes: z.string().optional(),
+        linkedDocumentId: z.number().nullable().optional(),
+        // Car rental specific fields
+        company: z.string().optional(),
+        carModel: z.string().optional(),
+        pickupLocation: z.string().optional(),
+        returnLocation: z.string().optional(),
+        phone: z.string().optional(),
       }))
       .mutation(({ input }) => db.createTransportation(input)),
     
     update: protectedProcedure
       .input(z.object({
         id: z.number(),
-        type: z.enum(["flight", "train", "bus", "ferry", "other"]).optional(),
+        type: z.enum(["flight", "train", "bus", "ferry", "car_rental", "other"]).optional(),
         flightNumber: z.string().optional(),
         origin: z.string().min(1).optional(),
         destination: z.string().min(1).optional(),
@@ -307,6 +325,13 @@ export const appRouter = router({
         currency: z.string().optional(),
         paymentStatus: z.enum(["paid", "pending"]).optional(),
         notes: z.string().optional(),
+        linkedDocumentId: z.number().nullable().optional(),
+        // Car rental specific fields
+        company: z.string().optional(),
+        carModel: z.string().optional(),
+        pickupLocation: z.string().optional(),
+        returnLocation: z.string().optional(),
+        phone: z.string().optional(),
       }))
       .mutation(({ input }) => {
         const { id, ...data } = input;
@@ -341,6 +366,7 @@ export const appRouter = router({
         price: z.string().optional(),
         currency: z.string().optional(),
         notes: z.string().optional(),
+        linkedDocumentId: z.number().nullable().optional(),
       }))
       .mutation(({ input }) => db.createCarRental(input)),
     
@@ -361,6 +387,8 @@ export const appRouter = router({
         price: z.string().optional(),
         currency: z.string().optional(),
         notes: z.string().optional(),
+        paymentStatus: z.enum(["paid", "pending"]).optional(),
+        linkedDocumentId: z.number().nullable().optional(),
       }))
       .mutation(({ input }) => {
         const { id, ...data } = input;
@@ -393,6 +421,8 @@ export const appRouter = router({
         currency: z.string().optional(),
         paymentStatus: z.enum(["paid", "pending"]).optional(),
         notes: z.string().optional(),
+        coverImage: z.string().optional(),
+        linkedDocumentId: z.number().nullable().optional(),
       }))
       .mutation(({ input }) => db.createRestaurant(input)),
     
@@ -411,6 +441,8 @@ export const appRouter = router({
         currency: z.string().optional(),
         paymentStatus: z.enum(["paid", "pending"]).optional(),
         notes: z.string().optional(),
+        coverImage: z.string().optional(),
+        linkedDocumentId: z.number().nullable().optional(),
       }))
       .mutation(({ input }) => {
         const { id, ...data } = input;
@@ -432,7 +464,7 @@ export const appRouter = router({
       .input(z.object({
         tripId: z.number(),
         name: z.string().min(1),
-        category: z.enum(["passport", "visa", "insurance", "booking", "ticket", "restaurant", "hotel", "other"]),
+        category: z.enum(["passport", "visa", "insurance", "booking", "ticket", "restaurant", "hotel", "flights", "other"]),
         fileUrl: z.string(),
         fileKey: z.string(),
         mimeType: z.string().optional(),
@@ -445,7 +477,7 @@ export const appRouter = router({
       .input(z.object({
         id: z.number(),
         name: z.string().min(1).optional(),
-        category: z.enum(["passport", "visa", "insurance", "booking", "ticket", "restaurant", "hotel", "other"]).optional(),
+        category: z.enum(["passport", "visa", "insurance", "booking", "ticket", "restaurant", "hotel", "flights", "other"]).optional(),
         tags: z.string().optional(),
         notes: z.string().optional(),
       }))
@@ -464,9 +496,10 @@ export const appRouter = router({
         fileName: z.string(),
         fileData: z.string(), // base64
         mimeType: z.string(),
-        category: z.enum(["passport", "visa", "insurance", "booking", "ticket", "restaurant", "hotel", "other"]),
+        category: z.enum(["passport", "visa", "insurance", "booking", "ticket", "restaurant", "hotel", "flights", "other"]),
         tags: z.string().optional(),
         notes: z.string().optional(),
+        hotelId: z.number().optional(),
       }))
       .mutation(async ({ ctx, input }) => {
         const buffer = Buffer.from(input.fileData, "base64");
@@ -482,6 +515,7 @@ export const appRouter = router({
           mimeType: input.mimeType,
           tags: input.tags,
           notes: input.notes,
+          hotelId: input.hotelId,
         });
       }),
   }),
@@ -540,7 +574,7 @@ export const appRouter = router({
         category: z.enum(["documents", "bookings", "packing", "health", "finance", "other"]),
         dueDate: z.number().optional(),
         notes: z.string().optional(),
-        owner: z.enum(["shared", "yona_tzvi", "efi", "ruth", "michal"]).optional(),
+        owner: z.enum(["shared", "ofir", "ruth"]).optional(),
       }))
       .mutation(({ input }) => db.createChecklistItem(input)),
     
@@ -552,7 +586,7 @@ export const appRouter = router({
         completed: z.boolean().optional(),
         dueDate: z.number().optional(),
         notes: z.string().optional(),
-        owner: z.enum(["shared", "yona_tzvi", "efi", "ruth", "michal"]).optional(),
+        owner: z.enum(["shared", "ofir", "ruth"]).optional(),
       }))
       .mutation(({ input }) => {
         const { id, ...data } = input;
@@ -639,6 +673,83 @@ export const appRouter = router({
         const trip = await db.getTripById(route.tripId, ctx.user.id);
         if (!trip) throw new Error('Access denied');
         return db.deleteRoute(input.id);
+      }),
+  }),
+
+  // ============ ROUTE POINTS OF INTEREST ============
+  routePOI: router({
+    list: protectedProcedure
+      .input(z.object({ routeId: z.number() }))
+      .query(async ({ ctx, input }) => {
+        const route = await db.getRouteById(input.routeId);
+        if (!route) throw new Error('Route not found');
+        const trip = await db.getTripById(route.tripId, ctx.user.id);
+        if (!trip) throw new Error('Access denied');
+        return db.getRoutePOIs(input.routeId);
+      }),
+    
+    create: protectedProcedure
+      .input(z.object({
+        routeId: z.number(),
+        name: z.string().min(1),
+        nameHe: z.string().optional(),
+        type: z.enum(['attraction', 'restaurant', 'gas_station', 'other']),
+        latitude: z.number(),
+        longitude: z.number(),
+        address: z.string().optional(),
+        placeId: z.string().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const route = await db.getRouteById(input.routeId);
+        if (!route) throw new Error('Route not found');
+        const trip = await db.getTripById(route.tripId, ctx.user.id);
+        if (!trip) throw new Error('Access denied');
+        const { latitude, longitude, ...data } = input;
+        return db.createRoutePOI({
+          ...data,
+          latitude: latitude.toString(),
+          longitude: longitude.toString(),
+        });
+      }),
+    
+    update: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        name: z.string().optional(),
+        nameHe: z.string().optional(),
+        type: z.enum(['attraction', 'restaurant', 'gas_station', 'other']).optional(),
+        latitude: z.number().optional(),
+        longitude: z.number().optional(),
+        address: z.string().optional(),
+        placeId: z.string().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const poi = await db.getRoutePOIById(input.id);
+        if (!poi) throw new Error('POI not found');
+        const route = await db.getRouteById(poi.routeId);
+        if (!route) throw new Error('Route not found');
+        const trip = await db.getTripById(route.tripId, ctx.user.id);
+        if (!trip) throw new Error('Access denied');
+        const { id, latitude, longitude, ...data } = input;
+        return db.updateRoutePOI(id, {
+          ...data,
+          latitude: latitude !== undefined ? latitude.toString() : undefined,
+          longitude: longitude !== undefined ? longitude.toString() : undefined,
+        });
+      }),
+    
+    delete: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        const poi = await db.getRoutePOIById(input.id);
+        if (!poi) throw new Error('POI not found');
+        const route = await db.getRouteById(poi.routeId);
+        if (!route) throw new Error('Route not found');
+        const trip = await db.getTripById(route.tripId, ctx.user.id);
+        if (!trip) throw new Error('Access denied');
+        return db.deleteRoutePOI(input.id);
       }),
   }),
 
@@ -748,6 +859,124 @@ export const appRouter = router({
         const trip = await db.getTripById(input.tripId, ctx.user.id);
         if (!trip) throw new Error('Trip not found or access denied');
         return db.getActivityLog(input.tripId, input.limit);
+      }),
+    
+    // Join trip via invite link
+    joinViaInvite: protectedProcedure
+      .input(z.object({ token: z.string() }))
+      .mutation(async ({ ctx, input }) => {
+        const trip = await db.getTripByShareToken(input.token);
+        if (!trip) throw new Error('Invalid invite link');
+        
+        // Check if user is already owner
+        if (trip.userId === ctx.user.id) {
+          return { tripId: trip.id, alreadyMember: true };
+        }
+        
+        // Check if user is already a collaborator
+        const existing = await db.getUserCollaboratorPermission(trip.id, ctx.user.id);
+        if (existing) {
+          return { tripId: trip.id, alreadyMember: true };
+        }
+        
+        // Add user as collaborator with can_edit permission
+        await db.addTripCollaborator({
+          tripId: trip.id,
+          userId: ctx.user.id,
+          permission: 'can_edit',
+          invitedBy: trip.userId, // Trip owner invited them
+        });
+        
+        return { tripId: trip.id, alreadyMember: false };
+      }),
+  }),
+
+  // ============ PAYMENTS ============
+  payments: router({
+    create: protectedProcedure
+      .input(z.object({
+        tripId: z.number(),
+        activityType: z.enum(["hotel", "transportation", "car_rental", "restaurant", "tourist_site", "other"]),
+        activityId: z.number(),
+        amount: z.number(),
+        currency: z.string(),
+        paymentDate: z.number(),
+        paymentMethod: z.string().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const trip = await db.getTripById(input.tripId, ctx.user.id);
+        if (!trip) throw new Error('Trip not found or access denied');
+        return db.createPayment({
+          ...input,
+          amount: input.amount.toString(),
+        });
+      }),
+    
+    getActivityPayments: protectedProcedure
+      .input(z.object({
+        activityType: z.string(),
+        activityId: z.number(),
+      }))
+      .query(async ({ input }) => {
+        return db.getActivityPayments(input.activityType, input.activityId);
+      }),
+    
+    getTripPayments: protectedProcedure
+      .input(z.object({ tripId: z.number() }))
+      .query(async ({ ctx, input }) => {
+        const trip = await db.getTripById(input.tripId, ctx.user.id);
+        if (!trip) throw new Error('Trip not found or access denied');
+        return db.getTripPayments(input.tripId);
+      }),
+    
+    update: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        amount: z.number().optional(),
+        currency: z.string().optional(),
+        paymentDate: z.number().optional(),
+        paymentMethod: z.string().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { id, amount, ...rest } = input;
+        const data = {
+          ...rest,
+          ...(amount !== undefined && { amount: amount.toString() }),
+        };
+        return db.updatePayment(id, data);
+      }),
+    
+    delete: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        return db.deletePayment(input.id);
+      }),
+  }),
+
+  // ============ STORAGE ============
+  storage: router({
+    uploadImage: protectedProcedure
+      .input(z.object({
+        fileName: z.string(),
+        fileData: z.string(), // Base64 data URL
+        contentType: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        // Extract base64 data from data URL
+        const base64Data = input.fileData.split(',')[1] || input.fileData;
+        const buffer = Buffer.from(base64Data, 'base64');
+        
+        // Generate unique file name
+        const extension = input.contentType.split('/')[1] || 'jpg';
+        const fileName = `${nanoid()}.${extension}`;
+        const fileKey = `images/${fileName}`;
+        
+        // Upload to S3
+        const result = await storagePut(fileKey, buffer, input.contentType);
+        
+        return { url: result.url, key: result.key };
       }),
   }),
 });

@@ -11,6 +11,7 @@ import { format } from "date-fns";
 import { Edit, ExternalLink, File, FileText, Loader2, Plus, Shield, Ticket, Trash2, Upload, Hotel, Utensils } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface DocumentsTabProps {
   tripId: number;
@@ -24,6 +25,7 @@ const categoryIcons = {
   ticket: Ticket,
   restaurant: Utensils,
   hotel: Hotel,
+  flights: Ticket,
   other: File,
 };
 
@@ -35,6 +37,7 @@ const categoryColors = {
   ticket: "from-rose-500 to-pink-600",
   restaurant: "from-orange-500 to-red-600",
   hotel: "from-cyan-500 to-blue-600",
+  flights: "from-sky-500 to-blue-600",
   other: "from-gray-500 to-slate-600",
 };
 
@@ -46,10 +49,11 @@ const categoryPastelBg = {
   ticket: "bg-rose-50",
   restaurant: "bg-orange-50",
   hotel: "bg-cyan-50",
+  flights: "bg-sky-50",
   other: "bg-gray-50",
 };
 
-type CategoryType = "passport" | "visa" | "insurance" | "booking" | "ticket" | "restaurant" | "hotel" | "other";
+type CategoryType = "passport" | "visa" | "insurance" | "booking" | "ticket" | "restaurant" | "hotel" | "flights" | "other";
 
 export default function DocumentsTab({ tripId }: DocumentsTabProps) {
   const { t, language, isRTL } = useLanguage();
@@ -62,6 +66,9 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [createCategory, setCreateCategory] = useState<CategoryType>("other");
   const [editCategory, setEditCategory] = useState<CategoryType>("other");
+  const [createHotelId, setCreateHotelId] = useState<number | null>(null);
+  const [editHotelId, setEditHotelId] = useState<number | null>(null);
+  const [hotelFilter, setHotelFilter] = useState<number | null>(null); // null = show all
 
   const [editDefaults, setEditDefaults] = useState({
     name: "",
@@ -71,9 +78,10 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
 
   const utils = trpc.useUtils();
   const { data: documents, isLoading } = trpc.documents.list.useQuery({ tripId });
+  const { data: hotels } = trpc.hotels.list.useQuery({ tripId });
 
   // Track which folders are open (all open by default)
-  const [openFolders, setOpenFolders] = useState<Set<CategoryType>>(new Set<CategoryType>(["passport", "visa", "insurance", "booking", "ticket", "restaurant", "hotel", "other"]));
+  const [openFolders, setOpenFolders] = useState<Set<CategoryType>>(new Set<CategoryType>(["passport", "visa", "insurance", "booking", "ticket", "restaurant", "hotel", "flights", "other"]));
 
   const toggleFolder = (category: CategoryType) => {
     setOpenFolders(prev => {
@@ -87,12 +95,17 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
     });
   };
 
+  // Filter documents by hotel if filter is active
+  const filteredDocuments = documents?.filter(doc => 
+    hotelFilter === null || doc.hotelId === hotelFilter
+  );
+
   // Group documents by category
-  const documentsByCategory = documents?.reduce((acc, doc) => {
+  const documentsByCategory = filteredDocuments?.reduce((acc, doc) => {
     if (!acc[doc.category]) acc[doc.category] = [];
     acc[doc.category].push(doc);
     return acc;
-  }, {} as Record<CategoryType, typeof documents>);
+  }, {} as Record<CategoryType, typeof filteredDocuments>);
 
   const uploadMutation = trpc.documents.upload.useMutation({
     onSuccess: () => {
@@ -163,6 +176,7 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
         category: createCategory,
         tags: getFormValue("tags") || undefined,
         notes: getFormValue("notes") || undefined,
+        hotelId: createHotelId || undefined,
       });
     };
     reader.readAsDataURL(selectedFile);
@@ -203,8 +217,18 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
   }
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-6">
+    <div className="relative min-h-screen">
+      {/* Gradient background with decorative pattern */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 -z-10" />
+      <div 
+        className="absolute inset-0 -z-10 opacity-[0.03]"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          backgroundSize: '60px 60px'
+        }}
+      />
+      <div className="relative">
+      <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-semibold">{t("documents")}</h2>
         <Dialog open={isCreateOpen} onOpenChange={(open) => {
           setIsCreateOpen(open);
@@ -258,7 +282,27 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
                     <SelectItem value="ticket">{t("ticket")}</SelectItem>
                     <SelectItem value="restaurant">{t("restaurant")}</SelectItem>
                     <SelectItem value="hotel">{t("hotel")}</SelectItem>
+                    <SelectItem value="flights">{t("flights" as any)}</SelectItem>
                     <SelectItem value="other">{t("other")}</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid gap-2">
+                <Label>{language === "he" ? "קישור למלון (אופציונלי)" : "Link to Hotel (Optional)"}</Label>
+                <Select 
+                  value={createHotelId?.toString() || "none"} 
+                  onValueChange={(v) => setCreateHotelId(v === "none" ? null : Number(v))}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder={language === "he" ? "ללא קישור" : "No link"} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">{language === "he" ? "ללא קישור" : "No link"}</SelectItem>
+                    {hotels?.map((hotel) => (
+                      <SelectItem key={hotel.id} value={hotel.id.toString()}>
+                        {hotel.name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -290,7 +334,44 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
         </Dialog>
       </div>
 
-      {documents && documents.length > 0 ? (
+      {/* Hotel Filter Buttons */}
+      {hotels && hotels.length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-4">
+          <Button
+            variant={hotelFilter === null ? "default" : "outline"}
+            size="sm"
+            onClick={() => setHotelFilter(null)}
+          >
+            {language === "he" ? "כל המסמכים" : "All Documents"}
+            {documents && (
+              <span className="ml-2 px-1.5 py-0.5 text-xs rounded-full bg-background/20">
+                {documents.length}
+              </span>
+            )}
+          </Button>
+          {hotels.map((hotel) => {
+            const count = documents?.filter(d => d.hotelId === hotel.id).length || 0;
+            if (count === 0) return null;
+            return (
+              <Button
+                key={hotel.id}
+                variant={hotelFilter === hotel.id ? "default" : "outline"}
+                size="sm"
+                onClick={() => setHotelFilter(hotel.id)}
+                data-hotel-filter={hotel.id}
+              >
+                <Hotel className="w-3 h-3 mr-1.5" />
+                {hotel.name}
+                <span className="ml-2 px-1.5 py-0.5 text-xs rounded-full bg-background/20">
+                  {count}
+                </span>
+              </Button>
+            );
+          })}
+        </div>
+      )}
+
+      {filteredDocuments && filteredDocuments.length > 0 ? (
         <div className="space-y-4">
           {(Object.keys(categoryIcons) as CategoryType[]).map((category) => {
             const docsInCategory = documentsByCategory?.[category] || [];
@@ -311,7 +392,7 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
                       <Icon className="w-5 h-5 text-white" />
                     </div>
                     <div className="text-left">
-                      <h3 className="font-semibold capitalize">{t(category)}</h3>
+                      <h3 className="font-semibold capitalize">{t(category as any)}</h3>
                       <p className="text-sm text-muted-foreground">
                         {docsInCategory.length} {language === "he" ? "מסמכים" : "documents"}
                       </p>
@@ -332,8 +413,15 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
                     {docsInCategory.map((doc) => {
                       const pastelBg = categoryPastelBg[doc.category];
                       return (
-                        <Card key={doc.id} data-document-id={doc.id} className={`elegant-card-hover ${pastelBg}`}>
-                          <CardHeader className="pb-2">
+                        <Card key={doc.id} data-document-id={doc.id} className={`elegant-card-hover relative overflow-hidden ${pastelBg}`}>
+                          {/* Background Image */}
+                          {doc.coverImage && (
+                            <div 
+                              className="absolute inset-0 bg-cover bg-center opacity-20"
+                              style={{ backgroundImage: `url(${doc.coverImage})` }}
+                            />
+                          )}
+                          <CardHeader className="pb-2 relative z-10">
                             <div className="flex items-start justify-between">
                               <div>
                                 <CardTitle className="text-sm font-medium line-clamp-1">{doc.name}</CardTitle>
@@ -342,21 +430,35 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
                                 </CardDescription>
                               </div>
                               <div className="flex gap-1">
-                                <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => openEdit(doc)}>
-                                  <Edit className="w-4 h-4" />
-                                </Button>
-                                <Button 
-                                  size="icon" 
-                                  variant="ghost" 
-                                  className="h-8 w-8 text-destructive"
-                                  onClick={() => {
-                                    if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את המסמך?" : "Are you sure you want to delete this document?")) {
-                                      deleteMutation.mutate({ id: doc.id });
-                                    }
-                                  }}
-                                >
-                                  <Trash2 className="w-4 h-4" />
-                                </Button>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => openEdit(doc)}>
+                                      <Edit className="w-4 h-4" />
+                                    </Button>
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>{language === 'he' ? 'ערוך מסמך' : 'Edit document'}</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <Button 
+                                      size="icon" 
+                                      variant="ghost" 
+                                      className="h-8 w-8 text-destructive hover:text-destructive"
+                                      onClick={() => {
+                                        if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את המסמך?" : "Are you sure you want to delete this document?")) {
+                                          deleteMutation.mutate({ id: doc.id });
+                                        }
+                                      }}
+                                    >
+                                      <Trash2 className="w-4 h-4" />
+                                    </Button>
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>{language === 'he' ? 'מחק מסמך' : 'Delete document'}</p>
+                                  </TooltipContent>
+                                </Tooltip>
                               </div>
                             </div>
                           </CardHeader>
@@ -370,15 +472,16 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
                                 ))}
                               </div>
                             )}
-                            <a 
-                              href={doc.fileUrl} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
+                            <button
+                              onClick={() => {
+                                // Open file URL directly - same as other tabs (HotelsTab, etc.)
+                                window.open(doc.fileUrl, '_blank');
+                              }}
+                              className="inline-flex items-center gap-1 text-sm text-primary hover:underline cursor-pointer bg-transparent border-none p-0"
                             >
                               <ExternalLink className="w-3 h-3" />
                               {language === "he" ? "פתח קובץ" : "Open file"}
-                            </a>
+                            </button>
                           </CardContent>
                         </Card>
                       );
@@ -428,6 +531,7 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
                   <SelectItem value="ticket">{t("ticket")}</SelectItem>
                   <SelectItem value="restaurant">{t("restaurant")}</SelectItem>
                   <SelectItem value="hotel">{t("hotel")}</SelectItem>
+                  <SelectItem value="flights">{t("flights" as any)}</SelectItem>
                   <SelectItem value="other">{t("other")}</SelectItem>
                 </SelectContent>
               </Select>
@@ -459,6 +563,7 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      </div>
     </div>
   );
 }
