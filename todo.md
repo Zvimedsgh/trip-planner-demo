@@ -164,3 +164,9 @@
 - [x] Update Demo.tsx to logout existing user first, then initialize demo
 - [x] Add delay before redirect to ensure cookie is saved
 - [x] Test that demo user is properly logged in after /demo initialization - WORKING! Shows "Welcome, Demo User!"
+
+## Bug - /demo Route Requires Authentication on Published Site
+- [x] Diagnose how authentication protection works in the app - Demo.tsx was calling logout before checking if user exists
+- [x] Make /demo route publicly accessible (no login required) - Fixed to check currentUser before logout
+- [x] Test that /demo works in preview without authentication - WORKING!
+- [ ] Verify demo user creation and login flow works correctly on published site after republishing

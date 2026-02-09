@@ -6,17 +6,17 @@ import { Loader2 } from "lucide-react";
 export default function Demo() {
   const [, setLocation] = useLocation();
   const [error, setError] = useState<string | null>(null);
-  const [isLoggingOut, setIsLoggingOut] = useState(true);
+
+  // Check if user is logged in
+  const { data: currentUser } = trpc.auth.me.useQuery();
 
   const logoutMutation = trpc.auth.logout.useMutation({
     onSuccess: () => {
       // After logout, initialize demo
-      setIsLoggingOut(false);
       initializeMutation.mutate();
     },
     onError: () => {
-      // Even if logout fails (no session), proceed with demo initialization
-      setIsLoggingOut(false);
+      // Even if logout fails, proceed with demo initialization
       initializeMutation.mutate();
     },
   });
@@ -35,9 +35,20 @@ export default function Demo() {
   });
 
   useEffect(() => {
-    // First logout any existing user, then initialize demo
-    logoutMutation.mutate();
-  }, []);
+    // Wait for auth check to complete
+    if (currentUser === undefined) {
+      // Still loading
+      return;
+    }
+
+    if (currentUser) {
+      // User is logged in, logout first
+      logoutMutation.mutate();
+    } else {
+      // No user logged in, directly initialize demo
+      initializeMutation.mutate();
+    }
+  }, [currentUser]);
 
   if (error) {
     return (
