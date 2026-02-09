@@ -1,0 +1,8 @@
+{
+  "query": "SELECT item FROM checklist_items WHERE tripId = 30001 AND (item LIKE '%Ofir%' OR item LIKE '%Ruth%') LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT item FROM checklist_items WHERE tripId = 30001 AND (item LIKE '%Ofir%' OR item LIKE '%Ruth%') LIMIT 5;",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1054 (42S22) at line 1: Unknown column 'item' in 'where clause'"
+  ]
+}

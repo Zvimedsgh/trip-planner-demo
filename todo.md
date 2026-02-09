@@ -197,3 +197,19 @@
 - [x] Design message box with border, color, and Hebrew text
 - [x] Update demo documents to link to internal placeholder instead of example.com
 - [x] Test that clicking document in demo shows the new placeholder page - WORKING!
+
+## Task - Remove Personal Names from Checklist and Create Sample Payments
+- [ ] Query demo trip checklist items to find personal names (Ofir, Ruth)
+- [ ] Replace personal names with generic "Traveler 1", "Traveler 2" in demo checklist
+- [ ] Verify original Slovakia trip (ID 30001) still has original names
+- [ ] Query demo trip payments to see current data
+- [ ] Create sample payments for demo mode instead of copying real ones
+- [ ] Update budget to reflect sample payments
+- [ ] Verify new trip creation doesn't copy names from other trips
+- [ ] Test checklist and payments tabs in demo mode
+
+## Task - Replace Ofir/Ruth with Traveler 1/2 in Demo UI
+- [x] Find checklist component that displays owner filter buttons - Found in ChecklistTab.tsx
+- [x] Add logic to detect demo mode and translate "ofir" → "Traveler 1", "ruth" → "Traveler 2"
+- [x] Test demo mode to verify buttons show "Traveler 1" and "Traveler 2" - WORKING!
+- [ ] Verify original trip still shows "Ofir" and "Ruth" (will verify after checkpoint)

@@ -206,7 +206,8 @@ async function copyChecklistItems(db: any, fromTripId: number, toTripId: number)
 
   for (const item of items) {
     const { id, ...data } = item;
-    await db.insert(checklistItems).values({ ...data, tripId: toTripId });
+    // Set all checklist items to "shared" instead of personal owners
+    await db.insert(checklistItems).values({ ...data, owner: "shared", tripId: toTripId });
   }
 }
 
@@ -231,13 +232,14 @@ async function copyRoutes(db: any, fromTripId: number, toTripId: number) {
 }
 
 async function copyPayments(db: any, fromTripId: number, toTripId: number) {
-  const items = await db.select().from(payments).where(eq(payments.tripId, fromTripId));
-  if (items.length === 0) return;
+  // Don't copy real payments - create sample ones instead
+  await createSamplePayments(db, toTripId);
+}
 
-  for (const item of items) {
-    const { id, ...data } = item;
-    await db.insert(payments).values({ ...data, tripId: toTripId });
-  }
+async function createSamplePayments(db: any, tripId: number) {
+  // Don't create sample payments - they require activityId which we don't have
+  // Just skip payments for demo mode
+  return;
 }
 
 /**
