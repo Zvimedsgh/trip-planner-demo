@@ -1,9 +1,0 @@
-{
-  "query": "CREATE TABLE `route_points_of_interest` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`routeId` int NOT NULL,\n\t`name` varchar(255) NOT NULL,\n\t`nameHe` varchar(255),\n\t`type` enum('attraction','restaurant','gas_station','other') NOT NULL,\n\t`latitude` decimal(10,7) NOT NULL,\n\t`longitude` decimal(10,7) NOT NULL,\n\t`address` text,\n\t`placeId` varchar(255),\n\t`notes` text,\n\t`createdAt` timestamp NOT NULL DEFAULT (now()),\n\t`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,\n\tCONSTRAINT `route_points_of_interest_id` PRIMARY KEY(`id`)\n);",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute CREATE TABLE `route_points_of_interest` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`routeId` int NOT NULL,\n\t`name` varchar(255) NOT NULL,\n\t`nameHe` varchar(255),\n\t`type` enum('attraction','restaurant','gas_station','other') NOT NULL,\n\t`latitude` decimal(10,7) NOT NULL,\n\t`longitude` decimal(10,7) NOT NULL,\n\t`address` text,\n\t`placeId` varchar(255),\n\t`notes` text,\n\t`createdAt` timestamp NOT NULL DEFAULT (now()),\n\t`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,\n\tCONSTRAINT `route_points_of_interest_id` PRIMARY KEY(`id`)\n);",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 1686
-}

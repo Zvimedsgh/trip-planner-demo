@@ -1,8 +1,0 @@
-{
-  "query": "SELECT id, company, vehicle_model, price, currency FROM car_rentals;",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, company, vehicle_model, price, currency FROM car_rentals;",
-  "returncode": 1,
-  "logs": [
-    "ERROR 1054 (42S22) at line 1: Unknown column 'vehicle_model' in 'field list'"
-  ]
-}

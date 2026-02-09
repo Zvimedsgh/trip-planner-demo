@@ -8,13 +8,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
-import { Calendar, DollarSign, Edit, ExternalLink, FileText, Hotel, Images, Loader2, MapPin, Phone, Plus, Trash2, Upload, Image as ImageIcon, Link2 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { Calendar, DollarSign, Edit, ExternalLink, FileText, Hotel, Loader2, MapPin, Phone, Plus, Trash2, Upload, Image as ImageIcon } from "lucide-react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { DocumentLinkDialog } from "@/components/DocumentLinkDialog";
-import { ImageUploadDialog } from "@/components/ImageUploadDialog";
-import { GalleryManager } from "@/components/GalleryManager";
 
 const CURRENCIES = [
   { code: "USD", symbol: "$", name: "US Dollar" },
@@ -33,11 +29,9 @@ const CURRENCIES = [
 
 interface HotelsTabProps {
   tripId: number;
-  highlightedId?: number | null;
-  onNavigateToDocuments?: (hotelId: number) => void;
 }
 
-export default function HotelsTab({ tripId, highlightedId, onNavigateToDocuments }: HotelsTabProps) {
+export default function HotelsTab({ tripId }: HotelsTabProps) {
   const { t, language, isRTL } = useLanguage();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -46,32 +40,10 @@ export default function HotelsTab({ tripId, highlightedId, onNavigateToDocuments
   const formRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploadingHotelId, setUploadingHotelId] = useState<number | null>(null);
-  const [linkingHotelId, setLinkingHotelId] = useState<number | null>(null);
-  const [documentLinkDialogOpen, setDocumentLinkDialogOpen] = useState(false);
-  const [parkingImageDialogOpen, setParkingImageDialogOpen] = useState(false);
-  const [uploadingParkingForHotelId, setUploadingParkingForHotelId] = useState<number | null>(null);
-  const [galleryHotelId, setGalleryHotelId] = useState<number | null>(null);
-  const [galleryDialogOpen, setGalleryDialogOpen] = useState(false);
-  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
-  const [imagePreviewOpen, setImagePreviewOpen] = useState(false);
-  const longPressTimer = useRef<NodeJS.Timeout | null>(null);
-  const longPressTriggered = useRef(false);
 
   const utils = trpc.useUtils();
   const { data: hotels, isLoading } = trpc.hotels.list.useQuery({ tripId });
   const { data: documents } = trpc.documents.list.useQuery({ tripId });
-
-  // Scroll to highlighted hotel
-  useEffect(() => {
-    if (highlightedId) {
-      const element = document.getElementById(`hotel-${highlightedId}`);
-      if (element) {
-        setTimeout(() => {
-          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 100);
-      }
-    }
-  }, [highlightedId]);
 
   const createMutation = trpc.hotels.create.useMutation({
     onSuccess: () => {
@@ -112,22 +84,6 @@ export default function HotelsTab({ tripId, highlightedId, onNavigateToDocuments
     },
   });
   
-  const handleDocumentLink = (hotelId: number) => {
-    setLinkingHotelId(hotelId);
-    setDocumentLinkDialogOpen(true);
-  };
-
-  const handleDocumentSelect = (documentId: number | null) => {
-    if (linkingHotelId) {
-      updateMutation.mutate({
-        id: linkingHotelId,
-        linkedDocumentId: documentId === null ? null : documentId,
-      });
-      setLinkingHotelId(null);
-    }
-    setDocumentLinkDialogOpen(false);
-  };
-
   const handleParkingImageUpload = async (hotelId: number, file: File) => {
     if (!file.type.startsWith('image/')) {
       toast.error(language === "he" ? "יש לבחור קובץ תמונה" : "Please select an image file");
@@ -547,13 +503,7 @@ export default function HotelsTab({ tripId, highlightedId, onNavigateToDocuments
             }
             
             return (
-            <Card 
-              key={hotel.id} 
-              id={`hotel-${hotel.id}`}
-              className={`overflow-hidden ${!hotelImage ? `bg-gradient-to-br ${gradient}` : ''} text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative group ${
-                highlightedId === hotel.id ? 'ring-4 ring-yellow-400 animate-pulse' : ''
-              }`}
-            >
+            <Card key={hotel.id} className={`overflow-hidden ${!hotelImage ? `bg-gradient-to-br ${gradient}` : ''} text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative group`}>
               {/* Background image if available */}
               {hotelImage && (
                 <>
@@ -590,37 +540,14 @@ export default function HotelsTab({ tripId, highlightedId, onNavigateToDocuments
                     </div>
                   </div>
                   <div className="flex flex-wrap gap-1">
-                    {/* Document count badge */}
+                    {/* Link to related documents (excluding parking images) */}
                     {(() => {
-                      const docCount = documents?.filter(d => d.hotelId === hotel.id).length || 0;
-                      if (docCount === 0) return null;
-                      return (
-                        <button
-                          onClick={() => {
-                            if (onNavigateToDocuments) {
-                              onNavigateToDocuments(hotel.id);
-                              // Wait for tab to render, then trigger hotel filter
-                              setTimeout(() => {
-                                const hotelFilterBtn = document.querySelector(`[data-hotel-filter="${hotel.id}"]`) as HTMLButtonElement;
-                                if (hotelFilterBtn) hotelFilterBtn.click();
-                              }, 200);
-                            }
-                          }}
-                          className="h-8 px-2.5 rounded-md bg-purple-500/80 hover:bg-purple-600 text-white text-xs font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
-                          title={language === 'he' ? `${docCount} מסמכים` : `${docCount} documents`}
-                        >
-                          <FileText className="w-3.5 h-3.5" />
-                          {docCount}
-                        </button>
+                      const relatedDocs = documents?.filter(doc => 
+                        (doc.category === 'booking' || doc.category === 'other') && 
+                        !doc.name.toLowerCase().includes('parking') &&
+                        (doc.name.toLowerCase().includes(hotel.name.toLowerCase()) ||
+                         (hotel.address && doc.name.toLowerCase().includes(hotel.address.toLowerCase())))
                       );
-                    })()}
-                    {/* Document link button */}
-                    {(() => {
-                      // Only use explicitly linked documents
-                      const linkedDoc = hotel.linkedDocumentId 
-                        ? documents?.find(doc => doc.id === hotel.linkedDocumentId)
-                        : null;
-                      
                       return (
                         <Button 
                           size="icon" 
@@ -629,51 +556,17 @@ export default function HotelsTab({ tripId, highlightedId, onNavigateToDocuments
                           onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
-                            if (linkedDoc) {
-                              // Open document (PDF) in new tab
-                              window.open(linkedDoc.fileUrl, '_blank');
+                            if (relatedDocs && relatedDocs.length > 0) {
+                              // Open the first document
+                              window.open(relatedDocs[0].fileUrl, '_blank');
                             } else {
-                              // Open dialog to manually select document
-                              handleDocumentLink(hotel.id);
+                              // Show toast message
+                              toast.info(language === 'he' ? 'אין מסמך' : 'No document');
                             }
                           }}
-                          onContextMenu={(e) => {
-                            // Right-click opens dialog
-                            e.preventDefault();
-                            e.stopPropagation();
-                            handleDocumentLink(hotel.id);
-                          }}
-                          onTouchStart={(e) => {
-                            // Long press on mobile
-                            e.stopPropagation();
-                            longPressTriggered.current = false;
-                            longPressTimer.current = setTimeout(() => {
-                              longPressTriggered.current = true;
-                              handleDocumentLink(hotel.id);
-                            }, 500);
-                          }}
-                          onTouchEnd={(e) => {
-                            e.stopPropagation();
-                            if (longPressTimer.current) {
-                              clearTimeout(longPressTimer.current);
-                              longPressTimer.current = null;
-                            }
-                            // Prevent click if long press was triggered
-                            if (longPressTriggered.current) {
-                              e.preventDefault();
-                              longPressTriggered.current = false;
-                            }
-                          }}
-                          onTouchMove={(e) => {
-                            e.stopPropagation();
-                            if (longPressTimer.current) {
-                              clearTimeout(longPressTimer.current);
-                              longPressTimer.current = null;
-                            }
-                          }}
-                          title={linkedDoc
-                            ? (language === 'he' ? 'פתיחת מסמך (לחיצה ימנית לשינוי)' : 'Open document (right-click to change)')
-                            : (language === 'he' ? 'קישור מסמך' : 'Link document')
+                          title={relatedDocs && relatedDocs.length > 0 
+                            ? (language === 'he' ? 'פתיחת מסמך' : 'Open document')
+                            : (language === 'he' ? 'אין מסמך' : 'No document')
                           }
                         >
                           <FileText className="w-4 h-4" />
@@ -698,23 +591,12 @@ export default function HotelsTab({ tripId, highlightedId, onNavigateToDocuments
                             e.preventDefault();
                             e.stopPropagation();
                             if (hotel.parkingImage) {
-                              setImagePreviewUrl(hotel.parkingImage);
-                              setImagePreviewOpen(true);
+                              window.open(hotel.parkingImage, '_blank');
                             } else if (parkingDocs && parkingDocs.length > 0) {
-                              setImagePreviewUrl(parkingDocs[0].fileUrl);
-                              setImagePreviewOpen(true);
+                              window.open(parkingDocs[0].fileUrl, '_blank');
                             } else {
-                              // Open upload dialog
-                              setUploadingParkingForHotelId(hotel.id);
-                              setParkingImageDialogOpen(true);
+                              toast.info(language === 'he' ? 'אין תמונת חניה' : 'No parking image');
                             }
-                          }}
-                          onContextMenu={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            // Right-click always opens upload dialog (to replace existing image)
-                            setUploadingParkingForHotelId(hotel.id);
-                            setParkingImageDialogOpen(true);
                           }}
                           title={hasParkingImage
                             ? (language === 'he' ? 'פתיחת תמונת חניה' : 'Open parking image')
@@ -729,47 +611,21 @@ export default function HotelsTab({ tripId, highlightedId, onNavigateToDocuments
                         </Button>
                       );
                     })()}
+                    <Button size="icon" variant="ghost" className="h-8 w-8 text-white bg-amber-500/80 hover:bg-amber-600" onClick={() => openEdit(hotel)}>
+                      <Edit className="w-4 h-4" />
+                    </Button>
                     <Button 
                       size="icon" 
                       variant="ghost" 
-                      className="h-8 w-8 text-white bg-indigo-500/80 hover:bg-indigo-600"
+                      className="h-8 w-8 text-white bg-red-500/80 hover:bg-red-600"
                       onClick={() => {
-                        setGalleryHotelId(hotel.id);
-                        setGalleryDialogOpen(true);
+                        if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את המלון?" : "Are you sure you want to delete this hotel?")) {
+                          deleteMutation.mutate({ id: hotel.id });
+                        }
                       }}
-                      title={language === 'he' ? 'גלריית תמונות' : 'Image Gallery'}
                     >
-                      <Images className="w-4 h-4" />
+                      <Trash2 className="w-4 h-4" />
                     </Button>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button size="icon" variant="ghost" className="h-8 w-8 text-white bg-amber-500/80 hover:bg-amber-600" onClick={() => openEdit(hotel)}>
-                          <Edit className="w-4 h-4" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>{language === 'he' ? 'ערוך מלון' : 'Edit hotel'}</p>
-                      </TooltipContent>
-                    </Tooltip>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button 
-                          size="icon" 
-                          variant="ghost" 
-                          className="h-8 w-8 text-white bg-red-500/80 hover:bg-red-600"
-                          onClick={() => {
-                            if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את המלון?" : "Are you sure you want to delete this hotel?")) {
-                              deleteMutation.mutate({ id: hotel.id });
-                            }
-                          }}
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>{language === 'he' ? 'מחק מלון' : 'Delete hotel'}</p>
-                      </TooltipContent>
-                    </Tooltip>
                   </div>
                 </div>
                 
@@ -836,72 +692,6 @@ export default function HotelsTab({ tripId, highlightedId, onNavigateToDocuments
             <Button onClick={handleUpdate} disabled={updateMutation.isPending}>
               {updateMutation.isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
               {t("save")}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Document Link Dialog */}
-      <DocumentLinkDialog
-        open={documentLinkDialogOpen}
-        onOpenChange={setDocumentLinkDialogOpen}
-        tripId={tripId}
-        currentDocumentId={linkingHotelId ? hotels?.find(h => h.id === linkingHotelId)?.linkedDocumentId : null}
-        onSelectDocument={handleDocumentSelect}
-      />
-
-      {/* Parking Image Upload Dialog */}
-      <ImageUploadDialog
-        open={parkingImageDialogOpen}
-        onOpenChange={setParkingImageDialogOpen}
-        title={language === 'he' ? 'העלאת תמונת חניה' : 'Upload Parking Image'}
-        currentImageUrl={uploadingParkingForHotelId ? hotels?.find(h => h.id === uploadingParkingForHotelId)?.parkingImage : null}
-        onUpload={async (imageUrl) => {
-          if (uploadingParkingForHotelId) {
-            await updateMutation.mutateAsync({
-              id: uploadingParkingForHotelId,
-              parkingImage: imageUrl,
-            });
-            toast.success(language === 'he' ? 'תמונת החניה הועלתה בהצלחה' : 'Parking image uploaded successfully');
-            setUploadingParkingForHotelId(null);
-          }
-        }}
-      />
-
-      {/* Gallery Manager */}
-      <GalleryManager
-        open={galleryDialogOpen}
-        onOpenChange={setGalleryDialogOpen}
-        hotelId={galleryHotelId || 0}
-        currentGallery={galleryHotelId ? JSON.parse(hotels?.find(h => h.id === galleryHotelId)?.gallery || '[]') : []}
-        onUpdate={async (gallery) => {
-          if (galleryHotelId) {
-            await updateMutation.mutateAsync({
-              id: galleryHotelId,
-              gallery: JSON.stringify(gallery),
-            });
-          }
-        }}
-      />
-
-      {/* Image Preview Dialog */}
-      <Dialog open={imagePreviewOpen} onOpenChange={setImagePreviewOpen}>
-        <DialogContent className="max-w-4xl">
-          <DialogHeader>
-            <DialogTitle>{language === 'he' ? 'תצוגת תמונה' : 'Image Preview'}</DialogTitle>
-          </DialogHeader>
-          <div className="flex items-center justify-center">
-            {imagePreviewUrl && (
-              <img 
-                src={imagePreviewUrl} 
-                alt="Preview" 
-                className="max-w-full max-h-[70vh] object-contain rounded-lg"
-              />
-            )}
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setImagePreviewOpen(false)}>
-              {language === 'he' ? 'סגור' : 'Close'}
             </Button>
           </DialogFooter>
         </DialogContent>

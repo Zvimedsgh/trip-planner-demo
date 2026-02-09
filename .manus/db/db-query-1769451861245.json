@@ -1,9 +1,0 @@
-{
-  "query": "ALTER TABLE `transportation` MODIFY COLUMN `type` enum('flight','train','bus','ferry','car_rental','other') NOT NULL;\nALTER TABLE `transportation` ADD `company` varchar(255);\nALTER TABLE `transportation` ADD `carModel` varchar(255);\nALTER TABLE `transportation` ADD `pickupLocation` varchar(500);\nALTER TABLE `transportation` ADD `returnLocation` varchar(500);\nALTER TABLE `transportation` ADD `phone` varchar(50);",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute ALTER TABLE `transportation` MODIFY COLUMN `type` enum('flight','train','bus','ferry','car_rental','other') NOT NULL;\nALTER TABLE `transportation` ADD `company` varchar(255);\nALTER TABLE `transportation` ADD `carModel` varchar(255);\nALTER TABLE `transportation` ADD `pickupLocation` varchar(500);\nALTER TABLE `transportation` ADD `returnLocation` varchar(500);\nALTER TABLE `transportation` ADD `phone` varchar(50);",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 5354
-}

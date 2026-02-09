@@ -1,9 +1,0 @@
-{
-  "query": "UPDATE trips SET startDate = 1788220800000, endDate = 1788912000000 WHERE name LIKE '%Slovakia%';",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute UPDATE trips SET startDate = 1788220800000, endDate = 1788912000000 WHERE name LIKE '%Slovakia%';",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 1516
-}

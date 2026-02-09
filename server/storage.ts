@@ -27,17 +27,13 @@ function buildUploadUrl(baseUrl: string, relKey: string): URL {
 async function buildDownloadUrl(
   baseUrl: string,
   relKey: string,
-  apiKey: string,
-  expiresIn?: number
+  apiKey: string
 ): Promise<string> {
   const downloadApiUrl = new URL(
     "v1/storage/downloadUrl",
     ensureTrailingSlash(baseUrl)
   );
   downloadApiUrl.searchParams.set("path", normalizeKey(relKey));
-  if (expiresIn) {
-    downloadApiUrl.searchParams.set("expiresIn", expiresIn.toString());
-  }
   const response = await fetch(downloadApiUrl, {
     method: "GET",
     headers: buildAuthHeaders(apiKey),
@@ -96,11 +92,11 @@ export async function storagePut(
   return { key, url };
 }
 
-export async function storageGet(relKey: string, expiresIn?: number): Promise<{ key: string; url: string; }> {
+export async function storageGet(relKey: string): Promise<{ key: string; url: string; }> {
   const { baseUrl, apiKey } = getStorageConfig();
   const key = normalizeKey(relKey);
   return {
     key,
-    url: await buildDownloadUrl(baseUrl, key, apiKey, expiresIn),
+    url: await buildDownloadUrl(baseUrl, key, apiKey),
   };
 }

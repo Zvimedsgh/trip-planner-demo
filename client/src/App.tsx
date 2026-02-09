@@ -9,8 +9,6 @@ import Home from "./pages/Home";
 import Trips from "./pages/Trips";
 import TripDetail from "./pages/TripDetail";
 import SharedTrip from "./pages/SharedTrip";
-import Instructions from "./pages/Instructions";
-import InviteLink from "./pages/InviteLink";
 
 function Router() {
   return (
@@ -19,8 +17,6 @@ function Router() {
       <Route path="/trips" component={Trips} />
       <Route path="/trip/:id" component={TripDetail} />
       <Route path="/shared/:token" component={SharedTrip} />
-      <Route path="/invite/:token" component={InviteLink} />
-      <Route path="/instructions" component={Instructions} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>

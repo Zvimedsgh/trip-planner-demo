@@ -86,8 +86,8 @@ export default function Trips() {
     createMutation.mutate({
       name: formData.name,
       destination: formData.destination,
-      startDate: new Date(formData.startDate + 'T00:00:00.000Z').getTime(),
-      endDate: new Date(formData.endDate + 'T00:00:00.000Z').getTime(),
+      startDate: new Date(formData.startDate).getTime(),
+      endDate: new Date(formData.endDate).getTime(),
       description: formData.description || undefined,
     });
   };
@@ -102,8 +102,8 @@ export default function Trips() {
       id: editingTrip,
       name: formData.name,
       destination: formData.destination,
-      startDate: new Date(formData.startDate + 'T00:00:00.000Z').getTime(),
-      endDate: new Date(formData.endDate + 'T00:00:00.000Z').getTime(),
+      startDate: new Date(formData.startDate).getTime(),
+      endDate: new Date(formData.endDate).getTime(),
       description: formData.description || undefined,
     });
   };
@@ -128,7 +128,7 @@ export default function Trips() {
   };
 
   const getDaysCount = (start: number, end: number) => {
-    return Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
+    return Math.ceil((end - start) / (1000 * 60 * 60 * 24));
   };
 
   const uploadImageMutation = trpc.trips.uploadCoverImage.useMutation({
@@ -383,34 +383,12 @@ export default function Trips() {
                   </div>
                   
                   {/* Top section - Title and destination */}
-                  <div className="text-white text-center">
-                    {trip.name === "Goren Roots Trip to Slovakia" ? (
-                      <div className="mb-2">
-                        <h3 className="text-lg font-bold mb-0.5">
-                          {"The Gorens'".split('').map((char, i) => {
-                            const colors = ['#FF6B6B', '#FFA500', '#FFD700', '#4CAF50', '#2196F3', '#9C27B0', '#E91E63'];
-                            return (
-                              <span key={i} style={{ color: colors[i % colors.length] }}>
-                                {char}
-                              </span>
-                            );
-                          })}
-                        </h3>
-                        <h4 className="text-base font-bold">
-                          {"Roots Trip to Slovakia".split('').map((char, i) => {
-                            const colors = ['#FF6B6B', '#FFA500', '#FFD700', '#4CAF50', '#2196F3', '#9C27B0', '#E91E63'];
-                            return (
-                              <span key={i} style={{ color: colors[i % colors.length] }}>
-                                {char}
-                              </span>
-                            );
-                          })}
-                        </h4>
-                      </div>
-                    ) : (
-                      <h3 className="text-xl font-bold mb-1">{trip.name}</h3>
-                    )}
-
+                  <div className="text-white">
+                    <h3 className="text-xl font-bold mb-1">{trip.name}</h3>
+                    <div className="flex items-center gap-1 text-white/90 text-sm">
+                      <MapPin className="w-4 h-4" />
+                      {trip.destination}
+                    </div>
                   </div>
                   
                   {/* Bottom section - Date and button */}
@@ -425,7 +403,7 @@ export default function Trips() {
                       </span>
                     </div>
                     <Link href={`/trip/${trip.id}`}>
-                      <Button className="w-full group/btn bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all text-base font-semibold">
+                      <Button className="w-full group/btn bg-white text-primary hover:bg-white/90 shadow-md hover:shadow-lg transition-all">
                         {t("tripDetails")}
                         <ArrowRight className={`w-4 h-4 ${isRTL ? 'mr-2 rotate-180' : 'ml-2'} group-hover/btn:translate-x-1 transition-transform`} />
                       </Button>

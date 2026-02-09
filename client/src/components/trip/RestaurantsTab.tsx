@@ -8,12 +8,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
-import { Calendar, DollarSign, Edit, ExternalLink, FileText, Image, Loader2, MapPin, Phone, Plus, Trash2, Users, Utensils } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { Calendar, DollarSign, Edit, ExternalLink, FileText, Loader2, MapPin, Phone, Plus, Trash2, Users, Utensils } from "lucide-react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { DocumentLinkDialog } from "@/components/DocumentLinkDialog";
-import { ImageUploadDialog } from "@/components/ImageUploadDialog";
 
 const CURRENCIES = [
   { code: "USD", symbol: "$" },
@@ -32,10 +29,9 @@ const CURRENCIES = [
 
 interface RestaurantsTabProps {
   tripId: number;
-  highlightedId?: number | null;
 }
 
-export default function RestaurantsTab({ tripId, highlightedId }: RestaurantsTabProps) {
+export default function RestaurantsTab({ tripId }: RestaurantsTabProps) {
   const { t, language, isRTL } = useLanguage();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -43,28 +39,10 @@ export default function RestaurantsTab({ tripId, highlightedId }: RestaurantsTab
   const [paymentStatus, setPaymentStatus] = useState<"paid" | "pending">("pending");
   const [paymentFilter, setPaymentFilter] = useState<"all" | "paid" | "pending">("all");
   const formRef = useRef<HTMLDivElement>(null);
-  const [linkingRestaurantId, setLinkingRestaurantId] = useState<number | null>(null);
-  const [documentLinkDialogOpen, setDocumentLinkDialogOpen] = useState(false);
-  const [uploadingImageForRestaurantId, setUploadingImageForRestaurantId] = useState<number | null>(null);
-  const [imageUploadDialogOpen, setImageUploadDialogOpen] = useState(false);
-  const longPressTimer = useRef<NodeJS.Timeout | null>(null);
-  const longPressTriggered = useRef(false);
 
   const utils = trpc.useUtils();
   const { data: restaurants, isLoading } = trpc.restaurants.list.useQuery({ tripId });
   const { data: documents } = trpc.documents.list.useQuery({ tripId });
-
-  // Scroll to highlighted restaurant
-  useEffect(() => {
-    if (highlightedId) {
-      const element = document.getElementById(`restaurant-${highlightedId}`);
-      if (element) {
-        setTimeout(() => {
-          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 100);
-      }
-    }
-  }, [highlightedId]);
 
   const createMutation = trpc.restaurants.create.useMutation({
     onSuccess: () => {
@@ -92,22 +70,6 @@ export default function RestaurantsTab({ tripId, highlightedId }: RestaurantsTab
       toast.success(language === "he" ? "המסעדה נמחקה בהצלחה" : "Restaurant deleted successfully");
     },
   });
-
-  const handleDocumentLink = (restaurantId: number) => {
-    setLinkingRestaurantId(restaurantId);
-    setDocumentLinkDialogOpen(true);
-  };
-
-  const handleDocumentSelect = (documentId: number | null) => {
-    if (linkingRestaurantId) {
-      updateMutation.mutate({
-        id: linkingRestaurantId,
-        linkedDocumentId: documentId === null ? null : documentId,
-      });
-      setLinkingRestaurantId(null);
-    }
-    setDocumentLinkDialogOpen(false);
-  };
 
   const getFormValues = () => {
     if (!formRef.current) return null;
@@ -393,21 +355,8 @@ export default function RestaurantsTab({ tripId, highlightedId }: RestaurantsTab
               return restaurant.paymentStatus === paymentFilter;
             })
             .map((restaurant) => (
-            <Card 
-              key={restaurant.id} 
-              id={`restaurant-${restaurant.id}`}
-              className={`elegant-card-hover relative overflow-hidden ${
-                highlightedId === restaurant.id ? 'ring-4 ring-yellow-400 animate-pulse' : ''
-              }`}
-            >
-              {/* Background Image */}
-              {restaurant.coverImage && (
-                <div 
-                  className="absolute inset-0 bg-cover bg-center opacity-20"
-                  style={{ backgroundImage: `url(${restaurant.coverImage})` }}
-                />
-              )}
-              <CardHeader className="pb-2 relative z-10">
+            <Card key={restaurant.id} className="elegant-card-hover">
+              <CardHeader className="pb-2">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-2">
                     <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center">
@@ -426,11 +375,11 @@ export default function RestaurantsTab({ tripId, highlightedId }: RestaurantsTab
                   <div className="flex gap-0.5">
                     {/* Document link button */}
                     {(() => {
-                      // Only use explicitly linked documents
-                      const linkedDoc = restaurant.linkedDocumentId 
-                        ? documents?.find(doc => doc.id === restaurant.linkedDocumentId)
-                        : null;
-                      
+                      const relatedDocs = documents?.filter(doc => 
+                        (doc.category === 'booking' || doc.category === 'other') && 
+                        (doc.name.toLowerCase().includes(restaurant.name.toLowerCase()) ||
+                         (restaurant.address && doc.name.toLowerCase().includes(restaurant.address.toLowerCase())))
+                      );
                       return (
                         <Button 
                           size="icon" 
@@ -439,112 +388,36 @@ export default function RestaurantsTab({ tripId, highlightedId }: RestaurantsTab
                           onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
-                            if (linkedDoc) {
-                              window.open(linkedDoc.fileUrl, '_blank');
+                            if (relatedDocs && relatedDocs.length > 0) {
+                              window.open(relatedDocs[0].fileUrl, '_blank');
                             } else {
-                              // Open dialog to manually select document
-                              handleDocumentLink(restaurant.id);
+                              toast.info(language === 'he' ? 'אין מסמך' : 'No document');
                             }
                           }}
-                          onContextMenu={(e) => {
-                            // Right-click opens dialog
-                            e.preventDefault();
-                            e.stopPropagation();
-                            handleDocumentLink(restaurant.id);
-                          }}
-                          onTouchStart={(e) => {
-                            // Long press on mobile
-                            e.stopPropagation();
-                            longPressTriggered.current = false;
-                            longPressTimer.current = setTimeout(() => {
-                              longPressTriggered.current = true;
-                              handleDocumentLink(restaurant.id);
-                            }, 500);
-                          }}
-                          onTouchEnd={(e) => {
-                            e.stopPropagation();
-                            if (longPressTimer.current) {
-                              clearTimeout(longPressTimer.current);
-                              longPressTimer.current = null;
-                            }
-                            // Prevent click if long press was triggered
-                            if (longPressTriggered.current) {
-                              e.preventDefault();
-                              longPressTriggered.current = false;
-                            }
-                          }}
-                          onTouchMove={(e) => {
-                            e.stopPropagation();
-                            if (longPressTimer.current) {
-                              clearTimeout(longPressTimer.current);
-                              longPressTimer.current = null;
-                            }
-                          }}
-                          title={linkedDoc
-                            ? (language === 'he' ? 'פתיחת מסמך (לחיצה ימנית לשינוי)' : 'Open document (right-click to change)')
-                            : (language === 'he' ? 'קישור מסמך' : 'Link document')
+                          title={relatedDocs && relatedDocs.length > 0 
+                            ? (language === 'he' ? 'פתיחת מסמך' : 'Open document')
+                            : (language === 'he' ? 'אין מסמך' : 'No document')
                           }
                         >
                           <FileText className="w-3 h-3" />
                         </Button>
                       );
                     })()}
+                    <Button size="icon" variant="ghost" className="h-7 w-7 text-white bg-amber-500/80 hover:bg-amber-600" onClick={() => openEdit(restaurant)}>
+                      <Edit className="w-3 h-3" />
+                    </Button>
                     <Button 
                       size="icon" 
                       variant="ghost" 
-                      className="h-8 w-8 text-white bg-green-500/80 hover:bg-green-600"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        if (restaurant.coverImage) {
-                          window.open(restaurant.coverImage, '_blank');
-                        } else {
-                          setUploadingImageForRestaurantId(restaurant.id);
-                          setImageUploadDialogOpen(true);
+                      className="h-7 w-7 text-white bg-red-500/80 hover:bg-red-600"
+                      onClick={() => {
+                        if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את המסעדה?" : "Are you sure you want to delete this restaurant?")) {
+                          deleteMutation.mutate({ id: restaurant.id });
                         }
                       }}
-                      onContextMenu={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        setUploadingImageForRestaurantId(restaurant.id);
-                        setImageUploadDialogOpen(true);
-                      }}
-                      title={restaurant.coverImage
-                        ? (language === 'he' ? 'פתיחת תמונה' : 'Open image')
-                        : (language === 'he' ? 'אין תמונה' : 'No image')
-                      }
                     >
-                      <Image className="w-3 h-3" />
+                      <Trash2 className="w-3 h-3" />
                     </Button>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button size="icon" variant="ghost" className="h-7 w-7 text-white bg-amber-500/80 hover:bg-amber-600" onClick={() => openEdit(restaurant)}>
-                          <Edit className="w-3 h-3" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>{language === 'he' ? 'ערוך מסעדה' : 'Edit restaurant'}</p>
-                      </TooltipContent>
-                    </Tooltip>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button 
-                          size="icon" 
-                          variant="ghost" 
-                          className="h-7 w-7 text-white bg-red-500/80 hover:bg-red-600"
-                          onClick={() => {
-                            if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את המסעדה?" : "Are you sure you want to delete this restaurant?")) {
-                              deleteMutation.mutate({ id: restaurant.id });
-                            }
-                          }}
-                        >
-                          <Trash2 className="w-3 h-3" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>{language === 'he' ? 'מחק מסעדה' : 'Delete restaurant'}</p>
-                      </TooltipContent>
-                    </Tooltip>
                   </div>
                 </div>
               </CardHeader>
@@ -609,33 +482,6 @@ export default function RestaurantsTab({ tripId, highlightedId }: RestaurantsTab
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
-      {/* Document Link Dialog */}
-      <DocumentLinkDialog
-        open={documentLinkDialogOpen}
-        onOpenChange={setDocumentLinkDialogOpen}
-        tripId={tripId}
-        currentDocumentId={linkingRestaurantId ? restaurants?.find(r => r.id === linkingRestaurantId)?.linkedDocumentId : null}
-        onSelectDocument={handleDocumentSelect}
-      />
-
-      {/* Image Upload Dialog */}
-      <ImageUploadDialog
-        open={imageUploadDialogOpen}
-        onOpenChange={setImageUploadDialogOpen}
-        title={language === 'he' ? 'העלאת תמונת מסעדה' : 'Upload Restaurant Image'}
-        onUpload={async (imageUrl) => {
-          if (uploadingImageForRestaurantId) {
-            await updateMutation.mutateAsync({
-              id: uploadingImageForRestaurantId,
-              coverImage: imageUrl,
-            });
-            toast.success(language === 'he' ? 'התמונה הועלתה בהצלחה' : 'Image uploaded successfully');
-            setImageUploadDialogOpen(false);
-            setUploadingImageForRestaurantId(null);
-          }
-        }}
-      />
     </div>
   );
 }

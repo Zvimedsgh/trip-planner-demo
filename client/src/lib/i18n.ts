@@ -110,7 +110,6 @@ export const translations = {
     ticket: "Ticket",
     restaurant: "Restaurant",
     hotel: "Hotel",
-    flights: "Flights",
     tags: "Tags",
     noDocuments: "No documents uploaded yet",
     
@@ -287,7 +286,6 @@ export const translations = {
     ticket: "כרטיס",
     restaurant: "מסעדה",
     hotel: "מלון",
-    flights: "טיסות",
     tags: "תגיות",
     noDocuments: "לא הועלו מסמכים עדיין",
     
