@@ -147,3 +147,10 @@
 - [x] Add text shadow or dark overlay to improve white text visibility
 - [x] Ensure trip titles are readable on all background images
 - [x] Test on both light and dark background images
+
+## Feature - Automatic Route Map Generation
+- [x] Add server endpoint to generate route from route name (parse origin → destination)
+- [x] Call Google Maps Directions API to get route data
+- [x] Save mapData to routes table
+- [x] Modify AllRouteMapsTab to auto-generate routes when mapData is NULL
+- [x] Test with Slovakia routes (Bratislava → Liptovský Mikuláš)

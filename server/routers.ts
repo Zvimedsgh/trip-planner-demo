@@ -638,6 +638,68 @@ export const appRouter = router({
 
   // ============ ROUTES ============
   routes: router({
+    // Generate route data from route name (origin → destination)
+    generateRouteFromName: protectedProcedure
+      .input(z.object({ routeId: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        const route = await db.getRouteById(input.routeId);
+        if (!route) throw new Error('Route not found');
+        
+        const trip = await db.getTripById(route.tripId, ctx.user.id);
+        if (!trip) throw new Error('Trip not found or access denied');
+        
+        // Parse route name to extract origin and destination
+        // Format: "Origin → Destination" or "Origin -> Destination"
+        const parts = route.name.split(/→|->/).map(p => p.trim());
+        if (parts.length !== 2) {
+          throw new Error('Route name must be in format: "Origin → Destination"');
+        }
+        
+        const [origin, destination] = parts;
+        
+        // Call Google Maps Directions API
+        const { makeRequest } = await import('./_core/map');
+        const directionsResult = await makeRequest<any>(
+          '/maps/api/directions/json',
+          {
+            origin,
+            destination,
+            mode: 'driving',
+          }
+        );
+        
+        if (directionsResult.status !== 'OK' || !directionsResult.routes?.[0]) {
+          throw new Error(`Failed to get directions: ${directionsResult.status}`);
+        }
+        
+        const routeData = directionsResult.routes[0];
+        const leg = routeData.legs[0];
+        
+        // Create mapData object
+        const mapData = {
+          origin: {
+            address: leg.start_address,
+            location: leg.start_location,
+          },
+          destination: {
+            address: leg.end_address,
+            location: leg.end_location,
+          },
+          distance: leg.distance,
+          duration: leg.duration,
+          polyline: routeData.overview_polyline.points,
+        };
+        
+        // Update route with mapData
+        await db.updateRoute(input.routeId, {
+          mapData: JSON.stringify(mapData),
+          distanceKm: (leg.distance.value / 1000).toFixed(1),
+          estimatedDuration: Math.round(leg.duration.value / 60), // minutes
+        });
+        
+        return { success: true, mapData };
+      }),
+    
     list: protectedProcedure
       .input(z.object({ tripId: z.number() }))
       .query(async ({ ctx, input }) => {

@@ -1,0 +1,2 @@
+DROP TABLE `trip_travelers`;--> statement-breakpoint
+ALTER TABLE `checklist_items` MODIFY COLUMN `owner` enum('shared','ofir','ruth') NOT NULL DEFAULT 'shared';

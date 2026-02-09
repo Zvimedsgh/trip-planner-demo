@@ -14,8 +14,10 @@ interface AllRouteMapsTabProps {
 export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
   const { language } = useLanguage();
   const [selectedRoute, setSelectedRoute] = useState<any | null>(null);
+  const [generatingRoute, setGeneratingRoute] = useState<number | null>(null);
   
   const { data: routes, refetch } = trpc.routes.list.useQuery({ tripId });
+  const generateRouteMutation = trpc.routes.generateRouteFromName.useMutation();
   
   // Force refetch when tripId changes to prevent cache collision
   useEffect(() => {
@@ -140,8 +142,18 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
             <div className="flex flex-col h-full gap-4">
               {/* Map Container */}
               <div className="flex-1 rounded-lg overflow-hidden border-2 border-gray-200">
-                <MapView
-                  onMapReady={(map: any) => {
+                {generatingRoute === selectedRoute.id ? (
+                  <div className="flex items-center justify-center h-full bg-gray-50">
+                    <div className="text-center space-y-4">
+                      <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto" />
+                      <p className="text-gray-600 font-medium">
+                        {language === "he" ? "יוצר מסלול..." : "Generating route..."}
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <MapView
+                    onMapReady={async (map: any) => {
                     const google = (window as any).google;
                     // Parse mapData if it exists
                     let mapConfig = null;
@@ -151,6 +163,29 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
                       } catch (e) {
                         console.error("Failed to parse mapData:", e);
                       }
+                    }
+                    
+                    // If no mapData, generate it automatically
+                    if (!selectedRoute.mapData) {
+                      setGeneratingRoute(selectedRoute.id);
+                      try {
+                        await generateRouteMutation.mutateAsync({ routeId: selectedRoute.id });
+                        await refetch();
+                        // The component will re-render with new data
+                      } catch (error: any) {
+                        console.error("Failed to generate route:", error);
+                        const infoWindow = new google.maps.InfoWindow({
+                          content: `<div style="padding: 10px;">
+                            <h3 style="font-weight: bold; margin-bottom: 5px; color: #EF4444;">${language === "he" ? "שגיאה" : "Error"}</h3>
+                            <p style="color: #666;">${error.message || (language === "he" ? "לא ניתן ליצור מסלול" : "Failed to generate route")}</p>
+                          </div>`,
+                          position: map.getCenter(),
+                        });
+                        infoWindow.open(map);
+                      } finally {
+                        setGeneratingRoute(null);
+                      }
+                      return;
                     }
                     
                     // If we have map configuration with origin/destination, show directions
@@ -209,8 +244,9 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
                       });
                       infoWindow.open(map);
                     }
-                  }}
-                />
+                    }}
+                  />
+                )}
               </div>
               
               {/* Route Info */}
