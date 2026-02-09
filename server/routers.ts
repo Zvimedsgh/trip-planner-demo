@@ -638,7 +638,7 @@ export const appRouter = router({
 
   // ============ ROUTES ============
   routes: router({
-    // Generate location data from route name (geocoding)
+    // Generate route/location data from route name
     generateRouteFromName: protectedProcedure
       .input(z.object({ routeId: z.number() }))
       .mutation(async ({ ctx, input }) => {
@@ -648,8 +648,7 @@ export const appRouter = router({
         const trip = await db.getTripById(route.tripId, ctx.user.id);
         if (!trip) throw new Error('Trip not found or access denied');
         
-        // Extract location name from route name
-        // Handle formats: "Day 3: Spa", "Vivendi Waterpark Dešenova", "Route 1: City → City"
+        // Extract location/route info from name
         let locationName = route.name;
         
         // Remove "Day X:" prefix if exists
@@ -658,44 +657,94 @@ export const appRouter = router({
         // Remove "Route X:" prefix if exists
         locationName = locationName.replace(/^Route \d+:\s*/i, '');
         
-        // If contains arrow, take the first part (origin)
-        if (locationName.includes('→') || locationName.includes('->')) {
-          const parts = locationName.split(/→|->/).map(p => p.trim());
-          locationName = parts[0];
-        }
-        
-        // Call Google Maps Geocoding API to get location
         const { makeRequest } = await import('./_core/map');
-        const geocodingResult = await makeRequest<any>(
-          '/maps/api/geocode/json',
-          {
-            address: `${locationName}, Slovakia`, // Add country for better results
+        
+        // Check if this is a route (contains arrow) or a single location
+        if (locationName.includes('→') || locationName.includes('->')) {
+          // This is a ROUTE between two cities
+          const parts = locationName.split(/→|->/).map(p => p.trim());
+          if (parts.length !== 2) {
+            throw new Error('Route format should be: "City → City"');
           }
-        );
-        
-        if (geocodingResult.status !== 'OK' || !geocodingResult.results?.[0]) {
-          throw new Error(`Failed to find location: ${geocodingResult.status}`);
+          
+          const [origin, destination] = parts;
+          
+          // Call Google Maps Directions API
+          const directionsResult = await makeRequest<any>(
+            '/maps/api/directions/json',
+            {
+              origin: `${origin}, Slovakia`,
+              destination: `${destination}, Slovakia`,
+              mode: 'driving',
+            }
+          );
+          
+          if (directionsResult.status !== 'OK' || !directionsResult.routes?.[0]) {
+            throw new Error(`Failed to get directions: ${directionsResult.status}`);
+          }
+          
+          const routeData = directionsResult.routes[0];
+          const leg = routeData.legs[0];
+          
+          // Create mapData object for ROUTE
+          const mapData = {
+            type: 'route',
+            origin: {
+              name: origin,
+              address: leg.start_address,
+              location: leg.start_location,
+            },
+            destination: {
+              name: destination,
+              address: leg.end_address,
+              location: leg.end_location,
+            },
+            distance: leg.distance,
+            duration: leg.duration,
+            polyline: routeData.overview_polyline.points,
+          };
+          
+          // Update route with mapData
+          await db.updateRoute(input.routeId, {
+            mapData: JSON.stringify(mapData),
+            distanceKm: (leg.distance.value / 1000).toFixed(1),
+            estimatedDuration: Math.round(leg.duration.value / 60), // minutes
+          });
+          
+          return { success: true, mapData };
+        } else {
+          // This is a SINGLE LOCATION (activity, attraction, etc.)
+          const geocodingResult = await makeRequest<any>(
+            '/maps/api/geocode/json',
+            {
+              address: `${locationName}, Slovakia`,
+            }
+          );
+          
+          if (geocodingResult.status !== 'OK' || !geocodingResult.results?.[0]) {
+            throw new Error(`Failed to find location: ${geocodingResult.status}`);
+          }
+          
+          const location = geocodingResult.results[0];
+          
+          // Create mapData object for LOCATION
+          const mapData = {
+            type: 'location',
+            location: {
+              name: locationName,
+              address: location.formatted_address,
+              coordinates: location.geometry.location,
+              placeId: location.place_id,
+            },
+          };
+          
+          // Update route with mapData
+          await db.updateRoute(input.routeId, {
+            mapData: JSON.stringify(mapData),
+          });
+          
+          return { success: true, mapData };
         }
-        
-        const location = geocodingResult.results[0];
-        
-        // Create mapData object with location info
-        const mapData = {
-          location: {
-            name: locationName,
-            address: location.formatted_address,
-            coordinates: location.geometry.location,
-            placeId: location.place_id,
-          },
-          type: 'location', // Not a route, just a location
-        };
-        
-        // Update route with mapData
-        await db.updateRoute(input.routeId, {
-          mapData: JSON.stringify(mapData),
-        });
-        
-        return { success: true, mapData };
       }),
     
     list: protectedProcedure
