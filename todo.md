@@ -191,3 +191,9 @@
 - [x] Create 4 sample documents with placeholder URLs (Passport, Insurance, Hotel, Flights)
 - [x] Test demo with sample documents - WORKING!
 - [ ] Remove personal names from other components if needed (future task)
+
+## Task - Create Placeholder Document Preview for Demo
+- [x] Create new route `/demo-document-placeholder` that shows styled message
+- [x] Design message box with border, color, and Hebrew text
+- [x] Update demo documents to link to internal placeholder instead of example.com
+- [x] Test that clicking document in demo shows the new placeholder page - WORKING!
