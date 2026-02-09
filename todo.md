@@ -98,3 +98,55 @@
 - [x] Check if tab switching logic is working - replaced with React callback
 - [x] Fix navigation implementation - using onNavigateToDocuments prop
 - [x] Test on Charming & Cosy hotel - WORKING PERFECTLY! Badge navigates to Documents tab and auto-filters
+
+## Feature - Demo Mode System (7-Day Trial)
+### Phase 1: Database Schema
+- [x] Add isDemoUser boolean field to users table
+- [x] Add demoStartDate timestamp field to users table
+- [x] Add demoExpiryDate timestamp field to users table
+- [x] Add maxTrips integer field to users table (default null for full users, 2 for demo)
+- [x] Run database migration
+
+### Phase 2: Demo Route & Auto-Copy
+- [x] Create demo helper functions (getOrCreateDemoUser, copyDemoTripToUser)
+- [x] Copy Slovakia trip (ID 30001) to demo user with all related data
+- [x] Set demo expiry to 7 days from first access
+- [ ] Create frontend /demo page that calls these functions
+- [ ] Redirect to home page after setup
+
+### Phase 3: Trip Creation Limits
+- [x] Add trip count check in trips.create procedure
+- [x] Block creation if demo user has 2+ trips
+- [x] Show error message: "Demo users can create only 1 additional trip"
+- [ ] Test trip creation limit enforcement
+
+### Phase 4: Demo Mode Banner
+- [x] Create DemoBanner component with countdown timer
+- [x] Show "Demo Mode - X days remaining" in header
+- [x] Update countdown every minute
+- [x] Hide banner for full users
+- [x] Show red banner when expired or 1 day remaining
+
+### Phase 5: Expiration Warnings & Upgrade Flow
+- [x] Show warning dialog when 1 day remaining: "Demo expires in 24 hours"
+- [x] Create upgrade dialog with "Continue" / "Delete" options
+- [x] If Continue: show "Keep my trip" / "Start fresh" dialog
+- [ ] Implement data migration logic (keep new trip only, delete Slovakia demo)
+- [ ] Auto-delete all data after 8 days if no action
+- [ ] Connect dialogs to backend procedures
+
+### Phase 6: Digital Signature Agreement
+- [x] Create SignatureAgreement component with canvas signature pad
+- [x] Add placeholder text for agreement (user will provide later)
+- [x] Implement signature capture and save
+- [x] Integrate signature dialog into upgrade flow
+- [ ] Show payment instructions after signature (Bit/Paybox - details TBD)
+- [ ] Manual admin approval flow to convert demo→full user
+- [ ] Backend procedures for upgrade request
+
+### Phase 7: Testing
+- [ ] Test complete demo flow from /demo to upgrade
+- [ ] Test trip creation limits
+- [ ] Test expiration warnings and countdown
+- [ ] Test data migration (keep vs delete)
+- [ ] Test signature capture

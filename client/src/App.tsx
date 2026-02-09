@@ -11,6 +11,8 @@ import TripDetail from "./pages/TripDetail";
 import SharedTrip from "./pages/SharedTrip";
 import Instructions from "./pages/Instructions";
 import InviteLink from "./pages/InviteLink";
+import { DemoBanner } from "./components/DemoBanner";
+import { DemoExpiryDialog } from "./components/DemoExpiryDialog";
 
 function Router() {
   return (
@@ -33,6 +35,8 @@ function App() {
       <ThemeProvider defaultTheme="light">
         <LanguageProvider>
           <TooltipProvider>
+            <DemoBanner />
+            <DemoExpiryDialog />
             <Toaster />
             <Router />
           </TooltipProvider>

@@ -6,9 +6,23 @@ import { z } from "zod";
 import * as db from "./db";
 import { storagePut, storageGet } from "./storage";
 import { nanoid } from "nanoid";
+import * as demo from "./demo";
 
 export const appRouter = router({
   system: systemRouter,
+  
+  // ============ DEMO ============
+  demo: router({
+    getStatus: protectedProcedure.query(async ({ ctx }) => {
+      const daysRemaining = await demo.getDemoTimeRemaining(ctx.user.id);
+      const isExpired = await demo.isDemoExpired(ctx.user.id);
+      return {
+        isDemoUser: ctx.user.isDemoUser,
+        daysRemaining,
+        isExpired,
+      };
+    }),
+  }),
   
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
@@ -52,7 +66,14 @@ export const appRouter = router({
         description: z.string().optional(),
         coverImage: z.string().optional(),
       }))
-      .mutation(({ ctx, input }) => db.createTrip({ ...input, userId: ctx.user.id })),
+      .mutation(async ({ ctx, input }) => {
+        // Check if demo user has reached trip limit
+        const canCreate = await demo.canCreateTrip(ctx.user.id);
+        if (!canCreate.allowed) {
+          throw new Error(canCreate.reason || "Cannot create trip");
+        }
+        return db.createTrip({ ...input, userId: ctx.user.id });
+      }),
     
     update: protectedProcedure
       .input(z.object({
