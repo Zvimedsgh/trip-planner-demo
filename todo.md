@@ -117,3 +117,11 @@
 - [x] Verified no demo files exist after rollback to checkpoint 39a91b8
 - [ ] Investigate why "Visit" button leads to demo (possibly browser cache)
 - [ ] Clear any remaining demo-related routes or references
+
+## Critical Bug - Visit Button and Published Link Redirect to Demo
+- [x] Investigated - found 23 Demo Users in database
+- [x] Deleted all Demo User trips
+- [x] Deleted all Demo Users from database
+- [x] Tested on both preview and published site - FIXED!
+- [x] Published site now shows clean home page with only "New Trip" option
+- [x] Direct trip link shows correct "Goren Roots Trip to Slovakia" with all original data
