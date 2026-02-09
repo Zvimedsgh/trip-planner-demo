@@ -141,3 +141,9 @@
 - [x] Add route/tab for traveler management in trip settings
 - [x] Test adding/editing/deleting travelers
 - [x] Verify checklist updates when travelers change
+
+## UX Bug - Text Readability on Trip Cards
+- [x] Identify where trip card text is rendered (Home.tsx, Trips.tsx)
+- [x] Add text shadow or dark overlay to improve white text visibility
+- [x] Ensure trip titles are readable on all background images
+- [x] Test on both light and dark background images
