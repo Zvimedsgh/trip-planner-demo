@@ -158,3 +158,9 @@
 - [x] Show loading state during initialization
 - [x] Redirect to home page after completion
 - [x] Test demo user creation and trip copying - WORKING! Demo mode fully functional
+
+## Bug - Demo User Not Authenticated After Creation
+- [x] Fix demo.initialize procedure to return session cookie - already working
+- [x] Update Demo.tsx to logout existing user first, then initialize demo
+- [x] Add delay before redirect to ensure cookie is saved
+- [x] Test that demo user is properly logged in after /demo initialization - WORKING! Shows "Welcome, Demo User!"

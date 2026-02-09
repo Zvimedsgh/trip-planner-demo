@@ -6,11 +6,28 @@ import { Loader2 } from "lucide-react";
 export default function Demo() {
   const [, setLocation] = useLocation();
   const [error, setError] = useState<string | null>(null);
+  const [isLoggingOut, setIsLoggingOut] = useState(true);
+
+  const logoutMutation = trpc.auth.logout.useMutation({
+    onSuccess: () => {
+      // After logout, initialize demo
+      setIsLoggingOut(false);
+      initializeMutation.mutate();
+    },
+    onError: () => {
+      // Even if logout fails (no session), proceed with demo initialization
+      setIsLoggingOut(false);
+      initializeMutation.mutate();
+    },
+  });
 
   const initializeMutation = trpc.demo.initialize.useMutation({
     onSuccess: () => {
       // Redirect to home page after successful initialization
-      window.location.href = "/";
+      // Use full page reload to ensure cookie is loaded
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 500);
     },
     onError: (err: any) => {
       setError(err.message || "Failed to initialize demo. Please try again.");
@@ -18,8 +35,8 @@ export default function Demo() {
   });
 
   useEffect(() => {
-    // Initialize demo user and copy Slovakia trip
-    initializeMutation.mutate();
+    // First logout any existing user, then initialize demo
+    logoutMutation.mutate();
   }, []);
 
   if (error) {
