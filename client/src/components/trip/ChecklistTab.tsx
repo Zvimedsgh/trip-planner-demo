@@ -26,22 +26,17 @@ const CATEGORIES = [
   { value: "other", icon: MoreHorizontal, labelEn: "Other", labelHe: "אחר" },
 ];
 
-const PARTICIPANTS = [
-  { value: "shared", labelEn: "Shared", labelHe: "משותף" },
-  { value: "ofir", labelEn: "Ofir", labelHe: "אופיר" },
-  { value: "ruth", labelEn: "Ruth", labelHe: "רות" },
-] as const;
-
 export default function ChecklistTab({ tripId }: ChecklistTabProps) {
   const { t, language, isRTL } = useLanguage();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
-  const [viewFilter, setViewFilter] = useState<"all" | "shared" | "ofir" | "ruth">("shared");
-  const [selectedOwner, setSelectedOwner] = useState<"shared" | "ofir" | "ruth">("shared");
+  const [viewFilter, setViewFilter] = useState<string>("shared");
+  const [selectedOwner, setSelectedOwner] = useState<string>("shared");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const formRef = useRef<HTMLDivElement>(null);
 
   const utils = trpc.useUtils();
   const { data: items, isLoading } = trpc.checklist.list.useQuery({ tripId });
+  const { data: travelers = [] } = trpc.travelers.list.useQuery({ tripId });
   const [hasInitialized, setHasInitialized] = useState(false);
 
   const createMutation = trpc.checklist.create.useMutation({
@@ -235,9 +230,9 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        {PARTICIPANTS.map(p => (
-                          <SelectItem key={p.value} value={p.value}>
-                            {language === "he" ? p.labelHe : p.labelEn}
+                        {travelers.map(t => (
+                          <SelectItem key={t.identifier} value={t.identifier}>
+                            {t.name}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -259,14 +254,14 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
             
             {/* View filter buttons */}
             <div className="flex gap-2 flex-wrap">
-              {PARTICIPANTS.map(p => (
+              {travelers.map(t => (
                 <Button
-                  key={p.value}
-                  variant={viewFilter === p.value ? "default" : "outline"}
+                  key={t.identifier}
+                  variant={viewFilter === t.identifier ? "default" : "outline"}
                   size="sm"
-                  onClick={() => setViewFilter(p.value)}
+                  onClick={() => setViewFilter(t.identifier)}
                 >
-                  {language === "he" ? p.labelHe : p.labelEn}
+                  {t.name}
                 </Button>
               ))}
             </div>

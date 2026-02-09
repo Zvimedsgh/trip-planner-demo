@@ -103,9 +103,17 @@
 - [x] Design trip_travelers table schema (tripId, name, identifier, sortOrder)
 - [x] Add trip_travelers table to drizzle/schema.ts
 - [x] Run database migration (created table manually via SQL)
-- [ ] Create UI component for managing travelers in trip settings
-- [ ] Update ChecklistTab to read travelers from database instead of hard-coded enum
-- [ ] Migrate existing checklist data to use new traveler system
 - [x] Add default travelers for Slovakia trip (Shared, Tzvi & Yona, Efi, Ruth, Michal)
+- [x] Create tRPC endpoints (list, create, update, delete) in server/routers.ts
+- [x] Add CRUD functions to server/db.ts (getTripTravelers, createTraveler, updateTraveler, deleteTraveler)
+- [x] Update ChecklistTab to query travelers from database (partial - UI updated, schema migration pending)
+- [ ] Change checklist_items.owner from enum to varchar(50) to support dynamic travelers
+- [ ] Remove hard-coded participant initialization code from ChecklistTab
+- [ ] Create UI component for managing travelers in trip settings
 - [ ] Test creating new trips with custom travelers
 - [ ] Test checklist assignment with dynamic travelers
+
+## Cleanup - Remove Demo Code
+- [x] Verified no demo files exist after rollback to checkpoint 39a91b8
+- [ ] Investigate why "Visit" button leads to demo (possibly browser cache)
+- [ ] Clear any remaining demo-related routes or references

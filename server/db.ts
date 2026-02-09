@@ -15,7 +15,8 @@ import {
   activityLog, InsertActivityLog, ActivityLog,
   routes, InsertRoute, Route,
   routePointsOfInterest, InsertRoutePointOfInterest, RoutePointOfInterest,
-  payments, InsertPayment, Payment
+  payments, InsertPayment, Payment,
+  tripTravelers, InsertTripTraveler, TripTraveler
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -946,4 +947,60 @@ export async function deletePayment(id: number): Promise<boolean> {
   
   await db.delete(payments).where(eq(payments.id, id));
   return true;
+}
+
+// ============ TRIP TRAVELERS QUERIES ============
+
+export async function getTripTravelers(tripId: number): Promise<TripTraveler[]> {
+  const db = await getDb();
+  if (!db) return [];
+  
+  try {
+    return await db.select().from(tripTravelers).where(eq(tripTravelers.tripId, tripId)).orderBy(tripTravelers.sortOrder);
+  } catch (error) {
+    console.error("[Database] Failed to get trip travelers:", error);
+    return [];
+  }
+}
+
+export async function createTraveler(data: InsertTripTraveler): Promise<TripTraveler | null> {
+  const db = await getDb();
+  if (!db) return null;
+  
+  try {
+    const result = await db.insert(tripTravelers).values(data);
+    const id = Number(result[0].insertId);
+    const created = await db.select().from(tripTravelers).where(eq(tripTravelers.id, id)).limit(1);
+    return created[0] || null;
+  } catch (error) {
+    console.error("[Database] Failed to create traveler:", error);
+    return null;
+  }
+}
+
+export async function updateTraveler(id: number, data: Partial<InsertTripTraveler>): Promise<TripTraveler | null> {
+  const db = await getDb();
+  if (!db) return null;
+  
+  try {
+    await db.update(tripTravelers).set(data).where(eq(tripTravelers.id, id));
+    const updated = await db.select().from(tripTravelers).where(eq(tripTravelers.id, id)).limit(1);
+    return updated[0] || null;
+  } catch (error) {
+    console.error("[Database] Failed to update traveler:", error);
+    return null;
+  }
+}
+
+export async function deleteTraveler(id: number): Promise<boolean> {
+  const db = await getDb();
+  if (!db) return false;
+  
+  try {
+    await db.delete(tripTravelers).where(eq(tripTravelers.id, id));
+    return true;
+  } catch (error) {
+    console.error("[Database] Failed to delete traveler:", error);
+    return false;
+  }
 }

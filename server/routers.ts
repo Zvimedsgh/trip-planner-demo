@@ -561,6 +561,37 @@ export const appRouter = router({
       .mutation(({ input }) => db.deleteDayTrip(input.id)),
   }),
 
+  // ============ TRAVELERS ============
+  travelers: router({    list: protectedProcedure
+      .input(z.object({ tripId: z.number() }))
+      .query(({ input }) => db.getTripTravelers(input.tripId)),
+    
+    create: protectedProcedure
+      .input(z.object({
+        tripId: z.number(),
+        name: z.string().min(1),
+        identifier: z.string().min(1),
+        sortOrder: z.number().optional(),
+      }))
+      .mutation(({ input }) => db.createTraveler(input)),
+    
+    update: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        name: z.string().optional(),
+        identifier: z.string().optional(),
+        sortOrder: z.number().optional(),
+      }))
+      .mutation(({ input }) => {
+        const { id, ...data } = input;
+        return db.updateTraveler(id, data);
+      }),
+    
+    delete: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(({ input }) => db.deleteTraveler(input.id)),
+  }),
+
   // ============ CHECKLIST ============
   checklist: router({
     list: protectedProcedure
