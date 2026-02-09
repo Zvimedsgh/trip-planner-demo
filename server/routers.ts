@@ -561,6 +561,37 @@ export const appRouter = router({
       .mutation(({ input }) => db.deleteDayTrip(input.id)),
   }),
 
+  // ============ TRAVELERS ============
+  travelers: router({    list: protectedProcedure
+      .input(z.object({ tripId: z.number() }))
+      .query(({ input }) => db.getTripTravelers(input.tripId)),
+    
+    create: protectedProcedure
+      .input(z.object({
+        tripId: z.number(),
+        name: z.string().min(1),
+        identifier: z.string().min(1),
+        sortOrder: z.number().optional(),
+      }))
+      .mutation(({ input }) => db.createTraveler(input)),
+    
+    update: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        name: z.string().optional(),
+        identifier: z.string().optional(),
+        sortOrder: z.number().optional(),
+      }))
+      .mutation(({ input }) => {
+        const { id, ...data } = input;
+        return db.updateTraveler(id, data);
+      }),
+    
+    delete: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(({ input }) => db.deleteTraveler(input.id)),
+  }),
+
   // ============ CHECKLIST ============
   checklist: router({
     list: protectedProcedure
@@ -574,7 +605,7 @@ export const appRouter = router({
         category: z.enum(["documents", "bookings", "packing", "health", "finance", "other"]),
         dueDate: z.number().optional(),
         notes: z.string().optional(),
-        owner: z.enum(["shared", "ofir", "ruth"]).optional(),
+        owner: z.string().optional(),
       }))
       .mutation(({ input }) => db.createChecklistItem(input)),
     
@@ -586,7 +617,7 @@ export const appRouter = router({
         completed: z.boolean().optional(),
         dueDate: z.number().optional(),
         notes: z.string().optional(),
-        owner: z.enum(["shared", "ofir", "ruth"]).optional(),
+        owner: z.string().optional(),
       }))
       .mutation(({ input }) => {
         const { id, ...data } = input;

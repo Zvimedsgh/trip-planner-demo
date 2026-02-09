@@ -281,6 +281,48 @@
       "when": 1770125068074,
       "tag": "0039_classy_landau",
       "breakpoints": true
+    },
+    {
+      "idx": 40,
+      "version": "5",
+      "when": 1770622399674,
+      "tag": "0040_fixed_flatman",
+      "breakpoints": true
+    },
+    {
+      "idx": 41,
+      "version": "5",
+      "when": 1770642097769,
+      "tag": "0041_panoramic_riptide",
+      "breakpoints": true
+    },
+    {
+      "idx": 42,
+      "version": "5",
+      "when": 1770642979451,
+      "tag": "0042_foamy_junta",
+      "breakpoints": true
+    },
+    {
+      "idx": 43,
+      "version": "5",
+      "when": 1770644786595,
+      "tag": "0043_previous_sentry",
+      "breakpoints": true
+    },
+    {
+      "idx": 44,
+      "version": "5",
+      "when": 1770644883618,
+      "tag": "0044_useful_bug",
+      "breakpoints": true
+    },
+    {
+      "idx": 45,
+      "version": "5",
+      "when": 1770650756738,
+      "tag": "0045_fair_surge",
+      "breakpoints": true
     }
   ]
 }

@@ -325,7 +325,7 @@ export default function Trips() {
                       alt={trip.destination}
                       className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-black/20" />
                   </>
                 ) : (
                   <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-purple-500/20 to-pink-500/20">
@@ -386,7 +386,7 @@ export default function Trips() {
                   <div className="text-white text-center">
                     {trip.name === "Goren Roots Trip to Slovakia" ? (
                       <div className="mb-2">
-                        <h3 className="text-lg font-bold mb-0.5">
+                        <h3 className="text-lg font-bold mb-0.5 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
                           {"The Gorens'".split('').map((char, i) => {
                             const colors = ['#FF6B6B', '#FFA500', '#FFD700', '#4CAF50', '#2196F3', '#9C27B0', '#E91E63'];
                             return (
@@ -396,7 +396,7 @@ export default function Trips() {
                             );
                           })}
                         </h3>
-                        <h4 className="text-base font-bold">
+                        <h4 className="text-base font-bold drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
                           {"Roots Trip to Slovakia".split('').map((char, i) => {
                             const colors = ['#FF6B6B', '#FFA500', '#FFD700', '#4CAF50', '#2196F3', '#9C27B0', '#E91E63'];
                             return (
@@ -408,7 +408,7 @@ export default function Trips() {
                         </h4>
                       </div>
                     ) : (
-                      <h3 className="text-xl font-bold mb-1">{trip.name}</h3>
+                      <h3 className="text-xl font-bold mb-1 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">{trip.name}</h3>
                     )}
 
                   </div>

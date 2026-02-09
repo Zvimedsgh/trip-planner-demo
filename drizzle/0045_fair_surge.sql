@@ -1,0 +1,1 @@
+ALTER TABLE `checklist_items` MODIFY COLUMN `owner` varchar(50) NOT NULL DEFAULT 'shared';

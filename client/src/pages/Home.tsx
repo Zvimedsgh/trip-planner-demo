@@ -204,10 +204,10 @@ export default function Home() {
                     alt={trip.name}
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-black/20" />
                   <div className="relative h-full flex flex-col justify-between p-6">
                     <div className="text-white text-center">
-                      <h3 className="text-3xl font-bold mb-2 leading-tight">
+                      <h3 className="text-3xl font-bold mb-2 leading-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
                         {trip.name}
                       </h3>
 
