@@ -170,3 +170,10 @@
 - [x] Make /demo route publicly accessible (no login required) - Fixed to check currentUser before logout
 - [x] Test that /demo works in preview without authentication - WORKING!
 - [ ] Verify demo user creation and login flow works correctly on published site after republishing
+
+## Bug - /demo Still Requires Auth After Fix (Published Site)
+- [x] Investigate why published site redirects to login despite Demo.tsx fix - Found in main.tsx
+- [x] Check if there's server-side middleware blocking /demo route - No server-side blocking
+- [x] Check if Vite/Express routing is protecting /demo - Not the issue
+- [x] Find and fix the actual authentication gate - Fixed in main.tsx redirectToLoginIfUnauthorized function
+- [x] Added /demo, /invite/, and /instructions to public routes list
