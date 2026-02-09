@@ -157,7 +157,7 @@ export const checklistItems = mysqlTable("checklist_items", {
   completed: boolean("completed").default(false).notNull(),
   dueDate: bigint("dueDate", { mode: "number" }), // UTC timestamp in ms, optional
   notes: text("notes"),
-  owner: varchar("owner", { length: 50 }).default("shared").notNull(), // which participant(s) this task belongs to - references trip_travelers.identifier
+  owner: mysqlEnum("owner", ["shared", "ofir", "ruth"]).default("shared").notNull(), // which participant(s) this task belongs to
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -261,22 +261,6 @@ export const tripCollaborators = mysqlTable("trip_collaborators", {
 
 export type TripCollaborator = typeof tripCollaborators.$inferSelect;
 export type InsertTripCollaborator = typeof tripCollaborators.$inferInsert;
-
-/**
- * Trip travelers table - manages travelers/participants for each trip
- */
-export const tripTravelers = mysqlTable("trip_travelers", {
-  id: int("id").autoincrement().primaryKey(),
-  tripId: int("tripId").notNull(),
-  name: varchar("name", { length: 100 }).notNull(), // Display name (e.g., "Tzvi & Yona", "Efi", "Ruth")
-  identifier: varchar("identifier", { length: 50 }).notNull(), // Unique identifier for checklist assignment (e.g., "tzvi_yona", "efi")
-  sortOrder: int("sortOrder").default(0).notNull(), // Display order in UI
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-});
-
-export type TripTraveler = typeof tripTravelers.$inferSelect;
-export type InsertTripTraveler = typeof tripTravelers.$inferInsert;
 
 /**
  * Routes table - driving routes between destinations

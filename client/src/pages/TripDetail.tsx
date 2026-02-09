@@ -7,7 +7,7 @@ import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
 import { 
   ArrowLeft, Calendar, Car, DollarSign, FileText, Globe, 
-  Hotel, Loader2, MapPin, Plane, Utensils, Clock, ArrowRight, Share2, Copy, Check, X, Map, CheckSquare, Navigation, Trash2, Users
+  Hotel, Loader2, MapPin, Plane, Utensils, Clock, ArrowRight, Share2, Copy, Check, X, Map, CheckSquare, Navigation, Trash2
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import {
@@ -36,7 +36,6 @@ import DailyView from "@/components/trip/DailyView";
 import CollaboratorsDialog from "@/components/trip/CollaboratorsDialog";
 import RouteManager from "@/components/trip/RouteManager";
 import PaymentsTab from "@/components/trip/PaymentsTab";
-import TravelersTab from "@/components/trip/TravelersTab";
 
 export default function TripDetail() {
   const params = useParams<{ id: string }>();
@@ -196,7 +195,6 @@ export default function TripDetail() {
     { id: "route_manager", label: language === "he" ? "ניהול מסלולים" : "Route Manager", icon: Navigation, color: "bg-indigo-200 hover:bg-indigo-300 data-[state=active]:bg-indigo-500 data-[state=active]:text-white border-indigo-300 data-[state=active]:border-indigo-700" },
     // { id: "daytrips", label: t("dayTrips"), icon: ArrowRight, color: "bg-pink-50 hover:bg-pink-100 data-[state=active]:bg-pink-300 data-[state=active]:text-pink-950 border-pink-200 data-[state=active]:border-pink-600" }, // Hidden temporarily
     { id: "checklist", label: language === "he" ? "רשימת משימות" : "Checklist", icon: CheckSquare, color: "bg-lime-200 hover:bg-lime-300 data-[state=active]:bg-lime-500 data-[state=active]:text-white border-lime-300 data-[state=active]:border-lime-700" },
-    { id: "travelers", label: language === "he" ? "נוסעים" : "Travelers", icon: Users, color: "bg-rose-200 hover:bg-rose-300 data-[state=active]:bg-rose-500 data-[state=active]:text-white border-rose-300 data-[state=active]:border-rose-700" },
     { id: "payments", label: language === "he" ? "תשלומים" : "Payments", icon: DollarSign, color: "bg-emerald-200 hover:bg-emerald-300 data-[state=active]:bg-emerald-500 data-[state=active]:text-white border-emerald-300 data-[state=active]:border-emerald-700" },
     { id: "budget", label: t("budget"), icon: DollarSign, color: "bg-amber-200 hover:bg-amber-300 data-[state=active]:bg-amber-500 data-[state=active]:text-white border-amber-300 data-[state=active]:border-amber-700" },
   ];
@@ -421,10 +419,6 @@ export default function TripDetail() {
 
           <TabsContent value="checklist">
             <ChecklistTab tripId={tripId} />
-          </TabsContent>
-
-          <TabsContent value="travelers">
-            <TravelersTab tripId={tripId} />
           </TabsContent>
 
           <TabsContent value="payments">

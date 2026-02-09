@@ -26,17 +26,22 @@ const CATEGORIES = [
   { value: "other", icon: MoreHorizontal, labelEn: "Other", labelHe: "אחר" },
 ];
 
+const PARTICIPANTS = [
+  { value: "shared", labelEn: "Shared", labelHe: "משותף" },
+  { value: "ofir", labelEn: "Ofir", labelHe: "אופיר" },
+  { value: "ruth", labelEn: "Ruth", labelHe: "רות" },
+] as const;
+
 export default function ChecklistTab({ tripId }: ChecklistTabProps) {
   const { t, language, isRTL } = useLanguage();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
-  const [viewFilter, setViewFilter] = useState<string>("shared");
-  const [selectedOwner, setSelectedOwner] = useState<string>("shared");
+  const [viewFilter, setViewFilter] = useState<"all" | "shared" | "ofir" | "ruth">("shared");
+  const [selectedOwner, setSelectedOwner] = useState<"shared" | "ofir" | "ruth">("shared");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const formRef = useRef<HTMLDivElement>(null);
 
   const utils = trpc.useUtils();
   const { data: items, isLoading } = trpc.checklist.list.useQuery({ tripId });
-  const { data: travelers = [] } = trpc.travelers.list.useQuery({ tripId });
   const [hasInitialized, setHasInitialized] = useState(false);
 
   const createMutation = trpc.checklist.create.useMutation({
@@ -62,7 +67,7 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
 
   // Initialize personal essentials for each participant if they don't have any items yet
   useEffect(() => {
-    if (!items || hasInitialized || isLoading || !travelers || travelers.length === 0) return;
+    if (!items || hasInitialized || isLoading) return;
     
     const personalEssentials = [
       { title: "Passport", titleHe: "דרכון", category: "documents" as const },
@@ -77,26 +82,25 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
       { title: "Clothes", titleHe: "בגדים", category: "packing" as const },
     ];
 
-    // Get all non-shared travelers (skip "shared" identifier)
-    const personalTravelers = travelers.filter(t => t.identifier !== "shared");
+    const participants: Array<"ofir" | "ruth"> = ["ofir", "ruth"];
     
-    personalTravelers.forEach(traveler => {
-      const hasItems = items.some(item => item.owner === traveler.identifier);
+    participants.forEach(participant => {
+      const hasItems = items.some(item => item.owner === participant);
       if (!hasItems) {
-        // Add essentials for this traveler
+        // Add essentials for this participant
         personalEssentials.forEach(essential => {
           createMutation.mutate({
             tripId,
             title: language === "he" ? essential.titleHe : essential.title,
             category: essential.category,
-            owner: traveler.identifier,
+            owner: participant,
           });
         });
       }
     });
     
     setHasInitialized(true);
-  }, [items, hasInitialized, isLoading, tripId, language, createMutation, travelers]);
+  }, [items, hasInitialized, isLoading, tripId, language, createMutation]);
 
   const getFormValues = () => {
     if (!formRef.current) return null;
@@ -231,9 +235,9 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        {travelers.map(t => (
-                          <SelectItem key={t.identifier} value={t.identifier}>
-                            {t.name}
+                        {PARTICIPANTS.map(p => (
+                          <SelectItem key={p.value} value={p.value}>
+                            {language === "he" ? p.labelHe : p.labelEn}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -255,14 +259,14 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
             
             {/* View filter buttons */}
             <div className="flex gap-2 flex-wrap">
-              {travelers.map(t => (
+              {PARTICIPANTS.map(p => (
                 <Button
-                  key={t.identifier}
-                  variant={viewFilter === t.identifier ? "default" : "outline"}
+                  key={p.value}
+                  variant={viewFilter === p.value ? "default" : "outline"}
                   size="sm"
-                  onClick={() => setViewFilter(t.identifier)}
+                  onClick={() => setViewFilter(p.value)}
                 >
-                  {t.name}
+                  {language === "he" ? p.labelHe : p.labelEn}
                 </Button>
               ))}
             </div>
