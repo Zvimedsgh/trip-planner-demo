@@ -7,6 +7,7 @@ import * as db from "./db";
 import { storagePut, storageGet } from "./storage";
 import { nanoid } from "nanoid";
 import * as demo from "./demo";
+import { sdk } from "./_core/sdk";
 
 export const appRouter = router({
   system: systemRouter,
@@ -21,6 +22,27 @@ export const appRouter = router({
         daysRemaining,
         isExpired,
       };
+    }),
+    
+    initialize: publicProcedure.mutation(async ({ ctx }) => {
+      // Generate unique openId for demo user
+      const demoOpenId = `demo_${nanoid()}`;
+      
+      // Create or get demo user
+      const demoUser = await demo.getOrCreateDemoUser(demoOpenId);
+      
+      // Copy Slovakia trip (ID 30001) to demo user
+      await demo.copyDemoTripToUser(demoUser.id);
+      
+      // Set session cookie for demo user
+      const sessionToken = await sdk.createSessionToken(demoOpenId, {
+        name: "Demo User",
+        expiresInMs: 8 * 24 * 60 * 60 * 1000, // 8 days
+      });
+      const cookieOptions = getSessionCookieOptions(ctx.req);
+      ctx.res.cookie(COOKIE_NAME, sessionToken, { ...cookieOptions, maxAge: 8 * 24 * 60 * 60 * 1000 });
+      
+      return { success: true, userId: demoUser.id };
     }),
   }),
   

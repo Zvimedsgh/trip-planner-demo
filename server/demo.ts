@@ -77,7 +77,7 @@ export async function copyDemoTripToUser(userId: number) {
     coverImage: trip.coverImage,
   });
 
-  const newTripId = Number((newTripResult as any).insertId);
+  const newTripId = Number(newTripResult[0].insertId);
 
   // Copy all related data
   await Promise.all([
