@@ -62,7 +62,7 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
 
   // Initialize personal essentials for each participant if they don't have any items yet
   useEffect(() => {
-    if (!items || hasInitialized || isLoading) return;
+    if (!items || hasInitialized || isLoading || !travelers || travelers.length === 0) return;
     
     const personalEssentials = [
       { title: "Passport", titleHe: "דרכון", category: "documents" as const },
@@ -77,25 +77,26 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
       { title: "Clothes", titleHe: "בגדים", category: "packing" as const },
     ];
 
-    const participants: Array<"ofir" | "ruth"> = ["ofir", "ruth"];
+    // Get all non-shared travelers (skip "shared" identifier)
+    const personalTravelers = travelers.filter(t => t.identifier !== "shared");
     
-    participants.forEach(participant => {
-      const hasItems = items.some(item => item.owner === participant);
+    personalTravelers.forEach(traveler => {
+      const hasItems = items.some(item => item.owner === traveler.identifier);
       if (!hasItems) {
-        // Add essentials for this participant
+        // Add essentials for this traveler
         personalEssentials.forEach(essential => {
           createMutation.mutate({
             tripId,
             title: language === "he" ? essential.titleHe : essential.title,
             category: essential.category,
-            owner: participant,
+            owner: traveler.identifier,
           });
         });
       }
     });
     
     setHasInitialized(true);
-  }, [items, hasInitialized, isLoading, tripId, language, createMutation]);
+  }, [items, hasInitialized, isLoading, tripId, language, createMutation, travelers]);
 
   const getFormValues = () => {
     if (!formRef.current) return null;

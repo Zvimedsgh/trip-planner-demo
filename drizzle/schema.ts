@@ -157,7 +157,7 @@ export const checklistItems = mysqlTable("checklist_items", {
   completed: boolean("completed").default(false).notNull(),
   dueDate: bigint("dueDate", { mode: "number" }), // UTC timestamp in ms, optional
   notes: text("notes"),
-  owner: mysqlEnum("owner", ["shared", "ofir", "ruth"]).default("shared").notNull(), // which participant(s) this task belongs to
+  owner: varchar("owner", { length: 50 }).default("shared").notNull(), // which participant(s) this task belongs to - references trip_travelers.identifier
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });

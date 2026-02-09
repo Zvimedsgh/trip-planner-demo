@@ -131,3 +131,13 @@
 - [ ] Verify their user accounts exist in users table
 - [ ] Re-add collaborators if they were deleted
 - [ ] Test that collaborators can access trip on published site
+
+## Complete Dynamic Traveler System
+- [x] Change checklist_items.owner field from enum to varchar(50) in schema
+- [x] Run database migration to apply schema change
+- [x] Remove PARTICIPANTS constant and initialization code from ChecklistTab
+- [x] Test checklist with dynamic travelers from database
+- [x] Build TravelerSettings component for trip settings page
+- [x] Add route/tab for traveler management in trip settings
+- [x] Test adding/editing/deleting travelers
+- [x] Verify checklist updates when travelers change
