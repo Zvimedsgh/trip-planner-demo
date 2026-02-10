@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { trpc } from "@/lib/trpc";
 import { MapView } from "../Map";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -17,6 +17,33 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
   const [selectedRoute, setSelectedRoute] = useState<any | null>(null);
   const [generatingRoute, setGeneratingRoute] = useState(false);
   const [pois, setPois] = useState<any[]>([]);
+  const [poiFilters, setPoiFilters] = useState({
+    gasStations: true,
+    restaurants: true,
+    touristAttractions: true,
+    atms: true,
+  });
+  const poiMarkersRef = useRef<any[]>([]);
+  
+  // Update marker visibility when filters change
+  useEffect(() => {
+    poiMarkersRef.current.forEach((markerData: any) => {
+      const { marker, category, originalMap } = markerData;
+      let visible = true;
+      
+      if (category === 'gas_station' && !poiFilters.gasStations) visible = false;
+      if (category === 'restaurant' && !poiFilters.restaurants) visible = false;
+      if (category === 'tourist_attraction' && !poiFilters.touristAttractions) visible = false;
+      if (category === 'atm' && !poiFilters.atms) visible = false;
+      
+      // Use setMap to show/hide marker
+      if (marker.setMap) {
+        marker.setMap(visible ? originalMap : null);
+      } else {
+        marker.map = visible ? originalMap : null;
+      }
+    });
+  }, [poiFilters]);
   
   const { data: routes, refetch } = trpc.routes.list.useQuery({ tripId });
   const generateRouteMutation = trpc.routes.generateRouteFromName.useMutation();
@@ -217,6 +244,49 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
             <DialogTitle className="text-2xl font-bold">
               {selectedRoute && (language === "he" && selectedRoute.nameHe ? selectedRoute.nameHe : selectedRoute?.name)}
             </DialogTitle>
+            {/* POI Filter Buttons */}
+            <div className="flex gap-2 mt-4 flex-wrap">
+              <button
+                onClick={() => setPoiFilters(prev => ({ ...prev, gasStations: !prev.gasStations }))}
+                className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all ${
+                  poiFilters.gasStations
+                    ? 'bg-red-500 text-white'
+                    : 'bg-gray-200 text-gray-600'
+                }`}
+              >
+                ⛽ {language === "he" ? "תחנות דלק" : "Gas Stations"}
+              </button>
+              <button
+                onClick={() => setPoiFilters(prev => ({ ...prev, restaurants: !prev.restaurants }))}
+                className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all ${
+                  poiFilters.restaurants
+                    ? 'bg-green-500 text-white'
+                    : 'bg-gray-200 text-gray-600'
+                }`}
+              >
+                🍽️ {language === "he" ? "מסעדות" : "Restaurants"}
+              </button>
+              <button
+                onClick={() => setPoiFilters(prev => ({ ...prev, touristAttractions: !prev.touristAttractions }))}
+                className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all ${
+                  poiFilters.touristAttractions
+                    ? 'bg-purple-500 text-white'
+                    : 'bg-gray-200 text-gray-600'
+                }`}
+              >
+                🏛️ {language === "he" ? "אתרי תיירות" : "Tourist Sites"}
+              </button>
+              <button
+                onClick={() => setPoiFilters(prev => ({ ...prev, atms: !prev.atms }))}
+                className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all ${
+                  poiFilters.atms
+                    ? 'bg-orange-500 text-white'
+                    : 'bg-gray-200 text-gray-600'
+                }`}
+              >
+                🏧 {language === "he" ? "כספומטים" : "ATMs"}
+              </button>
+            </div>
           </DialogHeader>
           
           {selectedRoute && (
@@ -314,6 +384,13 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
                                     position: place.geometry.location,
                                     content: pinElement,
                                     title: place.name
+                                  });
+                                  
+                                  // Store marker with category info and map reference for filtering
+                                  poiMarkersRef.current.push({
+                                    marker,
+                                    category: poiType.type,
+                                    originalMap: map
                                   });
                                   
                                   // Add click listener to show info window
@@ -487,7 +564,15 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
                     </h3>
                   </div>
                   <div className="p-4 space-y-3 max-h-96 overflow-y-auto">
-                    {pois.map((poi, index) => (
+                    {pois.filter((poi) => {
+                      // Filter POIs based on active filters
+                      const categoryName = poi.category;
+                      if (categoryName.includes('Gas') && !poiFilters.gasStations) return false;
+                      if (categoryName.includes('Restaurant') && !poiFilters.restaurants) return false;
+                      if (categoryName.includes('Tourist') && !poiFilters.touristAttractions) return false;
+                      if (categoryName.includes('ATM') && !poiFilters.atms) return false;
+                      return true;
+                    }).map((poi, index) => (
                       <div key={index} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                         <div 
                           className="w-10 h-10 rounded-full flex items-center justify-center text-xl flex-shrink-0"

@@ -310,3 +310,19 @@
 - [x] Copy checklist items
 - [x] Copy documents (if any)
 - [x] Verify all data copied correctly
+
+## POI Filters on Route Maps
+- [x] Add filter toggle buttons above map (gas stations, restaurants, tourist sites, ATMs)
+- [x] Implement filter state management
+- [x] Update POI markers visibility based on filters
+- [x] Update POI list visibility based on filters
+- [ ] Test filters with Slovakia routes
+
+## Notifications System
+- [ ] Design notifications database schema (notification preferences, scheduled notifications)
+- [ ] Add notifications table to schema
+- [ ] Build browser notification permission request
+- [ ] Implement browser notifications for upcoming events (flights, hotel check-ins, etc.)
+- [ ] Build email notification backend integration
+- [ ] Add UI for managing notification preferences
+- [ ] Test browser and email notifications
