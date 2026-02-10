@@ -4,7 +4,7 @@ import { MapView } from "../Map";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { MapPin, Calendar, Clock, Navigation, Maximize2, Minimize2 } from "lucide-react";
+import { MapPin, Calendar, Clock, Navigation } from "lucide-react";
 import { format } from "date-fns";
 
 interface AllRouteMapsTabProps {
@@ -15,7 +15,6 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
   const { language } = useLanguage();
   const [selectedRoute, setSelectedRoute] = useState<any | null>(null);
   const [generatingRoute, setGeneratingRoute] = useState(false);
-  const [isFullscreen, setIsFullscreen] = useState(false);
   
   const { data: routes, refetch } = trpc.routes.list.useQuery({ tripId });
   const generateRouteMutation = trpc.routes.generateRouteFromName.useMutation();
@@ -179,20 +178,11 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
 
       {/* Map Dialog */}
       <Dialog open={!!selectedRoute} onOpenChange={(open) => !open && setSelectedRoute(null)}>
-        <DialogContent className={isFullscreen ? "max-w-full w-screen h-screen p-0 m-0" : "max-w-[95vw] w-[95vw] h-[95vh] p-6"}>
-          <DialogHeader className={isFullscreen ? "p-4" : ""}>
-            <div className="flex items-center justify-between">
-              <DialogTitle className="text-2xl font-bold">
-                {selectedRoute && (language === "he" && selectedRoute.nameHe ? selectedRoute.nameHe : selectedRoute?.name)}
-              </DialogTitle>
-              <button
-                onClick={() => setIsFullscreen(!isFullscreen)}
-                className="p-2 hover:bg-gray-100 rounded-md transition-colors"
-                aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
-              >
-                {isFullscreen ? <Minimize2 className="w-5 h-5" /> : <Maximize2 className="w-5 h-5" />}
-              </button>
-            </div>
+        <DialogContent className="max-w-[95vw] w-[95vw] h-[95vh] p-6">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold">
+              {selectedRoute && (language === "he" && selectedRoute.nameHe ? selectedRoute.nameHe : selectedRoute?.name)}
+            </DialogTitle>
           </DialogHeader>
           
           {selectedRoute && (

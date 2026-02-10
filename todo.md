@@ -249,3 +249,6 @@
 ## Add Fullscreen Button to Map
 - [x] Add fullscreen toggle button in top-right corner of map
 - [x] Test and save checkpoint
+
+## Remove Custom Fullscreen Button
+- [x] Remove custom fullscreen button from AllRouteMapsTab (Google Maps native button works better)
