@@ -169,6 +169,17 @@ export async function getUserTrips(userId: number): Promise<Trip[]> {
   return uniqueTrips.sort((a, b) => b.startDate - a.startDate);
 }
 
+export async function getDemoTripByName(tripName: string): Promise<Trip | undefined> {
+  const db = await getDb();
+  if (!db) return undefined;
+  
+  const demoTrips = await db.select().from(trips)
+    .where(eq(trips.name, tripName))
+    .limit(1);
+  
+  return demoTrips[0];
+}
+
 export async function getTripById(tripId: number, userId: number): Promise<Trip | undefined> {
   const db = await getDb();
   if (!db) return undefined;

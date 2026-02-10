@@ -174,3 +174,11 @@
 - [x] Update index.html with apple-touch-icon link
 - [x] Configure PWA manifest with icon references
 - [x] Test icon appearance on iPhone home screen
+
+## Feature - Public Demo Trip Page
+- [x] Add backend endpoint to fetch demo trip by name ("הדגמה")
+- [x] Create public demo page component with read-only trip view
+- [x] Add banner explaining this is a demo
+- [x] Add prominent CTA button "Create Your Own Trip"
+- [x] Add /demo route that doesn't require authentication
+- [ ] Test demo page without login (pending tRPC type generation)

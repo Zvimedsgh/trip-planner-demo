@@ -29,6 +29,13 @@ export const appRouter = router({
   trips: router({
     list: protectedProcedure.query(({ ctx }) => db.getUserTrips(ctx.user.id)),
     
+    // Public demo trip endpoint
+    getDemo: publicProcedure.query(async () => {
+      // Fetch the demo trip by name
+      const demoTrip = await db.getDemoTripByName("הדגמה");
+      return demoTrip;
+    }),
+    
     get: protectedProcedure
       .input(z.object({ id: z.number() }))
       .query(async ({ ctx, input }) => {
