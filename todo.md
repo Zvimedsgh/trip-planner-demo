@@ -287,3 +287,9 @@
 - [ ] Add email notification integration
 - [ ] Create notification settings page
 - [ ] Test notifications trigger correctly
+
+## Date Validation
+- [x] Add validation to hotels form (check-out > check-in)
+- [x] Add validation to transportation form (arrival > departure)
+- [x] Add validation to car rentals form (return > pickup) - included in transportation
+- [x] Add validation to routes form (end time > start time) - not applicable (no end time field)

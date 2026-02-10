@@ -262,6 +262,12 @@ export default function TransportationTab({ tripId, tripEndDate, highlightedId }
     const departureTimestamp = combineDateAndTime(values.departureDate, values.departureTime);
     const arrivalTimestamp = combineDateAndTime(values.arrivalDate, values.arrivalTime);
     
+    // Validate arrival is after departure
+    if (arrivalTimestamp && departureTimestamp && arrivalTimestamp <= departureTimestamp) {
+      toast.error(language === "he" ? "תאריך הגעה צריך להיות אחרי תאריך יציאה" : "Arrival date must be after departure date");
+      return;
+    }
+    
     createMutation.mutate({
       tripId,
       type: values.type,
@@ -304,6 +310,12 @@ export default function TransportationTab({ tripId, tripEndDate, highlightedId }
     
     const departureTimestamp = combineDateAndTime(values.departureDate, values.departureTime);
     const arrivalTimestamp = combineDateAndTime(values.arrivalDate, values.arrivalTime);
+    
+    // Validate arrival is after departure
+    if (arrivalTimestamp && departureTimestamp && arrivalTimestamp <= departureTimestamp) {
+      toast.error(language === "he" ? "תאריך הגעה צריך להיות אחרי תאריך יציאה" : "Arrival date must be after departure date");
+      return;
+    }
     
     updateMutation.mutate({
       id: editingId,

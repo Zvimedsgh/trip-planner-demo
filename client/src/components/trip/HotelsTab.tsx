@@ -181,6 +181,15 @@ export default function HotelsTab({ tripId, highlightedId, onNavigateToDocuments
       toast.error(language === "he" ? "נא למלא: שם מלון, תאריך צ'ק-אין ותאריך צ'ק-אאוט" : "Please fill: hotel name, check-in and check-out dates");
       return;
     }
+    
+    // Validate check-out is after check-in
+    const checkIn = new Date(values.checkInDate);
+    const checkOut = new Date(values.checkOutDate);
+    if (checkOut <= checkIn) {
+      toast.error(language === "he" ? "תאריך צ'ק-אאוט צריך להיות אחרי תאריך צ'ק-אין" : "Check-out date must be after check-in date");
+      return;
+    }
+    
     createMutation.mutate({
       tripId,
       name: values.name,
@@ -208,6 +217,15 @@ export default function HotelsTab({ tripId, highlightedId, onNavigateToDocuments
       toast.error(language === "he" ? "נא למלא: שם מלון, תאריך צ'ק-אין ותאריך צ'ק-אאוט" : "Please fill: hotel name, check-in and check-out dates");
       return;
     }
+    
+    // Validate check-out is after check-in
+    const checkIn = new Date(values.checkInDate);
+    const checkOut = new Date(values.checkOutDate);
+    if (checkOut <= checkIn) {
+      toast.error(language === "he" ? "תאריך צ'ק-אאוט צריך להיות אחרי תאריך צ'ק-אין" : "Check-out date must be after check-in date");
+      return;
+    }
+    
     updateMutation.mutate({
       id: editingId,
       name: values.name,
