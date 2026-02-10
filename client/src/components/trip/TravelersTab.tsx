@@ -57,13 +57,13 @@ export default function TravelersTab({ tripId }: TravelersTabProps) {
   });
 
   const handleSubmit = () => {
-    if (!formData.name.trim() || !formData.identifier.trim()) {
-      toast.error(language === "he" ? "נא למלא את כל השדות" : "Please fill in all fields");
+    if (!formData.name.trim()) {
+      toast.error(language === "he" ? "נא למלא שם נוסע" : "Please fill in traveler name");
       return;
     }
 
-    // Validate identifier (only lowercase letters, numbers, underscores)
-    if (!/^[a-z0-9_]+$/.test(formData.identifier)) {
+    // Validate identifier only if provided (optional field)
+    if (formData.identifier.trim() && !/^[a-z0-9_]+$/.test(formData.identifier)) {
       toast.error(
         language === "he" 
           ? "המזהה חייב להכיל רק אותיות אנגליות קטנות, מספרים וקו תחתון" 
@@ -76,13 +76,13 @@ export default function TravelersTab({ tripId }: TravelersTabProps) {
       updateMutation.mutate({
         id: editingId,
         name: formData.name,
-        identifier: formData.identifier,
+        identifier: formData.identifier.trim() || undefined,
       });
     } else {
       createMutation.mutate({
         tripId,
         name: formData.name,
-        identifier: formData.identifier,
+        identifier: formData.identifier.trim() || undefined,
       });
     }
   };
@@ -163,18 +163,18 @@ export default function TravelersTab({ tripId }: TravelersTabProps) {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="identifier">{language === "he" ? "מזהה" : "Identifier"} *</Label>
+                    <Label htmlFor="identifier">{language === "he" ? "מזהה (אופציונלי)" : "Identifier (Optional)"}</Label>
                     <Input
                       id="identifier"
                       value={formData.identifier}
                       onChange={(e) => setFormData({ ...formData, identifier: e.target.value.toLowerCase() })}
-                      placeholder={language === "he" ? "לדוגמה: tzvi_yona" : "e.g., john_jane"}
+                      placeholder={language === "he" ? "לדוגמה: tzvi_yona (מספר דרכון, ת.ז., וכו')" : "e.g., john_jane (passport #, ID, etc.)"}
                       disabled={editingId !== null && formData.identifier === "shared"}
                     />
                     <p className="text-xs text-muted-foreground mt-1">
                       {language === "he" 
-                        ? "אותיות אנגליות קטנות, מספרים וקו תחתון בלבד"
-                        : "Lowercase letters, numbers, and underscores only"}
+                        ? "אופציונלי: אותיות אנגליות קטנות, מספרים וקו תחתון בלבד"
+                        : "Optional: Lowercase letters, numbers, and underscores only"}
                     </p>
                   </div>
                 </div>

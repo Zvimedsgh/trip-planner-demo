@@ -293,3 +293,8 @@
 - [x] Add validation to transportation form (arrival > departure)
 - [x] Add validation to car rentals form (return > pickup) - included in transportation
 - [x] Add validation to routes form (end time > start time) - not applicable (no end time field)
+
+## Make Traveler Identifier Optional
+- [x] Update TravelersTab UI to make identifier field optional
+- [x] Update backend validation to allow empty identifier
+- [ ] Test creating travelers without identifier

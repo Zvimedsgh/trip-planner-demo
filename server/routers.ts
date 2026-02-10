@@ -577,7 +577,7 @@ export const appRouter = router({
       .input(z.object({
         tripId: z.number(),
         name: z.string().min(1),
-        identifier: z.string().min(1),
+        identifier: z.string().optional(),
         sortOrder: z.number().optional(),
       }))
       .mutation(({ input }) => db.createTraveler(input)),
