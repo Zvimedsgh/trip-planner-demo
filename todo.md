@@ -168,3 +168,9 @@
 - [x] Store location data instead of route data in mapData
 - [x] Update map display to show area instead of route line
 - [x] Test with various route names (Spa, Vivendi Waterpark, etc.)
+
+## Feature - Custom App Icon for iPhone Home Screen
+- [x] Generate custom app icon with airplane design (180x180 and 512x512)
+- [x] Update index.html with apple-touch-icon link
+- [x] Configure PWA manifest with icon references
+- [x] Test icon appearance on iPhone home screen
