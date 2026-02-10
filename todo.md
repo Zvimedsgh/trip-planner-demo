@@ -182,3 +182,16 @@
 - [x] Add prominent CTA button "Create Your Own Trip"
 - [x] Add /demo route that doesn't require authentication
 - [ ] Test demo page without login (pending tRPC type generation)
+
+## Feature - Demo Trip Seed Script
+- [ ] Write clean seed script to create "הדגמה" trip
+- [ ] Add sample hotels, transportation, routes, payments
+- [ ] Run script once to populate demo data
+- [ ] Test /demo page with populated data
+
+## BUG - Maps Showing Empty
+- [x] Investigate why all maps are showing blank
+- [x] Check if mapData is being saved correctly
+- [x] Check if map rendering code is working
+- [x] Fix null mapData check to trigger route generation
+- [ ] Test with all route types

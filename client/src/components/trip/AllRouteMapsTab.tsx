@@ -27,7 +27,8 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
   // Handle route card click - generate location if needed before opening dialog
   const handleRouteClick = async (route: any) => {
     // If route already has mapData, just open it
-    if (route.mapData) {
+    // Check for both null and empty string
+    if (route.mapData && route.mapData !== 'null' && route.mapData.trim() !== '') {
       setSelectedRoute(route);
       return;
     }
