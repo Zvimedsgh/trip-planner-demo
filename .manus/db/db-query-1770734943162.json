@@ -1,0 +1,58 @@
+{
+  "query": "SELECT tc.*, u.name as user_name FROM trip_collaborators tc JOIN users u ON tc.userId = u.id LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT tc.*, u.name as user_name FROM trip_collaborators tc JOIN users u ON tc.userId = u.id LIMIT 10;",
+  "rows": [
+    {
+      "id": "1",
+      "tripId": "30001",
+      "userId": "1",
+      "permission": "can_edit",
+      "invitedBy": "1",
+      "createdAt": "2026-01-25 09:32:39",
+      "updatedAt": "2026-01-25 09:32:39",
+      "lastSeen": "NULL",
+      "visitCount": "0",
+      "user_name": "Zvi Goren"
+    },
+    {
+      "id": "90001",
+      "tripId": "30001",
+      "userId": "1020035",
+      "permission": "view_only",
+      "invitedBy": "1",
+      "createdAt": "2026-01-27 11:50:14",
+      "updatedAt": "2026-01-27 11:50:14",
+      "lastSeen": "NULL",
+      "visitCount": "0",
+      "user_name": "Ruth"
+    },
+    {
+      "id": "60001",
+      "tripId": "30001",
+      "userId": "1080001",
+      "permission": "can_edit",
+      "invitedBy": "1",
+      "createdAt": "2026-01-25 14:36:44",
+      "updatedAt": "2026-01-25 15:00:05",
+      "lastSeen": "2026-01-25 15:00:06",
+      "visitCount": "6",
+      "user_name": "Efi Goren"
+    },
+    {
+      "id": "60002",
+      "tripId": "30001",
+      "userId": "1080005",
+      "permission": "can_edit",
+      "invitedBy": "1",
+      "createdAt": "2026-01-25 14:36:44",
+      "updatedAt": "2026-01-25 15:06:09",
+      "lastSeen": "2026-01-25 15:06:10",
+      "visitCount": "1",
+      "user_name": "mikgrn"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttripId\tuserId\tpermission\tinvitedBy\tcreatedAt\tupdatedAt\tlastSeen\tvisitCount\tuser_name\n1\t30001\t1\tcan_edit\t1\t2026-01-25 09:32:39\t2026-01-25 09:32:39\tNULL\t0\tZvi Goren\n90001\t30001\t1020035\tview_only\t1\t2026-01-27 11:50:14\t2026-01-27 11:50:14\tNULL\t0\tRuth\n60001\t30001\t1080001\tcan_edit\t1\t2026-01-25 14:36:44\t2026-01-25 15:00:05\t2026-01-25 15:00:06\t6\tEfi Goren\n60002\t30001\t1080005\tcan_edit\t1\t2026-01-25 14:36:44\t2026-01-25 15:06:09\t2026-01-25 15:06:10\t1\tmikgrn\n",
+  "stderr": "",
+  "execution_time_ms": 1611
+}

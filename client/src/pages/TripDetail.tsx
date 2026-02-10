@@ -165,21 +165,36 @@ export default function TripDetail() {
     );
   }
 
-  if (!trip) {
+  if (!trip && !isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">
-            {language === "he" ? "הטיול לא נמצא" : "Trip not found"}
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50">
+        <div className="text-center space-y-6 p-8 max-w-md">
+          <div className="w-20 h-20 mx-auto rounded-full bg-red-100 flex items-center justify-center">
+            <X className="w-10 h-10 text-red-600" />
+          </div>
+          <h2 className="text-3xl font-bold text-gray-900">
+            {language === "he" ? "גישה נדחתה" : "Access Denied"}
           </h2>
+          <p className="text-gray-600">
+            {language === "he" 
+              ? "אין לך הרשאה לצפות בטיול זה. אם אתה אמור להיות משתף, בקש מבעל הטיול לשלוח לך קישור הזמנה."
+              : "You don't have permission to view this trip. If you should be a collaborator, ask the trip owner to send you an invite link."
+            }
+          </p>
           <Link href="/trips">
-            <Button>{t("back")}</Button>
+            <Button className="mt-4">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              {language === "he" ? "חזרה לטיולים שלי" : "Back to My Trips"}
+            </Button>
           </Link>
         </div>
       </div>
     );
   }
 
+  // TypeScript: trip is guaranteed to be defined here because of the early return above
+  if (!trip) return null;
+  
   const getDaysCount = (start: number, end: number) => {
     return Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
   };

@@ -359,3 +359,27 @@ export const payments = mysqlTable("payments", {
 
 export type Payment = typeof payments.$inferSelect;
 export type InsertPayment = typeof payments.$inferInsert;
+
+/**
+ * Must Visit POIs table - saves favorite points of interest from route maps
+ */
+export const mustVisitPOIs = mysqlTable("must_visit_pois", {
+  id: int("id").autoincrement().primaryKey(),
+  tripId: int("tripId").notNull(),
+  userId: int("userId").notNull(), // User who saved this POI
+  name: varchar("name", { length: 255 }).notNull(),
+  address: varchar("address", { length: 500 }),
+  category: varchar("category", { length: 100 }).notNull(), // e.g., "Gas Stations", "Restaurants"
+  categoryIcon: varchar("categoryIcon", { length: 10 }), // Emoji icon
+  categoryColor: varchar("categoryColor", { length: 20 }), // Hex color
+  rating: decimal("rating", { precision: 2, scale: 1 }), // e.g., 4.5
+  latitude: decimal("latitude", { precision: 10, scale: 7 }).notNull(),
+  longitude: decimal("longitude", { precision: 10, scale: 7 }).notNull(),
+  placeId: varchar("placeId", { length: 255 }), // Google Maps Place ID
+  notes: text("notes"), // User's personal notes about this POI
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type MustVisitPOI = typeof mustVisitPOIs.$inferSelect;
+export type InsertMustVisitPOI = typeof mustVisitPOIs.$inferInsert;

@@ -1,0 +1,9 @@
+{
+  "query": "CREATE TABLE IF NOT EXISTS must_visit_pois (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  tripId INT NOT NULL,\n  userId INT NOT NULL,\n  name VARCHAR(255) NOT NULL,\n  address VARCHAR(500),\n  category VARCHAR(100) NOT NULL,\n  categoryIcon VARCHAR(10),\n  categoryColor VARCHAR(20),\n  rating DECIMAL(2, 1),\n  latitude DECIMAL(10, 7) NOT NULL,\n  longitude DECIMAL(10, 7) NOT NULL,\n  placeId VARCHAR(255),\n  notes TEXT,\n  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,\n  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute CREATE TABLE IF NOT EXISTS must_visit_pois (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  tripId INT NOT NULL,\n  userId INT NOT NULL,\n  name VARCHAR(255) NOT NULL,\n  address VARCHAR(500),\n  category VARCHAR(100) NOT NULL,\n  categoryIcon VARCHAR(10),\n  categoryColor VARCHAR(20),\n  rating DECIMAL(2, 1),\n  latitude DECIMAL(10, 7) NOT NULL,\n  longitude DECIMAL(10, 7) NOT NULL,\n  placeId VARCHAR(255),\n  notes TEXT,\n  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,\n  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL\n);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1846
+}

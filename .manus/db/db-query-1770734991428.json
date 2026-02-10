@@ -1,0 +1,38 @@
+{
+  "query": "SELECT t.id, t.name, tc.userId, u.name as collaborator_name, tc.permission \nFROM trips t \nJOIN trip_collaborators tc ON t.id = tc.tripId \nJOIN users u ON tc.userId = u.id;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT t.id, t.name, tc.userId, u.name as collaborator_name, tc.permission \nFROM trips t \nJOIN trip_collaborators tc ON t.id = tc.tripId \nJOIN users u ON tc.userId = u.id;",
+  "rows": [
+    {
+      "id": "30001",
+      "name": "Goren Roots Trip to Slovakia",
+      "userId": "1",
+      "collaborator_name": "Zvi Goren",
+      "permission": "can_edit"
+    },
+    {
+      "id": "30001",
+      "name": "Goren Roots Trip to Slovakia",
+      "userId": "1020035",
+      "collaborator_name": "Ruth",
+      "permission": "view_only"
+    },
+    {
+      "id": "30001",
+      "name": "Goren Roots Trip to Slovakia",
+      "userId": "1080001",
+      "collaborator_name": "Efi Goren",
+      "permission": "can_edit"
+    },
+    {
+      "id": "30001",
+      "name": "Goren Roots Trip to Slovakia",
+      "userId": "1080005",
+      "collaborator_name": "mikgrn",
+      "permission": "can_edit"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tuserId\tcollaborator_name\tpermission\n30001\tGoren Roots Trip to Slovakia\t1\tZvi Goren\tcan_edit\n30001\tGoren Roots Trip to Slovakia\t1020035\tRuth\tview_only\n30001\tGoren Roots Trip to Slovakia\t1080001\tEfi Goren\tcan_edit\n30001\tGoren Roots Trip to Slovakia\t1080005\tmikgrn\tcan_edit\n",
+  "stderr": "",
+  "execution_time_ms": 1584
+}

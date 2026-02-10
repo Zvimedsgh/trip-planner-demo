@@ -260,3 +260,32 @@
 - [x] Add POI list below map with details (name, address, rating, distance)
 - [x] Add click handlers to open POI in Google Maps for navigation
 - [ ] Test with Slovakia routes
+
+## Quick Fixes
+- [x] Delete DemoTrip.tsx file (causing TypeScript errors)
+- [x] Sort routes by date automatically in Route Manager (already implemented)
+
+## Fix Sharing and Collaborators
+- [x] Debug why collaborators cannot access shared trips (backend works, added clear error message)
+- [x] Fix invite link showing "permission denied" error (endpoint exists, improved error handling)
+- [ ] Test with existing collaborators (Efi, Michal, Ruth) - waiting for user feedback
+
+## Must Visit Feature
+- [ ] Add "Must Visit" list to save favorite POIs from route maps
+- [ ] Add "Save to Must Visit" button on POI items
+- [ ] Create Must Visit tab or section to view saved POIs
+- [ ] Allow removing items from Must Visit list
+
+## Complete Dynamic Traveler Management
+- [ ] Create TravelerSettings component for managing travelers
+- [ ] Add UI to add/edit/delete travelers in trip settings
+- [ ] Update checklist to use dynamic travelers from database
+- [ ] Test traveler management with Slovakia trip
+
+## Notifications System
+- [ ] Design notification data model (trips, hotels, flights, etc.)
+- [ ] Add browser notification permission request
+- [ ] Implement notification scheduling (before flights, check-ins, etc.)
+- [ ] Add email notification integration
+- [ ] Create notification settings page
+- [ ] Test notifications trigger correctly
