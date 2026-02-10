@@ -195,3 +195,10 @@
 - [x] Check if map rendering code is working
 - [x] Fix null mapData check to trigger route generation
 - [ ] Test with all route types
+
+## BUG - Route Generation Not Triggering
+- [x] Debug why null mapData check is not working
+- [x] Check what value mapData has when null in database
+- [x] Fix null check to handle all null cases (null, "null", undefined, empty)
+- [x] Add console logging to debug
+- [ ] Test route generation triggers correctly with console logs
