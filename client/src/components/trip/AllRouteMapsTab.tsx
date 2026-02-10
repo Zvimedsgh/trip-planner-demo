@@ -26,7 +26,8 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
   
   // Handle route card click - generate location if needed before opening dialog
   const handleRouteClick = async (route: any) => {
-    console.log('Route clicked:', route.name, 'mapData:', route.mapData, 'type:', typeof route.mapData);
+    // Debug: log mapData value and type
+    console.log(`🗺️ Route: "${route.name}" | mapData:`, route.mapData, `| type: ${typeof route.mapData}`);
     
     // Check if route has valid mapData
     const hasValidMapData = route.mapData && 
@@ -34,8 +35,6 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
                            route.mapData !== null && 
                            route.mapData !== undefined && 
                            String(route.mapData).trim() !== '';
-    
-    console.log('Has valid mapData:', hasValidMapData);
     
     // If route already has mapData, just open it
     if (hasValidMapData) {
@@ -192,10 +191,15 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
               <div className="flex-1 rounded-lg overflow-hidden border-2 border-gray-200">
                 <MapView
                   initialCenter={(() => {
-                    // Parse mapData to get location coordinates
+                    // Parse mapData to get coordinates
                     if (selectedRoute.mapData) {
                       try {
                         const mapConfig = JSON.parse(selectedRoute.mapData);
+                        // Route with origin/destination
+                        if (mapConfig?.origin?.location) {
+                          return mapConfig.origin.location;
+                        }
+                        // Single location
                         if (mapConfig?.location?.coordinates) {
                           return mapConfig.location.coordinates;
                         }
@@ -206,7 +210,22 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
                     // Default to Slovakia center if no mapData
                     return { lat: 48.6690, lng: 19.6990 };
                   })()}
-                  initialZoom={13}
+                  initialZoom={(() => {
+                    // Parse mapData to determine zoom level
+                    if (selectedRoute.mapData) {
+                      try {
+                        const mapConfig = JSON.parse(selectedRoute.mapData);
+                        // Route (with origin/destination) needs wider view
+                        if (mapConfig?.origin && mapConfig?.destination) {
+                          return 8;
+                        }
+                      } catch (e) {
+                        // Ignore parse errors
+                      }
+                    }
+                    // Single location or default
+                    return 13;
+                  })()}
                   onMapReady={(map: any) => {
                     const google = (window as any).google;
                     // Parse mapData if it exists
@@ -219,8 +238,54 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
                       }
                     }
                     
-                    // If we have location data, show marker
-                    if (mapConfig?.location?.coordinates) {
+                    // Check if this is a route (with origin, destination, polyline)
+                    if (mapConfig?.origin && mapConfig?.destination && mapConfig?.polyline) {
+                      // This is a driving route - decode polyline and display as blue line
+                      const decodedPath = google.maps.geometry.encoding.decodePath(mapConfig.polyline);
+                      
+                      // Draw the route polyline
+                      const routeLine = new google.maps.Polyline({
+                        path: decodedPath,
+                        geodesic: true,
+                        strokeColor: '#4285F4',
+                        strokeOpacity: 0.8,
+                        strokeWeight: 5,
+                        map: map,
+                      });
+                      
+                      // Add markers for origin and destination
+                      const originMarker = new google.maps.marker.AdvancedMarkerElement({
+                        map: map,
+                        position: mapConfig.origin.location,
+                        title: mapConfig.origin.address,
+                      });
+                      
+                      const destinationMarker = new google.maps.marker.AdvancedMarkerElement({
+                        map: map,
+                        position: mapConfig.destination.location,
+                        title: mapConfig.destination.address,
+                      });
+                      
+                      // Add info window with route details
+                      const infoWindow = new google.maps.InfoWindow({
+                        content: `<div style="padding: 10px; max-width: 300px;">
+                          <h3 style="font-weight: bold; margin-bottom: 5px; font-size: 16px;">${mapConfig.origin.address} → ${mapConfig.destination.address}</h3>
+                          <p style="color: #666; font-size: 14px; margin: 5px 0;">📏 Distance: ${mapConfig.distance.text}</p>
+                          <p style="color: #666; font-size: 14px; margin: 0;">⏱️ Duration: ${mapConfig.duration.text}</p>
+                        </div>`,
+                        position: mapConfig.origin.location,
+                      });
+                      
+                      // Open info window by default
+                      infoWindow.open(map);
+                      
+                      // Fit map to show entire route
+                      const bounds = new google.maps.LatLngBounds();
+                      bounds.extend(mapConfig.origin.location);
+                      bounds.extend(mapConfig.destination.location);
+                      map.fitBounds(bounds);
+                    } else if (mapConfig?.location?.coordinates) {
+                      // This is a single location - show marker
                       const marker = new google.maps.marker.AdvancedMarkerElement({
                         map: map,
                         position: mapConfig.location.coordinates,

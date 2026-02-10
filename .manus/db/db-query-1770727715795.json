@@ -1,0 +1,38 @@
+{
+  "query": "SELECT id, name FROM trip_routes WHERE tripId = 30001 ORDER BY id;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name FROM trip_routes WHERE tripId = 30001 ORDER BY id;",
+  "rows": [
+    {
+      "id": "1",
+      "name": "Route 1: Bratislava → Liptovský Mikuláš"
+    },
+    {
+      "id": "2",
+      "name": "Route 4: Liptovský Mikuláš - Štrbské Pleso, Kúpeľná, Štrbské Pleso, 059 85 Vysoké Tatry, סלובקיה"
+    },
+    {
+      "id": "3",
+      "name": "Route 5: Liptovsky Mikulash - Jasna Demanovska Dolina"
+    },
+    {
+      "id": "4",
+      "name": "Liptovský Mikuláš → Štrbské Pleso"
+    },
+    {
+      "id": "5",
+      "name": "Liptovský Mikuláš → Demänovská Ice Cave"
+    },
+    {
+      "id": "6",
+      "name": "Route 6: Vienna → Bratislava Airport"
+    },
+    {
+      "id": "120013",
+      "name": "Route 7: Private holiday house Vivendi- Waterpark Besenova"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\n1\tRoute 1: Bratislava → Liptovský Mikuláš\n2\tRoute 4: Liptovský Mikuláš - Štrbské Pleso, Kúpeľná, Štrbské Pleso, 059 85 Vysoké Tatry, סלובקיה\n3\tRoute 5: Liptovsky Mikulash - Jasna Demanovska Dolina\n4\tLiptovský Mikuláš → Štrbské Pleso\n5\tLiptovský Mikuláš → Demänovská Ice Cave\n6\tRoute 6: Vienna → Bratislava Airport\n120013\tRoute 7: Private holiday house Vivendi- Waterpark Besenova\n",
+  "stderr": "",
+  "execution_time_ms": 1619
+}

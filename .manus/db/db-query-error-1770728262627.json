@@ -1,0 +1,8 @@
+{
+  "query": "UPDATE trip_routes \nSET description = 'Day 3: High Tatras mountain lake',\n    date = '2026-09-03',\n    time = '09:00'\nWHERE name = 'Liptovský Mikuláš → Štrbské Pleso' AND tripId = 30001;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute UPDATE trip_routes \nSET description = 'Day 3: High Tatras mountain lake',\n    date = '2026-09-03',\n    time = '09:00'\nWHERE name = 'Liptovský Mikuláš → Štrbské Pleso' AND tripId = 30001;",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1292 (22007) at line 1: Truncated incorrect DOUBLE value: '?'"
+  ]
+}

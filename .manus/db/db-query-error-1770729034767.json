@@ -1,0 +1,8 @@
+{
+  "query": "INSERT INTO trip_routes (tripId, name, description, date, time, type, mapData)\nVALUES (30001, 'Liptovský Mikuláš → Košice', 'Day 5: Journey to Košice via Slovenský Raj', 1725523800000, '10:10', 'highway', NULL);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute INSERT INTO trip_routes (tripId, name, description, date, time, type, mapData)\nVALUES (30001, 'Liptovský Mikuláš → Košice', 'Day 5: Journey to Košice via Slovenský Raj', 1725523800000, '10:10', 'highway', NULL);",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1054 (42S22) at line 1: Unknown column 'type' in 'field list'"
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "query": "SELECT id, name FROM trip_routes WHERE name NOT LIKE '%→%' AND name NOT LIKE '%->%' LIMIT 20;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name FROM trip_routes WHERE name NOT LIKE '%→%' AND name NOT LIKE '%->%' LIMIT 20;",
+  "rows": [
+    {
+      "id": "2",
+      "name": "Route 4: Liptovský Mikuláš - Štrbské Pleso, Kúpeľná, Štrbské Pleso, 059 85 Vysoké Tatry, סלובקיה"
+    },
+    {
+      "id": "3",
+      "name": "Route 5: Liptovsky Mikulash - Jasna Demanovska Dolina"
+    },
+    {
+      "id": "60003",
+      "name": "Route to Delete"
+    },
+    {
+      "id": "120002",
+      "name": "List Test Route"
+    },
+    {
+      "id": "120003",
+      "name": "Updated Test Route"
+    },
+    {
+      "id": "120006",
+      "name": "List Test Route"
+    },
+    {
+      "id": "120007",
+      "name": "Updated Test Route"
+    },
+    {
+      "id": "120010",
+      "name": "List Test Route"
+    },
+    {
+      "id": "120011",
+      "name": "Updated Test Route"
+    },
+    {
+      "id": "120013",
+      "name": "Route 7: Private holiday house Vivendi- Waterpark Besenova"
+    },
+    {
+      "id": "150001",
+      "name": "Liptovsky Mikulash - Waterpark Beneshova"
+    },
+    {
+      "id": "180002",
+      "name": "Route 4: Liptovský Mikuláš - Štrbské Pleso, Kúpeľná, Štrbské Pleso, 059 85 Vysoké Tatry, סלובקיה"
+    },
+    {
+      "id": "180003",
+      "name": "Route 5: Liptovsky Mikulash - Jasna Demanovska Dolina"
+    },
+    {
+      "id": "180007",
+      "name": "Route 7: Private holiday house Vivendi- Waterpark Besenova"
+    },
+    {
+      "id": "180009",
+      "name": "Route 4: Liptovský Mikuláš - Štrbské Pleso, Kúpeľná, Štrbské Pleso, 059 85 Vysoké Tatry, סלובקיה"
+    },
+    {
+      "id": "180010",
+      "name": "Route 5: Liptovsky Mikulash - Jasna Demanovska Dolina"
+    },
+    {
+      "id": "180014",
+      "name": "Route 7: Private holiday house Vivendi- Waterpark Besenova"
+    },
+    {
+      "id": "180016",
+      "name": "Route 4: Liptovský Mikuláš - Štrbské Pleso, Kúpeľná, Štrbské Pleso, 059 85 Vysoké Tatry, סלובקיה"
+    },
+    {
+      "id": "180017",
+      "name": "Route 5: Liptovsky Mikulash - Jasna Demanovska Dolina"
+    },
+    {
+      "id": "180021",
+      "name": "Route 7: Private holiday house Vivendi- Waterpark Besenova"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\n2\tRoute 4: Liptovský Mikuláš - Štrbské Pleso, Kúpeľná, Štrbské Pleso, 059 85 Vysoké Tatry, סלובקיה\n3\tRoute 5: Liptovsky Mikulash - Jasna Demanovska Dolina\n60003\tRoute to Delete\n120002\tList Test Route\n120003\tUpdated Test Route\n120006\tList Test Route\n120007\tUpdated Test Route\n120010\tList Test Route\n120011\tUpdated Test Route\n120013\tRoute 7: Private holiday house Vivendi- Waterpark Besenova\n150001\tLiptovsky Mikulash - Waterpark Beneshova\n180002\tRoute 4: Liptovský Mikuláš - Štrbské Pleso, Kúpeľná, Štrbské Pleso, 059 85 Vysoké Tatry, סלובקיה\n180003\tRoute 5: Liptovsky Mikulash - Jasna Demanovska Dolina\n180007\tRoute 7: Private holiday house Vivendi- Waterpark Besenova\n180009\tRoute 4: Liptovský Mikuláš - Štrbské Pleso, Kúpeľná, Štrbské Pleso, 059 85 Vysoké Tatry, סלובקיה\n180010\tRoute 5: Liptovsky Mikulash - Jasna Demanovska Dolina\n180014\tRoute 7: Private holiday house Vivendi- Waterpark Besenova\n180016\tRoute 4: Liptovský Mikuláš - Štrbské Pleso, Kúpeľná, Štrbské Pleso, 059 85 Vysoké Tatry, סלובקיה\n180017\tRoute 5: Liptovsky Mikulash - Jasna Demanovska Dolina\n180021\tRoute 7: Private holiday house Vivendi- Waterpark Besenova\n",
+  "stderr": "",
+  "execution_time_ms": 1592
+}

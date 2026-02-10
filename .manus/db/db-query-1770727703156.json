@@ -1,0 +1,9 @@
+{
+  "query": "UPDATE trip_routes \nSET name = 'Liptovský Mikuláš → Štrbské Pleso',\n    mapData = NULL\nWHERE tripId = 30001 AND id = (\n  SELECT id FROM trip_routes \n  WHERE tripId = 30001 \n  ORDER BY id \n  LIMIT 1 OFFSET 3\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute UPDATE trip_routes \nSET name = 'Liptovský Mikuláš → Štrbské Pleso',\n    mapData = NULL\nWHERE tripId = 30001 AND id = (\n  SELECT id FROM trip_routes \n  WHERE tripId = 30001 \n  ORDER BY id \n  LIMIT 1 OFFSET 3\n);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1614
+}

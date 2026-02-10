@@ -1,0 +1,24 @@
+{
+  "query": "SELECT id, name, description, date, time \nFROM trip_routes \nWHERE tripId = 30001 \nAND (name = 'Liptovský Mikuláš → Štrbské Pleso' OR name = 'Liptovský Mikuláš → Demänovská Ice Cave')\nORDER BY date;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, description, date, time \nFROM trip_routes \nWHERE tripId = 30001 \nAND (name = 'Liptovský Mikuláš → Štrbské Pleso' OR name = 'Liptovský Mikuláš → Demänovská Ice Cave')\nORDER BY date;",
+  "rows": [
+    {
+      "id": "4",
+      "name": "Liptovský Mikuláš → Štrbské Pleso",
+      "description": "Day 5: Journey to Košice via Slovenský Raj",
+      "date": "1788595200000",
+      "time": "10:10"
+    },
+    {
+      "id": "5",
+      "name": "Liptovský Mikuláš → Demänovská Ice Cave",
+      "description": "Day 7: Drive to Vienna",
+      "date": "1788768000000",
+      "time": "10:10"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tdescription\tdate\ttime\n4\tLiptovský Mikuláš → Štrbské Pleso\tDay 5: Journey to Košice via Slovenský Raj\t1788595200000\t10:10\n5\tLiptovský Mikuláš → Demänovská Ice Cave\tDay 7: Drive to Vienna\t1788768000000\t10:10\n",
+  "stderr": "",
+  "execution_time_ms": 1669
+}

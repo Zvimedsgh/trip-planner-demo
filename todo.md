@@ -202,3 +202,25 @@
 - [x] Fix null check to handle all null cases (null, "null", undefined, empty)
 - [x] Add console logging to debug
 - [ ] Test route generation triggers correctly with console logs
+
+## BUG - Routes Displaying as Location Markers Instead of Driving Directions
+- [x] Fix AllRouteMapsTab to detect route type (origin+destination vs single location)
+- [x] Display routes with arrows using DirectionsRenderer (blue line)
+- [x] Display single locations using AdvancedMarkerElement
+- [x] Fix Google Maps API loading multiple times error
+- [x] Test with Slovakia routes (Bratislava → Liptovský Mikuláš shows blue line!)
+
+## Feature - Update All Routes with Arrows for Driving Directions
+- [x] Get all current route names from database
+- [x] Update route names to format: "Origin → Destination"
+- [x] Clear mapData to trigger regeneration
+- [x] Copy details from old routes to new routes
+- [x] Delete duplicate old routes
+- [x] Recreate missing routes 5 and 7
+- [x] Test all 7 routes show blue driving lines
+- [x] Save checkpoint
+
+## Task - Add Route Number Prefix to All Routes
+- [x] Update routes 4, 5, 6, 7 to include "Route #:" prefix
+- [x] Verify all 7 routes have consistent naming
+- [x] Save checkpoint

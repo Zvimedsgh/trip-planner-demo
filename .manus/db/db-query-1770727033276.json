@@ -1,0 +1,45 @@
+{
+  "query": "SELECT id, name, nameHe FROM trip_routes WHERE tripId = 30001 ORDER BY id;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, nameHe FROM trip_routes WHERE tripId = 30001 ORDER BY id;",
+  "rows": [
+    {
+      "id": "1",
+      "name": "Route 1: Bratislava → Liptovský Mikuláš",
+      "nameHe": "מסלול 1: ברטיסלבה → ליפטובסקי מיקולאש"
+    },
+    {
+      "id": "2",
+      "name": "Route 4: Liptovský Mikuláš - Štrbské Pleso, Kúpeľná, Štrbské Pleso, 059 85 Vysoké Tatry, סלובקיה",
+      "nameHe": "מסלול 4: טיול לשטרבסקה פלסו"
+    },
+    {
+      "id": "3",
+      "name": "Route 5: Liptovsky Mikulash - Jasna Demanovska Dolina",
+      "nameHe": "מסלול 5: טיול ליאסנה – דמנובסקה דולינה"
+    },
+    {
+      "id": "4",
+      "name": "Route 2: Liptovský Mikuláš → Košice",
+      "nameHe": "מסלול 2: ליפטובסקי מיקולאש → קושיצה"
+    },
+    {
+      "id": "5",
+      "name": "Route 3: Košice → Vienna",
+      "nameHe": "מסלול 3: קושיצה → וינה"
+    },
+    {
+      "id": "6",
+      "name": "Route 6: Vienna → Bratislava Airport",
+      "nameHe": "מסלול 6: וינה → שדה התעופה"
+    },
+    {
+      "id": "120013",
+      "name": "Route 7: Private holiday house Vivendi- Waterpark Besenova",
+      "nameHe": "NULL"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tnameHe\n1\tRoute 1: Bratislava → Liptovský Mikuláš\tמסלול 1: ברטיסלבה → ליפטובסקי מיקולאש\n2\tRoute 4: Liptovský Mikuláš - Štrbské Pleso, Kúpeľná, Štrbské Pleso, 059 85 Vysoké Tatry, סלובקיה\tמסלול 4: טיול לשטרבסקה פלסו\n3\tRoute 5: Liptovsky Mikulash - Jasna Demanovska Dolina\tמסלול 5: טיול ליאסנה – דמנובסקה דולינה\n4\tRoute 2: Liptovský Mikuláš → Košice\tמסלול 2: ליפטובסקי מיקולאש → קושיצה\n5\tRoute 3: Košice → Vienna\tמסלול 3: קושיצה → וינה\n6\tRoute 6: Vienna → Bratislava Airport\tמסלול 6: וינה → שדה התעופה\n120013\tRoute 7: Private holiday house Vivendi- Waterpark Besenova\tNULL\n",
+  "stderr": "",
+  "execution_time_ms": 1493
+}

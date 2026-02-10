@@ -1,0 +1,15 @@
+{
+  "query": "SELECT \n  COUNT(*) as total_routes,\n  SUM(CASE WHEN name LIKE '%→%' OR name LIKE '%->%' THEN 1 ELSE 0 END) as routes_with_arrow,\n  SUM(CASE WHEN name NOT LIKE '%→%' AND name NOT LIKE '%->%' THEN 1 ELSE 0 END) as routes_without_arrow\nFROM trip_routes;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT \n  COUNT(*) as total_routes,\n  SUM(CASE WHEN name LIKE '%→%' OR name LIKE '%->%' THEN 1 ELSE 0 END) as routes_with_arrow,\n  SUM(CASE WHEN name NOT LIKE '%→%' AND name NOT LIKE '%->%' THEN 1 ELSE 0 END) as routes_without_arrow\nFROM trip_routes;",
+  "rows": [
+    {
+      "total_routes": "178",
+      "routes_with_arrow": "101",
+      "routes_without_arrow": "77"
+    }
+  ],
+  "messages": [],
+  "stdout": "total_routes\troutes_with_arrow\troutes_without_arrow\n178\t101\t77\n",
+  "stderr": "",
+  "execution_time_ms": 1578
+}

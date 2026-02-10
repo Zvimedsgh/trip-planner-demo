@@ -1,0 +1,40 @@
+{
+  "query": "SELECT id, name, description, date FROM trip_routes WHERE tripId = 30001 ORDER BY date, id;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, description, date FROM trip_routes WHERE tripId = 30001 ORDER BY date, id;",
+  "rows": [
+    {
+      "id": "4",
+      "name": "Liptovský Mikuláš → Štrbské Pleso",
+      "description": "Day 3: High Tatras mountain lake",
+      "date": "1725321600000"
+    },
+    {
+      "id": "5",
+      "name": "Liptovský Mikuláš → Demänovská Ice Cave",
+      "description": "Day 4: Ski resort and caves",
+      "date": "1725408000000"
+    },
+    {
+      "id": "1",
+      "name": "Route 1: Bratislava → Liptovský Mikuláš",
+      "description": "Day 2: Departure at 19:00 from Bratislava to Liptovský Mikuláš",
+      "date": "1788368400000"
+    },
+    {
+      "id": "120013",
+      "name": "Liptovský Mikuláš → Bešeňová",
+      "description": "Day 3: Spa",
+      "date": "1788393600000"
+    },
+    {
+      "id": "6",
+      "name": "Route 6: Vienna → Bratislava Airport",
+      "description": "Day 9: Departure",
+      "date": "1788933600000"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tdescription\tdate\n4\tLiptovský Mikuláš → Štrbské Pleso\tDay 3: High Tatras mountain lake\t1725321600000\n5\tLiptovský Mikuláš → Demänovská Ice Cave\tDay 4: Ski resort and caves\t1725408000000\n1\tRoute 1: Bratislava → Liptovský Mikuláš\tDay 2: Departure at 19:00 from Bratislava to Liptovský Mikuláš\t1788368400000\n120013\tLiptovský Mikuláš → Bešeňová\tDay 3: Spa\t1788393600000\n6\tRoute 6: Vienna → Bratislava Airport\tDay 9: Departure\t1788933600000\n",
+  "stderr": "",
+  "execution_time_ms": 1679
+}

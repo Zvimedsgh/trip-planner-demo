@@ -1,0 +1,9 @@
+{
+  "query": "INSERT INTO trip_routes (tripId, name, description, date, time, mapData)\nVALUES (30001, 'Liptovský Mikuláš → Košice', 'Day 5: Journey to Košice via Slovenský Raj', 1725523800000, '10:10', NULL);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute INSERT INTO trip_routes (tripId, name, description, date, time, mapData)\nVALUES (30001, 'Liptovský Mikuláš → Košice', 'Day 5: Journey to Košice via Slovenský Raj', 1725523800000, '10:10', NULL);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1557
+}

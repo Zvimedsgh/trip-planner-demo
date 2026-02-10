@@ -1,0 +1,24 @@
+{
+  "query": "SELECT id, name, description, date, time \nFROM trip_routes \nWHERE tripId = 30001 \nAND (name LIKE '%Štrbské Pleso, Kúpeľná%' OR name LIKE '%Jasna Demanovska Dolina%')\nORDER BY date;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, description, date, time \nFROM trip_routes \nWHERE tripId = 30001 \nAND (name LIKE '%Štrbské Pleso, Kúpeľná%' OR name LIKE '%Jasna Demanovska Dolina%')\nORDER BY date;",
+  "rows": [
+    {
+      "id": "2",
+      "name": "Route 4: Liptovský Mikuláš - Štrbské Pleso, Kúpeľná, Štrbské Pleso, 059 85 Vysoké Tatry, סלובקיה",
+      "description": "Day 3: High Tatras mountain lake",
+      "date": "1788418800000",
+      "time": "09:00"
+    },
+    {
+      "id": "3",
+      "name": "Route 5: Liptovsky Mikulash - Jasna Demanovska Dolina",
+      "description": "Day 4: Ski resort and caves",
+      "date": "1788505200000",
+      "time": "09:00"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tdescription\tdate\ttime\n2\tRoute 4: Liptovský Mikuláš - Štrbské Pleso, Kúpeľná, Štrbské Pleso, 059 85 Vysoké Tatry, סלובקיה\tDay 3: High Tatras mountain lake\t1788418800000\t09:00\n3\tRoute 5: Liptovsky Mikulash - Jasna Demanovska Dolina\tDay 4: Ski resort and caves\t1788505200000\t09:00\n",
+  "stderr": "",
+  "execution_time_ms": 1604
+}
