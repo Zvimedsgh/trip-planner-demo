@@ -4,7 +4,7 @@ import { MapView } from "../Map";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { MapPin, Calendar, Clock, Navigation } from "lucide-react";
+import { MapPin, Calendar, Clock, Navigation, Fuel, Utensils, Landmark, Banknote } from "lucide-react";
 import { format } from "date-fns";
 
 interface AllRouteMapsTabProps {
@@ -15,6 +15,7 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
   const { language } = useLanguage();
   const [selectedRoute, setSelectedRoute] = useState<any | null>(null);
   const [generatingRoute, setGeneratingRoute] = useState(false);
+  const [pois, setPois] = useState<any[]>([]);
   
   const { data: routes, refetch } = trpc.routes.list.useQuery({ tripId });
   const generateRouteMutation = trpc.routes.generateRouteFromName.useMutation();
@@ -227,6 +228,96 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
                     return 13;
                   })()}
                   onMapReady={(map: any) => {
+                    // Function to search for POIs along the route
+                    const searchPOIsAlongRoute = async (map: any, routePath: any[], origin: any, destination: any) => {
+                      const google = (window as any).google;
+                      const service = new google.maps.places.PlacesService(map);
+                      
+                      // Calculate midpoint of route for search center
+                      const midIndex = Math.floor(routePath.length / 2);
+                      const midPoint = routePath[midIndex];
+                      
+                      // POI types to search for
+                      const poiTypes = [
+                        { type: 'gas_station', icon: '⛽', color: '#EF4444', name: language === 'he' ? 'תחנות דלק' : 'Gas Stations' },
+                        { type: 'restaurant', icon: '🍽️', color: '#10B981', name: language === 'he' ? 'מסעדות' : 'Restaurants' },
+                        { type: 'tourist_attraction', icon: '🏛️', color: '#8B5CF6', name: language === 'he' ? 'אתרי תיירות' : 'Tourist Sites' },
+                        { type: 'atm', icon: '🏧', color: '#F59E0B', name: language === 'he' ? 'כספומטים' : 'ATMs' }
+                      ];
+                      
+                      const allPOIs: any[] = [];
+                      
+                      // Search for each POI type
+                      for (const poiType of poiTypes) {
+                        await new Promise<void>((resolve) => {
+                          service.nearbySearch(
+                            {
+                              location: midPoint,
+                              radius: 10000, // 10km radius
+                              type: poiType.type
+                            },
+                            (results: any[], status: any) => {
+                              if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+                                // Get top 5 closest to route
+                                const top5 = results.slice(0, 5);
+                                
+                                top5.forEach((place: any) => {
+                                  // Create custom marker with colored pin
+                                  const pinElement = document.createElement('div');
+                                  pinElement.innerHTML = poiType.icon;
+                                  pinElement.style.fontSize = '24px';
+                                  pinElement.style.background = poiType.color;
+                                  pinElement.style.borderRadius = '50%';
+                                  pinElement.style.width = '40px';
+                                  pinElement.style.height = '40px';
+                                  pinElement.style.display = 'flex';
+                                  pinElement.style.alignItems = 'center';
+                                  pinElement.style.justifyContent = 'center';
+                                  pinElement.style.border = '2px solid white';
+                                  pinElement.style.boxShadow = '0 2px 6px rgba(0,0,0,0.3)';
+                                  
+                                  const marker = new google.maps.marker.AdvancedMarkerElement({
+                                    map: map,
+                                    position: place.geometry.location,
+                                    content: pinElement,
+                                    title: place.name
+                                  });
+                                  
+                                  // Add click listener to show info window
+                                  const infoWindow = new google.maps.InfoWindow({
+                                    content: `
+                                      <div style="padding: 8px; max-width: 200px;">
+                                        <h3 style="font-weight: bold; margin-bottom: 4px;">${place.name}</h3>
+                                        <p style="font-size: 12px; color: #666; margin-bottom: 4px;">${place.vicinity || ''}</p>
+                                        ${place.rating ? `<p style="font-size: 12px;">⭐ ${place.rating}</p>` : ''}
+                                        <a href="https://www.google.com/maps/search/?api=1&query=${place.geometry.location.lat()},${place.geometry.location.lng()}&query_place_id=${place.place_id}" target="_blank" style="color: #4285F4; text-decoration: none; font-size: 12px;">${language === 'he' ? 'פתח ב-Google Maps' : 'Open in Google Maps'}</a>
+                                      </div>
+                                    `
+                                  });
+                                  
+                                  marker.addListener('click', () => {
+                                    infoWindow.open(map, marker);
+                                  });
+                                  
+                                  // Add to POI list
+                                  allPOIs.push({
+                                    ...place,
+                                    category: poiType.name,
+                                    categoryIcon: poiType.icon,
+                                    categoryColor: poiType.color
+                                  });
+                                });
+                              }
+                              resolve();
+                            }
+                          );
+                        });
+                      }
+                      
+                      // Update POI state
+                      setPois(allPOIs);
+                    };
+                    
                     const google = (window as any).google;
                     // Parse mapData if it exists
                     let mapConfig = null;
@@ -273,6 +364,9 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
                       bounds.extend(mapConfig.origin.location);
                       bounds.extend(mapConfig.destination.location);
                       map.fitBounds(bounds);
+                      
+                      // Search for POIs along the route
+                      searchPOIsAlongRoute(map, decodedPath, mapConfig.origin.location, mapConfig.destination.location);
                     } else if (mapConfig?.location?.coordinates) {
                       // This is a single location - show marker
                       const marker = new google.maps.marker.AdvancedMarkerElement({
@@ -350,6 +444,55 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
                   )}
                 </div>
               </div>
+              
+              {/* Points of Interest List */}
+              {pois.length > 0 && (
+                <div className="bg-white rounded-lg border-2 border-gray-200 overflow-hidden">
+                  <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-4 py-3">
+                    <h3 className="text-white font-bold text-lg">
+                      {language === "he" ? "נקודות עניין לאורך המסלול" : "Points of Interest Along Route"}
+                    </h3>
+                  </div>
+                  <div className="p-4 space-y-3 max-h-96 overflow-y-auto">
+                    {pois.map((poi, index) => (
+                      <div key={index} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                        <div 
+                          className="w-10 h-10 rounded-full flex items-center justify-center text-xl flex-shrink-0"
+                          style={{ backgroundColor: poi.categoryColor }}
+                        >
+                          {poi.categoryIcon}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-start justify-between gap-2">
+                            <div className="flex-1 min-w-0">
+                              <h4 className="font-semibold text-gray-900 truncate">{poi.name}</h4>
+                              <p className="text-xs text-gray-500 mt-0.5">{poi.category}</p>
+                            </div>
+                            {poi.rating && (
+                              <div className="flex items-center gap-1 text-sm flex-shrink-0">
+                                <span className="text-yellow-500">⭐</span>
+                                <span className="font-medium">{poi.rating}</span>
+                              </div>
+                            )}
+                          </div>
+                          {poi.vicinity && (
+                            <p className="text-sm text-gray-600 mt-1 line-clamp-1">{poi.vicinity}</p>
+                          )}
+                          <a
+                            href={`https://www.google.com/maps/search/?api=1&query=${poi.geometry.location.lat()},${poi.geometry.location.lng()}&query_place_id=${poi.place_id}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-700 mt-2 font-medium"
+                          >
+                            <Navigation className="w-3 h-3" />
+                            {language === "he" ? "נווט" : "Navigate"}
+                          </a>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </DialogContent>

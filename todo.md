@@ -252,3 +252,11 @@
 
 ## Remove Custom Fullscreen Button
 - [x] Remove custom fullscreen button from AllRouteMapsTab (Google Maps native button works better)
+
+## Add Points of Interest (POI) to Route Maps
+- [x] Integrate Google Maps Places API to search for POIs along routes
+- [x] Display colored markers on map for each POI type (gas stations, restaurants, tourist sites, ATMs)
+- [x] Show 5 closest POIs of each type (20 total)
+- [x] Add POI list below map with details (name, address, rating, distance)
+- [x] Add click handlers to open POI in Google Maps for navigation
+- [ ] Test with Slovakia routes
