@@ -268,13 +268,13 @@
 ## Fix Sharing and Collaborators
 - [x] Debug why collaborators cannot access shared trips (backend works, added clear error message)
 - [x] Fix invite link showing "permission denied" error (endpoint exists, improved error handling)
-- [ ] Test with existing collaborators (Efi, Michal, Ruth) - waiting for user feedback
+- [x] Test with existing collaborators (Efi, Michal, Ruth) - Michal successfully connected!
 
 ## Must Visit Feature
-- [ ] Add "Must Visit" list to save favorite POIs from route maps
-- [ ] Add "Save to Must Visit" button on POI items
-- [ ] Create Must Visit tab or section to view saved POIs
-- [ ] Allow removing items from Must Visit list
+- [x] Add "Must Visit" list to save favorite POIs from route maps
+- [x] Add "Save to Must Visit" button on POI items
+- [x] Create Must Visit tab or section to view saved POIs
+- [x] Allow removing items from Must Visit list
 
 ## Complete Dynamic Traveler Management
 - [ ] Create TravelerSettings component for managing travelers

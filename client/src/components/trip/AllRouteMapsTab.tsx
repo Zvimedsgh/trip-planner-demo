@@ -4,8 +4,9 @@ import { MapView } from "../Map";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { MapPin, Calendar, Clock, Navigation, Fuel, Utensils, Landmark, Banknote } from "lucide-react";
+import { MapPin, Calendar, Clock, Navigation, Fuel, Utensils, Landmark, Banknote, Star } from "lucide-react";
 import { format } from "date-fns";
+import { toast } from "sonner";
 
 interface AllRouteMapsTabProps {
   tripId: number;
@@ -19,6 +20,38 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
   
   const { data: routes, refetch } = trpc.routes.list.useQuery({ tripId });
   const generateRouteMutation = trpc.routes.generateRouteFromName.useMutation();
+  const savePOIMutation = trpc.mustVisitPOIs.create.useMutation({
+    onSuccess: () => {
+      toast.success(language === "he" ? "נשמר ל-Must Visit" : "Saved to Must Visit");
+    },
+    onError: () => {
+      toast.error(language === "he" ? "שגיאה בשמירה" : "Error saving");
+    },
+  });
+  
+  const handleSavePOI = (poi: any) => {
+    const categoryMap: Record<string, { icon: string; color: string }> = {
+      "Gas Stations": { icon: "⛽", color: "#ef4444" },
+      "Restaurants": { icon: "🍽️", color: "#22c55e" },
+      "Tourist Attractions": { icon: "🏛️", color: "#a855f7" },
+      "ATMs": { icon: "🏧", color: "#f97316" },
+    };
+    
+    const categoryInfo = categoryMap[poi.category] || { icon: "📍", color: "#6b7280" };
+    
+    savePOIMutation.mutate({
+      tripId,
+      name: poi.name,
+      address: poi.vicinity || "",
+      category: poi.category,
+      categoryIcon: categoryInfo.icon,
+      categoryColor: categoryInfo.color,
+      rating: poi.rating,
+      latitude: poi.geometry.location.lat(),
+      longitude: poi.geometry.location.lng(),
+      placeId: poi.place_id,
+    });
+  };
   
   // Force refetch when tripId changes to prevent cache collision
   useEffect(() => {
@@ -478,15 +511,24 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
                           {poi.vicinity && (
                             <p className="text-sm text-gray-600 mt-1 line-clamp-1">{poi.vicinity}</p>
                           )}
-                          <a
-                            href={`https://www.google.com/maps/search/?api=1&query=${poi.geometry.location.lat()},${poi.geometry.location.lng()}&query_place_id=${poi.place_id}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-700 mt-2 font-medium"
-                          >
-                            <Navigation className="w-3 h-3" />
-                            {language === "he" ? "נווט" : "Navigate"}
-                          </a>
+                          <div className="flex items-center gap-2 mt-2">
+                            <a
+                              href={`https://www.google.com/maps/search/?api=1&query=${poi.geometry.location.lat()},${poi.geometry.location.lng()}&query_place_id=${poi.place_id}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-700 font-medium"
+                            >
+                              <Navigation className="w-3 h-3" />
+                              {language === "he" ? "נווט" : "Navigate"}
+                            </a>
+                            <button
+                              onClick={() => handleSavePOI(poi)}
+                              className="inline-flex items-center gap-1 text-xs text-green-600 hover:text-green-700 font-medium"
+                            >
+                              <Star className="w-3 h-3" />
+                              {language === "he" ? "שמור ל-Must Visit" : "Save to Must Visit"}
+                            </button>
+                          </div>
                         </div>
                       </div>
                     ))}

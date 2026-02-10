@@ -1102,6 +1102,50 @@ export const appRouter = router({
       }),
   }),
 
+  // ============ MUST VISIT POIs ============
+  mustVisitPOIs: router({
+    list: protectedProcedure
+      .input(z.object({ tripId: z.number() }))
+      .query(async ({ ctx, input }) => {
+        const trip = await db.getTripById(input.tripId, ctx.user.id);
+        if (!trip) throw new Error('Trip not found or access denied');
+        return db.getTripMustVisitPOIs(input.tripId);
+      }),
+    
+    create: protectedProcedure
+      .input(z.object({
+        tripId: z.number(),
+        name: z.string().min(1),
+        address: z.string().optional(),
+        category: z.string().min(1),
+        categoryIcon: z.string().optional(),
+        categoryColor: z.string().optional(),
+        rating: z.number().optional(),
+        latitude: z.number(),
+        longitude: z.number(),
+        placeId: z.string().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const trip = await db.getTripById(input.tripId, ctx.user.id);
+        if (!trip) throw new Error('Trip not found or access denied');
+        return db.createMustVisitPOI({
+          ...input,
+          userId: ctx.user.id,
+          rating: input.rating?.toString(),
+          latitude: input.latitude.toString(),
+          longitude: input.longitude.toString(),
+        });
+      }),
+    
+    delete: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        await db.deleteMustVisitPOI(input.id, ctx.user.id);
+        return { success: true };
+      }),
+  }),
+
   // ============ STORAGE ============
   storage: router({
     uploadImage: protectedProcedure

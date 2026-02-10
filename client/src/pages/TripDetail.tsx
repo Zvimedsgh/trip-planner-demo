@@ -7,7 +7,7 @@ import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
 import { 
   ArrowLeft, Calendar, Car, DollarSign, FileText, Globe, 
-  Hotel, Loader2, MapPin, Plane, Utensils, Clock, ArrowRight, Share2, Copy, Check, X, Map, CheckSquare, Navigation, Trash2, Users
+  Hotel, Loader2, MapPin, Plane, Utensils, Clock, ArrowRight, Share2, Copy, Check, X, Map, CheckSquare, Navigation, Trash2, Users, Star
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import {
@@ -37,6 +37,7 @@ import CollaboratorsDialog from "@/components/trip/CollaboratorsDialog";
 import RouteManager from "@/components/trip/RouteManager";
 import PaymentsTab from "@/components/trip/PaymentsTab";
 import TravelersTab from "@/components/trip/TravelersTab";
+import MustVisitTab from "@/components/trip/MustVisitTab";
 
 export default function TripDetail() {
   const params = useParams<{ id: string }>();
@@ -209,6 +210,7 @@ export default function TripDetail() {
     { id: "timeline", label: t("timeline"), icon: Clock, color: "bg-cyan-200 hover:bg-cyan-300 data-[state=active]:bg-cyan-500 data-[state=active]:text-white border-cyan-300 data-[state=active]:border-cyan-700" },
     { id: "routes", label: language === "he" ? "מפות מסלול" : "Route Maps", icon: Map, color: "bg-teal-200 hover:bg-teal-300 data-[state=active]:bg-teal-500 data-[state=active]:text-white border-teal-300 data-[state=active]:border-teal-700" },
     { id: "route_manager", label: language === "he" ? "ניהול מסלולים" : "Route Manager", icon: Navigation, color: "bg-indigo-200 hover:bg-indigo-300 data-[state=active]:bg-indigo-500 data-[state=active]:text-white border-indigo-300 data-[state=active]:border-indigo-700" },
+    { id: "must_visit", label: language === "he" ? "Must Visit" : "Must Visit", icon: Star, color: "bg-yellow-200 hover:bg-yellow-300 data-[state=active]:bg-yellow-500 data-[state=active]:text-white border-yellow-300 data-[state=active]:border-yellow-700" },
     // { id: "daytrips", label: t("dayTrips"), icon: ArrowRight, color: "bg-pink-50 hover:bg-pink-100 data-[state=active]:bg-pink-300 data-[state=active]:text-pink-950 border-pink-200 data-[state=active]:border-pink-600" }, // Hidden temporarily
     { id: "checklist", label: language === "he" ? "רשימת משימות" : "Checklist", icon: CheckSquare, color: "bg-lime-200 hover:bg-lime-300 data-[state=active]:bg-lime-500 data-[state=active]:text-white border-lime-300 data-[state=active]:border-lime-700" },
     { id: "travelers", label: language === "he" ? "נוסעים" : "Travelers", icon: Users, color: "bg-rose-200 hover:bg-rose-300 data-[state=active]:bg-rose-500 data-[state=active]:text-white border-rose-300 data-[state=active]:border-rose-700" },
@@ -428,6 +430,10 @@ export default function TripDetail() {
 
           <TabsContent value="route_manager">
             <RouteManager tripId={tripId} />
+          </TabsContent>
+
+          <TabsContent value="must_visit">
+            <MustVisitTab tripId={tripId} />
           </TabsContent>
 
           <TabsContent value="daytrips">

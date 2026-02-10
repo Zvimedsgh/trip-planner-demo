@@ -16,7 +16,8 @@ import {
   routes, InsertRoute, Route,
   routePointsOfInterest, InsertRoutePointOfInterest, RoutePointOfInterest,
   payments, InsertPayment, Payment,
-  tripTravelers, InsertTripTraveler, TripTraveler
+  tripTravelers, InsertTripTraveler, TripTraveler,
+  mustVisitPOIs, InsertMustVisitPOI, MustVisitPOI
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -1014,4 +1015,43 @@ export async function deleteTraveler(id: number): Promise<boolean> {
     console.error("[Database] Failed to delete traveler:", error);
     return false;
   }
+}
+
+// ============ MUST VISIT POIs QUERIES ============
+
+export async function getTripMustVisitPOIs(tripId: number): Promise<MustVisitPOI[]> {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return db
+    .select()
+    .from(mustVisitPOIs)
+    .where(eq(mustVisitPOIs.tripId, tripId))
+    .orderBy(desc(mustVisitPOIs.createdAt));
+}
+
+export async function createMustVisitPOI(data: InsertMustVisitPOI): Promise<MustVisitPOI> {
+  const db = await getDb();
+  if (!db) throw new Error('Database not available');
+  
+  const result = await db.insert(mustVisitPOIs).values(data);
+  const insertedId = Number(result[0].insertId);
+  
+  const inserted = await db
+    .select()
+    .from(mustVisitPOIs)
+    .where(eq(mustVisitPOIs.id, insertedId))
+    .limit(1);
+  
+  return inserted[0];
+}
+
+export async function deleteMustVisitPOI(id: number, userId: number): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error('Database not available');
+  
+  // Verify ownership before deleting
+  await db
+    .delete(mustVisitPOIs)
+    .where(and(eq(mustVisitPOIs.id, id), eq(mustVisitPOIs.userId, userId)));
 }
