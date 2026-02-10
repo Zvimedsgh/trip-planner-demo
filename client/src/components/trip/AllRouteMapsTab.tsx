@@ -4,7 +4,7 @@ import { MapView } from "../Map";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { MapPin, Calendar, Clock } from "lucide-react";
+import { MapPin, Calendar, Clock, Navigation, Maximize2, Minimize2 } from "lucide-react";
 import { format } from "date-fns";
 
 interface AllRouteMapsTabProps {
@@ -15,6 +15,7 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
   const { language } = useLanguage();
   const [selectedRoute, setSelectedRoute] = useState<any | null>(null);
   const [generatingRoute, setGeneratingRoute] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   
   const { data: routes, refetch } = trpc.routes.list.useQuery({ tripId });
   const generateRouteMutation = trpc.routes.generateRouteFromName.useMutation();
@@ -178,17 +179,26 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
 
       {/* Map Dialog */}
       <Dialog open={!!selectedRoute} onOpenChange={(open) => !open && setSelectedRoute(null)}>
-        <DialogContent className="max-w-[95vw] w-[95vw] h-[95vh] p-6">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-bold">
-              {selectedRoute && (language === "he" && selectedRoute.nameHe ? selectedRoute.nameHe : selectedRoute?.name)}
-            </DialogTitle>
+        <DialogContent className={isFullscreen ? "max-w-full w-screen h-screen p-0 m-0" : "max-w-[95vw] w-[95vw] h-[95vh] p-6"}>
+          <DialogHeader className={isFullscreen ? "p-4" : ""}>
+            <div className="flex items-center justify-between">
+              <DialogTitle className="text-2xl font-bold">
+                {selectedRoute && (language === "he" && selectedRoute.nameHe ? selectedRoute.nameHe : selectedRoute?.name)}
+              </DialogTitle>
+              <button
+                onClick={() => setIsFullscreen(!isFullscreen)}
+                className="p-2 hover:bg-gray-100 rounded-md transition-colors"
+                aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+              >
+                {isFullscreen ? <Minimize2 className="w-5 h-5" /> : <Maximize2 className="w-5 h-5" />}
+              </button>
+            </div>
           </DialogHeader>
           
           {selectedRoute && (
             <div className="flex flex-col h-full gap-4">
-              {/* Map Container */}
-              <div className="flex-1 rounded-lg overflow-hidden border-2 border-gray-200">
+              {/* Map Container with Distance/Time Overlay */}
+              <div className="flex-1 rounded-lg overflow-hidden border-2 border-gray-200 relative">
                 <MapView
                   initialCenter={(() => {
                     // Parse mapData to get coordinates
@@ -266,18 +276,7 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
                         title: mapConfig.destination.address,
                       });
                       
-                      // Add info window with route details
-                      const infoWindow = new google.maps.InfoWindow({
-                        content: `<div style="padding: 10px; max-width: 300px;">
-                          <h3 style="font-weight: bold; margin-bottom: 5px; font-size: 16px;">${mapConfig.origin.address} → ${mapConfig.destination.address}</h3>
-                          <p style="color: #666; font-size: 14px; margin: 5px 0;">📏 Distance: ${mapConfig.distance.text}</p>
-                          <p style="color: #666; font-size: 14px; margin: 0;">⏱️ Duration: ${mapConfig.duration.text}</p>
-                        </div>`,
-                        position: mapConfig.origin.location,
-                      });
-                      
-                      // Open info window by default
-                      infoWindow.open(map);
+                      // Distance/time will be shown in bottom panel (removed info window)
                       
                       // Fit map to show entire route
                       const bounds = new google.maps.LatLngBounds();
@@ -292,36 +291,44 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
                         title: mapConfig.location.name,
                       });
                       
-                      // Add info window with location details
-                      const infoWindow = new google.maps.InfoWindow({
-                        content: `<div style="padding: 10px; max-width: 300px;">
-                          <h3 style="font-weight: bold; margin-bottom: 5px; font-size: 16px;">${mapConfig.location.name}</h3>
-                          <p style="color: #666; font-size: 14px; margin: 0;">${mapConfig.location.address}</p>
-                        </div>`,
-                      });
-                      
-                      marker.addListener("click", () => {
-                        infoWindow.open(map, marker);
-                      });
-                      
-                      // Open info window by default
-                      infoWindow.open(map, marker);
-                    } else {
-                      // No map data - show a simple message
-                      const infoWindow = new google.maps.InfoWindow({
-                        content: `<div style="padding: 10px;">
-                          <h3 style="font-weight: bold; margin-bottom: 5px;">${selectedRoute.name}</h3>
-                          <p style="color: #666;">${language === "he" ? "אין נתוני מיקום זמינים" : "No location data available"}</p>
-                        </div>`,
-                        position: map.getCenter(),
-                      });
-                      infoWindow.open(map);
+                      // Info window removed - location details shown in bottom panel
                     }
                   }}
                 />
+                
+                {/* Distance and Time Panel (Bottom Overlay) */}
+                {selectedRoute.mapData && (() => {
+                  try {
+                    const mapConfig = JSON.parse(selectedRoute.mapData);
+                    if (mapConfig?.distance && mapConfig?.duration) {
+                      return (
+                        <div className="absolute bottom-3 left-3 bg-white/95 backdrop-blur-sm rounded-md shadow-md px-4 py-2 flex items-center gap-4 border border-gray-200">
+                          <div className="flex items-center gap-1.5">
+                            <Navigation className="w-4 h-4 text-blue-600" />
+                            <div>
+                              <div className="text-[10px] text-gray-500">{language === "he" ? "מרחק" : "Distance"}</div>
+                              <div className="text-sm font-bold text-gray-900">{mapConfig.distance.text}</div>
+                            </div>
+                          </div>
+                          <div className="w-px h-6 bg-gray-300" />
+                          <div className="flex items-center gap-1.5">
+                            <Clock className="w-4 h-4 text-green-600" />
+                            <div>
+                              <div className="text-[10px] text-gray-500">{language === "he" ? "זמן נסיעה" : "Duration"}</div>
+                              <div className="text-sm font-bold text-gray-900">{mapConfig.duration.text}</div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    }
+                  } catch (e) {
+                    console.error("Failed to parse mapData:", e);
+                  }
+                  return null;
+                })()}
               </div>
               
-              {/* Location Info */}
+              {/* Route Info */}
               <div className="bg-gray-50 rounded-lg p-4 space-y-2">
                 {selectedRoute.description && (
                   <p className="text-gray-700">
@@ -337,6 +344,18 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
                     <div className="flex items-center gap-2">
                       <Clock className="w-4 h-4" />
                       <span>{selectedRoute.time}</span>
+                    </div>
+                  )}
+                  {selectedRoute.distanceKm && (
+                    <div className="flex items-center gap-2">
+                      <Navigation className="w-4 h-4" />
+                      <span>{selectedRoute.distanceKm} {language === "he" ? "ק\"מ" : "km"}</span>
+                    </div>
+                  )}
+                  {selectedRoute.estimatedDuration && (
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-4 h-4" />
+                      <span>{Math.floor(selectedRoute.estimatedDuration / 60)}h {selectedRoute.estimatedDuration % 60}m</span>
                     </div>
                   )}
                 </div>

@@ -224,3 +224,28 @@
 - [x] Update routes 4, 5, 6, 7 to include "Route #:" prefix
 - [x] Verify all 7 routes have consistent naming
 - [x] Save checkpoint
+
+## Fix Route 4 and Add Distance/Time Display
+- [x] Fix Route 4 missing "Route 4:" prefix (already fixed in DB)
+- [x] Clear mapData to trigger regeneration with distance/time
+- [ ] User clicks all routes to regenerate mapData
+- [ ] Verify distance/time appears in route cards and map
+- [ ] Save checkpoint
+
+## Move Distance/Time to Fixed Bottom Panel
+- [x] Remove info window with distance/time
+- [x] Add fixed bottom panel on map showing distance/time
+- [x] Add distance/time to route info section below map
+- [x] Test and save checkpoint
+
+## Make Distance/Time Panel Smaller
+- [x] Reduce text size, icon size, and padding
+- [x] Test and save checkpoint
+
+## Reposition Panel to Not Block Map Controls
+- [x] Move panel to left side to avoid blocking zoom buttons
+- [x] Test and save checkpoint
+
+## Add Fullscreen Button to Map
+- [x] Add fullscreen toggle button in top-right corner of map
+- [x] Test and save checkpoint
