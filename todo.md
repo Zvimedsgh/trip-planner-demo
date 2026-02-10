@@ -298,3 +298,15 @@
 - [x] Update TravelersTab UI to make identifier field optional
 - [x] Update backend validation to allow empty identifier
 - [ ] Test creating travelers without identifier
+
+## Copy Data from Slovakia to Demo Trip
+- [x] Get trip IDs for both trips
+- [x] Copy hotels
+- [x] Copy transportation (flights + car rental)
+- [x] Copy routes
+- [x] Copy restaurants
+- [x] Copy payments
+- [x] Copy travelers
+- [x] Copy checklist items
+- [x] Copy documents (if any)
+- [x] Verify all data copied correctly

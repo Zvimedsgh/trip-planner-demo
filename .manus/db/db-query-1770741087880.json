@@ -1,0 +1,590 @@
+{
+  "query": "SELECT id, tripId, name FROM hotels ORDER BY tripId, id;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, tripId, name FROM hotels ORDER BY tripId, id;",
+  "rows": [
+    {
+      "id": "30001",
+      "tripId": "30001",
+      "name": "myNext - Johannesgasse Apartments"
+    },
+    {
+      "id": "30002",
+      "tripId": "30001",
+      "name": "Private holiday house Vivendi"
+    },
+    {
+      "id": "30003",
+      "tripId": "30001",
+      "name": "Charming & Cozy Ambiente Apartments"
+    },
+    {
+      "id": "60002",
+      "tripId": "30001",
+      "name": "Vienna Parking"
+    },
+    {
+      "id": "180001",
+      "tripId": "30001",
+      "name": "DoubleTree By Hilton Košice"
+    },
+    {
+      "id": "210001",
+      "tripId": "300001",
+      "name": "Test Hotel"
+    },
+    {
+      "id": "270001",
+      "tripId": "600002",
+      "name": "myNext - Johannesgasse Apartments"
+    },
+    {
+      "id": "270002",
+      "tripId": "600002",
+      "name": "Private holiday house Vivendi"
+    },
+    {
+      "id": "270003",
+      "tripId": "600002",
+      "name": "Charming & Cozy Ambiente Apartments"
+    },
+    {
+      "id": "270004",
+      "tripId": "600002",
+      "name": "Vienna Parking"
+    },
+    {
+      "id": "270005",
+      "tripId": "600002",
+      "name": "DoubleTree By Hilton Košice"
+    },
+    {
+      "id": "270006",
+      "tripId": "600003",
+      "name": "myNext - Johannesgasse Apartments"
+    },
+    {
+      "id": "270007",
+      "tripId": "600003",
+      "name": "Private holiday house Vivendi"
+    },
+    {
+      "id": "270008",
+      "tripId": "600003",
+      "name": "Charming & Cozy Ambiente Apartments"
+    },
+    {
+      "id": "270009",
+      "tripId": "600003",
+      "name": "Vienna Parking"
+    },
+    {
+      "id": "270010",
+      "tripId": "600003",
+      "name": "DoubleTree By Hilton Košice"
+    },
+    {
+      "id": "270011",
+      "tripId": "600004",
+      "name": "myNext - Johannesgasse Apartments"
+    },
+    {
+      "id": "270012",
+      "tripId": "600004",
+      "name": "Private holiday house Vivendi"
+    },
+    {
+      "id": "270013",
+      "tripId": "600004",
+      "name": "Charming & Cozy Ambiente Apartments"
+    },
+    {
+      "id": "270014",
+      "tripId": "600004",
+      "name": "Vienna Parking"
+    },
+    {
+      "id": "270015",
+      "tripId": "600004",
+      "name": "DoubleTree By Hilton Košice"
+    },
+    {
+      "id": "270016",
+      "tripId": "600005",
+      "name": "myNext - Johannesgasse Apartments"
+    },
+    {
+      "id": "270017",
+      "tripId": "600005",
+      "name": "Private holiday house Vivendi"
+    },
+    {
+      "id": "270018",
+      "tripId": "600005",
+      "name": "Charming & Cozy Ambiente Apartments"
+    },
+    {
+      "id": "270019",
+      "tripId": "600005",
+      "name": "Vienna Parking"
+    },
+    {
+      "id": "270020",
+      "tripId": "600005",
+      "name": "DoubleTree By Hilton Košice"
+    },
+    {
+      "id": "270021",
+      "tripId": "600006",
+      "name": "myNext - Johannesgasse Apartments"
+    },
+    {
+      "id": "270022",
+      "tripId": "600006",
+      "name": "Private holiday house Vivendi"
+    },
+    {
+      "id": "270023",
+      "tripId": "600006",
+      "name": "Charming & Cozy Ambiente Apartments"
+    },
+    {
+      "id": "270024",
+      "tripId": "600006",
+      "name": "Vienna Parking"
+    },
+    {
+      "id": "270025",
+      "tripId": "600006",
+      "name": "DoubleTree By Hilton Košice"
+    },
+    {
+      "id": "270026",
+      "tripId": "600007",
+      "name": "myNext - Johannesgasse Apartments"
+    },
+    {
+      "id": "270027",
+      "tripId": "600007",
+      "name": "Private holiday house Vivendi"
+    },
+    {
+      "id": "270028",
+      "tripId": "600007",
+      "name": "Charming & Cozy Ambiente Apartments"
+    },
+    {
+      "id": "270029",
+      "tripId": "600007",
+      "name": "Vienna Parking"
+    },
+    {
+      "id": "270030",
+      "tripId": "600007",
+      "name": "DoubleTree By Hilton Košice"
+    },
+    {
+      "id": "270031",
+      "tripId": "600008",
+      "name": "myNext - Johannesgasse Apartments"
+    },
+    {
+      "id": "270032",
+      "tripId": "600008",
+      "name": "Private holiday house Vivendi"
+    },
+    {
+      "id": "270033",
+      "tripId": "600008",
+      "name": "Charming & Cozy Ambiente Apartments"
+    },
+    {
+      "id": "270034",
+      "tripId": "600008",
+      "name": "Vienna Parking"
+    },
+    {
+      "id": "270035",
+      "tripId": "600008",
+      "name": "DoubleTree By Hilton Košice"
+    },
+    {
+      "id": "270036",
+      "tripId": "600009",
+      "name": "myNext - Johannesgasse Apartments"
+    },
+    {
+      "id": "270037",
+      "tripId": "600009",
+      "name": "Private holiday house Vivendi"
+    },
+    {
+      "id": "270038",
+      "tripId": "600009",
+      "name": "Charming & Cozy Ambiente Apartments"
+    },
+    {
+      "id": "270039",
+      "tripId": "600009",
+      "name": "Vienna Parking"
+    },
+    {
+      "id": "270040",
+      "tripId": "600009",
+      "name": "DoubleTree By Hilton Košice"
+    },
+    {
+      "id": "270041",
+      "tripId": "600010",
+      "name": "myNext - Johannesgasse Apartments"
+    },
+    {
+      "id": "270042",
+      "tripId": "600010",
+      "name": "Private holiday house Vivendi"
+    },
+    {
+      "id": "270043",
+      "tripId": "600010",
+      "name": "Charming & Cozy Ambiente Apartments"
+    },
+    {
+      "id": "270044",
+      "tripId": "600010",
+      "name": "Vienna Parking"
+    },
+    {
+      "id": "270045",
+      "tripId": "600010",
+      "name": "DoubleTree By Hilton Košice"
+    },
+    {
+      "id": "270046",
+      "tripId": "600011",
+      "name": "myNext - Johannesgasse Apartments"
+    },
+    {
+      "id": "270047",
+      "tripId": "600011",
+      "name": "Private holiday house Vivendi"
+    },
+    {
+      "id": "270048",
+      "tripId": "600011",
+      "name": "Charming & Cozy Ambiente Apartments"
+    },
+    {
+      "id": "270049",
+      "tripId": "600011",
+      "name": "Vienna Parking"
+    },
+    {
+      "id": "270050",
+      "tripId": "600011",
+      "name": "DoubleTree By Hilton Košice"
+    },
+    {
+      "id": "270051",
+      "tripId": "600012",
+      "name": "myNext - Johannesgasse Apartments"
+    },
+    {
+      "id": "270052",
+      "tripId": "600012",
+      "name": "Private holiday house Vivendi"
+    },
+    {
+      "id": "270053",
+      "tripId": "600012",
+      "name": "Charming & Cozy Ambiente Apartments"
+    },
+    {
+      "id": "270054",
+      "tripId": "600012",
+      "name": "Vienna Parking"
+    },
+    {
+      "id": "270055",
+      "tripId": "600012",
+      "name": "DoubleTree By Hilton Košice"
+    },
+    {
+      "id": "270056",
+      "tripId": "600013",
+      "name": "myNext - Johannesgasse Apartments"
+    },
+    {
+      "id": "270057",
+      "tripId": "600013",
+      "name": "Private holiday house Vivendi"
+    },
+    {
+      "id": "270058",
+      "tripId": "600013",
+      "name": "Charming & Cozy Ambiente Apartments"
+    },
+    {
+      "id": "270059",
+      "tripId": "600013",
+      "name": "Vienna Parking"
+    },
+    {
+      "id": "270060",
+      "tripId": "600013",
+      "name": "DoubleTree By Hilton Košice"
+    },
+    {
+      "id": "270061",
+      "tripId": "600014",
+      "name": "myNext - Johannesgasse Apartments"
+    },
+    {
+      "id": "270062",
+      "tripId": "600014",
+      "name": "Private holiday house Vivendi"
+    },
+    {
+      "id": "270063",
+      "tripId": "600014",
+      "name": "Charming & Cozy Ambiente Apartments"
+    },
+    {
+      "id": "270064",
+      "tripId": "600014",
+      "name": "Vienna Parking"
+    },
+    {
+      "id": "270065",
+      "tripId": "600014",
+      "name": "DoubleTree By Hilton Košice"
+    },
+    {
+      "id": "270066",
+      "tripId": "600015",
+      "name": "myNext - Johannesgasse Apartments"
+    },
+    {
+      "id": "270067",
+      "tripId": "600015",
+      "name": "Private holiday house Vivendi"
+    },
+    {
+      "id": "270068",
+      "tripId": "600015",
+      "name": "Charming & Cozy Ambiente Apartments"
+    },
+    {
+      "id": "270069",
+      "tripId": "600015",
+      "name": "Vienna Parking"
+    },
+    {
+      "id": "270070",
+      "tripId": "600015",
+      "name": "DoubleTree By Hilton Košice"
+    },
+    {
+      "id": "270071",
+      "tripId": "600016",
+      "name": "myNext - Johannesgasse Apartments"
+    },
+    {
+      "id": "270072",
+      "tripId": "600016",
+      "name": "Private holiday house Vivendi"
+    },
+    {
+      "id": "270073",
+      "tripId": "600016",
+      "name": "Charming & Cozy Ambiente Apartments"
+    },
+    {
+      "id": "270074",
+      "tripId": "600016",
+      "name": "Vienna Parking"
+    },
+    {
+      "id": "270075",
+      "tripId": "600016",
+      "name": "DoubleTree By Hilton Košice"
+    },
+    {
+      "id": "270076",
+      "tripId": "600017",
+      "name": "myNext - Johannesgasse Apartments"
+    },
+    {
+      "id": "270077",
+      "tripId": "600017",
+      "name": "Private holiday house Vivendi"
+    },
+    {
+      "id": "270078",
+      "tripId": "600017",
+      "name": "Charming & Cozy Ambiente Apartments"
+    },
+    {
+      "id": "270079",
+      "tripId": "600017",
+      "name": "Vienna Parking"
+    },
+    {
+      "id": "270080",
+      "tripId": "600017",
+      "name": "DoubleTree By Hilton Košice"
+    },
+    {
+      "id": "270081",
+      "tripId": "600018",
+      "name": "myNext - Johannesgasse Apartments"
+    },
+    {
+      "id": "270082",
+      "tripId": "600018",
+      "name": "Private holiday house Vivendi"
+    },
+    {
+      "id": "270083",
+      "tripId": "600018",
+      "name": "Charming & Cozy Ambiente Apartments"
+    },
+    {
+      "id": "270084",
+      "tripId": "600018",
+      "name": "Vienna Parking"
+    },
+    {
+      "id": "270085",
+      "tripId": "600018",
+      "name": "DoubleTree By Hilton Košice"
+    },
+    {
+      "id": "270086",
+      "tripId": "600019",
+      "name": "myNext - Johannesgasse Apartments"
+    },
+    {
+      "id": "270087",
+      "tripId": "600019",
+      "name": "Private holiday house Vivendi"
+    },
+    {
+      "id": "270088",
+      "tripId": "600019",
+      "name": "Charming & Cozy Ambiente Apartments"
+    },
+    {
+      "id": "270089",
+      "tripId": "600019",
+      "name": "Vienna Parking"
+    },
+    {
+      "id": "270090",
+      "tripId": "600019",
+      "name": "DoubleTree By Hilton Košice"
+    },
+    {
+      "id": "270091",
+      "tripId": "600020",
+      "name": "myNext - Johannesgasse Apartments"
+    },
+    {
+      "id": "270092",
+      "tripId": "600020",
+      "name": "Private holiday house Vivendi"
+    },
+    {
+      "id": "270093",
+      "tripId": "600020",
+      "name": "Charming & Cozy Ambiente Apartments"
+    },
+    {
+      "id": "270094",
+      "tripId": "600020",
+      "name": "Vienna Parking"
+    },
+    {
+      "id": "270095",
+      "tripId": "600020",
+      "name": "DoubleTree By Hilton Košice"
+    },
+    {
+      "id": "270096",
+      "tripId": "600021",
+      "name": "myNext - Johannesgasse Apartments"
+    },
+    {
+      "id": "270097",
+      "tripId": "600021",
+      "name": "Private holiday house Vivendi"
+    },
+    {
+      "id": "270098",
+      "tripId": "600021",
+      "name": "Charming & Cozy Ambiente Apartments"
+    },
+    {
+      "id": "270099",
+      "tripId": "600021",
+      "name": "Vienna Parking"
+    },
+    {
+      "id": "270100",
+      "tripId": "600021",
+      "name": "DoubleTree By Hilton Košice"
+    },
+    {
+      "id": "270101",
+      "tripId": "600022",
+      "name": "myNext - Johannesgasse Apartments"
+    },
+    {
+      "id": "270102",
+      "tripId": "600022",
+      "name": "Private holiday house Vivendi"
+    },
+    {
+      "id": "270103",
+      "tripId": "600022",
+      "name": "Charming & Cozy Ambiente Apartments"
+    },
+    {
+      "id": "270104",
+      "tripId": "600022",
+      "name": "Vienna Parking"
+    },
+    {
+      "id": "270105",
+      "tripId": "600022",
+      "name": "DoubleTree By Hilton Košice"
+    },
+    {
+      "id": "270106",
+      "tripId": "600023",
+      "name": "myNext - Johannesgasse Apartments"
+    },
+    {
+      "id": "270107",
+      "tripId": "600023",
+      "name": "Private holiday house Vivendi"
+    },
+    {
+      "id": "270108",
+      "tripId": "600023",
+      "name": "Charming & Cozy Ambiente Apartments"
+    },
+    {
+      "id": "270109",
+      "tripId": "600023",
+      "name": "Vienna Parking"
+    },
+    {
+      "id": "270110",
+      "tripId": "600023",
+      "name": "DoubleTree By Hilton Košice"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttripId\tname\n30001\t30001\tmyNext - Johannesgasse Apartments\n30002\t30001\tPrivate holiday house Vivendi\n30003\t30001\tCharming & Cozy Ambiente Apartments\n60002\t30001\tVienna Parking\n180001\t30001\tDoubleTree By Hilton Košice\n210001\t300001\tTest Hotel\n270001\t600002\tmyNext - Johannesgasse Apartments\n270002\t600002\tPrivate holiday house Vivendi\n270003\t600002\tCharming & Cozy Ambiente Apartments\n270004\t600002\tVienna Parking\n270005\t600002\tDoubleTree By Hilton Košice\n270006\t600003\tmyNext - Johannesgasse Apartments\n270007\t600003\tPrivate holiday house Vivendi\n270008\t600003\tCharming & Cozy Ambiente Apartments\n270009\t600003\tVienna Parking\n270010\t600003\tDoubleTree By Hilton Košice\n270011\t600004\tmyNext - Johannesgasse Apartments\n270012\t600004\tPrivate holiday house Vivendi\n270013\t600004\tCharming & Cozy Ambiente Apartments\n270014\t600004\tVienna Parking\n270015\t600004\tDoubleTree By Hilton Košice\n270016\t600005\tmyNext - Johannesgasse Apartments\n270017\t600005\tPrivate holiday house Vivendi\n270018\t600005\tCharming & Cozy Ambiente Apartments\n270019\t600005\tVienna Parking\n270020\t600005\tDoubleTree By Hilton Košice\n270021\t600006\tmyNext - Johannesgasse Apartments\n270022\t600006\tPrivate holiday house Vivendi\n270023\t600006\tCharming & Cozy Ambiente Apartments\n270024\t600006\tVienna Parking\n270025\t600006\tDoubleTree By Hilton Košice\n270026\t600007\tmyNext - Johannesgasse Apartments\n270027\t600007\tPrivate holiday house Vivendi\n270028\t600007\tCharming & Cozy Ambiente Apartments\n270029\t600007\tVienna Parking\n270030\t600007\tDoubleTree By Hilton Košice\n270031\t600008\tmyNext - Johannesgasse Apartments\n270032\t600008\tPrivate holiday house Vivendi\n270033\t600008\tCharming & Cozy Ambiente Apartments\n270034\t600008\tVienna Parking\n270035\t600008\tDoubleTree By Hilton Košice\n270036\t600009\tmyNext - Johannesgasse Apartments\n270037\t600009\tPrivate holiday house Vivendi\n270038\t600009\tCharming & Cozy Ambiente Apartments\n270039\t600009\tVienna Parking\n270040\t600009\tDoubleTree By Hilton Košice\n270041\t600010\tmyNext - Johannesgasse Apartments\n270042\t600010\tPrivate holiday house Vivendi\n270043\t600010\tCharming & Cozy Ambiente Apartments\n270044\t600010\tVienna Parking\n270045\t600010\tDoubleTree By Hilton Košice\n270046\t600011\tmyNext - Johannesgasse Apartments\n270047\t600011\tPrivate holiday house Vivendi\n270048\t600011\tCharming & Cozy Ambiente Apartments\n270049\t600011\tVienna Parking\n270050\t600011\tDoubleTree By Hilton Košice\n270051\t600012\tmyNext - Johannesgasse Apartments\n270052\t600012\tPrivate holiday house Vivendi\n270053\t600012\tCharming & Cozy Ambiente Apartments\n270054\t600012\tVienna Parking\n270055\t600012\tDoubleTree By Hilton Košice\n270056\t600013\tmyNext - Johannesgasse Apartments\n270057\t600013\tPrivate holiday house Vivendi\n270058\t600013\tCharming & Cozy Ambiente Apartments\n270059\t600013\tVienna Parking\n270060\t600013\tDoubleTree By Hilton Košice\n270061\t600014\tmyNext - Johannesgasse Apartments\n270062\t600014\tPrivate holiday house Vivendi\n270063\t600014\tCharming & Cozy Ambiente Apartments\n270064\t600014\tVienna Parking\n270065\t600014\tDoubleTree By Hilton Košice\n270066\t600015\tmyNext - Johannesgasse Apartments\n270067\t600015\tPrivate holiday house Vivendi\n270068\t600015\tCharming & Cozy Ambiente Apartments\n270069\t600015\tVienna Parking\n270070\t600015\tDoubleTree By Hilton Košice\n270071\t600016\tmyNext - Johannesgasse Apartments\n270072\t600016\tPrivate holiday house Vivendi\n270073\t600016\tCharming & Cozy Ambiente Apartments\n270074\t600016\tVienna Parking\n270075\t600016\tDoubleTree By Hilton Košice\n270076\t600017\tmyNext - Johannesgasse Apartments\n270077\t600017\tPrivate holiday house Vivendi\n270078\t600017\tCharming & Cozy Ambiente Apartments\n270079\t600017\tVienna Parking\n270080\t600017\tDoubleTree By Hilton Košice\n270081\t600018\tmyNext - Johannesgasse Apartments\n270082\t600018\tPrivate holiday house Vivendi\n270083\t600018\tCharming & Cozy Ambiente Apartments\n270084\t600018\tVienna Parking\n270085\t600018\tDoubleTree By Hilton Košice\n270086\t600019\tmyNext - Johannesgasse Apartments\n270087\t600019\tPrivate holiday house Vivendi\n270088\t600019\tCharming & Cozy Ambiente Apartments\n270089\t600019\tVienna Parking\n270090\t600019\tDoubleTree By Hilton Košice\n270091\t600020\tmyNext - Johannesgasse Apartments\n270092\t600020\tPrivate holiday house Vivendi\n270093\t600020\tCharming & Cozy Ambiente Apartments\n270094\t600020\tVienna Parking\n270095\t600020\tDoubleTree By Hilton Košice\n270096\t600021\tmyNext - Johannesgasse Apartments\n270097\t600021\tPrivate holiday house Vivendi\n270098\t600021\tCharming & Cozy Ambiente Apartments\n270099\t600021\tVienna Parking\n270100\t600021\tDoubleTree By Hilton Košice\n270101\t600022\tmyNext - Johannesgasse Apartments\n270102\t600022\tPrivate holiday house Vivendi\n270103\t600022\tCharming & Cozy Ambiente Apartments\n270104\t600022\tVienna Parking\n270105\t600022\tDoubleTree By Hilton Košice\n270106\t600023\tmyNext - Johannesgasse Apartments\n270107\t600023\tPrivate holiday house Vivendi\n270108\t600023\tCharming & Cozy Ambiente Apartments\n270109\t600023\tVienna Parking\n270110\t600023\tDoubleTree By Hilton Košice\n",
+  "stderr": "",
+  "execution_time_ms": 1534
+}

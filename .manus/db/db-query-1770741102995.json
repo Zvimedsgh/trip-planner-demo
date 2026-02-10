@@ -1,0 +1,15 @@
+{
+  "query": "SELECT t.id as tripId, t.name as tripName, COUNT(h.id) as hotelCount\nFROM trips t\nLEFT JOIN hotels h ON t.id = h.tripId\nWHERE t.name LIKE '%Slovakia%'\nGROUP BY t.id, t.name;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT t.id as tripId, t.name as tripName, COUNT(h.id) as hotelCount\nFROM trips t\nLEFT JOIN hotels h ON t.id = h.tripId\nWHERE t.name LIKE '%Slovakia%'\nGROUP BY t.id, t.name;",
+  "rows": [
+    {
+      "tripId": "30001",
+      "tripName": "Goren Roots Trip to Slovakia",
+      "hotelCount": "5"
+    }
+  ],
+  "messages": [],
+  "stdout": "tripId\ttripName\thotelCount\n30001\tGoren Roots Trip to Slovakia\t5\n",
+  "stderr": "",
+  "execution_time_ms": 1615
+}

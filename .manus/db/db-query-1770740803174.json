@@ -1,0 +1,50 @@
+{
+  "query": "SELECT \n  'Hotels' as category, \n  (SELECT COUNT(*) FROM hotels WHERE tripId = 1) as slovakia_count,\n  (SELECT COUNT(*) FROM hotels WHERE tripId = 2) as demo_count\nUNION ALL\nSELECT \n  'Transportation',\n  (SELECT COUNT(*) FROM transportation WHERE tripId = 1),\n  (SELECT COUNT(*) FROM transportation WHERE tripId = 2)\nUNION ALL\nSELECT \n  'Routes',\n  (SELECT COUNT(*) FROM trip_routes WHERE tripId = 1),\n  (SELECT COUNT(*) FROM trip_routes WHERE tripId = 2)\nUNION ALL\nSELECT \n  'Restaurants',\n  (SELECT COUNT(*) FROM restaurants WHERE tripId = 1),\n  (SELECT COUNT(*) FROM restaurants WHERE tripId = 2)\nUNION ALL\nSELECT \n  'Payments',\n  (SELECT COUNT(*) FROM payments WHERE tripId = 1),\n  (SELECT COUNT(*) FROM payments WHERE tripId = 2)\nUNION ALL\nSELECT \n  'Travelers',\n  (SELECT COUNT(*) FROM trip_travelers WHERE tripId = 1),\n  (SELECT COUNT(*) FROM trip_travelers WHERE tripId = 2)\nUNION ALL\nSELECT \n  'Checklist',\n  (SELECT COUNT(*) FROM checklist_items WHERE tripId = 1),\n  (SELECT COUNT(*) FROM checklist_items WHERE tripId = 2)\nUNION ALL\nSELECT \n  'Documents',\n  (SELECT COUNT(*) FROM documents WHERE tripId = 1),\n  (SELECT COUNT(*) FROM documents WHERE tripId = 2);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT \n  'Hotels' as category, \n  (SELECT COUNT(*) FROM hotels WHERE tripId = 1) as slovakia_count,\n  (SELECT COUNT(*) FROM hotels WHERE tripId = 2) as demo_count\nUNION ALL\nSELECT \n  'Transportation',\n  (SELECT COUNT(*) FROM transportation WHERE tripId = 1),\n  (SELECT COUNT(*) FROM transportation WHERE tripId = 2)\nUNION ALL\nSELECT \n  'Routes',\n  (SELECT COUNT(*) FROM trip_routes WHERE tripId = 1),\n  (SELECT COUNT(*) FROM trip_routes WHERE tripId = 2)\nUNION ALL\nSELECT \n  'Restaurants',\n  (SELECT COUNT(*) FROM restaurants WHERE tripId = 1),\n  (SELECT COUNT(*) FROM restaurants WHERE tripId = 2)\nUNION ALL\nSELECT \n  'Payments',\n  (SELECT COUNT(*) FROM payments WHERE tripId = 1),\n  (SELECT COUNT(*) FROM payments WHERE tripId = 2)\nUNION ALL\nSELECT \n  'Travelers',\n  (SELECT COUNT(*) FROM trip_travelers WHERE tripId = 1),\n  (SELECT COUNT(*) FROM trip_travelers WHERE tripId = 2)\nUNION ALL\nSELECT \n  'Checklist',\n  (SELECT COUNT(*) FROM checklist_items WHERE tripId = 1),\n  (SELECT COUNT(*) FROM checklist_items WHERE tripId = 2)\nUNION ALL\nSELECT \n  'Documents',\n  (SELECT COUNT(*) FROM documents WHERE tripId = 1),\n  (SELECT COUNT(*) FROM documents WHERE tripId = 2);",
+  "rows": [
+    {
+      "category": "Hotels",
+      "slovakia_count": "0",
+      "demo_count": "0"
+    },
+    {
+      "category": "Transportation",
+      "slovakia_count": "4",
+      "demo_count": "4"
+    },
+    {
+      "category": "Routes",
+      "slovakia_count": "0",
+      "demo_count": "0"
+    },
+    {
+      "category": "Payments",
+      "slovakia_count": "0",
+      "demo_count": "0"
+    },
+    {
+      "category": "Restaurants",
+      "slovakia_count": "0",
+      "demo_count": "0"
+    },
+    {
+      "category": "Travelers",
+      "slovakia_count": "0",
+      "demo_count": "0"
+    },
+    {
+      "category": "Checklist",
+      "slovakia_count": "0",
+      "demo_count": "0"
+    },
+    {
+      "category": "Documents",
+      "slovakia_count": "0",
+      "demo_count": "0"
+    }
+  ],
+  "messages": [],
+  "stdout": "category\tslovakia_count\tdemo_count\nHotels\t0\t0\nTransportation\t4\t4\nRoutes\t0\t0\nPayments\t0\t0\nRestaurants\t0\t0\nTravelers\t0\t0\nChecklist\t0\t0\nDocuments\t0\t0\n",
+  "stderr": "",
+  "execution_time_ms": 1599
+}

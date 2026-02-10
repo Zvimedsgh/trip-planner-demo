@@ -1,0 +1,9 @@
+{
+  "query": "INSERT INTO transportation (tripId, type, flightNumber, origin, destination, departureDate, arrivalDate, confirmationNumber, website, price, currency, paymentStatus, notes, company, carModel, pickupLocation, returnLocation, phone, linkedDocumentId, createdAt, updatedAt)\nSELECT 2 as tripId, type, flightNumber, origin, destination, departureDate, arrivalDate, confirmationNumber, website, price, currency, paymentStatus, notes, company, carModel, pickupLocation, returnLocation, phone, linkedDocumentId, NOW() as createdAt, NOW() as updatedAt\nFROM transportation\nWHERE tripId = 1;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute INSERT INTO transportation (tripId, type, flightNumber, origin, destination, departureDate, arrivalDate, confirmationNumber, website, price, currency, paymentStatus, notes, company, carModel, pickupLocation, returnLocation, phone, linkedDocumentId, createdAt, updatedAt)\nSELECT 2 as tripId, type, flightNumber, origin, destination, departureDate, arrivalDate, confirmationNumber, website, price, currency, paymentStatus, notes, company, carModel, pickupLocation, returnLocation, phone, linkedDocumentId, NOW() as createdAt, NOW() as updatedAt\nFROM transportation\nWHERE tripId = 1;",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1555
+}
