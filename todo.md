@@ -341,3 +341,7 @@
 
 ## Budget Calculation Bug
 - [x] Fix budget summary to properly reflect paid vs unpaid payments - now uses paymentStatus field instead of payments table
+
+## Document Names Cleanup in Demo Trip
+- [x] Identified document with technical ID prefix: "cYWNC1MfiJAL2nOZPCRxW-הסעה מהשדה בברטיסלבה למלון בעיר.docx"
+- [x] Cleaned up document name to: "הסעה מהשדה בברטיסלבה למלון בעיר.docx"

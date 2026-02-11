@@ -1,0 +1,9 @@
+{
+  "query": "UPDATE documents SET name = 'הסעה מהשדה בברטיסלבה למלון בעיר.docx' WHERE id = 810002;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute UPDATE documents SET name = 'הסעה מהשדה בברטיסלבה למלון בעיר.docx' WHERE id = 810002;",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1584
+}

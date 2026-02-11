@@ -1,0 +1,70 @@
+{
+  "query": "SELECT id, tripId, name FROM documents WHERE tripId = 630001 ORDER BY id;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, tripId, name FROM documents WHERE tripId = 630001 ORDER BY id;",
+  "rows": [
+    {
+      "id": "780008",
+      "tripId": "630001",
+      "name": "Vienna Hotel Parking"
+    },
+    {
+      "id": "780010",
+      "tripId": "630001",
+      "name": "Apart Hotel GOLDEN apartments"
+    },
+    {
+      "id": "780011",
+      "tripId": "630001",
+      "name": "Hilton Ambassador.jpg"
+    },
+    {
+      "id": "780012",
+      "tripId": "630001",
+      "name": "Villa Regia.jpg"
+    },
+    {
+      "id": "780013",
+      "tripId": "630001",
+      "name": "DoubleTree By Hilton Košice.jpg"
+    },
+    {
+      "id": "780014",
+      "tripId": "630001",
+      "name": "Apart Hotel GOLDEN apartments"
+    },
+    {
+      "id": "780015",
+      "tripId": "630001",
+      "name": "Waterpark Bešeňová."
+    },
+    {
+      "id": "780016",
+      "tripId": "630001",
+      "name": "Bratislava Airport (BTS) - Israel"
+    },
+    {
+      "id": "780018",
+      "tripId": "630001",
+      "name": "ציון קבר החתמ סופר"
+    },
+    {
+      "id": "780032",
+      "tripId": "630001",
+      "name": "travel-3.jpg"
+    },
+    {
+      "id": "810001",
+      "tripId": "630001",
+      "name": "הסעה מהשדה למלון בראיסלבה"
+    },
+    {
+      "id": "810002",
+      "tripId": "630001",
+      "name": "cYWNC1MfiJAL2nOZPCRxW-הסעה מהשדה בברטיסלבה למלון בעיר (6).docx"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttripId\tname\n780008\t630001\tVienna Hotel Parking\n780010\t630001\tApart Hotel GOLDEN apartments\n780011\t630001\tHilton Ambassador.jpg\n780012\t630001\tVilla Regia.jpg\n780013\t630001\tDoubleTree By Hilton Košice.jpg\n780014\t630001\tApart Hotel GOLDEN apartments\n780015\t630001\tWaterpark Bešeňová.\n780016\t630001\tBratislava Airport (BTS) - Israel\n780018\t630001\tציון קבר החתמ סופר\n780032\t630001\ttravel-3.jpg\n810001\t630001\tהסעה מהשדה למלון בראיסלבה\n810002\t630001\tcYWNC1MfiJAL2nOZPCRxW-הסעה מהשדה בברטיסלבה למלון בעיר (6).docx\n",
+  "stderr": "",
+  "execution_time_ms": 1583
+}
