@@ -352,3 +352,8 @@
 - [x] Create Help page component in website
 - [x] Add Help page route and navigation link
 - [ ] Test both PDF and web page versions
+
+## Fix User Guide PDF RTL Direction
+- [x] Create HTML template with RTL styling
+- [x] Convert Markdown to RTL PDF
+- [x] Update PDF in public folder
