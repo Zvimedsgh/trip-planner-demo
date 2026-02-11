@@ -319,3 +319,6 @@
 
 ## WhatsApp Message - Use Published URL
 - [x] Update WhatsApp message to use published site URL instead of preview URL for proper airplane icon
+
+## Android Installation Instructions
+- [x] Add Android installation instructions to WhatsApp sharing message (alongside iPhone instructions)
