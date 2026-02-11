@@ -1,0 +1,42 @@
+{
+  "query": "SELECT id, name FROM trips ORDER BY id;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name FROM trips ORDER BY id;",
+  "rows": [
+    {
+      "id": "30001",
+      "name": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "60001",
+      "name": "Test Collaboration Trip"
+    },
+    {
+      "id": "60002",
+      "name": "Test Collaboration Trip"
+    },
+    {
+      "id": "60003",
+      "name": "Test Trip for Checklist"
+    },
+    {
+      "id": "300001",
+      "name": "Payment Test Trip"
+    },
+    {
+      "id": "510001",
+      "name": "רות ואופיר לאתונה"
+    },
+    {
+      "id": "540001",
+      "name": "Test"
+    },
+    {
+      "id": "630001",
+      "name": "הדגמה"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\n30001\tGoren Roots Trip to Slovakia\n60001\tTest Collaboration Trip\n60002\tTest Collaboration Trip\n60003\tTest Trip for Checklist\n300001\tPayment Test Trip\n510001\tרות ואופיר לאתונה\n540001\tTest\n630001\tהדגמה\n",
+  "stderr": "",
+  "execution_time_ms": 1661
+}

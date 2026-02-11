@@ -325,3 +325,10 @@
 
 ## WhatsApp Direct Trip Link
 - [x] Change WhatsApp message to link directly to the specific trip instead of home page
+
+## Copy Trip Content Bug
+- [x] Fix "Copy content to another trip" functionality - currently not copying any data to destination trip
+- [x] Successfully copied all content from Slovakia trip to Demo trip
+
+## Cleanup Test Trips
+- [x] Delete test trips and keep only Slovakia, Athens, and Demo trips

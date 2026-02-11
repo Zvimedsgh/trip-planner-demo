@@ -1,0 +1,9 @@
+{
+  "query": "DELETE FROM trips WHERE id NOT IN (30001, 510001, 630001);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute DELETE FROM trips WHERE id NOT IN (30001, 510001, 630001);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1672
+}

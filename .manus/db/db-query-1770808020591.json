@@ -1,0 +1,58 @@
+{
+  "query": "SELECT id, name, destination, DATE_FORMAT(FROM_UNIXTIME(startDate/1000), '%Y-%m-%d') as start_date FROM trips ORDER BY id;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, destination, DATE_FORMAT(FROM_UNIXTIME(startDate/1000), '%Y-%m-%d') as start_date FROM trips ORDER BY id;",
+  "rows": [
+    {
+      "id": "30001",
+      "name": "Goren Roots Trip to Slovakia",
+      "destination": "Bratislava,Slovakia",
+      "start_date": "2026-09-01"
+    },
+    {
+      "id": "60001",
+      "name": "Test Collaboration Trip",
+      "destination": "Test Location",
+      "start_date": "2026-01-23"
+    },
+    {
+      "id": "60002",
+      "name": "Test Collaboration Trip",
+      "destination": "Test Location",
+      "start_date": "2026-01-23"
+    },
+    {
+      "id": "60003",
+      "name": "Test Trip for Checklist",
+      "destination": "Test Destination",
+      "start_date": "2026-01-23"
+    },
+    {
+      "id": "300001",
+      "name": "Payment Test Trip",
+      "destination": "Test Destination",
+      "start_date": "2026-01-28"
+    },
+    {
+      "id": "510001",
+      "name": "רות ואופיר לאתונה",
+      "destination": "Athens,Greece",
+      "start_date": "2026-02-04"
+    },
+    {
+      "id": "540001",
+      "name": "Test",
+      "destination": "Tlv",
+      "start_date": "2026-02-01"
+    },
+    {
+      "id": "630001",
+      "name": "הדגמה",
+      "destination": "פריז",
+      "start_date": "2026-02-10"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tdestination\tstart_date\n30001\tGoren Roots Trip to Slovakia\tBratislava,Slovakia\t2026-09-01\n60001\tTest Collaboration Trip\tTest Location\t2026-01-23\n60002\tTest Collaboration Trip\tTest Location\t2026-01-23\n60003\tTest Trip for Checklist\tTest Destination\t2026-01-23\n300001\tPayment Test Trip\tTest Destination\t2026-01-28\n510001\tרות ואופיר לאתונה\tAthens,Greece\t2026-02-04\n540001\tTest\tTlv\t2026-02-01\n630001\tהדגמה\tפריז\t2026-02-10\n",
+  "stderr": "",
+  "execution_time_ms": 2267
+}
