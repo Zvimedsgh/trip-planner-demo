@@ -162,13 +162,16 @@ export default function CollaboratorsDialog({ tripId, tripName, isOwner }: Colla
                   className="flex-1"
                   onClick={() => {
                     // Use published URL instead of preview URL for proper airplane icon
-                    const appUrl = window.location.origin.includes('manus.computer') 
+                    const baseUrl = window.location.origin.includes('manus.computer') 
                       ? window.location.origin.replace(/https:\/\/\d+-[^.]+\.sg1\.manus\.computer/, 'https://trip-planner-pro.manus.space')
                       : window.location.origin;
                     
+                    // Link directly to the trip
+                    const tripUrl = `${baseUrl}/trip/${tripId}`;
+                    
                     const message = language === "he"
-                      ? `היי! אני מזמין אותך להצטרף לטיול שלי "${tripName}" באפליקציה Trip Planner Pro 🌍✈️\n\n📱 *איך להתקין:*\n\n🍎 *אייפון:*\n1. היכנס לקישור: ${appUrl}\n2. לחץ על כפתור Share (למטה באמצע)\n3. בחר "Add to Home Screen"\n4. לחץ "Add"\n\n🤖 *אנדרואיד:*\n1. היכנס לקישור: ${appUrl}\n2. לחץ על תפריט (3 נקודות בפינה)\n3. בחר "הוסף למסך הבית"\n4. לחץ "הוסף"\n\n✅ אחרי ההתקנה וההרשמה, אוכל להוסיף אותך לטיול!`
-                      : `Hi! I'm inviting you to join my trip "${tripName}" on Trip Planner Pro 🌍✈️\n\n📱 *How to install:*\n\n🍎 *iPhone:*\n1. Open this link: ${appUrl}\n2. Tap the Share button (bottom center)\n3. Select "Add to Home Screen"\n4. Tap "Add"\n\n🤖 *Android:*\n1. Open this link: ${appUrl}\n2. Tap the menu (3 dots in corner)\n3. Select "Add to Home screen"\n4. Tap "Add"\n\n✅ After installing and signing up, I can add you to the trip!`;
+                      ? `היי! אני מזמין אותך להצטרף לטיול שלי "${tripName}" 🌍✈️\n\n🔗 קישור ישיר לטיול: ${tripUrl}\n\n📱 *איך להתקין:*\n\n🍎 *אייפון:*\n1. פתח את הקישור למעלה\n2. לחץ על כפתור Share (למטה באמצע)\n3. בחר "Add to Home Screen"\n4. לחץ "Add"\n\n🤖 *אנדרואיד:*\n1. פתח את הקישור למעלה\n2. לחץ על תפריט (3 נקודות)\n3. בחר "הוסף למסך הבית"\n4. לחץ "הוסף"\n\n✅ אחרי ההתקנה וההרשמה, תוכל לראות את הטיול!`
+                      : `Hi! I'm inviting you to join my trip "${tripName}" 🌍✈️\n\n🔗 Direct link to trip: ${tripUrl}\n\n📱 *How to install:*\n\n🍎 *iPhone:*\n1. Open the link above\n2. Tap the Share button (bottom center)\n3. Select "Add to Home Screen"\n4. Tap "Add"\n\n🤖 *Android:*\n1. Open the link above\n2. Tap the menu (3 dots)\n3. Select "Add to Home screen"\n4. Tap "Add"\n\n✅ After installing and signing up, you'll see the trip!`;
                     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
                     window.open(whatsappUrl, '_blank');
                   }}

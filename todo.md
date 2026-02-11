@@ -322,3 +322,6 @@
 
 ## Android Installation Instructions
 - [x] Add Android installation instructions to WhatsApp sharing message (alongside iPhone instructions)
+
+## WhatsApp Direct Trip Link
+- [x] Change WhatsApp message to link directly to the specific trip instead of home page
