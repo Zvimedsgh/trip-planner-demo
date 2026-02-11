@@ -7,7 +7,7 @@ import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
 import { 
   Plane, MapPin, Hotel, Car, Utensils, FileText, 
-  Calendar, DollarSign, Globe, ArrowRight, Sparkles, Plus
+  Calendar, DollarSign, Globe, ArrowRight, Sparkles, Plus, HelpCircle
 } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { useState, useEffect } from "react";
@@ -150,6 +150,18 @@ export default function Home() {
           </div>
           
           <div className="flex items-center gap-4">
+            {/* Help Link */}
+            <Link href="/help">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="flex items-center gap-2"
+              >
+                <HelpCircle className="w-4 h-4" />
+                <span>{language === "en" ? "Help" : "עזרה"}</span>
+              </Button>
+            </Link>
+            
             {/* Language Switcher */}
             <Button
               variant="ghost"

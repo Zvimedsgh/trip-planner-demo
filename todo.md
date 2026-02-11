@@ -345,3 +345,10 @@
 ## Document Names Cleanup in Demo Trip
 - [x] Identified document with technical ID prefix: "cYWNC1MfiJAL2nOZPCRxW-הסעה מהשדה בברטיסלבה למלון בעיר.docx"
 - [x] Cleaned up document name to: "הסעה מהשדה בברטיסלבה למלון בעיר.docx"
+
+## User Guide Creation
+- [x] Write comprehensive user guide in Hebrew (Markdown)
+- [x] Convert guide to PDF format
+- [x] Create Help page component in website
+- [x] Add Help page route and navigation link
+- [ ] Test both PDF and web page versions
