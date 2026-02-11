@@ -313,3 +313,6 @@
 
 ## WhatsApp Sharing for Collaborators
 - [x] Add WhatsApp share button to Collaborators tab for easier invitation sharing
+
+## Enhanced WhatsApp Message
+- [x] Add iPhone home screen installation instructions to WhatsApp sharing message
