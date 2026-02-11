@@ -357,3 +357,11 @@
 - [x] Create HTML template with RTL styling
 - [x] Convert Markdown to RTL PDF
 - [x] Update PDF in public folder
+
+## Export User Guide to Word Format
+- [x] Add PC installation instructions to user guide
+- [x] Convert Markdown to DOCX format
+- [ ] Deliver DOCX file to user
+
+## Change Demo Trip Name
+- [x] Update trip name from "בהדגמה בלבד" to "הדגמה: טיול מושלם"
