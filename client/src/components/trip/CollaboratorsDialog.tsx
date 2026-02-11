@@ -6,15 +6,16 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { trpc } from "@/lib/trpc";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Loader2, Plus, Trash2, UserPlus, Users } from "lucide-react";
+import { Loader2, Plus, Trash2, UserPlus, Users, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
 
 interface CollaboratorsDialogProps {
   tripId: number;
+  tripName: string;
   isOwner: boolean;
 }
 
-export default function CollaboratorsDialog({ tripId, isOwner }: CollaboratorsDialogProps) {
+export default function CollaboratorsDialog({ tripId, tripName, isOwner }: CollaboratorsDialogProps) {
   const { language } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -143,17 +144,34 @@ export default function CollaboratorsDialog({ tripId, isOwner }: CollaboratorsDi
                   ? "כדי להזמין משתמשים, שלח להם את הקישור לאפליקציה:"
                   : "To invite users, send them the app link:"}
               </p>
-              <Button
-                variant="outline"
-                size="sm"
-                className="w-full"
-                onClick={() => {
-                  navigator.clipboard.writeText(window.location.origin);
-                  toast.success(language === "he" ? "הקישור הועתק!" : "Link copied!");
-                }}
-              >
-                {language === "he" ? "העתק קישור לאפליקציה" : "Copy App Link"}
-              </Button>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex-1"
+                  onClick={() => {
+                    navigator.clipboard.writeText(window.location.origin);
+                    toast.success(language === "he" ? "הקישור הועתק!" : "Link copied!");
+                  }}
+                >
+                  {language === "he" ? "העתק קישור" : "Copy Link"}
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex-1"
+                  onClick={() => {
+                    const message = language === "he"
+                      ? `היי! אני מזמין אותך להצטרף לטיול שלי "${tripName}" באפליקציה Trip Planner Pro.\n\nהיכנס לקישור הזה כדי להתחבר:\n${window.location.origin}\n\nאחרי שתתחבר, אוכל להוסיף אותך לטיול! 🌍✈️`
+                      : `Hi! I'm inviting you to join my trip "${tripName}" on Trip Planner Pro.\n\nSign up here:\n${window.location.origin}\n\nAfter you sign up, I can add you to the trip! 🌍✈️`;
+                    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+                    window.open(whatsappUrl, '_blank');
+                  }}
+                >
+                  <MessageCircle className="w-4 h-4 mr-2" />
+                  {language === "he" ? "שתף בוואטסאפ" : "Share on WhatsApp"}
+                </Button>
+              </div>
               <p className="text-xs text-muted-foreground">
                 {language === "he"
                   ? "לאחר שיתחברו, תוכל לחפש אותם כאן ולהזמין אותם לטיול."

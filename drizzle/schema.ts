@@ -269,7 +269,7 @@ export const tripTravelers = mysqlTable("trip_travelers", {
   id: int("id").autoincrement().primaryKey(),
   tripId: int("tripId").notNull(),
   name: varchar("name", { length: 100 }).notNull(), // Display name (e.g., "Tzvi & Yona", "Efi", "Ruth")
-  identifier: varchar("identifier", { length: 50 }).notNull(), // Unique identifier for checklist assignment (e.g., "tzvi_yona", "efi")
+  identifier: varchar("identifier", { length: 50 }).notNull().default(""), // Unique identifier for checklist assignment (e.g., "tzvi_yona", "efi")
   sortOrder: int("sortOrder").default(0).notNull(), // Display order in UI
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),

@@ -310,3 +310,6 @@
 - [x] Copy checklist items
 - [x] Copy documents (if any)
 - [x] Verify all data copied correctly
+
+## WhatsApp Sharing for Collaborators
+- [x] Add WhatsApp share button to Collaborators tab for easier invitation sharing

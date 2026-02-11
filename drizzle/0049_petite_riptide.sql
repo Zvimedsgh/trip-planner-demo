@@ -1,0 +1,1 @@
+ALTER TABLE `trip_travelers` MODIFY COLUMN `identifier` varchar(50) NOT NULL DEFAULT '';

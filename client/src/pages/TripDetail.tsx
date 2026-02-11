@@ -241,7 +241,8 @@ export default function TripDetail() {
           
           <div className="flex items-center gap-4">
             <CollaboratorsDialog 
-              tripId={tripId} 
+              tripId={tripId}
+              tripName={trip?.name || ""}
               isOwner={trip?.userId === user?.id}
             />
             <Button
