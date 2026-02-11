@@ -316,3 +316,6 @@
 
 ## Enhanced WhatsApp Message
 - [x] Add iPhone home screen installation instructions to WhatsApp sharing message
+
+## WhatsApp Message - Use Published URL
+- [x] Update WhatsApp message to use published site URL instead of preview URL for proper airplane icon

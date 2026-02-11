@@ -161,9 +161,14 @@ export default function CollaboratorsDialog({ tripId, tripName, isOwner }: Colla
                   size="sm"
                   className="flex-1"
                   onClick={() => {
+                    // Use published URL instead of preview URL for proper airplane icon
+                    const appUrl = window.location.origin.includes('manus.computer') 
+                      ? window.location.origin.replace(/https:\/\/\d+-[^.]+\.sg1\.manus\.computer/, 'https://trip-planner-pro.manus.space')
+                      : window.location.origin;
+                    
                     const message = language === "he"
-                      ? `היי! אני מזמין אותך להצטרף לטיול שלי "${tripName}" באפליקציה Trip Planner Pro 🌍✈️\n\n📱 *איך להתקין באייפון:*\n1. היכנס לקישור: ${window.location.origin}\n2. לחץ על כפתור Share (למטה באמצע)\n3. בחר "Add to Home Screen"\n4. לחץ "Add" - האפליקציה תופיע על מסך הבית\n\n✅ אחרי ההתקנה וההרשמה, אוכל להוסיף אותך לטיול!`
-                      : `Hi! I'm inviting you to join my trip "${tripName}" on Trip Planner Pro 🌍✈️\n\n📱 *How to install on iPhone:*\n1. Open this link: ${window.location.origin}\n2. Tap the Share button (bottom center)\n3. Select "Add to Home Screen"\n4. Tap "Add" - the app will appear on your home screen\n\n✅ After installing and signing up, I can add you to the trip!`;
+                      ? `היי! אני מזמין אותך להצטרף לטיול שלי "${tripName}" באפליקציה Trip Planner Pro 🌍✈️\n\n📱 *איך להתקין באייפון:*\n1. היכנס לקישור: ${appUrl}\n2. לחץ על כפתור Share (למטה באמצע)\n3. בחר "Add to Home Screen"\n4. לחץ "Add" - האפליקציה תופיע על מסך הבית\n\n✅ אחרי ההתקנה וההרשמה, אוכל להוסיף אותך לטיול!`
+                      : `Hi! I'm inviting you to join my trip "${tripName}" on Trip Planner Pro 🌍✈️\n\n📱 *How to install on iPhone:*\n1. Open this link: ${appUrl}\n2. Tap the Share button (bottom center)\n3. Select "Add to Home Screen"\n4. Tap "Add" - the app will appear on your home screen\n\n✅ After installing and signing up, I can add you to the trip!`;
                     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
                     window.open(whatsappUrl, '_blank');
                   }}
