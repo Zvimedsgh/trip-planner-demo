@@ -1,0 +1,546 @@
+{
+  "query": "SELECT d.id, d.tripId, d.name, d.category, d.fileUrl, t.name as tripName \nFROM documents d \nJOIN trips t ON d.tripId = t.id \nORDER BY d.tripId, d.name;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT d.id, d.tripId, d.name, d.category, d.fileUrl, t.name as tripName \nFROM documents d \nJOIN trips t ON d.tripId = t.id \nORDER BY d.tripId, d.name;",
+  "rows": [
+    {
+      "id": "210001",
+      "tripId": "30001",
+      "name": "Apart Hotel GOLDEN apartments",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/gAOpxZ_R1gcUM3yeP_3kS-Apart Hotel GOLDEN apartments",
+      "tripName": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "240001",
+      "tripId": "30001",
+      "name": "Apart Hotel GOLDEN apartments",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/QzHlBPmpL4pJRcQOr7Wx0-Apart Hotel GOLDEN apartments",
+      "tripName": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "300001",
+      "tripId": "30001",
+      "name": "Bratislava Airport (BTS) - Israel",
+      "category": "flights",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/ljKrUT0ph50pDEIP7rGcG-Your travel itinerary_ WIGZVI טיסות WIZAIR",
+      "tripName": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "690001",
+      "tripId": "30001",
+      "name": "Ceck in instructions Vienna",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/JrC-fV8r6SGUmGbuwCpZz-Ceck in instructions Vienna",
+      "tripName": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "60001",
+      "tripId": "30001",
+      "name": "Charming & Cozy Ambiente Apartments",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/0UiL-tSVWikghFFgQcaNJ-מלון בברטיסלבה",
+      "tripName": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "420002",
+      "tripId": "30001",
+      "name": "DoubleTree By Hilton Košice",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/7eCPT3JvY85GdFOZR3fAt-DoubleTree By Hilton Košice.",
+      "tripName": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "210004",
+      "tripId": "30001",
+      "name": "DoubleTree By Hilton Košice.jpg",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/24DL5tHUpMIsJR-oTz4Ud-DoubleTree By Hilton Košice.jpg",
+      "tripName": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "210002",
+      "tripId": "30001",
+      "name": "Hilton Ambassador.jpg",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/CnTnv4QEiRiZTzZ9NSHk7-Hilton Ambassador.jpg",
+      "tripName": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "90002",
+      "tripId": "30001",
+      "name": "Hotel Bankov Košice",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/vFWr84UmWLSs4587uB8wS-Hotel Bankov Košice.pdf",
+      "tripName": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "30001",
+      "tripId": "30001",
+      "name": "Private holiday house Vivendi",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/SB_ds8LrLBWCLJZhtMPAG-מלון מיקולש.pdf",
+      "tripName": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "30003",
+      "tripId": "30001",
+      "name": "Surprice",
+      "category": "ticket",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/r4rGuVBztLmwOXarlfUZ1-Rental voucher - D012504317 - רכב שכור",
+      "tripName": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "150001",
+      "tripId": "30001",
+      "name": "Vienna Hotel Parking",
+      "category": "other",
+      "fileUrl": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/SFUxxBPOkCapFHow.jpg",
+      "tripName": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "120001",
+      "tripId": "30001",
+      "name": "Vienna parking confirmation",
+      "category": "other",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx",
+      "tripName": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "210003",
+      "tripId": "30001",
+      "name": "Villa Regia.jpg",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YooHUKhwAaZpVuKJ9Mp1I-Villa Regia.jpg",
+      "tripName": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "270001",
+      "tripId": "30001",
+      "name": "Waterpark Bešeňová.",
+      "category": "other",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/LuC320hnPn8vKGuRvsVmd-Waterpark Bešeňová.",
+      "tripName": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "180001",
+      "tripId": "30001",
+      "name": "chatam sofer-memorial",
+      "category": "other",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YTMAOKzATu534yk-nxq1l-chatam sofer-memorial",
+      "tripName": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "90001",
+      "tripId": "30001",
+      "name": "myNext - Johannesgasse Apartments",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/pFrSjQo5wCaqdqoI8HATm-myNext - Johannesse Aparments.pdf",
+      "tripName": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "720001",
+      "tripId": "30001",
+      "name": "travel-3.jpg",
+      "category": "other",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg",
+      "tripName": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "690002",
+      "tripId": "30001",
+      "name": "אישור הזמנה הילטון קושיצה",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/HhBeKYidQt5TFPSLpGO6L-אישור הזמנה הילטון קושיצה",
+      "tripName": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "690004",
+      "tripId": "30001",
+      "name": "אישור הזמנה מלון בוינה",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/3RLyuubYrsIwBVyoXDQtG-אישור הזמנה מלון בוינה",
+      "tripName": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "690003",
+      "tripId": "30001",
+      "name": "אישור הזמנה מלון ברטיסלבה",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/JQ_u8pIjNwpjBqhSiyMq7-אישור הזמנה מלון ברטיסלבה",
+      "tripName": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "660001",
+      "tripId": "30001",
+      "name": "אישור החזר במקרה ביטול חניה מלון וינה",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/4cILIU1jZWWHs_mQfLnOk-אישור החזר במקרה ביטול חניה מלון וינה",
+      "tripName": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "630001",
+      "tripId": "30001",
+      "name": "אישור חניה",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/jaDN6e7OrpfZMORozx1nw-46207RR.html",
+      "tripName": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "690005",
+      "tripId": "30001",
+      "name": "אישור מיקולש",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/AKEaF3lzFyRuqOHQP5y47-אישור מיקולש",
+      "tripName": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "600003",
+      "tripId": "30001",
+      "name": "אישור צ'ק אאוט ב 11:00",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/muaQbhOKQC2tkSIEPYElN-46201RR.html",
+      "tripName": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "600004",
+      "tripId": "30001",
+      "name": "אישור צ'ק אין מאוחר בלילה",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/eKqJbmkvoc5x09FQbHqTp-46200RR.html",
+      "tripName": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "330001",
+      "tripId": "30001",
+      "name": "ביטוח נסיעות לחול יונה וצבי.pdf",
+      "category": "insurance",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/rO2ij24CRslSjhqO2_UFM-ביטוח נסיעות לחול יונה וצבי.pdf",
+      "tripName": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "600002",
+      "tripId": "30001",
+      "name": "הודעה 2 ממלון בברטיסלבה",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/Ts6X6IsIxc7qojfvp8f-P-הודעה 2 ממלון בברטיסלבה",
+      "tripName": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "690006",
+      "tripId": "30001",
+      "name": "הודעה ממיקולש",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/Er8cZEZFZGdkvs7CF33Zf-הודעה ממיקולש",
+      "tripName": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "600001",
+      "tripId": "30001",
+      "name": "הודעה ממלון בברטיסלבה",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/DRxbaf16Ck_Br6I6mxwwW-הודעה ממלון בברטיסלבה",
+      "tripName": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "30002",
+      "tripId": "30001",
+      "name": "הסעה מהשדה בברטיסלבה למלון בעיר",
+      "category": "other",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/cYWNC1MfiJAL2nOZPCRxW-הסעה מהשדה בברטיסלבה למלון בעיר",
+      "tripName": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "420001",
+      "tripId": "30001",
+      "name": "ציון קבר החתמ סופר",
+      "category": "other",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/xlTsbxhtjr2_-83Z8wgxm-ציון קבר החתמ סופר",
+      "tripName": "Goren Roots Trip to Slovakia"
+    },
+    {
+      "id": "510001",
+      "tripId": "510001",
+      "name": "ביטוח נסיעות .pdf",
+      "category": "insurance",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/510001/jvshqxA276RhM5tunhnTe-ביטוח נסיעות .pdf",
+      "tripName": "רות ואופיר לאתונה"
+    },
+    {
+      "id": "570002",
+      "tripId": "510001",
+      "name": "כרטיס טיסה בלו בירד.pdf",
+      "category": "flights",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/510001/gwZIUqsXD8jVSSS6o97NH-כרטיס טיסה בלו בירד.pdf",
+      "tripName": "רות ואופיר לאתונה"
+    },
+    {
+      "id": "540001",
+      "tripId": "510001",
+      "name": "‎⁨אסמכתא טיסה ויז תל אביב אתונה⁩",
+      "category": "flights",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/510001/vhBmmh9SwAi6eRn_Buf2J-‎⁨אסמכתא טיסה ויז תל אביב אתונה⁩",
+      "tripName": "רות ואופיר לאתונה"
+    },
+    {
+      "id": "780010",
+      "tripId": "630001",
+      "name": "Apart Hotel GOLDEN apartments",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/gAOpxZ_R1gcUM3yeP_3kS-Apart Hotel GOLDEN apartments",
+      "tripName": "הדגמה"
+    },
+    {
+      "id": "780014",
+      "tripId": "630001",
+      "name": "Apart Hotel GOLDEN apartments",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/QzHlBPmpL4pJRcQOr7Wx0-Apart Hotel GOLDEN apartments",
+      "tripName": "הדגמה"
+    },
+    {
+      "id": "780016",
+      "tripId": "630001",
+      "name": "Bratislava Airport (BTS) - Israel",
+      "category": "flights",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/ljKrUT0ph50pDEIP7rGcG-Your travel itinerary_ WIGZVI טיסות WIZAIR",
+      "tripName": "הדגמה"
+    },
+    {
+      "id": "780026",
+      "tripId": "630001",
+      "name": "Ceck in instructions Vienna",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/JrC-fV8r6SGUmGbuwCpZz-Ceck in instructions Vienna",
+      "tripName": "הדגמה"
+    },
+    {
+      "id": "780004",
+      "tripId": "630001",
+      "name": "Charming & Cozy Ambiente Apartments",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/0UiL-tSVWikghFFgQcaNJ-מלון בברטיסלבה",
+      "tripName": "הדגמה"
+    },
+    {
+      "id": "780019",
+      "tripId": "630001",
+      "name": "DoubleTree By Hilton Košice",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/7eCPT3JvY85GdFOZR3fAt-DoubleTree By Hilton Košice.",
+      "tripName": "הדגמה"
+    },
+    {
+      "id": "780013",
+      "tripId": "630001",
+      "name": "DoubleTree By Hilton Košice.jpg",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/24DL5tHUpMIsJR-oTz4Ud-DoubleTree By Hilton Košice.jpg",
+      "tripName": "הדגמה"
+    },
+    {
+      "id": "780011",
+      "tripId": "630001",
+      "name": "Hilton Ambassador.jpg",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/CnTnv4QEiRiZTzZ9NSHk7-Hilton Ambassador.jpg",
+      "tripName": "הדגמה"
+    },
+    {
+      "id": "780006",
+      "tripId": "630001",
+      "name": "Hotel Bankov Košice",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/vFWr84UmWLSs4587uB8wS-Hotel Bankov Košice.pdf",
+      "tripName": "הדגמה"
+    },
+    {
+      "id": "780001",
+      "tripId": "630001",
+      "name": "Private holiday house Vivendi",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/SB_ds8LrLBWCLJZhtMPAG-מלון מיקולש.pdf",
+      "tripName": "הדגמה"
+    },
+    {
+      "id": "780003",
+      "tripId": "630001",
+      "name": "Surprice",
+      "category": "ticket",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/r4rGuVBztLmwOXarlfUZ1-Rental voucher - D012504317 - רכב שכור",
+      "tripName": "הדגמה"
+    },
+    {
+      "id": "780008",
+      "tripId": "630001",
+      "name": "Vienna Hotel Parking",
+      "category": "other",
+      "fileUrl": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/SFUxxBPOkCapFHow.jpg",
+      "tripName": "הדגמה"
+    },
+    {
+      "id": "780007",
+      "tripId": "630001",
+      "name": "Vienna parking confirmation",
+      "category": "other",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx",
+      "tripName": "הדגמה"
+    },
+    {
+      "id": "780012",
+      "tripId": "630001",
+      "name": "Villa Regia.jpg",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YooHUKhwAaZpVuKJ9Mp1I-Villa Regia.jpg",
+      "tripName": "הדגמה"
+    },
+    {
+      "id": "780015",
+      "tripId": "630001",
+      "name": "Waterpark Bešeňová.",
+      "category": "other",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/LuC320hnPn8vKGuRvsVmd-Waterpark Bešeňová.",
+      "tripName": "הדגמה"
+    },
+    {
+      "id": "780009",
+      "tripId": "630001",
+      "name": "chatam sofer-memorial",
+      "category": "other",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YTMAOKzATu534yk-nxq1l-chatam sofer-memorial",
+      "tripName": "הדגמה"
+    },
+    {
+      "id": "780005",
+      "tripId": "630001",
+      "name": "myNext - Johannesgasse Apartments",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/pFrSjQo5wCaqdqoI8HATm-myNext - Johannesse Aparments.pdf",
+      "tripName": "הדגמה"
+    },
+    {
+      "id": "780032",
+      "tripId": "630001",
+      "name": "travel-3.jpg",
+      "category": "other",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg",
+      "tripName": "הדגמה"
+    },
+    {
+      "id": "780027",
+      "tripId": "630001",
+      "name": "אישור הזמנה הילטון קושיצה",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/HhBeKYidQt5TFPSLpGO6L-אישור הזמנה הילטון קושיצה",
+      "tripName": "הדגמה"
+    },
+    {
+      "id": "780029",
+      "tripId": "630001",
+      "name": "אישור הזמנה מלון בוינה",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/3RLyuubYrsIwBVyoXDQtG-אישור הזמנה מלון בוינה",
+      "tripName": "הדגמה"
+    },
+    {
+      "id": "780028",
+      "tripId": "630001",
+      "name": "אישור הזמנה מלון ברטיסלבה",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/JQ_u8pIjNwpjBqhSiyMq7-אישור הזמנה מלון ברטיסלבה",
+      "tripName": "הדגמה"
+    },
+    {
+      "id": "780025",
+      "tripId": "630001",
+      "name": "אישור החזר במקרה ביטול חניה מלון וינה",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/4cILIU1jZWWHs_mQfLnOk-אישור החזר במקרה ביטול חניה מלון וינה",
+      "tripName": "הדגמה"
+    },
+    {
+      "id": "780024",
+      "tripId": "630001",
+      "name": "אישור חניה",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/jaDN6e7OrpfZMORozx1nw-46207RR.html",
+      "tripName": "הדגמה"
+    },
+    {
+      "id": "780030",
+      "tripId": "630001",
+      "name": "אישור מיקולש",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/AKEaF3lzFyRuqOHQP5y47-אישור מיקולש",
+      "tripName": "הדגמה"
+    },
+    {
+      "id": "780022",
+      "tripId": "630001",
+      "name": "אישור צ'ק אאוט ב 11:00",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/muaQbhOKQC2tkSIEPYElN-46201RR.html",
+      "tripName": "הדגמה"
+    },
+    {
+      "id": "780023",
+      "tripId": "630001",
+      "name": "אישור צ'ק אין מאוחר בלילה",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/eKqJbmkvoc5x09FQbHqTp-46200RR.html",
+      "tripName": "הדגמה"
+    },
+    {
+      "id": "780017",
+      "tripId": "630001",
+      "name": "ביטוח נסיעות לחול יונה וצבי.pdf",
+      "category": "insurance",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/rO2ij24CRslSjhqO2_UFM-ביטוח נסיעות לחול יונה וצבי.pdf",
+      "tripName": "הדגמה"
+    },
+    {
+      "id": "780021",
+      "tripId": "630001",
+      "name": "הודעה 2 ממלון בברטיסלבה",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/Ts6X6IsIxc7qojfvp8f-P-הודעה 2 ממלון בברטיסלבה",
+      "tripName": "הדגמה"
+    },
+    {
+      "id": "780031",
+      "tripId": "630001",
+      "name": "הודעה ממיקולש",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/Er8cZEZFZGdkvs7CF33Zf-הודעה ממיקולש",
+      "tripName": "הדגמה"
+    },
+    {
+      "id": "780020",
+      "tripId": "630001",
+      "name": "הודעה ממלון בברטיסלבה",
+      "category": "hotel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/DRxbaf16Ck_Br6I6mxwwW-הודעה ממלון בברטיסלבה",
+      "tripName": "הדגמה"
+    },
+    {
+      "id": "780002",
+      "tripId": "630001",
+      "name": "הסעה מהשדה בברטיסלבה למלון בעיר",
+      "category": "other",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/cYWNC1MfiJAL2nOZPCRxW-הסעה מהשדה בברטיסלבה למלון בעיר",
+      "tripName": "הדגמה"
+    },
+    {
+      "id": "780018",
+      "tripId": "630001",
+      "name": "ציון קבר החתמ סופר",
+      "category": "other",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/xlTsbxhtjr2_-83Z8wgxm-ציון קבר החתמ סופר",
+      "tripName": "הדגמה"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttripId\tname\tcategory\tfileUrl\ttripName\n210001\t30001\tApart Hotel GOLDEN apartments\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/gAOpxZ_R1gcUM3yeP_3kS-Apart Hotel GOLDEN apartments\tGoren Roots Trip to Slovakia\n240001\t30001\tApart Hotel GOLDEN apartments\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/QzHlBPmpL4pJRcQOr7Wx0-Apart Hotel GOLDEN apartments\tGoren Roots Trip to Slovakia\n300001\t30001\tBratislava Airport (BTS) - Israel\tflights\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/ljKrUT0ph50pDEIP7rGcG-Your travel itinerary_ WIGZVI טיסות WIZAIR\tGoren Roots Trip to Slovakia\n690001\t30001\tCeck in instructions Vienna\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/JrC-fV8r6SGUmGbuwCpZz-Ceck in instructions Vienna\tGoren Roots Trip to Slovakia\n60001\t30001\tCharming & Cozy Ambiente Apartments\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/0UiL-tSVWikghFFgQcaNJ-מלון בברטיסלבה\tGoren Roots Trip to Slovakia\n420002\t30001\tDoubleTree By Hilton Košice\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/7eCPT3JvY85GdFOZR3fAt-DoubleTree By Hilton Košice.\tGoren Roots Trip to Slovakia\n210004\t30001\tDoubleTree By Hilton Košice.jpg\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/24DL5tHUpMIsJR-oTz4Ud-DoubleTree By Hilton Košice.jpg\tGoren Roots Trip to Slovakia\n210002\t30001\tHilton Ambassador.jpg\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/CnTnv4QEiRiZTzZ9NSHk7-Hilton Ambassador.jpg\tGoren Roots Trip to Slovakia\n90002\t30001\tHotel Bankov Košice\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/vFWr84UmWLSs4587uB8wS-Hotel Bankov Košice.pdf\tGoren Roots Trip to Slovakia\n30001\t30001\tPrivate holiday house Vivendi\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/SB_ds8LrLBWCLJZhtMPAG-מלון מיקולש.pdf\tGoren Roots Trip to Slovakia\n30003\t30001\tSurprice\tticket\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/r4rGuVBztLmwOXarlfUZ1-Rental voucher - D012504317 - רכב שכור\tGoren Roots Trip to Slovakia\n150001\t30001\tVienna Hotel Parking\tother\thttps://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/SFUxxBPOkCapFHow.jpg\tGoren Roots Trip to Slovakia\n120001\t30001\tVienna parking confirmation\tother\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\tGoren Roots Trip to Slovakia\n210003\t30001\tVilla Regia.jpg\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YooHUKhwAaZpVuKJ9Mp1I-Villa Regia.jpg\tGoren Roots Trip to Slovakia\n270001\t30001\tWaterpark Bešeňová.\tother\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/LuC320hnPn8vKGuRvsVmd-Waterpark Bešeňová.\tGoren Roots Trip to Slovakia\n180001\t30001\tchatam sofer-memorial\tother\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YTMAOKzATu534yk-nxq1l-chatam sofer-memorial\tGoren Roots Trip to Slovakia\n90001\t30001\tmyNext - Johannesgasse Apartments\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/pFrSjQo5wCaqdqoI8HATm-myNext - Johannesse Aparments.pdf\tGoren Roots Trip to Slovakia\n720001\t30001\ttravel-3.jpg\tother\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg\tGoren Roots Trip to Slovakia\n690002\t30001\tאישור הזמנה הילטון קושיצה\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/HhBeKYidQt5TFPSLpGO6L-אישור הזמנה הילטון קושיצה\tGoren Roots Trip to Slovakia\n690004\t30001\tאישור הזמנה מלון בוינה\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/3RLyuubYrsIwBVyoXDQtG-אישור הזמנה מלון בוינה\tGoren Roots Trip to Slovakia\n690003\t30001\tאישור הזמנה מלון ברטיסלבה\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/JQ_u8pIjNwpjBqhSiyMq7-אישור הזמנה מלון ברטיסלבה\tGoren Roots Trip to Slovakia\n660001\t30001\tאישור החזר במקרה ביטול חניה מלון וינה\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/4cILIU1jZWWHs_mQfLnOk-אישור החזר במקרה ביטול חניה מלון וינה\tGoren Roots Trip to Slovakia\n630001\t30001\tאישור חניה\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/jaDN6e7OrpfZMORozx1nw-46207RR.html\tGoren Roots Trip to Slovakia\n690005\t30001\tאישור מיקולש\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/AKEaF3lzFyRuqOHQP5y47-אישור מיקולש\tGoren Roots Trip to Slovakia\n600003\t30001\tאישור צ'ק אאוט ב 11:00\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/muaQbhOKQC2tkSIEPYElN-46201RR.html\tGoren Roots Trip to Slovakia\n600004\t30001\tאישור צ'ק אין מאוחר בלילה\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/eKqJbmkvoc5x09FQbHqTp-46200RR.html\tGoren Roots Trip to Slovakia\n330001\t30001\tביטוח נסיעות לחול יונה וצבי.pdf\tinsurance\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/rO2ij24CRslSjhqO2_UFM-ביטוח נסיעות לחול יונה וצבי.pdf\tGoren Roots Trip to Slovakia\n600002\t30001\tהודעה 2 ממלון בברטיסלבה\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/Ts6X6IsIxc7qojfvp8f-P-הודעה 2 ממלון בברטיסלבה\tGoren Roots Trip to Slovakia\n690006\t30001\tהודעה ממיקולש\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/Er8cZEZFZGdkvs7CF33Zf-הודעה ממיקולש\tGoren Roots Trip to Slovakia\n600001\t30001\tהודעה ממלון בברטיסלבה\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/DRxbaf16Ck_Br6I6mxwwW-הודעה ממלון בברטיסלבה\tGoren Roots Trip to Slovakia\n30002\t30001\tהסעה מהשדה בברטיסלבה למלון בעיר\tother\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/cYWNC1MfiJAL2nOZPCRxW-הסעה מהשדה בברטיסלבה למלון בעיר\tGoren Roots Trip to Slovakia\n420001\t30001\tציון קבר החתמ סופר\tother\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/xlTsbxhtjr2_-83Z8wgxm-ציון קבר החתמ סופר\tGoren Roots Trip to Slovakia\n510001\t510001\tביטוח נסיעות .pdf\tinsurance\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/510001/jvshqxA276RhM5tunhnTe-ביטוח נסיעות .pdf\tרות ואופיר לאתונה\n570002\t510001\tכרטיס טיסה בלו בירד.pdf\tflights\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/510001/gwZIUqsXD8jVSSS6o97NH-כרטיס טיסה בלו בירד.pdf\tרות ואופיר לאתונה\n540001\t510001\t‎⁨אסמכתא טיסה ויז תל אביב אתונה⁩\tflights\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/510001/vhBmmh9SwAi6eRn_Buf2J-‎⁨אסמכתא טיסה ויז תל אביב אתונה⁩\tרות ואופיר לאתונה\n780010\t630001\tApart Hotel GOLDEN apartments\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/gAOpxZ_R1gcUM3yeP_3kS-Apart Hotel GOLDEN apartments\tהדגמה\n780014\t630001\tApart Hotel GOLDEN apartments\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/QzHlBPmpL4pJRcQOr7Wx0-Apart Hotel GOLDEN apartments\tהדגמה\n780016\t630001\tBratislava Airport (BTS) - Israel\tflights\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/ljKrUT0ph50pDEIP7rGcG-Your travel itinerary_ WIGZVI טיסות WIZAIR\tהדגמה\n780026\t630001\tCeck in instructions Vienna\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/JrC-fV8r6SGUmGbuwCpZz-Ceck in instructions Vienna\tהדגמה\n780004\t630001\tCharming & Cozy Ambiente Apartments\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/0UiL-tSVWikghFFgQcaNJ-מלון בברטיסלבה\tהדגמה\n780019\t630001\tDoubleTree By Hilton Košice\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/7eCPT3JvY85GdFOZR3fAt-DoubleTree By Hilton Košice.\tהדגמה\n780013\t630001\tDoubleTree By Hilton Košice.jpg\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/24DL5tHUpMIsJR-oTz4Ud-DoubleTree By Hilton Košice.jpg\tהדגמה\n780011\t630001\tHilton Ambassador.jpg\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/CnTnv4QEiRiZTzZ9NSHk7-Hilton Ambassador.jpg\tהדגמה\n780006\t630001\tHotel Bankov Košice\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/vFWr84UmWLSs4587uB8wS-Hotel Bankov Košice.pdf\tהדגמה\n780001\t630001\tPrivate holiday house Vivendi\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/SB_ds8LrLBWCLJZhtMPAG-מלון מיקולש.pdf\tהדגמה\n780003\t630001\tSurprice\tticket\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/r4rGuVBztLmwOXarlfUZ1-Rental voucher - D012504317 - רכב שכור\tהדגמה\n780008\t630001\tVienna Hotel Parking\tother\thttps://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/SFUxxBPOkCapFHow.jpg\tהדגמה\n780007\t630001\tVienna parking confirmation\tother\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\tהדגמה\n780012\t630001\tVilla Regia.jpg\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YooHUKhwAaZpVuKJ9Mp1I-Villa Regia.jpg\tהדגמה\n780015\t630001\tWaterpark Bešeňová.\tother\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/LuC320hnPn8vKGuRvsVmd-Waterpark Bešeňová.\tהדגמה\n780009\t630001\tchatam sofer-memorial\tother\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YTMAOKzATu534yk-nxq1l-chatam sofer-memorial\tהדגמה\n780005\t630001\tmyNext - Johannesgasse Apartments\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/pFrSjQo5wCaqdqoI8HATm-myNext - Johannesse Aparments.pdf\tהדגמה\n780032\t630001\ttravel-3.jpg\tother\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg\tהדגמה\n780027\t630001\tאישור הזמנה הילטון קושיצה\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/HhBeKYidQt5TFPSLpGO6L-אישור הזמנה הילטון קושיצה\tהדגמה\n780029\t630001\tאישור הזמנה מלון בוינה\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/3RLyuubYrsIwBVyoXDQtG-אישור הזמנה מלון בוינה\tהדגמה\n780028\t630001\tאישור הזמנה מלון ברטיסלבה\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/JQ_u8pIjNwpjBqhSiyMq7-אישור הזמנה מלון ברטיסלבה\tהדגמה\n780025\t630001\tאישור החזר במקרה ביטול חניה מלון וינה\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/4cILIU1jZWWHs_mQfLnOk-אישור החזר במקרה ביטול חניה מלון וינה\tהדגמה\n780024\t630001\tאישור חניה\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/jaDN6e7OrpfZMORozx1nw-46207RR.html\tהדגמה\n780030\t630001\tאישור מיקולש\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/AKEaF3lzFyRuqOHQP5y47-אישור מיקולש\tהדגמה\n780022\t630001\tאישור צ'ק אאוט ב 11:00\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/muaQbhOKQC2tkSIEPYElN-46201RR.html\tהדגמה\n780023\t630001\tאישור צ'ק אין מאוחר בלילה\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/eKqJbmkvoc5x09FQbHqTp-46200RR.html\tהדגמה\n780017\t630001\tביטוח נסיעות לחול יונה וצבי.pdf\tinsurance\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/rO2ij24CRslSjhqO2_UFM-ביטוח נסיעות לחול יונה וצבי.pdf\tהדגמה\n780021\t630001\tהודעה 2 ממלון בברטיסלבה\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/Ts6X6IsIxc7qojfvp8f-P-הודעה 2 ממלון בברטיסלבה\tהדגמה\n780031\t630001\tהודעה ממיקולש\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/Er8cZEZFZGdkvs7CF33Zf-הודעה ממיקולש\tהדגמה\n780020\t630001\tהודעה ממלון בברטיסלבה\thotel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/DRxbaf16Ck_Br6I6mxwwW-הודעה ממלון בברטיסלבה\tהדגמה\n780002\t630001\tהסעה מהשדה בברטיסלבה למלון בעיר\tother\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/cYWNC1MfiJAL2nOZPCRxW-הסעה מהשדה בברטיסלבה למלון בעיר\tהדגמה\n780018\t630001\tציון קבר החתמ סופר\tother\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/xlTsbxhtjr2_-83Z8wgxm-ציון קבר החתמ סופר\tהדגמה\n",
+  "stderr": "",
+  "execution_time_ms": 1898
+}

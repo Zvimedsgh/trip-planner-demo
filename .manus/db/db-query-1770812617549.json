@@ -1,0 +1,170 @@
+{
+  "query": "SELECT id, name, category FROM documents WHERE tripId = 630001 ORDER BY name;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, category FROM documents WHERE tripId = 630001 ORDER BY name;",
+  "rows": [
+    {
+      "id": "780010",
+      "name": "Apart Hotel GOLDEN apartments",
+      "category": "hotel"
+    },
+    {
+      "id": "780014",
+      "name": "Apart Hotel GOLDEN apartments",
+      "category": "hotel"
+    },
+    {
+      "id": "780016",
+      "name": "Bratislava Airport (BTS) - Israel",
+      "category": "flights"
+    },
+    {
+      "id": "780026",
+      "name": "Ceck in instructions Vienna",
+      "category": "hotel"
+    },
+    {
+      "id": "780004",
+      "name": "Charming & Cozy Ambiente Apartments",
+      "category": "hotel"
+    },
+    {
+      "id": "780019",
+      "name": "DoubleTree By Hilton Košice",
+      "category": "hotel"
+    },
+    {
+      "id": "780013",
+      "name": "DoubleTree By Hilton Košice.jpg",
+      "category": "hotel"
+    },
+    {
+      "id": "780011",
+      "name": "Hilton Ambassador.jpg",
+      "category": "hotel"
+    },
+    {
+      "id": "780006",
+      "name": "Hotel Bankov Košice",
+      "category": "hotel"
+    },
+    {
+      "id": "780001",
+      "name": "Private holiday house Vivendi",
+      "category": "hotel"
+    },
+    {
+      "id": "780003",
+      "name": "Surprice",
+      "category": "ticket"
+    },
+    {
+      "id": "780008",
+      "name": "Vienna Hotel Parking",
+      "category": "other"
+    },
+    {
+      "id": "780007",
+      "name": "Vienna parking confirmation",
+      "category": "other"
+    },
+    {
+      "id": "780012",
+      "name": "Villa Regia.jpg",
+      "category": "hotel"
+    },
+    {
+      "id": "780015",
+      "name": "Waterpark Bešeňová.",
+      "category": "other"
+    },
+    {
+      "id": "780009",
+      "name": "chatam sofer-memorial",
+      "category": "other"
+    },
+    {
+      "id": "780005",
+      "name": "myNext - Johannesgasse Apartments",
+      "category": "hotel"
+    },
+    {
+      "id": "780032",
+      "name": "travel-3.jpg",
+      "category": "other"
+    },
+    {
+      "id": "780027",
+      "name": "אישור הזמנה הילטון קושיצה",
+      "category": "hotel"
+    },
+    {
+      "id": "780029",
+      "name": "אישור הזמנה מלון בוינה",
+      "category": "hotel"
+    },
+    {
+      "id": "780028",
+      "name": "אישור הזמנה מלון ברטיסלבה",
+      "category": "hotel"
+    },
+    {
+      "id": "780025",
+      "name": "אישור החזר במקרה ביטול חניה מלון וינה",
+      "category": "hotel"
+    },
+    {
+      "id": "780024",
+      "name": "אישור חניה",
+      "category": "hotel"
+    },
+    {
+      "id": "780030",
+      "name": "אישור מיקולש",
+      "category": "hotel"
+    },
+    {
+      "id": "780022",
+      "name": "אישור צ'ק אאוט ב 11:00",
+      "category": "hotel"
+    },
+    {
+      "id": "780023",
+      "name": "אישור צ'ק אין מאוחר בלילה",
+      "category": "hotel"
+    },
+    {
+      "id": "780017",
+      "name": "ביטוח נסיעות לחול יונה וצבי.pdf",
+      "category": "insurance"
+    },
+    {
+      "id": "780021",
+      "name": "הודעה 2 ממלון בברטיסלבה",
+      "category": "hotel"
+    },
+    {
+      "id": "780031",
+      "name": "הודעה ממיקולש",
+      "category": "hotel"
+    },
+    {
+      "id": "780020",
+      "name": "הודעה ממלון בברטיסלבה",
+      "category": "hotel"
+    },
+    {
+      "id": "780002",
+      "name": "הסעה מהשדה בברטיסלבה למלון בעיר",
+      "category": "other"
+    },
+    {
+      "id": "780018",
+      "name": "ציון קבר החתמ סופר",
+      "category": "other"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tcategory\n780010\tApart Hotel GOLDEN apartments\thotel\n780014\tApart Hotel GOLDEN apartments\thotel\n780016\tBratislava Airport (BTS) - Israel\tflights\n780026\tCeck in instructions Vienna\thotel\n780004\tCharming & Cozy Ambiente Apartments\thotel\n780019\tDoubleTree By Hilton Košice\thotel\n780013\tDoubleTree By Hilton Košice.jpg\thotel\n780011\tHilton Ambassador.jpg\thotel\n780006\tHotel Bankov Košice\thotel\n780001\tPrivate holiday house Vivendi\thotel\n780003\tSurprice\tticket\n780008\tVienna Hotel Parking\tother\n780007\tVienna parking confirmation\tother\n780012\tVilla Regia.jpg\thotel\n780015\tWaterpark Bešeňová.\tother\n780009\tchatam sofer-memorial\tother\n780005\tmyNext - Johannesgasse Apartments\thotel\n780032\ttravel-3.jpg\tother\n780027\tאישור הזמנה הילטון קושיצה\thotel\n780029\tאישור הזמנה מלון בוינה\thotel\n780028\tאישור הזמנה מלון ברטיסלבה\thotel\n780025\tאישור החזר במקרה ביטול חניה מלון וינה\thotel\n780024\tאישור חניה\thotel\n780030\tאישור מיקולש\thotel\n780022\tאישור צ'ק אאוט ב 11:00\thotel\n780023\tאישור צ'ק אין מאוחר בלילה\thotel\n780017\tביטוח נסיעות לחול יונה וצבי.pdf\tinsurance\n780021\tהודעה 2 ממלון בברטיסלבה\thotel\n780031\tהודעה ממיקולש\thotel\n780020\tהודעה ממלון בברטיסלבה\thotel\n780002\tהסעה מהשדה בברטיסלבה למלון בעיר\tother\n780018\tציון קבר החתמ סופר\tother\n",
+  "stderr": "",
+  "execution_time_ms": 3093
+}

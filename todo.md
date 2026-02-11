@@ -332,3 +332,12 @@
 
 ## Cleanup Test Trips
 - [x] Delete test trips and keep only Slovakia, Athens, and Demo trips
+
+## Document Redaction
+- [ ] Redact names (גורן, אפי, צבי, יונה, רות, מיכל) from all 32 Demo trip documents
+
+## Budget Calculation Bug
+- [ ] Fix budget summary to properly reflect paid vs unpaid payments - currently showing all as unpaid even when marked as paid
+
+## Budget Calculation Bug
+- [x] Fix budget summary to properly reflect paid vs unpaid payments - now uses paymentStatus field instead of payments table

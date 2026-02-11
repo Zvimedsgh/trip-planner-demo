@@ -1,0 +1,62 @@
+{
+  "query": "SELECT * FROM payments WHERE tripId = 630001 LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT * FROM payments WHERE tripId = 630001 LIMIT 5;",
+  "rows": [
+    {
+      "id": "120001",
+      "tripId": "630001",
+      "activityType": "transportation",
+      "activityId": "270001",
+      "amount": "234.04",
+      "currency": "EUR",
+      "paymentDate": "1795824000000",
+      "paymentMethod": "credit_card",
+      "notes": "",
+      "createdAt": "2026-02-11 11:09:48",
+      "updatedAt": "2026-02-11 11:09:48"
+    },
+    {
+      "id": "120002",
+      "tripId": "630001",
+      "activityType": "transportation",
+      "activityId": "120005",
+      "amount": "2115.00",
+      "currency": "ILS",
+      "paymentDate": "1762905600000",
+      "paymentMethod": "bank_transfer",
+      "notes": "לאפי",
+      "createdAt": "2026-02-11 11:09:49",
+      "updatedAt": "2026-02-11 11:09:49"
+    },
+    {
+      "id": "120003",
+      "tripId": "630001",
+      "activityType": "transportation",
+      "activityId": "180002",
+      "amount": "2115.00",
+      "currency": "ILS",
+      "paymentDate": "1762905600000",
+      "paymentMethod": "bank_transfer",
+      "notes": "לאפי",
+      "createdAt": "2026-02-11 11:09:49",
+      "updatedAt": "2026-02-11 11:09:49"
+    },
+    {
+      "id": "120004",
+      "tripId": "630001",
+      "activityType": "transportation",
+      "activityId": "180002",
+      "amount": "1250.00",
+      "currency": "ILS",
+      "paymentDate": "1770654263372",
+      "paymentMethod": "credit_card",
+      "notes": "",
+      "createdAt": "2026-02-11 11:09:49",
+      "updatedAt": "2026-02-11 11:09:49"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttripId\tactivityType\tactivityId\tamount\tcurrency\tpaymentDate\tpaymentMethod\tnotes\tcreatedAt\tupdatedAt\n120001\t630001\ttransportation\t270001\t234.04\tEUR\t1795824000000\tcredit_card\t\t2026-02-11 11:09:48\t2026-02-11 11:09:48\n120002\t630001\ttransportation\t120005\t2115.00\tILS\t1762905600000\tbank_transfer\tלאפי\t2026-02-11 11:09:49\t2026-02-11 11:09:49\n120003\t630001\ttransportation\t180002\t2115.00\tILS\t1762905600000\tbank_transfer\tלאפי\t2026-02-11 11:09:49\t2026-02-11 11:09:49\n120004\t630001\ttransportation\t180002\t1250.00\tILS\t1770654263372\tcredit_card\t\t2026-02-11 11:09:49\t2026-02-11 11:09:49\n",
+  "stderr": "",
+  "execution_time_ms": 1508
+}

@@ -1,0 +1,234 @@
+{
+  "query": "SELECT id, name, fileUrl, fileKey, mimeType FROM documents WHERE tripId = 630001 ORDER BY name;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, fileUrl, fileKey, mimeType FROM documents WHERE tripId = 630001 ORDER BY name;",
+  "rows": [
+    {
+      "id": "780010",
+      "name": "Apart Hotel GOLDEN apartments",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/gAOpxZ_R1gcUM3yeP_3kS-Apart Hotel GOLDEN apartments",
+      "fileKey": "documents/1/30001/gAOpxZ_R1gcUM3yeP_3kS-Apart Hotel GOLDEN apartments",
+      "mimeType": "image/jpeg"
+    },
+    {
+      "id": "780014",
+      "name": "Apart Hotel GOLDEN apartments",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/QzHlBPmpL4pJRcQOr7Wx0-Apart Hotel GOLDEN apartments",
+      "fileKey": "documents/1/30001/QzHlBPmpL4pJRcQOr7Wx0-Apart Hotel GOLDEN apartments",
+      "mimeType": "image/jpeg"
+    },
+    {
+      "id": "780016",
+      "name": "Bratislava Airport (BTS) - Israel",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/ljKrUT0ph50pDEIP7rGcG-Your travel itinerary_ WIGZVI טיסות WIZAIR",
+      "fileKey": "documents/1/30001/ljKrUT0ph50pDEIP7rGcG-Your travel itinerary_ WIGZVI טיסות WIZAIR",
+      "mimeType": "application/pdf"
+    },
+    {
+      "id": "780026",
+      "name": "Ceck in instructions Vienna",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/JrC-fV8r6SGUmGbuwCpZz-Ceck in instructions Vienna",
+      "fileKey": "documents/1/30001/JrC-fV8r6SGUmGbuwCpZz-Ceck in instructions Vienna",
+      "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    },
+    {
+      "id": "780004",
+      "name": "Charming & Cozy Ambiente Apartments",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/0UiL-tSVWikghFFgQcaNJ-מלון בברטיסלבה",
+      "fileKey": "documents/1/30001/0UiL-tSVWikghFFgQcaNJ-מלון בברטיסלבה",
+      "mimeType": "application/pdf"
+    },
+    {
+      "id": "780019",
+      "name": "DoubleTree By Hilton Košice",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/7eCPT3JvY85GdFOZR3fAt-DoubleTree By Hilton Košice.",
+      "fileKey": "documents/1/30001/7eCPT3JvY85GdFOZR3fAt-DoubleTree By Hilton Košice.",
+      "mimeType": "application/pdf"
+    },
+    {
+      "id": "780013",
+      "name": "DoubleTree By Hilton Košice.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/24DL5tHUpMIsJR-oTz4Ud-DoubleTree By Hilton Košice.jpg",
+      "fileKey": "documents/1/30001/24DL5tHUpMIsJR-oTz4Ud-DoubleTree By Hilton Košice.jpg",
+      "mimeType": "image/jpeg"
+    },
+    {
+      "id": "780011",
+      "name": "Hilton Ambassador.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/CnTnv4QEiRiZTzZ9NSHk7-Hilton Ambassador.jpg",
+      "fileKey": "documents/1/30001/CnTnv4QEiRiZTzZ9NSHk7-Hilton Ambassador.jpg",
+      "mimeType": "image/jpeg"
+    },
+    {
+      "id": "780006",
+      "name": "Hotel Bankov Košice",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/vFWr84UmWLSs4587uB8wS-Hotel Bankov Košice.pdf",
+      "fileKey": "documents/1/30001/vFWr84UmWLSs4587uB8wS-Hotel Bankov Košice.pdf",
+      "mimeType": "application/pdf"
+    },
+    {
+      "id": "780001",
+      "name": "Private holiday house Vivendi",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/SB_ds8LrLBWCLJZhtMPAG-מלון מיקולש.pdf",
+      "fileKey": "documents/1/30001/SB_ds8LrLBWCLJZhtMPAG-מלון מיקולש.pdf",
+      "mimeType": "application/pdf"
+    },
+    {
+      "id": "780003",
+      "name": "Surprice",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/r4rGuVBztLmwOXarlfUZ1-Rental voucher - D012504317 - רכב שכור",
+      "fileKey": "documents/1/30001/r4rGuVBztLmwOXarlfUZ1-Rental voucher - D012504317 - רכב שכור",
+      "mimeType": "application/pdf"
+    },
+    {
+      "id": "780008",
+      "name": "Vienna Hotel Parking",
+      "fileUrl": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/SFUxxBPOkCapFHow.jpg",
+      "fileKey": "vienna-parking.jpg",
+      "mimeType": "image/jpeg"
+    },
+    {
+      "id": "780007",
+      "name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx",
+      "fileKey": "documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx",
+      "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    },
+    {
+      "id": "780012",
+      "name": "Villa Regia.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YooHUKhwAaZpVuKJ9Mp1I-Villa Regia.jpg",
+      "fileKey": "documents/1/30001/YooHUKhwAaZpVuKJ9Mp1I-Villa Regia.jpg",
+      "mimeType": "image/jpeg"
+    },
+    {
+      "id": "780015",
+      "name": "Waterpark Bešeňová.",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/LuC320hnPn8vKGuRvsVmd-Waterpark Bešeňová.",
+      "fileKey": "documents/1/30001/LuC320hnPn8vKGuRvsVmd-Waterpark Bešeňová.",
+      "mimeType": "application/pdf"
+    },
+    {
+      "id": "780009",
+      "name": "chatam sofer-memorial",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YTMAOKzATu534yk-nxq1l-chatam sofer-memorial",
+      "fileKey": "documents/1/30001/YTMAOKzATu534yk-nxq1l-chatam sofer-memorial",
+      "mimeType": "image/jpeg"
+    },
+    {
+      "id": "780005",
+      "name": "myNext - Johannesgasse Apartments",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/pFrSjQo5wCaqdqoI8HATm-myNext - Johannesse Aparments.pdf",
+      "fileKey": "documents/1/30001/pFrSjQo5wCaqdqoI8HATm-myNext - Johannesse Aparments.pdf",
+      "mimeType": "application/pdf"
+    },
+    {
+      "id": "780032",
+      "name": "travel-3.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg",
+      "fileKey": "documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg",
+      "mimeType": "image/jpeg"
+    },
+    {
+      "id": "780027",
+      "name": "אישור הזמנה הילטון קושיצה",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/HhBeKYidQt5TFPSLpGO6L-אישור הזמנה הילטון קושיצה",
+      "fileKey": "documents/1/30001/HhBeKYidQt5TFPSLpGO6L-אישור הזמנה הילטון קושיצה",
+      "mimeType": "text/html"
+    },
+    {
+      "id": "780029",
+      "name": "אישור הזמנה מלון בוינה",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/3RLyuubYrsIwBVyoXDQtG-אישור הזמנה מלון בוינה",
+      "fileKey": "documents/1/30001/3RLyuubYrsIwBVyoXDQtG-אישור הזמנה מלון בוינה",
+      "mimeType": "text/html"
+    },
+    {
+      "id": "780028",
+      "name": "אישור הזמנה מלון ברטיסלבה",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/JQ_u8pIjNwpjBqhSiyMq7-אישור הזמנה מלון ברטיסלבה",
+      "fileKey": "documents/1/30001/JQ_u8pIjNwpjBqhSiyMq7-אישור הזמנה מלון ברטיסלבה",
+      "mimeType": "text/html"
+    },
+    {
+      "id": "780025",
+      "name": "אישור החזר במקרה ביטול חניה מלון וינה",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/4cILIU1jZWWHs_mQfLnOk-אישור החזר במקרה ביטול חניה מלון וינה",
+      "fileKey": "documents/1/30001/4cILIU1jZWWHs_mQfLnOk-אישור החזר במקרה ביטול חניה מלון וינה",
+      "mimeType": "application/pdf"
+    },
+    {
+      "id": "780024",
+      "name": "אישור חניה",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/jaDN6e7OrpfZMORozx1nw-46207RR.html",
+      "fileKey": "documents/1/30001/jaDN6e7OrpfZMORozx1nw-46207RR.html",
+      "mimeType": "text/html"
+    },
+    {
+      "id": "780030",
+      "name": "אישור מיקולש",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/AKEaF3lzFyRuqOHQP5y47-אישור מיקולש",
+      "fileKey": "documents/1/30001/AKEaF3lzFyRuqOHQP5y47-אישור מיקולש",
+      "mimeType": "text/html"
+    },
+    {
+      "id": "780022",
+      "name": "אישור צ'ק אאוט ב 11:00",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/muaQbhOKQC2tkSIEPYElN-46201RR.html",
+      "fileKey": "documents/1/30001/muaQbhOKQC2tkSIEPYElN-46201RR.html",
+      "mimeType": "text/html"
+    },
+    {
+      "id": "780023",
+      "name": "אישור צ'ק אין מאוחר בלילה",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/eKqJbmkvoc5x09FQbHqTp-46200RR.html",
+      "fileKey": "documents/1/30001/eKqJbmkvoc5x09FQbHqTp-46200RR.html",
+      "mimeType": "text/html"
+    },
+    {
+      "id": "780017",
+      "name": "ביטוח נסיעות לחול יונה וצבי.pdf",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/rO2ij24CRslSjhqO2_UFM-ביטוח נסיעות לחול יונה וצבי.pdf",
+      "fileKey": "documents/1/30001/rO2ij24CRslSjhqO2_UFM-ביטוח נסיעות לחול יונה וצבי.pdf",
+      "mimeType": "application/pdf"
+    },
+    {
+      "id": "780021",
+      "name": "הודעה 2 ממלון בברטיסלבה",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/Ts6X6IsIxc7qojfvp8f-P-הודעה 2 ממלון בברטיסלבה",
+      "fileKey": "documents/1/30001/Ts6X6IsIxc7qojfvp8f-P-הודעה 2 ממלון בברטיסלבה",
+      "mimeType": "text/html"
+    },
+    {
+      "id": "780031",
+      "name": "הודעה ממיקולש",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/Er8cZEZFZGdkvs7CF33Zf-הודעה ממיקולש",
+      "fileKey": "documents/1/30001/Er8cZEZFZGdkvs7CF33Zf-הודעה ממיקולש",
+      "mimeType": "text/html"
+    },
+    {
+      "id": "780020",
+      "name": "הודעה ממלון בברטיסלבה",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/DRxbaf16Ck_Br6I6mxwwW-הודעה ממלון בברטיסלבה",
+      "fileKey": "documents/1/30001/DRxbaf16Ck_Br6I6mxwwW-הודעה ממלון בברטיסלבה",
+      "mimeType": "text/html"
+    },
+    {
+      "id": "780002",
+      "name": "הסעה מהשדה בברטיסלבה למלון בעיר",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/cYWNC1MfiJAL2nOZPCRxW-הסעה מהשדה בברטיסלבה למלון בעיר",
+      "fileKey": "documents/1/30001/cYWNC1MfiJAL2nOZPCRxW-הסעה מהשדה בברטיסלבה למלון בעיר",
+      "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    },
+    {
+      "id": "780018",
+      "name": "ציון קבר החתמ סופר",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/xlTsbxhtjr2_-83Z8wgxm-ציון קבר החתמ סופר",
+      "fileKey": "documents/1/30001/xlTsbxhtjr2_-83Z8wgxm-ציון קבר החתמ סופר",
+      "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tfileUrl\tfileKey\tmimeType\n780010\tApart Hotel GOLDEN apartments\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/gAOpxZ_R1gcUM3yeP_3kS-Apart Hotel GOLDEN apartments\tdocuments/1/30001/gAOpxZ_R1gcUM3yeP_3kS-Apart Hotel GOLDEN apartments\timage/jpeg\n780014\tApart Hotel GOLDEN apartments\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/QzHlBPmpL4pJRcQOr7Wx0-Apart Hotel GOLDEN apartments\tdocuments/1/30001/QzHlBPmpL4pJRcQOr7Wx0-Apart Hotel GOLDEN apartments\timage/jpeg\n780016\tBratislava Airport (BTS) - Israel\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/ljKrUT0ph50pDEIP7rGcG-Your travel itinerary_ WIGZVI טיסות WIZAIR\tdocuments/1/30001/ljKrUT0ph50pDEIP7rGcG-Your travel itinerary_ WIGZVI טיסות WIZAIR\tapplication/pdf\n780026\tCeck in instructions Vienna\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/JrC-fV8r6SGUmGbuwCpZz-Ceck in instructions Vienna\tdocuments/1/30001/JrC-fV8r6SGUmGbuwCpZz-Ceck in instructions Vienna\tapplication/vnd.openxmlformats-officedocument.wordprocessingml.document\n780004\tCharming & Cozy Ambiente Apartments\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/0UiL-tSVWikghFFgQcaNJ-מלון בברטיסלבה\tdocuments/1/30001/0UiL-tSVWikghFFgQcaNJ-מלון בברטיסלבה\tapplication/pdf\n780019\tDoubleTree By Hilton Košice\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/7eCPT3JvY85GdFOZR3fAt-DoubleTree By Hilton Košice.\tdocuments/1/30001/7eCPT3JvY85GdFOZR3fAt-DoubleTree By Hilton Košice.\tapplication/pdf\n780013\tDoubleTree By Hilton Košice.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/24DL5tHUpMIsJR-oTz4Ud-DoubleTree By Hilton Košice.jpg\tdocuments/1/30001/24DL5tHUpMIsJR-oTz4Ud-DoubleTree By Hilton Košice.jpg\timage/jpeg\n780011\tHilton Ambassador.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/CnTnv4QEiRiZTzZ9NSHk7-Hilton Ambassador.jpg\tdocuments/1/30001/CnTnv4QEiRiZTzZ9NSHk7-Hilton Ambassador.jpg\timage/jpeg\n780006\tHotel Bankov Košice\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/vFWr84UmWLSs4587uB8wS-Hotel Bankov Košice.pdf\tdocuments/1/30001/vFWr84UmWLSs4587uB8wS-Hotel Bankov Košice.pdf\tapplication/pdf\n780001\tPrivate holiday house Vivendi\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/SB_ds8LrLBWCLJZhtMPAG-מלון מיקולש.pdf\tdocuments/1/30001/SB_ds8LrLBWCLJZhtMPAG-מלון מיקולש.pdf\tapplication/pdf\n780003\tSurprice\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/r4rGuVBztLmwOXarlfUZ1-Rental voucher - D012504317 - רכב שכור\tdocuments/1/30001/r4rGuVBztLmwOXarlfUZ1-Rental voucher - D012504317 - רכב שכור\tapplication/pdf\n780008\tVienna Hotel Parking\thttps://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/SFUxxBPOkCapFHow.jpg\tvienna-parking.jpg\timage/jpeg\n780007\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\tdocuments/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\tapplication/vnd.openxmlformats-officedocument.wordprocessingml.document\n780012\tVilla Regia.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YooHUKhwAaZpVuKJ9Mp1I-Villa Regia.jpg\tdocuments/1/30001/YooHUKhwAaZpVuKJ9Mp1I-Villa Regia.jpg\timage/jpeg\n780015\tWaterpark Bešeňová.\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/LuC320hnPn8vKGuRvsVmd-Waterpark Bešeňová.\tdocuments/1/30001/LuC320hnPn8vKGuRvsVmd-Waterpark Bešeňová.\tapplication/pdf\n780009\tchatam sofer-memorial\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/YTMAOKzATu534yk-nxq1l-chatam sofer-memorial\tdocuments/1/30001/YTMAOKzATu534yk-nxq1l-chatam sofer-memorial\timage/jpeg\n780005\tmyNext - Johannesgasse Apartments\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/pFrSjQo5wCaqdqoI8HATm-myNext - Johannesse Aparments.pdf\tdocuments/1/30001/pFrSjQo5wCaqdqoI8HATm-myNext - Johannesse Aparments.pdf\tapplication/pdf\n780032\ttravel-3.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg\tdocuments/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg\timage/jpeg\n780027\tאישור הזמנה הילטון קושיצה\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/HhBeKYidQt5TFPSLpGO6L-אישור הזמנה הילטון קושיצה\tdocuments/1/30001/HhBeKYidQt5TFPSLpGO6L-אישור הזמנה הילטון קושיצה\ttext/html\n780029\tאישור הזמנה מלון בוינה\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/3RLyuubYrsIwBVyoXDQtG-אישור הזמנה מלון בוינה\tdocuments/1/30001/3RLyuubYrsIwBVyoXDQtG-אישור הזמנה מלון בוינה\ttext/html\n780028\tאישור הזמנה מלון ברטיסלבה\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/JQ_u8pIjNwpjBqhSiyMq7-אישור הזמנה מלון ברטיסלבה\tdocuments/1/30001/JQ_u8pIjNwpjBqhSiyMq7-אישור הזמנה מלון ברטיסלבה\ttext/html\n780025\tאישור החזר במקרה ביטול חניה מלון וינה\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/4cILIU1jZWWHs_mQfLnOk-אישור החזר במקרה ביטול חניה מלון וינה\tdocuments/1/30001/4cILIU1jZWWHs_mQfLnOk-אישור החזר במקרה ביטול חניה מלון וינה\tapplication/pdf\n780024\tאישור חניה\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/jaDN6e7OrpfZMORozx1nw-46207RR.html\tdocuments/1/30001/jaDN6e7OrpfZMORozx1nw-46207RR.html\ttext/html\n780030\tאישור מיקולש\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/AKEaF3lzFyRuqOHQP5y47-אישור מיקולש\tdocuments/1/30001/AKEaF3lzFyRuqOHQP5y47-אישור מיקולש\ttext/html\n780022\tאישור צ'ק אאוט ב 11:00\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/muaQbhOKQC2tkSIEPYElN-46201RR.html\tdocuments/1/30001/muaQbhOKQC2tkSIEPYElN-46201RR.html\ttext/html\n780023\tאישור צ'ק אין מאוחר בלילה\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/eKqJbmkvoc5x09FQbHqTp-46200RR.html\tdocuments/1/30001/eKqJbmkvoc5x09FQbHqTp-46200RR.html\ttext/html\n780017\tביטוח נסיעות לחול יונה וצבי.pdf\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/rO2ij24CRslSjhqO2_UFM-ביטוח נסיעות לחול יונה וצבי.pdf\tdocuments/1/30001/rO2ij24CRslSjhqO2_UFM-ביטוח נסיעות לחול יונה וצבי.pdf\tapplication/pdf\n780021\tהודעה 2 ממלון בברטיסלבה\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/Ts6X6IsIxc7qojfvp8f-P-הודעה 2 ממלון בברטיסלבה\tdocuments/1/30001/Ts6X6IsIxc7qojfvp8f-P-הודעה 2 ממלון בברטיסלבה\ttext/html\n780031\tהודעה ממיקולש\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/Er8cZEZFZGdkvs7CF33Zf-הודעה ממיקולש\tdocuments/1/30001/Er8cZEZFZGdkvs7CF33Zf-הודעה ממיקולש\ttext/html\n780020\tהודעה ממלון בברטיסלבה\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/DRxbaf16Ck_Br6I6mxwwW-הודעה ממלון בברטיסלבה\tdocuments/1/30001/DRxbaf16Ck_Br6I6mxwwW-הודעה ממלון בברטיסלבה\ttext/html\n780002\tהסעה מהשדה בברטיסלבה למלון בעיר\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/cYWNC1MfiJAL2nOZPCRxW-הסעה מהשדה בברטיסלבה למלון בעיר\tdocuments/1/30001/cYWNC1MfiJAL2nOZPCRxW-הסעה מהשדה בברטיסלבה למלון בעיר\tapplication/vnd.openxmlformats-officedocument.wordprocessingml.document\n780018\tציון קבר החתמ סופר\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/xlTsbxhtjr2_-83Z8wgxm-ציון קבר החתמ סופר\tdocuments/1/30001/xlTsbxhtjr2_-83Z8wgxm-ציון קבר החתמ סופר\tapplication/vnd.openxmlformats-officedocument.wordprocessingml.document\n",
+  "stderr": "",
+  "execution_time_ms": 1642
+}

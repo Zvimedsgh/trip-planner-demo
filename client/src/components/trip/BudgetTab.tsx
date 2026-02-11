@@ -133,17 +133,14 @@ export default function BudgetTab({ tripId }: BudgetTabProps) {
       }, {} as Record<string, number>);
   };
 
-  // Process all expenses with actual payments
+  // Process all expenses using paymentStatus
   hotels?.forEach(hotel => {
     if (hotel.price) {
       const totalPrice = parseFloat(hotel.price);
       const currency = hotel.currency || "USD";
-      const payments = getActivityPayments("hotel", hotel.id);
-      const paidAmount = payments[currency] || 0;
-      const unpaidAmount = totalPrice - paidAmount;
+      const isPaid = hotel.paymentStatus === "paid";
       
-      if (paidAmount > 0) addToCurrency(currency, paidAmount, true);
-      if (unpaidAmount > 0) addToCurrency(currency, unpaidAmount, false);
+      addToCurrency(currency, totalPrice, isPaid);
     }
   });
 
@@ -151,12 +148,9 @@ export default function BudgetTab({ tripId }: BudgetTabProps) {
     if (transport.price) {
       const totalPrice = parseFloat(transport.price);
       const currency = transport.currency || "USD";
-      const payments = getActivityPayments("transportation", transport.id);
-      const paidAmount = payments[currency] || 0;
-      const unpaidAmount = totalPrice - paidAmount;
+      const isPaid = transport.paymentStatus === "paid";
       
-      if (paidAmount > 0) addToCurrency(currency, paidAmount, true);
-      if (unpaidAmount > 0) addToCurrency(currency, unpaidAmount, false);
+      addToCurrency(currency, totalPrice, isPaid);
     }
   });
 
@@ -164,12 +158,9 @@ export default function BudgetTab({ tripId }: BudgetTabProps) {
     if (restaurant.price) {
       const totalPrice = parseFloat(restaurant.price);
       const currency = restaurant.currency || "USD";
-      const payments = getActivityPayments("restaurant", restaurant.id);
-      const paidAmount = payments[currency] || 0;
-      const unpaidAmount = totalPrice - paidAmount;
+      const isPaid = restaurant.paymentStatus === "paid";
       
-      if (paidAmount > 0) addToCurrency(currency, paidAmount, true);
-      if (unpaidAmount > 0) addToCurrency(currency, unpaidAmount, false);
+      addToCurrency(currency, totalPrice, isPaid);
     }
   });
 
@@ -177,12 +168,9 @@ export default function BudgetTab({ tripId }: BudgetTabProps) {
     if (rental.price) {
       const totalPrice = parseFloat(rental.price);
       const currency = rental.currency || "USD";
-      const payments = getActivityPayments("car_rental", rental.id);
-      const paidAmount = payments[currency] || 0;
-      const unpaidAmount = totalPrice - paidAmount;
+      const isPaid = rental.paymentStatus === "paid";
       
-      if (paidAmount > 0) addToCurrency(currency, paidAmount, true);
-      if (unpaidAmount > 0) addToCurrency(currency, unpaidAmount, false);
+      addToCurrency(currency, totalPrice, isPaid);
     }
   });
 
