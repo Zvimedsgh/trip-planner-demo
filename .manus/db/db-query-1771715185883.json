@@ -1,0 +1,9 @@
+{
+  "query": "SELECT id, name, nameHe, date, time, FROM_UNIXTIME(date/1000) as readable_date FROM trip_routes WHERE tripId = (SELECT id FROM trips WHERE name LIKE '%סלובקיה%' LIMIT 1) ORDER BY date;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, nameHe, date, time, FROM_UNIXTIME(date/1000) as readable_date FROM trip_routes WHERE tripId = (SELECT id FROM trips WHERE name LIKE '%סלובקיה%' LIMIT 1) ORDER BY date;",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1541
+}

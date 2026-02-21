@@ -357,3 +357,9 @@
 - [x] Create HTML template with RTL styling
 - [x] Convert Markdown to RTL PDF
 - [x] Update PDF in public folder
+
+## Fix Itinerary Items Not Appearing in Day-by-Day Tab
+- [x] Investigate why itinerary items (e.g., SREBSKE on Day 4) don't appear in Day-by-Day tab
+- [x] Check database to verify itinerary dates are correct
+- [x] Fix code to properly sync itinerary items with days (changed to UTC date comparison)
+- [ ] Test the fix with Slovakia trip

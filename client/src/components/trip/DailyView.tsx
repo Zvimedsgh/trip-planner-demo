@@ -38,13 +38,14 @@ export default function DailyView({ tripId, date, onTabChange }: DailyViewProps)
 
   // Filter activities for this specific day
   // Compare dates only (ignore time) to avoid timezone issues
+  // Use UTC date parts to ensure consistent comparison regardless of local timezone
   const isOnDay = (timestamp: number) => {
     const activityDate = new Date(timestamp);
     const targetDate = new Date(date);
     return (
-      activityDate.getFullYear() === targetDate.getFullYear() &&
-      activityDate.getMonth() === targetDate.getMonth() &&
-      activityDate.getDate() === targetDate.getDate()
+      activityDate.getUTCFullYear() === targetDate.getUTCFullYear() &&
+      activityDate.getUTCMonth() === targetDate.getUTCMonth() &&
+      activityDate.getUTCDate() === targetDate.getUTCDate()
     );
   };
 

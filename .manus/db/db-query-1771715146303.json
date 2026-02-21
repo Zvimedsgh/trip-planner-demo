@@ -1,0 +1,16 @@
+{
+  "query": "SELECT id, name, startDate, FROM_UNIXTIME(startDate/1000) as readable_start FROM trips WHERE id = 630001;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, startDate, FROM_UNIXTIME(startDate/1000) as readable_start FROM trips WHERE id = 630001;",
+  "rows": [
+    {
+      "id": "630001",
+      "name": "הדגמה: טיול מושלם",
+      "startDate": "1770681600000",
+      "readable_start": "2026-02-10 00:00:00.0000"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tstartDate\treadable_start\n630001\tהדגמה: טיול מושלם\t1770681600000\t2026-02-10 00:00:00.0000\n",
+  "stderr": "",
+  "execution_time_ms": 1531
+}

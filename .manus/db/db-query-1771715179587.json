@@ -1,0 +1,18 @@
+{
+  "query": "SELECT id, name, destination, startDate, endDate, FROM_UNIXTIME(startDate/1000) as readable_start FROM trips WHERE name LIKE '%סלובקיה%' OR destination LIKE '%Slovak%' OR destination LIKE '%סלובקיה%';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, destination, startDate, endDate, FROM_UNIXTIME(startDate/1000) as readable_start FROM trips WHERE name LIKE '%סלובקיה%' OR destination LIKE '%Slovak%' OR destination LIKE '%סלובקיה%';",
+  "rows": [
+    {
+      "id": "30001",
+      "name": "Goren Roots Trip to Slovakia",
+      "destination": "Bratislava,Slovakia",
+      "startDate": "1788220800000",
+      "endDate": "1788912000000",
+      "readable_start": "2026-09-01 00:00:00.0000"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tdestination\tstartDate\tendDate\treadable_start\n30001\tGoren Roots Trip to Slovakia\tBratislava,Slovakia\t1788220800000\t1788912000000\t2026-09-01 00:00:00.0000\n",
+  "stderr": "",
+  "execution_time_ms": 1522
+}

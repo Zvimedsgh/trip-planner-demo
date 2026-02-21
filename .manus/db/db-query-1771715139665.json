@@ -1,0 +1,66 @@
+{
+  "query": "SELECT id, name, nameHe, date, time, FROM_UNIXTIME(date/1000) as readable_date FROM trip_routes WHERE tripId = 630001 ORDER BY date;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, nameHe, date, time, FROM_UNIXTIME(date/1000) as readable_date FROM trip_routes WHERE tripId = 630001 ORDER BY date;",
+  "rows": [
+    {
+      "id": "240002",
+      "name": "Route 4: Liptovský Mikuláš → Štrbské Pleso",
+      "nameHe": "מסלול 2: ליפטובסקי מיקולאש → קושיצה",
+      "date": "1725321600000",
+      "time": "09:00",
+      "readable_date": "2024-09-03 00:00:00.0000"
+    },
+    {
+      "id": "240003",
+      "name": "Liptovský Mikuláš → Demänovská Ice Cave",
+      "nameHe": "מסלול 3: קושיצה → וינה",
+      "date": "1725408000000",
+      "time": "09:00",
+      "readable_date": "2024-09-04 00:00:00.0000"
+    },
+    {
+      "id": "240006",
+      "name": "Route 5: Liptovský Mikuláš → Košice",
+      "nameHe": "NULL",
+      "date": "1725523800000",
+      "time": "10:10",
+      "readable_date": "2024-09-05 08:10:00.0000"
+    },
+    {
+      "id": "240007",
+      "name": "Route 7: Košice → Vienna",
+      "nameHe": "NULL",
+      "date": "1725696600000",
+      "time": "10:10",
+      "readable_date": "2024-09-07 08:10:00.0000"
+    },
+    {
+      "id": "240001",
+      "name": "Route 1: Bratislava → Liptovský Mikuláš",
+      "nameHe": "מסלול 1: ברטיסלבה → ליפטובסקי מיקולאש",
+      "date": "1788368400000",
+      "time": "19:00",
+      "readable_date": "2026-09-02 17:00:00.0000"
+    },
+    {
+      "id": "240005",
+      "name": "Route 6: Liptovský Mikuláš → Bešeňová",
+      "nameHe": "NULL",
+      "date": "1788393600000",
+      "time": "19:00",
+      "readable_date": "2026-09-03 00:00:00.0000"
+    },
+    {
+      "id": "240004",
+      "name": "Route 6: Vienna → Bratislava Airport",
+      "nameHe": "מסלול 6: וינה → שדה התעופה",
+      "date": "1788933600000",
+      "time": "13:00",
+      "readable_date": "2026-09-09 06:00:00.0000"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tnameHe\tdate\ttime\treadable_date\n240002\tRoute 4: Liptovský Mikuláš → Štrbské Pleso\tמסלול 2: ליפטובסקי מיקולאש → קושיצה\t1725321600000\t09:00\t2024-09-03 00:00:00.0000\n240003\tLiptovský Mikuláš → Demänovská Ice Cave\tמסלול 3: קושיצה → וינה\t1725408000000\t09:00\t2024-09-04 00:00:00.0000\n240006\tRoute 5: Liptovský Mikuláš → Košice\tNULL\t1725523800000\t10:10\t2024-09-05 08:10:00.0000\n240007\tRoute 7: Košice → Vienna\tNULL\t1725696600000\t10:10\t2024-09-07 08:10:00.0000\n240001\tRoute 1: Bratislava → Liptovský Mikuláš\tמסלול 1: ברטיסלבה → ליפטובסקי מיקולאש\t1788368400000\t19:00\t2026-09-02 17:00:00.0000\n240005\tRoute 6: Liptovský Mikuláš → Bešeňová\tNULL\t1788393600000\t19:00\t2026-09-03 00:00:00.0000\n240004\tRoute 6: Vienna → Bratislava Airport\tמסלול 6: וינה → שדה התעופה\t1788933600000\t13:00\t2026-09-09 06:00:00.0000\n",
+  "stderr": "",
+  "execution_time_ms": 1585
+}
