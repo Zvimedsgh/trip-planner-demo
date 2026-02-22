@@ -417,3 +417,9 @@
 - [x] Make route cards open Google Maps directly when clicked
 - [x] Hide embedded map dialog (keep code for potential future use)
 - [ ] Test that clicking route card opens Google Maps app and stays there
+
+## Fix Google Maps Opening from PWA
+- [x] window.location.href doesn't work in PWA - navigates within app
+- [x] Use programmatic <a> element click to trigger external app opening
+- [ ] Test on published site after fix
+- [ ] If still doesn't work, may need to revert to embedded map dialog

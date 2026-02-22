@@ -85,9 +85,15 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
       return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(route.name)}`;
     };
     
-    // Open Google Maps
+    // Open Google Maps using programmatic link click (works better in PWA)
     const url = getGoogleMapsUrl();
-    window.location.href = url; // This opens Google Maps app on mobile
+    const link = document.createElement('a');
+    link.href = url;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
   
   // If no routes exist, show empty state
