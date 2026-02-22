@@ -362,14 +362,10 @@
 - [x] Investigate why itinerary items (e.g., SREBSKE on Day 4) don't appear in Day-by-Day tab
 - [x] Check database to verify itinerary dates are correct
 - [x] Fix code to properly sync itinerary items with days (changed to UTC date comparison)
-- [x] Test the fix with Slovakia trip - all routes now appear correctly
+- [ ] Test the fix with Slovakia trip
 
-## Fix Routes with Wrong Year (2024 instead of 2026)
-- [x] Query database to find all routes with 2024 dates in Slovakia trip
-- [x] Update routes to correct year (2026)
-- [x] Verify all routes appear in correct days
-
-## Fix Missing Edit Button for Transportation in Timeline
-- [x] Investigate why transportation route doesn't show edit button in Day-by-Day view
-- [x] Fix code to display edit button for all routes including transportation
-- [ ] Test that transportation can be edited from timeline
+## Fix Route Sorting in Day-by-Day Timeline
+- [x] Check database timestamp of transportation route (Sep 2, 01:30)
+- [x] Investigate why route at 01:30 appears last instead of first in timeline
+- [x] Fix sorting logic to properly order activities by time - Changed all setHours to setUTCHours in DailyView.tsx
+- [x] Test that transportation appears before check-in

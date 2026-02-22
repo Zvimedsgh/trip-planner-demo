@@ -1,0 +1,19 @@
+{
+  "query": "SELECT id, type, origin, destination, FROM_UNIXTIME(departureDate/1000) as departure_readable, departureDate, arrivalDate FROM transportation WHERE tripId = 30001 AND type = 'other' ORDER BY departureDate;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, type, origin, destination, FROM_UNIXTIME(departureDate/1000) as departure_readable, departureDate, arrivalDate FROM transportation WHERE tripId = 30001 AND type = 'other' ORDER BY departureDate;",
+  "rows": [
+    {
+      "id": "60003",
+      "type": "other",
+      "origin": "Bratislave airport",
+      "destination": "Hotel in Bratislava",
+      "departure_readable": "2026-09-01 22:30:00.0000",
+      "departureDate": "1788301800000",
+      "arrivalDate": "1788305400000"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttype\torigin\tdestination\tdeparture_readable\tdepartureDate\tarrivalDate\n60003\tother\tBratislave airport\tHotel in Bratislava\t2026-09-01 22:30:00.0000\t1788301800000\t1788305400000\n",
+  "stderr": "",
+  "execution_time_ms": 2260
+}

@@ -361,40 +361,28 @@ export default function DailyView({ tripId, date, onTabChange }: DailyViewProps)
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => {
-                      // Parse origin and destination from route name (format: "Origin → Destination")
-                      const parts = activity.title.split(/→|->/).map(p => p.trim());
-                      if (parts.length >= 2) {
-                        // Use Google Maps Directions API
-                        const origin = encodeURIComponent(parts[0]);
-                        const destination = encodeURIComponent(parts[1]);
-                        // Add region=SK to force Slovakia context and show local POIs
-                        const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&region=SK`;
-                        window.open(googleMapsUrl, "_blank");
-                      } else {
-                        // Fallback to search if format doesn't match
-                        const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(activity.title)}&region=SK`;
-                        window.open(googleMapsUrl, "_blank");
-                      }
-                    }}
-                    className="flex-1 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors"
-                  >
-                    <ExternalLink className="w-4 h-4" />
-                    {language === "he" ? "פתח במפה" : "Open in Map"}
-                  </button>
-                  {onTabChange && (
-                    <button
-                      onClick={() => onTabChange("route-manager", activity.id)}
-                      className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors"
-                      title={language === "he" ? "ערוך" : "Edit"}
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                      {language === "he" ? "ערוך" : "Edit"}
-                    </button>
-                  )}
-                </div>
+                <button
+                  onClick={() => {
+                    // Parse origin and destination from route name (format: "Origin → Destination")
+                    const parts = activity.title.split(/→|->/).map(p => p.trim());
+                    if (parts.length >= 2) {
+                      // Use Google Maps Directions API
+                      const origin = encodeURIComponent(parts[0]);
+                      const destination = encodeURIComponent(parts[1]);
+                      // Add region=SK to force Slovakia context and show local POIs
+                      const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&region=SK`;
+                      window.open(googleMapsUrl, "_blank");
+                    } else {
+                      // Fallback to search if format doesn't match
+                      const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(activity.title)}&region=SK`;
+                      window.open(googleMapsUrl, "_blank");
+                    }
+                  }}
+                  className="w-full bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  {language === "he" ? "פתח במפה" : "Open in Map"}
+                </button>
               </CardContent>
             </Card>
           );
