@@ -411,3 +411,9 @@
 - [x] Button should be prominent and easy to tap on mobile (py-4 px-6, text-lg)
 - [x] Smart URL generation: directions for routes, search for locations
 - [ ] Test that button opens Google Maps with correct route and POIs
+
+## Simplify Route Maps - Open Google Maps Directly
+- [x] Fix Google Maps link to open app directly (not browser/in-app) - using window.location.href
+- [x] Make route cards open Google Maps directly when clicked
+- [x] Hide embedded map dialog (keep code for potential future use)
+- [ ] Test that clicking route card opens Google Maps app and stays there

@@ -58,44 +58,36 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
     refetch();
   }, [tripId, refetch]);
   
-  // Handle route card click - generate location if needed before opening dialog
+  // Handle route card click - open Google Maps directly
   const handleRouteClick = async (route: any) => {
-    // Debug: log mapData value and type
-    console.log(`🗺️ Route: "${route.name}" | mapData:`, route.mapData, `| type: ${typeof route.mapData}`);
-    
-    // Check if route has valid mapData
-    const hasValidMapData = route.mapData && 
-                           route.mapData !== 'null' && 
-                           route.mapData !== null && 
-                           route.mapData !== undefined && 
-                           String(route.mapData).trim() !== '';
-    
-    // If route already has mapData, just open it
-    if (hasValidMapData) {
-      setSelectedRoute(route);
-      return;
-    }
-    
-    // Otherwise, generate the location first
-    setGeneratingRoute(true);
-    try {
-      await generateRouteMutation.mutateAsync({ routeId: route.id });
-      // Refetch to get updated route with mapData
-      const updatedRoutes = await refetch();
-      // Find the updated route
-      const updatedRoute = updatedRoutes.data?.find((r: any) => r.id === route.id);
-      if (updatedRoute) {
-        setSelectedRoute(updatedRoute);
+    // Generate Google Maps URL
+    const getGoogleMapsUrl = () => {
+      // Parse mapData to get origin and destination
+      if (route.mapData) {
+        try {
+          const mapConfig = JSON.parse(route.mapData);
+          // Route with origin/destination - use directions
+          if (mapConfig?.origin && mapConfig?.destination) {
+            const origin = `${mapConfig.origin.location.lat},${mapConfig.origin.location.lng}`;
+            const destination = `${mapConfig.destination.location.lat},${mapConfig.destination.location.lng}`;
+            return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=driving`;
+          }
+          // Single location - use search
+          if (mapConfig?.location?.coordinates) {
+            const coords = mapConfig.location.coordinates;
+            return `https://www.google.com/maps/search/?api=1&query=${coords.lat},${coords.lng}`;
+          }
+        } catch (e) {
+          console.error("Failed to parse mapData:", e);
+        }
       }
-    } catch (error: any) {
-      console.error("Failed to generate location:", error);
-      alert(language === "he" 
-        ? `שגיאה במציאת המיקום: ${error.message || "נסה שוב מאוחר יותר"}`
-        : `Failed to find location: ${error.message || "Please try again later"}`
-      );
-    } finally {
-      setGeneratingRoute(false);
-    }
+      // Fallback: search by route name
+      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(route.name)}`;
+    };
+    
+    // Open Google Maps
+    const url = getGoogleMapsUrl();
+    window.location.href = url; // This opens Google Maps app on mobile
   };
   
   // If no routes exist, show empty state
