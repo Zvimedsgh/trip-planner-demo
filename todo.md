@@ -377,3 +377,10 @@
 - [x] Update backend tRPC procedures for new schema (schema auto-updates)
 - [x] Update frontend components (DailyView) to use date+time directly
 - [x] Test timeline sorting works correctly (transportation 01:30 before hotel 02:30) ✅ VERIFIED
+
+## Fix Flight Times to Match Itinerary
+- [x] Check current flight times in database
+- [x] Update outbound flight (W6 7062): Depart TLV 22:30 Israel time, Arrive BTS 01:10 Slovakia time
+- [x] Update return flight (W6 7061): Depart BTS 17:05 Slovakia time, Arrive TLV 21:35 Israel time
+- [x] Verify timeline displays correct times (Day-by-day view works)
+- [x] Fix Transportation tab to display correct times from new departureTime/arrivalTime fields

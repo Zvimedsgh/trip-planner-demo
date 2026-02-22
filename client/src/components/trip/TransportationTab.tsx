@@ -874,10 +874,12 @@ export default function TransportationTab({ tripId, tripEndDate, highlightedId }
                       <Calendar className="w-3 h-3" />
                       {format(depDate, "MMM d")}
                     </span>
-                    <span className="flex items-center gap-1 bg-muted px-2 py-1 rounded">
-                      <Clock className="w-3 h-3" />
-                      {format(depDate, "HH:mm")}
-                    </span>
+                    {transport.departureTime && (
+                      <span className="flex items-center gap-1 bg-muted px-2 py-1 rounded">
+                        <Clock className="w-3 h-3" />
+                        {transport.departureTime}
+                      </span>
+                    )}
 
                   </div>
                   {transport.flightNumber && (
@@ -887,7 +889,7 @@ export default function TransportationTab({ tripId, tripEndDate, highlightedId }
                   )}
                   {arrDate && (
                     <p className="text-xs text-muted-foreground mt-1">
-                      {language === "he" ? "הגעה:" : "Arr:"} {format(arrDate, "MMM d, HH:mm")}
+                      {language === "he" ? "הגעה:" : "Arr:"} {format(arrDate, "MMM d")}{transport.arrivalTime ? `, ${transport.arrivalTime}` : ''}
                     </p>
                   )}
                   {transport.website && (
