@@ -369,3 +369,11 @@
 - [x] Investigate why route at 01:30 appears last instead of first in timeline
 - [x] Fix sorting logic to properly order activities by time - Changed all setHours to setUTCHours in DailyView.tsx
 - [x] Test that transportation appears before check-in
+
+## Fix Timeline Timezone Handling - Remove UTC, Store Local Time
+- [x] Analyze current schema (timestamps vs date+time+location)
+- [x] Update database schema to store date, time, location separately for all tables
+- [x] Migrate existing Slovakia trip data to new format
+- [x] Update backend tRPC procedures for new schema (schema auto-updates)
+- [x] Update frontend components (DailyView) to use date+time directly
+- [x] Test timeline sorting works correctly (transportation 01:30 before hotel 02:30) ✅ VERIFIED

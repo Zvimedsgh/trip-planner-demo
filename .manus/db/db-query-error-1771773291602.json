@@ -1,0 +1,8 @@
+{
+  "query": "SELECT id, type, origin, destination, FROM_UNIXTIME(departureDate/1000) as utc_time, departureDate FROM transportation WHERE tripId = 30001 AND type = 'other';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, type, origin, destination, FROM_UNIXTIME(departureDate/1000) as utc_time, departureDate FROM transportation WHERE tripId = 30001 AND type = 'other';",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1064 (42000) at line 1: You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use line 1 column 83 near \"utc_time, departureDate FROM transportation WHERE tripId = 30001 AND type = 'other'\""
+  ]
+}

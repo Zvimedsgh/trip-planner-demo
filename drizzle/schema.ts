@@ -49,8 +49,9 @@ export const touristSites = mysqlTable("tourist_sites", {
   address: varchar("address", { length: 500 }),
   description: text("description"),
   openingHours: varchar("openingHours", { length: 255 }),
-  plannedVisitDate: bigint("plannedVisitDate", { mode: "number" }), // UTC timestamp in ms
+  plannedVisitDate: bigint("plannedVisitDate", { mode: "number" }), // Date only (midnight UTC)
   plannedVisitTime: varchar("plannedVisitTime", { length: 10 }), // HH:MM format
+  location: varchar("location", { length: 255 }), // Timezone location
   website: varchar("website", { length: 500 }),
   notes: text("notes"),
   coverImage: varchar("coverImage", { length: 500 }), // URL to site cover image
@@ -70,9 +71,10 @@ export const hotels = mysqlTable("hotels", {
   tripId: int("tripId").notNull(),
   name: varchar("name", { length: 255 }).notNull(),
   address: varchar("address", { length: 500 }),
-  checkInDate: bigint("checkInDate", { mode: "number" }).notNull(), // UTC timestamp in ms
+  checkInDate: bigint("checkInDate", { mode: "number" }).notNull(), // Date only (midnight UTC)
   checkInTime: varchar("checkInTime", { length: 10 }), // HH:MM format
-  checkOutDate: bigint("checkOutDate", { mode: "number" }).notNull(), // UTC timestamp in ms
+  location: varchar("location", { length: 255 }), // Timezone location
+  checkOutDate: bigint("checkOutDate", { mode: "number" }).notNull(), // Date only (midnight UTC)
   checkOutTime: varchar("checkOutTime", { length: 10 }), // HH:MM format
   confirmationNumber: varchar("confirmationNumber", { length: 100 }),
   phone: varchar("phone", { length: 50 }),
@@ -103,8 +105,12 @@ export const transportation = mysqlTable("transportation", {
   flightNumber: varchar("flightNumber", { length: 50 }),
   origin: varchar("origin", { length: 255 }).notNull(),
   destination: varchar("destination", { length: 255 }).notNull(),
-  departureDate: bigint("departureDate", { mode: "number" }).notNull(), // UTC timestamp in ms
-  arrivalDate: bigint("arrivalDate", { mode: "number" }),
+  departureDate: bigint("departureDate", { mode: "number" }).notNull(), // Date only (midnight UTC)
+  departureTime: varchar("departureTime", { length: 10 }), // HH:MM format
+  departureLocation: varchar("departureLocation", { length: 255 }), // Timezone location
+  arrivalDate: bigint("arrivalDate", { mode: "number" }), // Date only (midnight UTC)
+  arrivalTime: varchar("arrivalTime", { length: 10 }), // HH:MM format
+  arrivalLocation: varchar("arrivalLocation", { length: 255 }), // Timezone location
   confirmationNumber: varchar("confirmationNumber", { length: 100 }),
   website: varchar("website", { length: 500 }),
   price: decimal("price", { precision: 10, scale: 2 }),
@@ -203,8 +209,9 @@ export const restaurants = mysqlTable("restaurants", {
   name: varchar("name", { length: 255 }).notNull(),
   address: varchar("address", { length: 500 }),
   cuisineType: varchar("cuisineType", { length: 100 }),
-  reservationDate: bigint("reservationDate", { mode: "number" }), // UTC timestamp in ms
+  reservationDate: bigint("reservationDate", { mode: "number" }), // Date only (midnight UTC)
   reservationTime: varchar("reservationTime", { length: 10 }), // HH:MM format
+  location: varchar("location", { length: 255 }), // Timezone location
   numberOfDiners: int("numberOfDiners"),
   phone: varchar("phone", { length: 50 }),
   website: varchar("website", { length: 500 }),
@@ -288,8 +295,9 @@ export const routes = mysqlTable("trip_routes", {
   nameHe: varchar("nameHe", { length: 255 }), // Hebrew translation
   description: text("description"), // e.g., "Day 2: Drive to mountain accommodation"
   descriptionHe: text("descriptionHe"), // Hebrew translation
-  date: bigint("date", { mode: "number" }).notNull(), // UTC timestamp in ms
+  date: bigint("date", { mode: "number" }).notNull(), // Date only (midnight UTC)
   time: varchar("time", { length: 5 }), // HH:MM format (24-hour)
+  location: varchar("location", { length: 255 }), // Timezone location
   distanceKm: decimal("distanceKm", { precision: 8, scale: 2 }), // Distance in kilometers
   estimatedDuration: int("estimatedDuration"), // Estimated travel time in minutes
   roadType: varchar("roadType", { length: 50 }), // e.g., "highway", "scenic", "mountain"

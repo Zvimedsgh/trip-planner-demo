@@ -1,0 +1,46 @@
+{
+  "query": "SELECT id, type, origin, destination, departureDate, departureTime, departureLocation FROM transportation WHERE tripId = 30001;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, type, origin, destination, departureDate, departureTime, departureLocation FROM transportation WHERE tripId = 30001;",
+  "rows": [
+    {
+      "id": "60003",
+      "type": "other",
+      "origin": "Bratislave airport",
+      "destination": "Hotel in Bratislava",
+      "departureDate": "1788220800000",
+      "departureTime": "23:30",
+      "departureLocation": "Slovakia"
+    },
+    {
+      "id": "120005",
+      "type": "flight",
+      "origin": "Israel",
+      "destination": "Bratislava Airport (BTS)",
+      "departureDate": "1788220800000",
+      "departureTime": "19:00",
+      "departureLocation": "Israel"
+    },
+    {
+      "id": "180002",
+      "type": "flight",
+      "origin": "Bratislava Airport (BTS)",
+      "destination": "Israel",
+      "departureDate": "1788912000000",
+      "departureTime": "14:05",
+      "departureLocation": "Slovakia"
+    },
+    {
+      "id": "270001",
+      "type": "car_rental",
+      "origin": "BTS Airport",
+      "destination": "BTS Airport",
+      "departureDate": "1788307200000",
+      "departureTime": "07:00",
+      "departureLocation": "Slovakia"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttype\torigin\tdestination\tdepartureDate\tdepartureTime\tdepartureLocation\n60003\tother\tBratislave airport\tHotel in Bratislava\t1788220800000\t23:30\tSlovakia\n120005\tflight\tIsrael\tBratislava Airport (BTS)\t1788220800000\t19:00\tIsrael\n180002\tflight\tBratislava Airport (BTS)\tIsrael\t1788912000000\t14:05\tSlovakia\n270001\tcar_rental\tBTS Airport\tBTS Airport\t1788307200000\t07:00\tSlovakia\n",
+  "stderr": "",
+  "execution_time_ms": 1525
+}
