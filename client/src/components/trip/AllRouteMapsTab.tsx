@@ -212,15 +212,15 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
 
       {/* Map Dialog */}
       <Dialog open={!!selectedRoute} onOpenChange={(open) => !open && setSelectedRoute(null)}>
-        <DialogContent className="max-w-[95vw] w-[95vw] h-[95vh] p-6">
-          <DialogHeader>
+        <DialogContent className="max-w-[95vw] w-[95vw] h-[95vh] p-6 flex flex-col">
+          <DialogHeader className="flex-shrink-0">
             <DialogTitle className="text-2xl font-bold">
               {selectedRoute && (language === "he" && selectedRoute.nameHe ? selectedRoute.nameHe : selectedRoute?.name)}
             </DialogTitle>
           </DialogHeader>
           
           {selectedRoute && (
-            <div className="flex flex-col h-full gap-4">
+            <div className="flex flex-col gap-4 overflow-y-auto flex-1 min-h-0">
               {/* Map Container with Distance/Time Overlay */}
               <div className="rounded-lg overflow-hidden border-2 border-gray-200 relative h-[60vh] flex-shrink-0">
                 <MapView

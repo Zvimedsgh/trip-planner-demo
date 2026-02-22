@@ -395,3 +395,9 @@
 - [x] Reduce POI list max height from 96 to 64 (256px) to give more space to map
 - [x] Fix MapView to inherit parent height with className="h-full"
 - [ ] Test that route path is clearly visible on larger map
+
+## Fix Route Dialog Scrolling on Mobile
+- [x] Fix route dialog content not scrollable on mobile (iPhone)
+- [x] POI list is not accessible - no scrolling available in dialog
+- [x] Made DialogContent flex container with scrollable content area
+- [ ] Test that entire dialog content (map + POI list) is accessible
