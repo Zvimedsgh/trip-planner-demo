@@ -362,4 +362,9 @@
 - [x] Investigate why itinerary items (e.g., SREBSKE on Day 4) don't appear in Day-by-Day tab
 - [x] Check database to verify itinerary dates are correct
 - [x] Fix code to properly sync itinerary items with days (changed to UTC date comparison)
-- [ ] Test the fix with Slovakia trip
+- [x] Test the fix with Slovakia trip - all routes now appear correctly
+
+## Fix Routes with Wrong Year (2024 instead of 2026)
+- [x] Query database to find all routes with 2024 dates in Slovakia trip
+- [x] Update routes to correct year (2026)
+- [x] Verify all routes appear in correct days

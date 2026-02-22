@@ -1,0 +1,80 @@
+{
+  "query": "\nSELECT \n  r.id, \n  r.name, \n  r.date as route_timestamp,\n  r.time,\n  FROM_UNIXTIME(r.date/1000) as route_readable,\n  t.startDate as trip_start_timestamp,\n  FROM_UNIXTIME(t.startDate/1000) as trip_start_readable,\n  DATEDIFF(FROM_UNIXTIME(r.date/1000), FROM_UNIXTIME(t.startDate/1000)) + 1 as calculated_day\nFROM trip_routes r \nJOIN trips t ON r.tripId = t.id \nWHERE t.name LIKE '%Slovakia%' OR t.destination LIKE '%Slovakia%'\nORDER BY r.date;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute \nSELECT \n  r.id, \n  r.name, \n  r.date as route_timestamp,\n  r.time,\n  FROM_UNIXTIME(r.date/1000) as route_readable,\n  t.startDate as trip_start_timestamp,\n  FROM_UNIXTIME(t.startDate/1000) as trip_start_readable,\n  DATEDIFF(FROM_UNIXTIME(r.date/1000), FROM_UNIXTIME(t.startDate/1000)) + 1 as calculated_day\nFROM trip_routes r \nJOIN trips t ON r.tripId = t.id \nWHERE t.name LIKE '%Slovakia%' OR t.destination LIKE '%Slovakia%'\nORDER BY r.date;\n",
+  "rows": [
+    {
+      "id": "4",
+      "name": "Route 4: Liptovský Mikuláš → Štrbské Pleso",
+      "route_timestamp": "1725321600000",
+      "time": "09:00",
+      "route_readable": "2024-09-03 00:00:00.0000",
+      "trip_start_timestamp": "1788220800000",
+      "trip_start_readable": "2026-09-01 00:00:00.0000",
+      "calculated_day": "-727"
+    },
+    {
+      "id": "5",
+      "name": "Liptovský Mikuláš → Demänovská Ice Cave",
+      "route_timestamp": "1725408000000",
+      "time": "09:00",
+      "route_readable": "2024-09-04 00:00:00.0000",
+      "trip_start_timestamp": "1788220800000",
+      "trip_start_readable": "2026-09-01 00:00:00.0000",
+      "calculated_day": "-726"
+    },
+    {
+      "id": "210001",
+      "name": "Route 5: Liptovský Mikuláš → Košice",
+      "route_timestamp": "1725523800000",
+      "time": "10:10",
+      "route_readable": "2024-09-05 08:10:00.0000",
+      "trip_start_timestamp": "1788220800000",
+      "trip_start_readable": "2026-09-01 00:00:00.0000",
+      "calculated_day": "-725"
+    },
+    {
+      "id": "210002",
+      "name": "Route 7: Košice → Vienna",
+      "route_timestamp": "1725696600000",
+      "time": "10:10",
+      "route_readable": "2024-09-07 08:10:00.0000",
+      "trip_start_timestamp": "1788220800000",
+      "trip_start_readable": "2026-09-01 00:00:00.0000",
+      "calculated_day": "-723"
+    },
+    {
+      "id": "1",
+      "name": "Route 1: Bratislava → Liptovský Mikuláš",
+      "route_timestamp": "1788368400000",
+      "time": "19:00",
+      "route_readable": "2026-09-02 17:00:00.0000",
+      "trip_start_timestamp": "1788220800000",
+      "trip_start_readable": "2026-09-01 00:00:00.0000",
+      "calculated_day": "2"
+    },
+    {
+      "id": "120013",
+      "name": "Route 6: Liptovský Mikuláš → Bešeňová",
+      "route_timestamp": "1788393600000",
+      "time": "19:00",
+      "route_readable": "2026-09-03 00:00:00.0000",
+      "trip_start_timestamp": "1788220800000",
+      "trip_start_readable": "2026-09-01 00:00:00.0000",
+      "calculated_day": "3"
+    },
+    {
+      "id": "6",
+      "name": "Route 6: Vienna → Bratislava Airport",
+      "route_timestamp": "1788933600000",
+      "time": "13:00",
+      "route_readable": "2026-09-09 06:00:00.0000",
+      "trip_start_timestamp": "1788220800000",
+      "trip_start_readable": "2026-09-01 00:00:00.0000",
+      "calculated_day": "9"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\troute_timestamp\ttime\troute_readable\ttrip_start_timestamp\ttrip_start_readable\tcalculated_day\n4\tRoute 4: Liptovský Mikuláš → Štrbské Pleso\t1725321600000\t09:00\t2024-09-03 00:00:00.0000\t1788220800000\t2026-09-01 00:00:00.0000\t-727\n5\tLiptovský Mikuláš → Demänovská Ice Cave\t1725408000000\t09:00\t2024-09-04 00:00:00.0000\t1788220800000\t2026-09-01 00:00:00.0000\t-726\n210001\tRoute 5: Liptovský Mikuláš → Košice\t1725523800000\t10:10\t2024-09-05 08:10:00.0000\t1788220800000\t2026-09-01 00:00:00.0000\t-725\n210002\tRoute 7: Košice → Vienna\t1725696600000\t10:10\t2024-09-07 08:10:00.0000\t1788220800000\t2026-09-01 00:00:00.0000\t-723\n1\tRoute 1: Bratislava → Liptovský Mikuláš\t1788368400000\t19:00\t2026-09-02 17:00:00.0000\t1788220800000\t2026-09-01 00:00:00.0000\t2\n120013\tRoute 6: Liptovský Mikuláš → Bešeňová\t1788393600000\t19:00\t2026-09-03 00:00:00.0000\t1788220800000\t2026-09-01 00:00:00.0000\t3\n6\tRoute 6: Vienna → Bratislava Airport\t1788933600000\t13:00\t2026-09-09 06:00:00.0000\t1788220800000\t2026-09-01 00:00:00.0000\t9\n",
+  "stderr": "",
+  "execution_time_ms": 2315
+}

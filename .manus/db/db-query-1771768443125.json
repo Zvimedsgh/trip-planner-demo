@@ -1,0 +1,52 @@
+{
+  "query": "\nSELECT \n  r.id, \n  r.name, \n  FROM_UNIXTIME(r.date/1000) as route_date,\n  YEAR(FROM_UNIXTIME(r.date/1000)) as year\nFROM trip_routes r \nJOIN trips t ON r.tripId = t.id \nWHERE (t.name LIKE '%Slovakia%' OR t.destination LIKE '%Slovakia%')\nORDER BY r.date;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute \nSELECT \n  r.id, \n  r.name, \n  FROM_UNIXTIME(r.date/1000) as route_date,\n  YEAR(FROM_UNIXTIME(r.date/1000)) as year\nFROM trip_routes r \nJOIN trips t ON r.tripId = t.id \nWHERE (t.name LIKE '%Slovakia%' OR t.destination LIKE '%Slovakia%')\nORDER BY r.date;\n",
+  "rows": [
+    {
+      "id": "1",
+      "name": "Route 1: Bratislava → Liptovský Mikuláš",
+      "route_date": "2026-09-02 17:00:00.0000",
+      "year": "2026"
+    },
+    {
+      "id": "4",
+      "name": "Route 4: Liptovský Mikuláš → Štrbské Pleso",
+      "route_date": "2026-09-03 00:00:00.0000",
+      "year": "2026"
+    },
+    {
+      "id": "120013",
+      "name": "Route 6: Liptovský Mikuláš → Bešeňová",
+      "route_date": "2026-09-03 00:00:00.0000",
+      "year": "2026"
+    },
+    {
+      "id": "5",
+      "name": "Liptovský Mikuláš → Demänovská Ice Cave",
+      "route_date": "2026-09-04 00:00:00.0000",
+      "year": "2026"
+    },
+    {
+      "id": "210001",
+      "name": "Route 5: Liptovský Mikuláš → Košice",
+      "route_date": "2026-09-05 08:10:00.0000",
+      "year": "2026"
+    },
+    {
+      "id": "210002",
+      "name": "Route 7: Košice → Vienna",
+      "route_date": "2026-09-07 08:10:00.0000",
+      "year": "2026"
+    },
+    {
+      "id": "6",
+      "name": "Route 6: Vienna → Bratislava Airport",
+      "route_date": "2026-09-09 06:00:00.0000",
+      "year": "2026"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\troute_date\tyear\n1\tRoute 1: Bratislava → Liptovský Mikuláš\t2026-09-02 17:00:00.0000\t2026\n4\tRoute 4: Liptovský Mikuláš → Štrbské Pleso\t2026-09-03 00:00:00.0000\t2026\n120013\tRoute 6: Liptovský Mikuláš → Bešeňová\t2026-09-03 00:00:00.0000\t2026\n5\tLiptovský Mikuláš → Demänovská Ice Cave\t2026-09-04 00:00:00.0000\t2026\n210001\tRoute 5: Liptovský Mikuláš → Košice\t2026-09-05 08:10:00.0000\t2026\n210002\tRoute 7: Košice → Vienna\t2026-09-07 08:10:00.0000\t2026\n6\tRoute 6: Vienna → Bratislava Airport\t2026-09-09 06:00:00.0000\t2026\n",
+  "stderr": "",
+  "execution_time_ms": 1547
+}

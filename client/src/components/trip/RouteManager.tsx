@@ -229,7 +229,9 @@ export default function RouteManager({ tripId }: RouteManagerProps) {
                     onChange={(e) => {
                       const dateValue = e.target.value;
                       if (dateValue) {
-                        const timestamp = new Date(dateValue).getTime();
+                        // Parse date as UTC to avoid timezone issues
+                        const [year, month, day] = dateValue.split('-').map(Number);
+                        const timestamp = Date.UTC(year, month - 1, day);
                         if (!isNaN(timestamp)) {
                           setFormData({ ...formData, date: timestamp });
                         }
