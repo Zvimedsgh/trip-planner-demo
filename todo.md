@@ -400,4 +400,7 @@
 - [x] Fix route dialog content not scrollable on mobile (iPhone)
 - [x] POI list is not accessible - no scrolling available in dialog
 - [x] Made DialogContent flex container with scrollable content area
-- [ ] Test that entire dialog content (map + POI list) is accessible
+- [x] First fix didn't work - conflicted with grid layout
+- [x] Investigated Dialog component - uses grid not flex
+- [x] Applied second fix: overflow-hidden on dialog, maxHeight calc on content wrapper
+- [ ] Test second fix on iPhone
