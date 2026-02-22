@@ -368,3 +368,8 @@
 - [x] Query database to find all routes with 2024 dates in Slovakia trip
 - [x] Update routes to correct year (2026)
 - [x] Verify all routes appear in correct days
+
+## Fix Missing Edit Button for Transportation in Timeline
+- [x] Investigate why transportation route doesn't show edit button in Day-by-Day view
+- [x] Fix code to display edit button for all routes including transportation
+- [ ] Test that transportation can be edited from timeline
