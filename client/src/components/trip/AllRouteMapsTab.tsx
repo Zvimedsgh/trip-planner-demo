@@ -222,8 +222,9 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
           {selectedRoute && (
             <div className="flex flex-col h-full gap-4">
               {/* Map Container with Distance/Time Overlay */}
-              <div className="flex-1 rounded-lg overflow-hidden border-2 border-gray-200 relative">
+              <div className="rounded-lg overflow-hidden border-2 border-gray-200 relative h-[60vh] flex-shrink-0">
                 <MapView
+                  className="h-full"
                   initialCenter={(() => {
                     // Parse mapData to get coordinates
                     if (selectedRoute.mapData) {
@@ -486,7 +487,7 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
                       {language === "he" ? "נקודות עניין לאורך המסלול" : "Points of Interest Along Route"}
                     </h3>
                   </div>
-                  <div className="p-4 space-y-3 max-h-96 overflow-y-auto">
+                  <div className="p-4 space-y-3 max-h-64 overflow-y-auto">
                     {pois.map((poi, index) => (
                       <div key={index} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                         <div 

@@ -384,3 +384,14 @@
 - [x] Update return flight (W6 7061): Depart BTS 17:05 Slovakia time, Arrive TLV 21:35 Israel time
 - [x] Verify timeline displays correct times (Day-by-day view works)
 - [x] Fix Transportation tab to display correct times from new departureTime/arrivalTime fields
+
+## Fix "Show on Map" for Routes
+- [ ] Investigate how "Show on Map" currently works for routes
+- [ ] Fix route selection to display actual route path on map instead of POIs
+- [ ] Test that clicking route shows the driving/travel path on map
+
+## Fix Route Map Layout - Map Too Small
+- [x] Increase map height from current slim size to 60vh (60% of viewport height)
+- [x] Reduce POI list max height from 96 to 64 (256px) to give more space to map
+- [x] Fix MapView to inherit parent height with className="h-full"
+- [ ] Test that route path is clearly visible on larger map
