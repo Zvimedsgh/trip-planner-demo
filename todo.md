@@ -404,3 +404,10 @@
 - [x] Investigated Dialog component - uses grid not flex
 - [x] Applied second fix: overflow-hidden on dialog, maxHeight calc on content wrapper
 - [ ] Test second fix on iPhone
+
+## Add "Open in Google Maps" Button to Route Dialog
+- [x] Add button to route dialog that opens route in Google Maps app/website
+- [x] Use Google Maps directions URL with origin and destination
+- [x] Button should be prominent and easy to tap on mobile (py-4 px-6, text-lg)
+- [x] Smart URL generation: directions for routes, search for locations
+- [ ] Test that button opens Google Maps with correct route and POIs

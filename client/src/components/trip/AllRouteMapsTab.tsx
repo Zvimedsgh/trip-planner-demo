@@ -479,6 +479,41 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
                 </div>
               </div>
               
+              {/* Open in Google Maps Button */}
+              <a
+                href={(() => {
+                  // Parse mapData to get origin and destination
+                  if (selectedRoute.mapData) {
+                    try {
+                      const mapConfig = JSON.parse(selectedRoute.mapData);
+                      // Route with origin/destination - use directions
+                      if (mapConfig?.origin && mapConfig?.destination) {
+                        const origin = `${mapConfig.origin.location.lat},${mapConfig.origin.location.lng}`;
+                        const destination = `${mapConfig.destination.location.lat},${mapConfig.destination.location.lng}`;
+                        return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=driving`;
+                      }
+                      // Single location - use search
+                      if (mapConfig?.location?.coordinates) {
+                        const coords = mapConfig.location.coordinates;
+                        return `https://www.google.com/maps/search/?api=1&query=${coords.lat},${coords.lng}`;
+                      }
+                    } catch (e) {
+                      console.error("Failed to parse mapData:", e);
+                    }
+                  }
+                  // Fallback: search by route name
+                  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedRoute.name)}`;
+                })()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-4 px-6 rounded-lg shadow-lg transition-all duration-200 active:scale-95"
+              >
+                <Navigation className="w-5 h-5" />
+                <span className="text-lg">
+                  {language === "he" ? "פתח ב-Google Maps" : "Open in Google Maps"}
+                </span>
+              </a>
+              
               {/* Points of Interest List */}
               {pois.length > 0 && (
                 <div className="bg-white rounded-lg border-2 border-gray-200 overflow-hidden">
