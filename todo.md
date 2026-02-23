@@ -463,3 +463,8 @@
 - [x] Need to constrain site name width and ensure icons stay visible
 - [x] Fix layout in site card component - added flex-1 min-w-0 to text container and flex-shrink-0 to buttons
 - [ ] Test that all action icons are now visible on cards with long names
+
+## Bug - Action Icons Hidden on Restaurant Cards
+- [x] Same layout issue as tourist sites - long names push icons off screen
+- [x] Apply same flex layout fix to restaurant cards - added flex-1 min-w-0 and flex-shrink-0
+- [ ] Test that all action icons are now visible on restaurant cards with long names

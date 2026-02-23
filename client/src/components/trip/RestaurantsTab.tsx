@@ -408,8 +408,8 @@ export default function RestaurantsTab({ tripId, highlightedId }: RestaurantsTab
                 />
               )}
               <CardHeader className="pb-2 relative z-10">
-                <div className="flex items-start justify-between">
-                  <div className="flex items-center gap-2">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex items-center gap-2 flex-1 min-w-0">
                     <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center">
                       <Utensils className="w-5 h-5 text-white" />
                     </div>
@@ -423,7 +423,7 @@ export default function RestaurantsTab({ tripId, highlightedId }: RestaurantsTab
                       )}
                     </div>
                   </div>
-                  <div className="flex gap-0.5">
+                  <div className="flex gap-0.5 flex-shrink-0">
                     {/* Document link button */}
                     {(() => {
                       // Only use explicitly linked documents
