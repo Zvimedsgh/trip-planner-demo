@@ -106,9 +106,12 @@ export default function HotelsTab({ tripId, highlightedId, onNavigateToDocuments
       setUploadingHotelId(null);
       toast.success(language === "he" ? "תמונת חניה הועלתה" : "Parking image uploaded");
     },
-    onError: () => {
-      setUploadingHotelId(null);
-      toast.error(language === "he" ? "שגיאה בהעלאת תמונה" : "Error uploading image");
+  });
+  
+  const convertPdfMutation = trpc.documents.convertToPdf.useMutation({
+    onError: (error) => {
+      toast.error(language === "he" ? "שגיאה בהמרת מסמך" : "Failed to convert document");
+      console.error('Conversion error:', error);
     },
   });
   
@@ -650,12 +653,30 @@ export default function HotelsTab({ tripId, highlightedId, onNavigateToDocuments
                           size="icon" 
                           variant="ghost" 
                           className="h-8 w-8 text-white bg-blue-500/80 hover:bg-blue-600"
-                          onClick={(e) => {
+                          onClick={async (e) => {
                             e.preventDefault();
                             e.stopPropagation();
                             if (linkedDoc) {
-                              // Open document in new tab (all docs converted to PDF on upload)
-                              window.open(linkedDoc.fileUrl, '_blank');
+                              // Check if it's a .docx file
+                              const isDocx = linkedDoc.name.toLowerCase().endsWith('.docx') || 
+                                             linkedDoc.name.toLowerCase().endsWith('.doc');
+                              
+                              if (isDocx) {
+                                // Convert to PDF first
+                                try {
+                                  const result = await convertPdfMutation.mutateAsync({ 
+                                    documentId: linkedDoc.id 
+                                  });
+                                  window.open(result.url, '_blank');
+                                } catch (error) {
+                                  console.error('Failed to convert document:', error);
+                                  // Fallback: try opening original file
+                                  window.open(linkedDoc.fileUrl, '_blank');
+                                }
+                              } else {
+                                // Open PDF or other files directly
+                                window.open(linkedDoc.fileUrl, '_blank');
+                              }
                             } else {
                               // Open dialog to manually select document
                               handleDocumentLink(hotel.id);

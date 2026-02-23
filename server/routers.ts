@@ -571,6 +571,70 @@ export const appRouter = router({
           hotelId: input.hotelId,
         });
       }),
+    
+    convertToPdf: protectedProcedure
+      .input(z.object({ documentId: z.number() }))
+      .mutation(async ({ input }) => {
+        // Get document from database
+        const doc = await db.getDocument(input.documentId);
+        if (!doc) throw new Error('Document not found');
+        
+        // Check if already PDF
+        if (doc.mimeType === 'application/pdf' || doc.name.toLowerCase().endsWith('.pdf')) {
+          return { url: doc.fileUrl, alreadyPdf: true };
+        }
+        
+        // Check if it's a .docx file
+        const isDocx = doc.mimeType?.includes('wordprocessingml') || 
+                       doc.mimeType?.includes('msword') || 
+                       doc.name.toLowerCase().endsWith('.docx') ||
+                       doc.name.toLowerCase().endsWith('.doc');
+        
+        if (!isDocx) {
+          throw new Error('Only .docx files can be converted to PDF');
+        }
+        
+        // Download the .docx file from S3
+        const response = await fetch(doc.fileUrl);
+        if (!response.ok) throw new Error('Failed to download document');
+        const buffer = Buffer.from(await response.arrayBuffer());
+        
+        // Convert to PDF
+        const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'docx-convert-'));
+        const inputPath = path.join(tmpDir, doc.name);
+        const outputName = doc.name.replace(/\.(docx?|DOCX?)$/, '.pdf');
+        const outputPath = path.join(tmpDir, outputName);
+        
+        try {
+          // Write docx to temp file
+          await fs.writeFile(inputPath, buffer);
+          
+          // Convert using LibreOffice
+          await execAsync(
+            `libreoffice --headless --convert-to pdf --outdir "${tmpDir}" "${inputPath}"`
+          );
+          
+          // Read converted PDF
+          const pdfBuffer = Buffer.from(await fs.readFile(outputPath));
+          
+          // Upload PDF to S3 (replace old file)
+          const newFileKey = doc.fileKey.replace(/\.(docx?|DOCX?)$/, '.pdf');
+          const { url: pdfUrl } = await storagePut(newFileKey, pdfBuffer, 'application/pdf');
+          
+          // Update database record
+          await db.updateDocument(input.documentId, {
+            name: outputName,
+            fileUrl: pdfUrl,
+            fileKey: newFileKey,
+            mimeType: 'application/pdf',
+          });
+          
+          return { url: pdfUrl, converted: true };
+        } finally {
+          // Cleanup temp files
+          await fs.rm(tmpDir, { recursive: true, force: true });
+        }
+      }),
   }),
 
   // ============ DAY TRIPS ============

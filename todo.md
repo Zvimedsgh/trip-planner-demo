@@ -478,3 +478,10 @@
 - [x] Store converted PDF version for consistent browser viewing
 - [ ] Test uploading new .docx file and verify it converts to PDF
 - [ ] Note: Existing .docx files remain as-is, only new uploads are converted
+
+## Feature - On-Demand Document Conversion
+- [x] Add server endpoint to convert existing .docx files to PDF when accessed
+- [x] Download .docx from S3, convert to PDF, upload PDF, update database
+- [x] Update frontend to call conversion endpoint before opening .docx files
+- [x] Cache converted PDF so future clicks don't reconvert (database updated with PDF URL)
+- [ ] Test with existing Vienna Parking .docx file
