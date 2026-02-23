@@ -456,3 +456,10 @@
 - [x] Investigate transportation update mutation
 - [x] Fix arrival time persistence - added departureTime/arrivalTime to router schema and frontend mutations
 - [ ] Test that arrival time changes save correctly
+
+## Bug - Action Icons Hidden on Tourist Site Cards
+- [x] Long site names push action icons off screen to the right
+- [x] Icons are present but invisible beyond screen edge
+- [x] Need to constrain site name width and ensure icons stay visible
+- [x] Fix layout in site card component - added flex-1 min-w-0 to text container and flex-shrink-0 to buttons
+- [ ] Test that all action icons are now visible on cards with long names

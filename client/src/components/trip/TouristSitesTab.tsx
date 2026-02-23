@@ -323,8 +323,8 @@ export default function TouristSitesTab({ tripId, highlightedId }: TouristSitesT
                   } : {}}
                 >
                   <div className="absolute inset-0 bg-black/30" />
-                  <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between">
-                    <div className="flex items-center gap-2">
+                  <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between gap-2">
+                    <div className="flex items-center gap-2 flex-1 min-w-0">
                       <div className="w-10 h-10 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
                         <MapPin className="w-5 h-5 text-white" />
                       </div>
@@ -335,7 +335,7 @@ export default function TouristSitesTab({ tripId, highlightedId }: TouristSitesT
                         )}
                       </div>
                     </div>
-                    <div className="flex gap-0.5">
+                    <div className="flex gap-0.5 flex-shrink-0">
                       {/* Document link button */}
                       {(() => {
                         // Only use explicitly linked documents
