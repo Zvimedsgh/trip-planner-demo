@@ -15,6 +15,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { DocumentLinkDialog } from "@/components/DocumentLinkDialog";
 import { ImageUploadDialog } from "@/components/ImageUploadDialog";
 import { GalleryManager } from "@/components/GalleryManager";
+import { PdfViewerModal } from "@/components/PdfViewerModal";
 
 const CURRENCIES = [
   { code: "USD", symbol: "$", name: "US Dollar" },
@@ -48,6 +49,9 @@ export default function HotelsTab({ tripId, highlightedId, onNavigateToDocuments
   const [uploadingHotelId, setUploadingHotelId] = useState<number | null>(null);
   const [linkingHotelId, setLinkingHotelId] = useState<number | null>(null);
   const [documentLinkDialogOpen, setDocumentLinkDialogOpen] = useState(false);
+  const [pdfViewerOpen, setPdfViewerOpen] = useState(false);
+  const [pdfViewerUrl, setPdfViewerUrl] = useState("");
+  const [pdfViewerName, setPdfViewerName] = useState("");
   const [parkingImageDialogOpen, setParkingImageDialogOpen] = useState(false);
   const [uploadingParkingForHotelId, setUploadingParkingForHotelId] = useState<number | null>(null);
   const [galleryHotelId, setGalleryHotelId] = useState<number | null>(null);
@@ -667,15 +671,19 @@ export default function HotelsTab({ tripId, highlightedId, onNavigateToDocuments
                                   const result = await convertPdfMutation.mutateAsync({ 
                                     documentId: linkedDoc.id 
                                   });
-                                  window.open(result.url, '_blank');
+                                  // Open in modal viewer
+                                  setPdfViewerUrl(result.url);
+                                  setPdfViewerName(linkedDoc.name.replace(/\.(docx?|DOCX?)$/, '.pdf'));
+                                  setPdfViewerOpen(true);
                                 } catch (error) {
                                   console.error('Failed to convert document:', error);
-                                  // Fallback: try opening original file
-                                  window.open(linkedDoc.fileUrl, '_blank');
+                                  toast.error(language === "he" ? "שגיאה בהמרת מסמך" : "Failed to convert document");
                                 }
                               } else {
-                                // Open PDF or other files directly
-                                window.open(linkedDoc.fileUrl, '_blank');
+                                // Open PDF in modal viewer
+                                setPdfViewerUrl(linkedDoc.fileUrl);
+                                setPdfViewerName(linkedDoc.name);
+                                setPdfViewerOpen(true);
                               }
                             } else {
                               // Open dialog to manually select document
@@ -951,6 +959,14 @@ export default function HotelsTab({ tripId, highlightedId, onNavigateToDocuments
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* PDF Viewer Modal */}
+      <PdfViewerModal
+        open={pdfViewerOpen}
+        onOpenChange={setPdfViewerOpen}
+        pdfUrl={pdfViewerUrl}
+        documentName={pdfViewerName}
+      />
     </div>
   );
 }

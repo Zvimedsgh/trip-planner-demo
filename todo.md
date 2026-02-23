@@ -485,3 +485,11 @@
 - [x] Update frontend to call conversion endpoint before opening .docx files
 - [x] Cache converted PDF so future clicks don't reconvert (database updated with PDF URL)
 - [ ] Test with existing Vienna Parking .docx file
+
+## Bug - PDF Viewing on iOS Safari
+- [x] iPhone shows blank page when opening PDF
+- [x] iPad shows download prompt instead of displaying PDF
+- [x] window.open() doesn't work reliably on iOS Safari
+- [x] Create PDF viewer modal component with iframe
+- [x] Replace window.open with modal for consistent cross-device experience
+- [ ] Test on iPhone, iPad, and desktop
