@@ -58,42 +58,27 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
     refetch();
   }, [tripId, refetch]);
   
-  // Handle route card click - open Google Maps directly
-  const handleRouteClick = async (route: any) => {
-    // Generate Google Maps URL
-    const getGoogleMapsUrl = () => {
-      // Parse mapData to get origin and destination
-      if (route.mapData) {
-        try {
-          const mapConfig = JSON.parse(route.mapData);
-          // Route with origin/destination - use directions
-          if (mapConfig?.origin && mapConfig?.destination) {
-            const origin = `${mapConfig.origin.location.lat},${mapConfig.origin.location.lng}`;
-            const destination = `${mapConfig.destination.location.lat},${mapConfig.destination.location.lng}`;
-            return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=driving`;
-          }
-          // Single location - use search
-          if (mapConfig?.location?.coordinates) {
-            const coords = mapConfig.location.coordinates;
-            return `https://www.google.com/maps/search/?api=1&query=${coords.lat},${coords.lng}`;
-          }
-        } catch (e) {
-          console.error("Failed to parse mapData:", e);
-        }
-      }
-      // Fallback: search by route name
-      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(route.name)}`;
-    };
-    
-    // Open Google Maps using programmatic link click (works better in PWA)
-    const url = getGoogleMapsUrl();
-    const link = document.createElement('a');
-    link.href = url;
-    link.target = '_blank';
-    link.rel = 'noopener noreferrer';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  // Handle route card click - open Google Maps directly (same as RouteManager)
+  const handleRouteClick = (route: any) => {
+    const routeName = language === "he" && route.nameHe ? route.nameHe : route.name;
+    // Remove "Route X: " prefix
+    const cleanRouteName = routeName.replace(/^Route \d+:\s*/i, '');
+    // Parse origin and destination from route name (format: "Origin → Destination")
+    const parts = cleanRouteName.split(/→|->/).map((p: string) => p.trim());
+    if (parts.length >= 2) {
+      // Use Google Maps Directions API with location names
+      const origin = encodeURIComponent(parts[0]);
+      const destination = encodeURIComponent(parts[1]);
+      // Add region=SK to force Slovakia context and show local POIs
+      const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&region=SK`;
+      console.log('[AllRouteMapsTab] Opening Google Maps Directions:', googleMapsUrl);
+      window.open(googleMapsUrl, "_blank");
+    } else {
+      // Fallback to search if format doesn't match
+      const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cleanRouteName)}&region=SK`;
+      console.log('[AllRouteMapsTab] Opening Google Maps Search (fallback):', googleMapsUrl);
+      window.open(googleMapsUrl, "_blank");
+    }
   };
   
   // If no routes exist, show empty state

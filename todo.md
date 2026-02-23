@@ -423,3 +423,10 @@
 - [x] Use programmatic <a> element click to trigger external app opening
 - [ ] Test on published site after fix
 - [ ] If still doesn't work, may need to revert to embedded map dialog
+
+## Fix Google Maps URL to Show Route Instantly
+- [x] Current URL requires user to select route and push button on intermediate page
+- [x] Fixed by using window.open() like RouteManager
+- [x] Use location names instead of coordinates
+- [x] Added &region=SK for Slovakia context
+- [ ] Test that route appears instantly when opening Google Maps
