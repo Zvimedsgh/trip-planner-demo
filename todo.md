@@ -436,3 +436,16 @@
 - [x] Day page "View on map" link still shows Trip Planner intermediate page
 - [x] Apply same fix to day page route component (DailyView.tsx)
 - [ ] Test that both locations work correctly
+
+## Fix Transportation Edit Form Time Display Bug
+- [x] Transportation shows 01:30 in display view (correct)
+- [x] Edit form shows 3:00 instead of 01:30 (wrong)
+- [x] Fixed to use stored time instead of extracting from timestamp
+- [ ] Test that edit form displays the correct saved time
+
+## Fix Hotel/Transportation Validation - Date+Time Comparison
+- [x] Hotel validation rejects same-day stays (check-in 2:30, check-out 11:00)
+- [x] Error: "Check-out date must be after check-in date" even though times are valid
+- [x] Validation only compares dates, not date+time
+- [x] Added combineDateAndTime helper and fixed validation in both create and update
+- [ ] Test that same-day hotel stays now save correctly

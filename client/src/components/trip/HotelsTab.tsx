@@ -150,6 +150,12 @@ export default function HotelsTab({ tripId, highlightedId, onNavigateToDocuments
     reader.readAsDataURL(file);
   };
 
+  const combineDateAndTime = (date: string, time: string): number | undefined => {
+    if (!date) return undefined;
+    const dateTimeStr = time ? `${date}T${time}` : `${date}T00:00`;
+    return new Date(dateTimeStr).getTime();
+  };
+
   const getFormValues = () => {
     if (!formRef.current) return null;
     const getValue = (name: string) => {
@@ -182,10 +188,10 @@ export default function HotelsTab({ tripId, highlightedId, onNavigateToDocuments
       return;
     }
     
-    // Validate check-out is after check-in
-    const checkIn = new Date(values.checkInDate);
-    const checkOut = new Date(values.checkOutDate);
-    if (checkOut <= checkIn) {
+    // Validate check-out is after check-in (with time)
+    const checkInTimestamp = combineDateAndTime(values.checkInDate, values.checkInTime);
+    const checkOutTimestamp = combineDateAndTime(values.checkOutDate, values.checkOutTime);
+    if (checkInTimestamp && checkOutTimestamp && checkOutTimestamp <= checkInTimestamp) {
       toast.error(language === "he" ? "תאריך צ'ק-אאוט צריך להיות אחרי תאריך צ'ק-אין" : "Check-out date must be after check-in date");
       return;
     }
@@ -218,10 +224,10 @@ export default function HotelsTab({ tripId, highlightedId, onNavigateToDocuments
       return;
     }
     
-    // Validate check-out is after check-in
-    const checkIn = new Date(values.checkInDate);
-    const checkOut = new Date(values.checkOutDate);
-    if (checkOut <= checkIn) {
+    // Validate check-out is after check-in (with time)
+    const checkInTimestamp = combineDateAndTime(values.checkInDate, values.checkInTime);
+    const checkOutTimestamp = combineDateAndTime(values.checkOutDate, values.checkOutTime);
+    if (checkInTimestamp && checkOutTimestamp && checkOutTimestamp <= checkInTimestamp) {
       toast.error(language === "he" ? "תאריך צ'ק-אאוט צריך להיות אחרי תאריך צ'ק-אין" : "Check-out date must be after check-in date");
       return;
     }

@@ -347,9 +347,11 @@ export default function TransportationTab({ tripId, tripEndDate, highlightedId }
     formRefs.origin.current = transport.origin;
     formRefs.destination.current = transport.destination;
     formRefs.departureDate.current = format(depDate, "yyyy-MM-dd");
-    formRefs.departureTime.current = format(depDate, "HH:mm");
+    // Use stored time if available, otherwise extract from timestamp
+    formRefs.departureTime.current = transport.departureTime || format(depDate, "HH:mm");
     formRefs.arrivalDate.current = arrDate ? format(arrDate, "yyyy-MM-dd") : "";
-    formRefs.arrivalTime.current = arrDate ? format(arrDate, "HH:mm") : "";
+    // Use stored time if available, otherwise extract from timestamp
+    formRefs.arrivalTime.current = transport.arrivalTime || (arrDate ? format(arrDate, "HH:mm") : "");
     formRefs.flightNumber.current = transport.flightNumber || "";
     formRefs.confirmation.current = transport.confirmationNumber || "";
     formRefs.website.current = transport.website || "";
