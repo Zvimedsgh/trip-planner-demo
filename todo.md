@@ -449,3 +449,10 @@
 - [x] Validation only compares dates, not date+time
 - [x] Added combineDateAndTime helper and fixed validation in both create and update
 - [ ] Test that same-day hotel stays now save correctly
+
+## Bug - Transportation Arrival Time Not Saving
+- [x] User tries to change arrival time from 01:30 to 02:30
+- [x] Change doesn't save - reverts to old time (01:30)
+- [x] Investigate transportation update mutation
+- [x] Fix arrival time persistence - added departureTime/arrivalTime to router schema and frontend mutations
+- [ ] Test that arrival time changes save correctly
