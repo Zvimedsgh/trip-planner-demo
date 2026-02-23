@@ -1,0 +1,55 @@
+{
+  "query": "SELECT h.id as hotel_id, h.name as hotel_name, h.linkedDocumentId, d.id as doc_id, d.name as doc_name, d.fileUrl, LENGTH(d.fileUrl) as url_length\nFROM hotels h \nINNER JOIN documents d ON h.linkedDocumentId = d.id \nWHERE h.name = 'Vienna Parking'\nLIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT h.id as hotel_id, h.name as hotel_name, h.linkedDocumentId, d.id as doc_id, d.name as doc_name, d.fileUrl, LENGTH(d.fileUrl) as url_length\nFROM hotels h \nINNER JOIN documents d ON h.linkedDocumentId = d.id \nWHERE h.name = 'Vienna Parking'\nLIMIT 5;",
+  "rows": [
+    {
+      "hotel_id": "300004",
+      "hotel_name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "doc_id": "120001",
+      "doc_name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx",
+      "url_length": "151"
+    },
+    {
+      "hotel_id": "270109",
+      "hotel_name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "doc_id": "120001",
+      "doc_name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx",
+      "url_length": "151"
+    },
+    {
+      "hotel_id": "270104",
+      "hotel_name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "doc_id": "120001",
+      "doc_name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx",
+      "url_length": "151"
+    },
+    {
+      "hotel_id": "270099",
+      "hotel_name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "doc_id": "120001",
+      "doc_name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx",
+      "url_length": "151"
+    },
+    {
+      "hotel_id": "270094",
+      "hotel_name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "doc_id": "120001",
+      "doc_name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx",
+      "url_length": "151"
+    }
+  ],
+  "messages": [],
+  "stdout": "hotel_id\thotel_name\tlinkedDocumentId\tdoc_id\tdoc_name\tfileUrl\turl_length\n300004\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\t151\n270109\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\t151\n270104\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\t151\n270099\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\t151\n270094\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\t151\n",
+  "stderr": "",
+  "execution_time_ms": 1540
+}

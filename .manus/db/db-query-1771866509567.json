@@ -1,0 +1,108 @@
+{
+  "query": "SELECT id, name, fileUrl, category, tripId \nFROM documents \nWHERE name LIKE '%travel-3%';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, fileUrl, category, tripId \nFROM documents \nWHERE name LIKE '%travel-3%';",
+  "rows": [
+    {
+      "id": "720001",
+      "name": "travel-3.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg",
+      "category": "other",
+      "tripId": "30001"
+    },
+    {
+      "id": "750032",
+      "name": "travel-3.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg",
+      "category": "other",
+      "tripId": "600002"
+    },
+    {
+      "id": "750064",
+      "name": "travel-3.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg",
+      "category": "other",
+      "tripId": "600003"
+    },
+    {
+      "id": "750096",
+      "name": "travel-3.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg",
+      "category": "other",
+      "tripId": "600004"
+    },
+    {
+      "id": "750128",
+      "name": "travel-3.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg",
+      "category": "other",
+      "tripId": "600005"
+    },
+    {
+      "id": "750160",
+      "name": "travel-3.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg",
+      "category": "other",
+      "tripId": "600006"
+    },
+    {
+      "id": "750192",
+      "name": "travel-3.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg",
+      "category": "other",
+      "tripId": "600007"
+    },
+    {
+      "id": "750224",
+      "name": "travel-3.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg",
+      "category": "other",
+      "tripId": "600008"
+    },
+    {
+      "id": "750256",
+      "name": "travel-3.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg",
+      "category": "other",
+      "tripId": "600009"
+    },
+    {
+      "id": "750288",
+      "name": "travel-3.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg",
+      "category": "other",
+      "tripId": "600010"
+    },
+    {
+      "id": "750320",
+      "name": "travel-3.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg",
+      "category": "other",
+      "tripId": "600011"
+    },
+    {
+      "id": "750353",
+      "name": "travel-3.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg",
+      "category": "other",
+      "tripId": "600012"
+    },
+    {
+      "id": "750385",
+      "name": "travel-3.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg",
+      "category": "other",
+      "tripId": "600013"
+    },
+    {
+      "id": "780032",
+      "name": "travel-3.jpg",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg",
+      "category": "other",
+      "tripId": "630001"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tfileUrl\tcategory\ttripId\n720001\ttravel-3.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg\tother\t30001\n750032\ttravel-3.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg\tother\t600002\n750064\ttravel-3.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg\tother\t600003\n750096\ttravel-3.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg\tother\t600004\n750128\ttravel-3.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg\tother\t600005\n750160\ttravel-3.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg\tother\t600006\n750192\ttravel-3.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg\tother\t600007\n750224\ttravel-3.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg\tother\t600008\n750256\ttravel-3.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg\tother\t600009\n750288\ttravel-3.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg\tother\t600010\n750320\ttravel-3.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg\tother\t600011\n750353\ttravel-3.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg\tother\t600012\n750385\ttravel-3.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg\tother\t600013\n780032\ttravel-3.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/66XrzhmSLX8ghR2hWdqUf-travel-3.jpg\tother\t630001\n",
+  "stderr": "",
+  "execution_time_ms": 2157
+}

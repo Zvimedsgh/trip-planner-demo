@@ -1,0 +1,202 @@
+{
+  "query": "SELECT h.id, h.name, h.linkedDocumentId, d.id as doc_id, d.name as doc_name, d.fileUrl \nFROM hotels h \nLEFT JOIN documents d ON h.linkedDocumentId = d.id \nWHERE h.name LIKE '%Vienna%';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT h.id, h.name, h.linkedDocumentId, d.id as doc_id, d.name as doc_name, d.fileUrl \nFROM hotels h \nLEFT JOIN documents d ON h.linkedDocumentId = d.id \nWHERE h.name LIKE '%Vienna%';",
+  "rows": [
+    {
+      "id": "300004",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "doc_id": "120001",
+      "doc_name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx"
+    },
+    {
+      "id": "270109",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "doc_id": "120001",
+      "doc_name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx"
+    },
+    {
+      "id": "270104",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "doc_id": "120001",
+      "doc_name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx"
+    },
+    {
+      "id": "270099",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "doc_id": "120001",
+      "doc_name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx"
+    },
+    {
+      "id": "270094",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "doc_id": "120001",
+      "doc_name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx"
+    },
+    {
+      "id": "270084",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "doc_id": "120001",
+      "doc_name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx"
+    },
+    {
+      "id": "270079",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "doc_id": "120001",
+      "doc_name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx"
+    },
+    {
+      "id": "270074",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "doc_id": "120001",
+      "doc_name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx"
+    },
+    {
+      "id": "270069",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "doc_id": "120001",
+      "doc_name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx"
+    },
+    {
+      "id": "270064",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "doc_id": "120001",
+      "doc_name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx"
+    },
+    {
+      "id": "270059",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "doc_id": "120001",
+      "doc_name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx"
+    },
+    {
+      "id": "270054",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "doc_id": "120001",
+      "doc_name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx"
+    },
+    {
+      "id": "270049",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "doc_id": "120001",
+      "doc_name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx"
+    },
+    {
+      "id": "270044",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "doc_id": "120001",
+      "doc_name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx"
+    },
+    {
+      "id": "270039",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "doc_id": "120001",
+      "doc_name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx"
+    },
+    {
+      "id": "270034",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "doc_id": "120001",
+      "doc_name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx"
+    },
+    {
+      "id": "270029",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "doc_id": "120001",
+      "doc_name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx"
+    },
+    {
+      "id": "270024",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "doc_id": "120001",
+      "doc_name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx"
+    },
+    {
+      "id": "270019",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "doc_id": "120001",
+      "doc_name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx"
+    },
+    {
+      "id": "270014",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "doc_id": "120001",
+      "doc_name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx"
+    },
+    {
+      "id": "270009",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "doc_id": "120001",
+      "doc_name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx"
+    },
+    {
+      "id": "270004",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "doc_id": "120001",
+      "doc_name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx"
+    },
+    {
+      "id": "60002",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "doc_id": "120001",
+      "doc_name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx"
+    },
+    {
+      "id": "270089",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "750402",
+      "doc_id": "750402",
+      "doc_name": "Sample Passport Copy",
+      "fileUrl": "/demo-document-placeholder"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tlinkedDocumentId\tdoc_id\tdoc_name\tfileUrl\n300004\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\n270109\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\n270104\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\n270099\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\n270094\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\n270084\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\n270079\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\n270074\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\n270069\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\n270064\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\n270059\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\n270054\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\n270049\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\n270044\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\n270039\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\n270034\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\n270029\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\n270024\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\n270019\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\n270014\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\n270009\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\n270004\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\n60002\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\n270089\tVienna Parking\t750402\t750402\tSample Passport Copy\t/demo-document-placeholder\n",
+  "stderr": "",
+  "execution_time_ms": 1508
+}

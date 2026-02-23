@@ -468,3 +468,13 @@
 - [x] Same layout issue as tourist sites - long names push icons off screen
 - [x] Apply same flex layout fix to restaurant cards - added flex-1 min-w-0 and flex-shrink-0
 - [ ] Test that all action icons are now visible on restaurant cards with long names
+
+## Bug - Document Icon Opens .docx Files Incorrectly
+- [x] Vienna parking hotel has .docx file linked (Word document)
+- [x] Clicking blue document icon tries to open .docx in new tab
+- [x] Browser shows blank page with loading spinners and download prompt
+- [x] .docx files cannot be displayed in browser - need conversion
+- [x] Implement server-side .docx to PDF conversion during document upload using LibreOffice
+- [x] Store converted PDF version for consistent browser viewing
+- [ ] Test uploading new .docx file and verify it converts to PDF
+- [ ] Note: Existing .docx files remain as-is, only new uploads are converted

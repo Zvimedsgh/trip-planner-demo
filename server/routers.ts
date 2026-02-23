@@ -6,6 +6,13 @@ import { z } from "zod";
 import * as db from "./db";
 import { storagePut, storageGet } from "./storage";
 import { nanoid } from "nanoid";
+import { promises as fs } from "fs";
+import { exec } from "child_process";
+import { promisify } from "util";
+import * as path from "path";
+import * as os from "os";
+
+const execAsync = promisify(exec);
 
 export const appRouter = router({
   system: systemRouter,
@@ -513,17 +520,52 @@ export const appRouter = router({
         hotelId: z.number().optional(),
       }))
       .mutation(async ({ ctx, input }) => {
-        const buffer = Buffer.from(input.fileData, "base64");
-        const fileKey = `documents/${ctx.user.id}/${input.tripId}/${nanoid()}-${input.fileName}`;
-        const { url } = await storagePut(fileKey, buffer, input.mimeType);
+        let buffer = Buffer.from(input.fileData, "base64");
+        let fileName = input.fileName;
+        let mimeType = input.mimeType;
+        
+        // Check if file is .docx and needs conversion
+        const isDocx = input.mimeType.includes('wordprocessingml') || 
+                       input.mimeType.includes('msword') || 
+                       fileName.toLowerCase().endsWith('.docx') ||
+                       fileName.toLowerCase().endsWith('.doc');
+        
+        if (isDocx) {
+          // Convert .docx to PDF
+          const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'docx-convert-'));
+          const inputPath = path.join(tmpDir, fileName);
+          const outputName = fileName.replace(/\.(docx?|DOCX?)$/, '.pdf');
+          const outputPath = path.join(tmpDir, outputName);
+          
+          try {
+            // Write docx to temp file
+            await fs.writeFile(inputPath, buffer);
+            
+            // Convert using LibreOffice
+            await execAsync(
+              `libreoffice --headless --convert-to pdf --outdir "${tmpDir}" "${inputPath}"`
+            );
+            
+            // Read converted PDF
+            buffer = Buffer.from(await fs.readFile(outputPath));
+            fileName = outputName;
+            mimeType = 'application/pdf';
+          } finally {
+            // Cleanup temp files
+            await fs.rm(tmpDir, { recursive: true, force: true });
+          }
+        }
+        
+        const fileKey = `documents/${ctx.user.id}/${input.tripId}/${nanoid()}-${fileName}`;
+        const { url } = await storagePut(fileKey, buffer, mimeType);
         
         return db.createDocument({
           tripId: input.tripId,
-          name: input.fileName,
+          name: fileName,
           category: input.category,
           fileUrl: url,
           fileKey: fileKey,
-          mimeType: input.mimeType,
+          mimeType: mimeType,
           tags: input.tags,
           notes: input.notes,
           hotelId: input.hotelId,

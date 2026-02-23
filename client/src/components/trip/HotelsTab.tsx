@@ -654,7 +654,7 @@ export default function HotelsTab({ tripId, highlightedId, onNavigateToDocuments
                             e.preventDefault();
                             e.stopPropagation();
                             if (linkedDoc) {
-                              // Open document (PDF) in new tab
+                              // Open document in new tab (all docs converted to PDF on upload)
                               window.open(linkedDoc.fileUrl, '_blank');
                             } else {
                               // Open dialog to manually select document
