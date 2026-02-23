@@ -301,7 +301,23 @@ export default function DailyView({ tripId, date, onTabChange }: DailyViewProps)
                     </div>
                   )}
                   <button
-                    onClick={() => onTabChange?.("routes", activity.id)}
+                    onClick={() => {
+                      // Open Google Maps directly (same as RouteManager)
+                      const routeName = activity.title;
+                      const cleanRouteName = routeName.replace(/^Route \d+:\s*/i, '');
+                      const parts = cleanRouteName.split(/→|->/).map((p: string) => p.trim());
+                      if (parts.length >= 2) {
+                        const origin = encodeURIComponent(parts[0]);
+                        const destination = encodeURIComponent(parts[1]);
+                        const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&region=SK`;
+                        console.log('[DailyView] Opening Google Maps Directions:', googleMapsUrl);
+                        window.open(googleMapsUrl, "_blank");
+                      } else {
+                        const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cleanRouteName)}&region=SK`;
+                        console.log('[DailyView] Opening Google Maps Search (fallback):', googleMapsUrl);
+                        window.open(googleMapsUrl, "_blank");
+                      }
+                    }}
                     className="mt-2 text-sm text-pink-600 hover:text-pink-700 font-medium flex items-center gap-1"
                   >
                     <MapIcon className="w-4 h-4" />

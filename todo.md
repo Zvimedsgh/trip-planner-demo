@@ -430,3 +430,9 @@
 - [x] Use location names instead of coordinates
 - [x] Added &region=SK for Slovakia context
 - [ ] Test that route appears instantly when opening Google Maps
+
+## Fix Day Page "View on map" Link
+- [x] Location Maps tab works correctly with window.open()
+- [x] Day page "View on map" link still shows Trip Planner intermediate page
+- [x] Apply same fix to day page route component (DailyView.tsx)
+- [ ] Test that both locations work correctly
