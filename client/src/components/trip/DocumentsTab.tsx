@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
-import { Edit, ExternalLink, File, FileText, Loader2, Plus, Shield, Ticket, Trash2, Upload, Hotel, Utensils } from "lucide-react";
+import { Edit, ExternalLink, File, FileText, Loader2, MapPin, Plus, Shield, Ticket, Trash2, Upload, Hotel, Utensils } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -26,6 +26,7 @@ const categoryIcons = {
   restaurant: Utensils,
   hotel: Hotel,
   flights: Ticket,
+  sites: MapPin,
   other: File,
 };
 
@@ -38,6 +39,7 @@ const categoryColors = {
   restaurant: "from-orange-500 to-red-600",
   hotel: "from-cyan-500 to-blue-600",
   flights: "from-sky-500 to-blue-600",
+  sites: "from-teal-500 to-green-600",
   other: "from-gray-500 to-slate-600",
 };
 
@@ -50,10 +52,11 @@ const categoryPastelBg = {
   restaurant: "bg-orange-50",
   hotel: "bg-cyan-50",
   flights: "bg-sky-50",
+  sites: "bg-teal-50",
   other: "bg-gray-50",
 };
 
-type CategoryType = "passport" | "visa" | "insurance" | "booking" | "ticket" | "restaurant" | "hotel" | "flights" | "other";
+type CategoryType = "passport" | "visa" | "insurance" | "booking" | "ticket" | "restaurant" | "hotel" | "flights" | "sites" | "other";
 
 export default function DocumentsTab({ tripId }: DocumentsTabProps) {
   const { t, language, isRTL } = useLanguage();
@@ -81,7 +84,7 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
   const { data: hotels } = trpc.hotels.list.useQuery({ tripId });
 
   // Track which folders are open (all open by default)
-  const [openFolders, setOpenFolders] = useState<Set<CategoryType>>(new Set<CategoryType>(["passport", "visa", "insurance", "booking", "ticket", "restaurant", "hotel", "flights", "other"]));
+  const [openFolders, setOpenFolders] = useState<Set<CategoryType>>(new Set<CategoryType>(["passport", "visa", "insurance", "booking", "ticket", "restaurant", "hotel", "flights", "sites", "other"]));
 
   const toggleFolder = (category: CategoryType) => {
     setOpenFolders(prev => {
@@ -283,6 +286,7 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
                     <SelectItem value="restaurant">{t("restaurant")}</SelectItem>
                     <SelectItem value="hotel">{t("hotel")}</SelectItem>
                     <SelectItem value="flights">{t("flights" as any)}</SelectItem>
+                    <SelectItem value="sites">{t("sites" as any)}</SelectItem>
                     <SelectItem value="other">{t("other")}</SelectItem>
                   </SelectContent>
                 </Select>
@@ -532,6 +536,7 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
                   <SelectItem value="restaurant">{t("restaurant")}</SelectItem>
                   <SelectItem value="hotel">{t("hotel")}</SelectItem>
                   <SelectItem value="flights">{t("flights" as any)}</SelectItem>
+                  <SelectItem value="sites">{t("sites" as any)}</SelectItem>
                   <SelectItem value="other">{t("other")}</SelectItem>
                 </SelectContent>
               </Select>

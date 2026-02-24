@@ -235,7 +235,7 @@ export const documents = mysqlTable("documents", {
   id: int("id").autoincrement().primaryKey(),
   tripId: int("tripId").notNull(),
   name: varchar("name", { length: 255 }).notNull(),
-  category: mysqlEnum("category", ["passport", "visa", "insurance", "booking", "ticket", "restaurant", "hotel", "flights", "other"]).notNull(),
+  category: mysqlEnum("category", ["passport", "visa", "insurance", "booking", "ticket", "restaurant", "hotel", "flights", "sites", "other"]).notNull(),
   fileUrl: varchar("fileUrl", { length: 500 }).notNull(),
   fileKey: varchar("fileKey", { length: 500 }).notNull(),
   mimeType: varchar("mimeType", { length: 100 }),

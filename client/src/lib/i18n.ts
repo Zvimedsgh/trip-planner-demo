@@ -73,7 +73,7 @@ export const translations = {
     train: "Train",
     bus: "Bus",
     ferry: "Ferry",
-    other: "By Car",
+    other: "Transportation & Parking",
     origin: "Origin",
     departureDate: "Departure Date",
     arrivalDate: "Arrival Date",
@@ -111,6 +111,7 @@ export const translations = {
     restaurant: "Restaurant",
     hotel: "Hotel",
     flights: "Flights",
+    sites: "Sites",
     tags: "Tags",
     noDocuments: "No documents uploaded yet",
     
@@ -250,7 +251,7 @@ export const translations = {
     train: "רכבת",
     bus: "אוטובוס",
     ferry: "מעבורת",
-    other: "ברכב",
+    other: "תחבורה וחניה",
     origin: "מוצא",
     departureDate: "תאריך יציאה",
     arrivalDate: "תאריך הגעה",
@@ -288,6 +289,7 @@ export const translations = {
     restaurant: "מסעדה",
     hotel: "מלון",
     flights: "טיסות",
+    sites: "אתרים",
     tags: "תגיות",
     noDocuments: "לא הועלו מסמכים עדיין",
     

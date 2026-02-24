@@ -541,3 +541,28 @@
 - [x] User cannot read full names to select correct document
 - [x] Fix dialog to show full document names without truncation (changed truncate to break-words)
 - [x] Test dialog shows complete names for all documents (verified - names wrap properly)
+
+## Update Document Categories
+- [ ] Analyze where document categories are defined (schema, frontend, backend)
+- [ ] Check existing documents with "ברכב" category in database
+- [ ] Rename "ברכב" to "תחבורה וחניה" (Transportation & Parking)
+- [ ] Add new category "אתרים" (Sites)
+- [ ] Update database enum if categories are stored as enum
+- [ ] Update frontend category labels and translations
+- [ ] Test category dropdown shows new categories
+- [ ] Verify existing documents still display correctly
+
+## Update Document Categories - Rename ברכב and Add אתרים
+- [x] Confirmed "ברכב" category exists with 13 documents
+- [x] Found "ברכב" is Hebrew translation of "other" category
+- [x] Renamed category "other" translation: "ברכב" → "תחבורה וחניה"
+- [x] Added new category "sites" with Hebrew "אתרים"
+- [x] Updated category enum in drizzle/schema.ts
+- [x] Updated i18n translations (English + Hebrew)
+- [x] Updated DocumentsTab icons (MapPin), colors (teal), and dropdowns
+- [x] Updated server/routers.ts validation schemas
+- [x] Applied database migration (ALTER TABLE documents)
+- [x] Test category display, filtering, and document upload
+- [x] Verified English: "Transportation & Parking" and "Sites"
+- [x] Verified Hebrew: "תחבורה וחניה" and "אתרים"
+- [x] All 11 documents from "ברכב" now show under "תחבורה וחניה"

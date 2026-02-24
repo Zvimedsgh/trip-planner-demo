@@ -1,0 +1,60 @@
+{
+  "query": "SELECT id, name, category FROM documents WHERE tripId = 30001 LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, category FROM documents WHERE tripId = 30001 LIMIT 10;",
+  "rows": [
+    {
+      "id": "30001",
+      "name": "Private holiday house Vivendi",
+      "category": "hotel"
+    },
+    {
+      "id": "30003",
+      "name": "Surprice",
+      "category": "ticket"
+    },
+    {
+      "id": "60001",
+      "name": "Charming & Cozy Ambiente Apartments",
+      "category": "hotel"
+    },
+    {
+      "id": "90001",
+      "name": "myNext - Johannesgasse Apartments",
+      "category": "hotel"
+    },
+    {
+      "id": "90002",
+      "name": "Hotel Bankov Košice",
+      "category": "hotel"
+    },
+    {
+      "id": "180001",
+      "name": "chatam sofer-memorial",
+      "category": "other"
+    },
+    {
+      "id": "210001",
+      "name": "Apart Hotel GOLDEN apartments",
+      "category": "hotel"
+    },
+    {
+      "id": "210002",
+      "name": "Hilton Ambassador.jpg",
+      "category": "hotel"
+    },
+    {
+      "id": "210003",
+      "name": "Villa Regia.jpg",
+      "category": "hotel"
+    },
+    {
+      "id": "210004",
+      "name": "DoubleTree By Hilton Košice.jpg",
+      "category": "hotel"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tcategory\n30001\tPrivate holiday house Vivendi\thotel\n30003\tSurprice\tticket\n60001\tCharming & Cozy Ambiente Apartments\thotel\n90001\tmyNext - Johannesgasse Apartments\thotel\n90002\tHotel Bankov Košice\thotel\n180001\tchatam sofer-memorial\tother\n210001\tApart Hotel GOLDEN apartments\thotel\n210002\tHilton Ambassador.jpg\thotel\n210003\tVilla Regia.jpg\thotel\n210004\tDoubleTree By Hilton Košice.jpg\thotel\n",
+  "stderr": "",
+  "execution_time_ms": 1565
+}
