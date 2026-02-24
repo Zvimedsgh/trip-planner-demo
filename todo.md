@@ -614,5 +614,6 @@
 
 ## Bug - Invalid Tailwind Class
 - [x] Used `md:flex-shrink` which doesn't exist in Tailwind
-- [x] Fixed with `shrink-0 md:shrink` (correct Tailwind utility classes)
+- [x] Tailwind responsive utilities not working - switched to custom CSS with @media queries
+- [x] Added .feature-tab class with flex-shrink: 0 (mobile) and flex-shrink: 1 (tablet @768px+)
 - [ ] C&P to test on all devices
