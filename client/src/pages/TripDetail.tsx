@@ -351,9 +351,9 @@ export default function TripDetail() {
                       >
                         {/* Mobile: numbers only */}
                         <span className="md:hidden text-base font-bold">{i + 1}</span>
-                        {/* Desktop: full format */}
+                        {/* Tablet/Desktop: Day number only */}
                         <span className="hidden md:inline text-sm font-medium">
-                          {language === "he" ? `יום ${i + 1} - ${format(dayDate, "MMM d")}` : `Day ${i + 1} - ${format(dayDate, "MMM d")}`}
+                          {language === "he" ? `יום ${i + 1}` : `Day ${i + 1}`}
                         </span>
                       </TabsTrigger>
                     );
@@ -362,15 +362,15 @@ export default function TripDetail() {
                 </div>
 
               {/* Row 2: Activity Category Tabs */}
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 justify-center">
                 {tabs.map((tab) => (
                   <TabsTrigger
                     key={tab.id}
                     value={tab.id}
-                    className={`flex flex-col items-center justify-center gap-0.5 px-2 py-2 rounded-lg border transition-all data-[state=active]:border-[3px] data-[state=active]:shadow-lg flex-1 min-w-[80px] ${tab.color}`}
+                    className={`flex flex-col items-center justify-center gap-1 px-3 py-2.5 rounded-lg border transition-all data-[state=active]:border-[3px] data-[state=active]:shadow-lg w-[90px] md:w-[110px] ${tab.color}`}
                   >
-                    <tab.icon className="w-5 h-5" />
-                    <span className="hidden md:block text-[10px] font-medium text-center leading-tight break-words overflow-hidden">{tab.label}</span>
+                    <tab.icon className="w-6 h-6 md:w-7 md:h-7" />
+                    <span className="hidden md:block text-xs font-medium text-center leading-tight">{tab.label}</span>
                   </TabsTrigger>
                 ))}
               </div>

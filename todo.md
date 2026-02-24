@@ -566,3 +566,25 @@
 - [x] Verified English: "Transportation & Parking" and "Sites"
 - [x] Verified Hebrew: "תחבורה וחניה" and "אתרים"
 - [x] All 11 documents from "ברכב" now show under "תחבורה וחניה"
+
+## Bug - Duplicate Documents Without Delete Icons
+- [x] Two "Kosice, Slovakia- All You Must Know Before You Go" documents showing in Sites category
+- [x] Both documents missing delete icon (trash button)
+- [x] Checked database - confirmed 2 duplicate documents
+- [x] Could not determine why delete icons were missing
+- [x] Deleted both duplicate documents from database
+- [ ] User will re-upload one fresh copy
+- [ ] Verify new upload has delete icon visible
+
+## iPad Layout Improvements
+- [x] Day tabs showing too much text ("Day 1 - Sep 1" is too long)
+- [x] Feature tabs cramped in single row on iPad
+- [x] Shorten day tab labels to show only "Day 1", "Day 2", etc. (remove dates)
+- [x] Arrange feature tabs in 2 rows for better spacing on tablet
+- [x] Removed flex-1, set fixed width (110px on tablet)
+- [x] Increased icon size and padding for better touch targets
+- [x] Centered tabs with justify-center
+- [x] Test layout on iPad screen size to verify improvements
+- [x] Verified day tabs show only "יום 1", "יום 2" etc.
+- [x] Verified feature tabs wrap into 2 rows with proper spacing
+- [x] Tabs are bigger and easier to tap on iPad
