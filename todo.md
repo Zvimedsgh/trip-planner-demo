@@ -604,3 +604,10 @@
 - [x] Removed flex-1, added flex-shrink-0 with fixed width (80px) on mobile
 - [x] This forces single row with horizontal scrolling on mobile
 - [ ] Test on iPhone to verify single scrollable row works
+
+## Bug - Responsive Layout Regression
+- [x] iPad went back to single row (should be 2 rows)
+- [x] iPhone still wrapping/not working (should be single scrollable row)
+- [x] flex-shrink-0 applying to all screens, preventing iPad wrapping
+- [x] Added md:flex-shrink to allow wrapping on tablet while keeping flex-shrink-0 on mobile
+- [ ] Test on all devices after C&P
