@@ -362,14 +362,14 @@ export default function TripDetail() {
                 </div>
 
               {/* Row 2: Activity Category Tabs */}
-              <div className="flex flex-wrap gap-2 justify-center">
+              <div className="flex gap-2 overflow-x-auto md:flex-wrap md:justify-center md:overflow-x-visible">
                 {tabs.map((tab) => (
                   <TabsTrigger
                     key={tab.id}
                     value={tab.id}
-                    className={`flex flex-col items-center justify-center gap-1 px-3 py-2.5 rounded-lg border transition-all data-[state=active]:border-[3px] data-[state=active]:shadow-lg w-[90px] md:w-[110px] ${tab.color}`}
+                    className={`flex flex-col items-center justify-center gap-0.5 px-2 py-2 rounded-lg border transition-all data-[state=active]:border-[3px] data-[state=active]:shadow-lg flex-1 min-w-[80px] md:flex-none md:w-[110px] md:gap-1 md:px-3 md:py-2.5 ${tab.color}`}
                   >
-                    <tab.icon className="w-6 h-6 md:w-7 md:h-7" />
+                    <tab.icon className="w-5 h-5 md:w-7 md:h-7" />
                     <span className="hidden md:block text-xs font-medium text-center leading-tight">{tab.label}</span>
                   </TabsTrigger>
                 ))}

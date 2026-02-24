@@ -588,3 +588,12 @@
 - [x] Verified day tabs show only "יום 1", "יום 2" etc.
 - [x] Verified feature tabs wrap into 2 rows with proper spacing
 - [x] Tabs are bigger and easier to tap on iPad
+
+## Bug - Responsive Layout Broken After iPad Fix
+- [x] iPhone: Feature tabs now wrap into 2 rows messily (should be single scrollable row)
+- [x] iPad: Feature tabs still cramped in single row (should wrap to 2 rows)
+- [x] Used proper responsive breakpoints (default for mobile, md: for tablet)
+- [x] Mobile: overflow-x-auto with flex-1 for single scrollable row
+- [x] Tablet: flex-wrap with fixed width (110px) for 2-row layout
+- [ ] Test on iPhone to verify single scrollable row
+- [ ] Test on iPad to verify 2-row wrapping layout
