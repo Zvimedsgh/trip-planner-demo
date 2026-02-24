@@ -597,3 +597,10 @@
 - [x] Tablet: flex-wrap with fixed width (110px) for 2-row layout
 - [ ] Test on iPhone to verify single scrollable row
 - [ ] Test on iPad to verify 2-row wrapping layout
+
+## Bug - iPhone Feature Tabs Wrapping
+- [x] iPhone shows feature tabs wrapping into 2 rows (should be single scrollable row)
+- [x] Icons showing without labels and getting cut off
+- [x] Removed flex-1, added flex-shrink-0 with fixed width (80px) on mobile
+- [x] This forces single row with horizontal scrolling on mobile
+- [ ] Test on iPhone to verify single scrollable row works
