@@ -1,0 +1,100 @@
+{
+  "query": "\nSELECT h.id, h.name, h.linkedDocumentId, d.id as docId, d.name as docName, d.fileUrl, d.mimeType\nFROM hotels h\nLEFT JOIN documents d ON h.linkedDocumentId = d.id\nWHERE h.name LIKE '%Vienna%'\nLIMIT 10;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute \nSELECT h.id, h.name, h.linkedDocumentId, d.id as docId, d.name as docName, d.fileUrl, d.mimeType\nFROM hotels h\nLEFT JOIN documents d ON h.linkedDocumentId = d.id\nWHERE h.name LIKE '%Vienna%'\nLIMIT 10;\n",
+  "rows": [
+    {
+      "id": "270044",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "docId": "120001",
+      "docName": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx",
+      "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    },
+    {
+      "id": "270039",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "docId": "120001",
+      "docName": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx",
+      "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    },
+    {
+      "id": "270034",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "docId": "120001",
+      "docName": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx",
+      "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    },
+    {
+      "id": "270029",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "docId": "120001",
+      "docName": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx",
+      "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    },
+    {
+      "id": "270024",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "docId": "120001",
+      "docName": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx",
+      "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    },
+    {
+      "id": "270019",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "docId": "120001",
+      "docName": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx",
+      "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    },
+    {
+      "id": "270014",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "docId": "120001",
+      "docName": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx",
+      "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    },
+    {
+      "id": "270009",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "docId": "120001",
+      "docName": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx",
+      "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    },
+    {
+      "id": "270004",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "docId": "120001",
+      "docName": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx",
+      "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    },
+    {
+      "id": "60002",
+      "name": "Vienna Parking",
+      "linkedDocumentId": "120001",
+      "docId": "120001",
+      "docName": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx",
+      "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tlinkedDocumentId\tdocId\tdocName\tfileUrl\tmimeType\n270044\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\tapplication/vnd.openxmlformats-officedocument.wordprocessingml.document\n270039\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\tapplication/vnd.openxmlformats-officedocument.wordprocessingml.document\n270034\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\tapplication/vnd.openxmlformats-officedocument.wordprocessingml.document\n270029\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\tapplication/vnd.openxmlformats-officedocument.wordprocessingml.document\n270024\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\tapplication/vnd.openxmlformats-officedocument.wordprocessingml.document\n270019\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\tapplication/vnd.openxmlformats-officedocument.wordprocessingml.document\n270014\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\tapplication/vnd.openxmlformats-officedocument.wordprocessingml.document\n270009\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\tapplication/vnd.openxmlformats-officedocument.wordprocessingml.document\n270004\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\tapplication/vnd.openxmlformats-officedocument.wordprocessingml.document\n60002\tVienna Parking\t120001\t120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.docx\tapplication/vnd.openxmlformats-officedocument.wordprocessingml.document\n",
+  "stderr": "",
+  "execution_time_ms": 1629
+}

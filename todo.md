@@ -493,3 +493,20 @@
 - [x] Create PDF viewer modal component with iframe
 - [x] Replace window.open with modal for consistent cross-device experience
 - [ ] Test on iPhone, iPad, and desktop
+
+## Bug - PDF Conversion Not Working
+- [ ] Modal opens but shows .docx file instead of PDF
+- [ ] Conversion mutation may be failing silently
+- [ ] Check server logs for LibreOffice errors
+- [ ] Verify conversion endpoint returns correct PDF URL
+- [ ] Test conversion with sample .docx file
+
+## Bug - Word Documents Not Displaying in Modal
+- [x] Vienna Parking hotel has .docx file that shows blank in modal
+- [x] iOS Safari cannot display Word documents in iframe
+- [x] Simplified PDF viewer modal to detect file type
+- [x] For PDFs: show iframe preview
+- [x] For Word/other docs: show friendly download message with button
+- [x] Removed complex on-demand conversion logic
+- [x] Cleaned up unused convertPdfMutation code
+- [ ] Test on iPhone, iPad, and desktop

@@ -112,13 +112,7 @@ export default function HotelsTab({ tripId, highlightedId, onNavigateToDocuments
     },
   });
   
-  const convertPdfMutation = trpc.documents.convertToPdf.useMutation({
-    onError: (error) => {
-      toast.error(language === "he" ? "שגיאה בהמרת מסמך" : "Failed to convert document");
-      console.error('Conversion error:', error);
-    },
-  });
-  
+
   const handleDocumentLink = (hotelId: number) => {
     setLinkingHotelId(hotelId);
     setDocumentLinkDialogOpen(true);
@@ -661,30 +655,11 @@ export default function HotelsTab({ tripId, highlightedId, onNavigateToDocuments
                             e.preventDefault();
                             e.stopPropagation();
                             if (linkedDoc) {
-                              // Check if it's a .docx file
-                              const isDocx = linkedDoc.name.toLowerCase().endsWith('.docx') || 
-                                             linkedDoc.name.toLowerCase().endsWith('.doc');
-                              
-                              if (isDocx) {
-                                // Convert to PDF first
-                                try {
-                                  const result = await convertPdfMutation.mutateAsync({ 
-                                    documentId: linkedDoc.id 
-                                  });
-                                  // Open in modal viewer
-                                  setPdfViewerUrl(result.url);
-                                  setPdfViewerName(linkedDoc.name.replace(/\.(docx?|DOCX?)$/, '.pdf'));
-                                  setPdfViewerOpen(true);
-                                } catch (error) {
-                                  console.error('Failed to convert document:', error);
-                                  toast.error(language === "he" ? "שגיאה בהמרת מסמך" : "Failed to convert document");
-                                }
-                              } else {
-                                // Open PDF in modal viewer
-                                setPdfViewerUrl(linkedDoc.fileUrl);
-                                setPdfViewerName(linkedDoc.name);
-                                setPdfViewerOpen(true);
-                              }
+                              // Open all documents in modal viewer
+                              // Modal will handle PDF preview or download prompt based on file type
+                              setPdfViewerUrl(linkedDoc.fileUrl);
+                              setPdfViewerName(linkedDoc.name);
+                              setPdfViewerOpen(true);
                             } else {
                               // Open dialog to manually select document
                               handleDocumentLink(hotel.id);
