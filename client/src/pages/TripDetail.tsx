@@ -367,7 +367,7 @@ export default function TripDetail() {
                   <TabsTrigger
                     key={tab.id}
                     value={tab.id}
-                    className={`flex flex-col items-center justify-center gap-0.5 px-2 py-2 rounded-lg border transition-all data-[state=active]:border-[3px] data-[state=active]:shadow-lg flex-shrink-0 w-[80px] md:flex-shrink md:w-[110px] md:gap-1 md:px-3 md:py-2.5 ${tab.color}`}
+                    className={`flex flex-col items-center justify-center gap-0.5 px-2 py-2 rounded-lg border transition-all data-[state=active]:border-[3px] data-[state=active]:shadow-lg flex-shrink-0 w-[80px] md:flex-shrink-1 md:w-[110px] md:gap-1 md:px-3 md:py-2.5 ${tab.color}`}
                   >
                     <tab.icon className="w-5 h-5 md:w-7 md:h-7" />
                     <span className="hidden md:block text-xs font-medium text-center leading-tight">{tab.label}</span>

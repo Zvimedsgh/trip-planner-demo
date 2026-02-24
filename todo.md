@@ -611,3 +611,8 @@
 - [x] flex-shrink-0 applying to all screens, preventing iPad wrapping
 - [x] Added md:flex-shrink to allow wrapping on tablet while keeping flex-shrink-0 on mobile
 - [ ] Test on all devices after C&P
+
+## Bug - Invalid Tailwind Class
+- [x] Used `md:flex-shrink` which doesn't exist in Tailwind
+- [x] Fixed with `md:flex-shrink-1` to allow wrapping on tablet
+- [ ] C&P to test on all devices
