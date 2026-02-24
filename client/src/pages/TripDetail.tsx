@@ -349,7 +349,10 @@ export default function TripDetail() {
                         value={`day-${dayTimestamp}`}
                         className={`flex items-center justify-center gap-1 px-2 py-1.5 rounded-md border text-sm transition-all font-medium min-w-[60px] ${colorClass}`}
                       >
-                        <span className="text-base font-bold">
+                        {/* Mobile: numbers only */}
+                        <span className="md:hidden text-base font-bold">{i + 1}</span>
+                        {/* Tablet+: Day X format */}
+                        <span className="hidden md:inline text-base font-bold">
                           {language === "he" ? `יום ${i + 1}` : `Day ${i + 1}`}
                         </span>
                       </TabsTrigger>
