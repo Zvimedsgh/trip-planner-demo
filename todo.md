@@ -614,5 +614,5 @@
 
 ## Bug - Invalid Tailwind Class
 - [x] Used `md:flex-shrink` which doesn't exist in Tailwind
-- [x] Fixed with `md:flex-shrink-1` to allow wrapping on tablet
+- [x] Fixed with `shrink-0 md:shrink` (correct Tailwind utility classes)
 - [ ] C&P to test on all devices
