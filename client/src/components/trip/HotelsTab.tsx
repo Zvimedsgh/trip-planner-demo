@@ -52,7 +52,6 @@ export default function HotelsTab({ tripId, highlightedId, onNavigateToDocuments
   const [pdfViewerOpen, setPdfViewerOpen] = useState(false);
   const [pdfViewerUrl, setPdfViewerUrl] = useState("");
   const [pdfViewerName, setPdfViewerName] = useState("");
-  const [pdfViewerDocumentId, setPdfViewerDocumentId] = useState<number | undefined>(undefined);
   const [parkingImageDialogOpen, setParkingImageDialogOpen] = useState(false);
   const [uploadingParkingForHotelId, setUploadingParkingForHotelId] = useState<number | null>(null);
   const [galleryHotelId, setGalleryHotelId] = useState<number | null>(null);
@@ -657,10 +656,9 @@ export default function HotelsTab({ tripId, highlightedId, onNavigateToDocuments
                             e.stopPropagation();
                             if (linkedDoc) {
                               // Open all documents in modal viewer
-                              // Modal will handle PDF preview or auto-conversion for .docx
+                              // Modal will show PDF preview or download UI for .docx
                               setPdfViewerUrl(linkedDoc.fileUrl);
                               setPdfViewerName(linkedDoc.name);
-                              setPdfViewerDocumentId(linkedDoc.id);
                               setPdfViewerOpen(true);
                             } else {
                               // Open dialog to manually select document
@@ -943,7 +941,6 @@ export default function HotelsTab({ tripId, highlightedId, onNavigateToDocuments
         onOpenChange={setPdfViewerOpen}
         pdfUrl={pdfViewerUrl}
         documentName={pdfViewerName}
-        documentId={pdfViewerDocumentId}
       />
     </div>
   );

@@ -1,55 +1,23 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Download, X, Loader2 } from "lucide-react";
-import { useState, useEffect } from "react";
-import { trpc } from "@/lib/trpc";
-import { toast } from "sonner";
+import { Download, X, FileText } from "lucide-react";
 
 interface PdfViewerModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   pdfUrl: string;
   documentName?: string;
-  documentId?: number;
 }
 
-export function PdfViewerModal({ open, onOpenChange, pdfUrl, documentName, documentId }: PdfViewerModalProps) {
-  const [displayUrl, setDisplayUrl] = useState(pdfUrl);
-  const [isConverting, setIsConverting] = useState(false);
-  
+export function PdfViewerModal({ open, onOpenChange, pdfUrl, documentName }: PdfViewerModalProps) {
   // Detect if it's a PDF or other document type
   const isPdf = pdfUrl.toLowerCase().endsWith('.pdf') || documentName?.toLowerCase().endsWith('.pdf');
   const isDocx = pdfUrl.toLowerCase().endsWith('.docx') || pdfUrl.toLowerCase().endsWith('.doc') ||
                  documentName?.toLowerCase().endsWith('.docx') || documentName?.toLowerCase().endsWith('.doc');
   
-  const convertMutation = trpc.documents.convertToPdf.useMutation();
-  
-  // Auto-convert .docx files when modal opens
-  useEffect(() => {
-    if (open && isDocx && documentId) {
-      setIsConverting(true);
-      convertMutation.mutate(
-        { documentId },
-        {
-          onSuccess: (result) => {
-            setDisplayUrl(result.url);
-            setIsConverting(false);
-          },
-          onError: (error) => {
-            console.error('Conversion failed:', error);
-            toast.error('Failed to convert document. You can download it instead.');
-            setIsConverting(false);
-          },
-        }
-      );
-    } else {
-      setDisplayUrl(pdfUrl);
-    }
-  }, [open, isDocx, documentId, pdfUrl]);
-  
   const handleDownload = () => {
     // Use fetch to download the file properly on iOS
-    fetch(displayUrl)
+    fetch(pdfUrl)
       .then(response => response.blob())
       .then(blob => {
         const url = window.URL.createObjectURL(blob);
@@ -64,7 +32,7 @@ export function PdfViewerModal({ open, onOpenChange, pdfUrl, documentName, docum
       .catch(error => {
         console.error('Download failed:', error);
         // Fallback: open in new tab if fetch fails
-        window.open(displayUrl, '_blank');
+        window.open(pdfUrl, '_blank');
       });
   };
 
@@ -79,7 +47,6 @@ export function PdfViewerModal({ open, onOpenChange, pdfUrl, documentName, docum
                 size="sm"
                 variant="outline"
                 onClick={handleDownload}
-                disabled={isConverting}
               >
                 <Download className="w-4 h-4 mr-2" />
                 Download
@@ -95,20 +62,29 @@ export function PdfViewerModal({ open, onOpenChange, pdfUrl, documentName, docum
           </div>
         </DialogHeader>
         <div className="flex-1 overflow-hidden">
-          {isConverting ? (
-            <div className="flex flex-col items-center justify-center h-full gap-4">
-              <Loader2 className="w-12 h-12 animate-spin text-primary" />
-              <div className="text-center">
-                <h3 className="text-lg font-semibold mb-2">Converting to PDF...</h3>
-                <p className="text-muted-foreground">This may take a few seconds</p>
-              </div>
-            </div>
-          ) : (
+          {isPdf ? (
             <iframe
-              src={displayUrl}
+              src={pdfUrl}
               className="w-full h-full border-0"
               title={documentName || 'PDF Viewer'}
             />
+          ) : (
+            <div className="flex flex-col items-center justify-center h-full gap-4 p-8 text-center">
+              <FileText className="w-16 h-16 text-muted-foreground" />
+              <div>
+                <h3 className="text-lg font-semibold mb-2">
+                  {isDocx ? 'Word Document' : 'Document'}
+                </h3>
+                <p className="text-muted-foreground mb-4">
+                  This {isDocx ? 'Word document' : 'file'} cannot be previewed in the browser.
+                  Click the Download button above to save and open it.
+                </p>
+                <Button onClick={handleDownload} size="lg">
+                  <Download className="w-4 h-4 mr-2" />
+                  Download {isDocx ? 'Word Document' : 'File'}
+                </Button>
+              </div>
+            </div>
           )}
         </div>
       </DialogContent>

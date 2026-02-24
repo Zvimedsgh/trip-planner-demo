@@ -572,12 +572,17 @@ export const appRouter = router({
         });
       }),
     
-    convertToPdf: publicProcedure
+    // convertToPdf procedure disabled - LibreOffice not available in production
+    // Keeping code for reference but not exposing as endpoint
+    /* convertToPdf: publicProcedure
       .input(z.object({ documentId: z.number() }))
       .mutation(async ({ input }) => {
-        // Get document from database
-        const doc = await db.getDocument(input.documentId);
-        if (!doc) throw new Error('Document not found');
+        try {
+          console.log('[convertToPdf] Starting conversion for document:', input.documentId);
+          // Get document from database
+          const doc = await db.getDocument(input.documentId);
+          if (!doc) throw new Error('Document not found');
+          console.log('[convertToPdf] Document found:', doc.name, doc.mimeType);
         
         // Check if already PDF
         if (doc.mimeType === 'application/pdf' || doc.name.toLowerCase().endsWith('.pdf')) {
@@ -607,15 +612,21 @@ export const appRouter = router({
         
         try {
           // Write docx to temp file
+          console.log('[convertToPdf] Writing to temp file:', inputPath);
           await fs.writeFile(inputPath, buffer);
           
           // Convert using LibreOffice
-          await execAsync(
+          console.log('[convertToPdf] Running LibreOffice conversion...');
+          const { stdout, stderr } = await execAsync(
             `libreoffice --headless --convert-to pdf --outdir "${tmpDir}" "${inputPath}"`
           );
+          console.log('[convertToPdf] LibreOffice stdout:', stdout);
+          if (stderr) console.log('[convertToPdf] LibreOffice stderr:', stderr);
           
           // Read converted PDF
+          console.log('[convertToPdf] Reading converted PDF from:', outputPath);
           const pdfBuffer = Buffer.from(await fs.readFile(outputPath));
+          console.log('[convertToPdf] PDF size:', pdfBuffer.length, 'bytes');
           
           // Upload PDF to S3 (replace old file)
           const newFileKey = doc.fileKey.replace(/\.(docx?|DOCX?)$/, '.pdf');
@@ -629,12 +640,17 @@ export const appRouter = router({
             mimeType: 'application/pdf',
           });
           
+          console.log('[convertToPdf] Conversion complete, PDF URL:', pdfUrl);
           return { url: pdfUrl, converted: true };
         } finally {
           // Cleanup temp files
           await fs.rm(tmpDir, { recursive: true, force: true });
         }
-      }),
+      } catch (error) {
+        console.error('[convertToPdf] Conversion failed:', error);
+        throw error;
+      }
+      }), */
   }),
 
   // ============ DAY TRIPS ============

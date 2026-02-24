@@ -511,11 +511,19 @@
 - [x] Cleaned up unused convertPdfMutation code
 - [ ] Test on iPhone, iPad, and desktop
 
-## Feature - Automatic .docx to PDF Conversion
-- [x] Make convertToPdf endpoint public (remove auth requirement)
-- [x] Update modal to detect .docx and auto-convert on open
-- [x] Show loading spinner during conversion (3-5 seconds)
-- [x] Display converted PDF in iframe viewer
-- [x] Cache PDF in database for instant future opens
-- [x] Pass documentId from HotelsTab to modal
-- [ ] Test with Vienna Parking .docx file on iPhone
+## Feature - Automatic .docx to PDF Conversion [REVERTED]
+- [x] Attempted auto-conversion but LibreOffice not available in production
+- [x] Reverting to download approach for reliability across all environments
+
+## Bug - Document Conversion Failing
+- [x] Modal shows "Failed to convert document" error
+- [x] LibreOffice not installed in production environment
+- [x] Conversion approach not viable for deployed site
+- [x] Reverting to download approach for .docx files
+- [x] Reverted PdfViewerModal to show download UI for .docx files
+- [x] Removed documentId prop from modal component
+- [x] Removed pdfViewerDocumentId state from HotelsTab
+- [x] Commented out convertToPdf procedure in server routers
+- [x] Updated comments to reflect download approach instead of conversion
+- [x] Test PDF viewing in modal (should work)
+- [x] Test .docx download interface (shows friendly download UI with clear messaging)
