@@ -510,3 +510,12 @@
 - [x] Removed complex on-demand conversion logic
 - [x] Cleaned up unused convertPdfMutation code
 - [ ] Test on iPhone, iPad, and desktop
+
+## Feature - Automatic .docx to PDF Conversion
+- [x] Make convertToPdf endpoint public (remove auth requirement)
+- [x] Update modal to detect .docx and auto-convert on open
+- [x] Show loading spinner during conversion (3-5 seconds)
+- [x] Display converted PDF in iframe viewer
+- [x] Cache PDF in database for instant future opens
+- [x] Pass documentId from HotelsTab to modal
+- [ ] Test with Vienna Parking .docx file on iPhone

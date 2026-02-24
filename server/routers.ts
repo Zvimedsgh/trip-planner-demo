@@ -572,7 +572,7 @@ export const appRouter = router({
         });
       }),
     
-    convertToPdf: protectedProcedure
+    convertToPdf: publicProcedure
       .input(z.object({ documentId: z.number() }))
       .mutation(async ({ input }) => {
         // Get document from database
