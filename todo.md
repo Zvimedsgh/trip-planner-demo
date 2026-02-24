@@ -572,4 +572,5 @@
 - [x] Preserved mobile flex-wrap behavior (default)
 - [x] Preserved PC flex-wrap behavior (lg:flex lg:flex-wrap)
 - [x] iPad gets 2-row grid with larger icons and better spacing
+- [x] Changed day tabs to show only "Day 1", "Day 2" etc. (removed dates)
 - [ ] Test on all devices after C&P
