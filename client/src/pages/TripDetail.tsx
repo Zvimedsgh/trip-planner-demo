@@ -351,9 +351,9 @@ export default function TripDetail() {
                       >
                         {/* Mobile: numbers only */}
                         <span className="md:hidden text-base font-bold">{i + 1}</span>
-                        {/* Tablet/Desktop: Day number only */}
+                        {/* Desktop: full format */}
                         <span className="hidden md:inline text-sm font-medium">
-                          {language === "he" ? `יום ${i + 1}` : `Day ${i + 1}`}
+                          {language === "he" ? `יום ${i + 1} - ${format(dayDate, "MMM d")}` : `Day ${i + 1} - ${format(dayDate, "MMM d")}`}
                         </span>
                       </TabsTrigger>
                     );
@@ -362,15 +362,15 @@ export default function TripDetail() {
                 </div>
 
               {/* Row 2: Activity Category Tabs */}
-              <div className="flex gap-2 overflow-x-auto md:flex-wrap md:justify-center md:overflow-x-visible">
+              <div className="flex flex-wrap gap-2">
                 {tabs.map((tab) => (
                   <TabsTrigger
                     key={tab.id}
                     value={tab.id}
-                    className={`feature-tab flex flex-col items-center justify-center gap-0.5 px-2 py-2 rounded-lg border transition-all data-[state=active]:border-[3px] data-[state=active]:shadow-lg w-[80px] md:w-[110px] md:gap-1 md:px-3 md:py-2.5 ${tab.color}`}
+                    className={`flex flex-col items-center justify-center gap-0.5 px-2 py-2 rounded-lg border transition-all data-[state=active]:border-[3px] data-[state=active]:shadow-lg flex-1 min-w-[80px] ${tab.color}`}
                   >
-                    <tab.icon className="w-5 h-5 md:w-7 md:h-7" />
-                    <span className="hidden md:block text-xs font-medium text-center leading-tight">{tab.label}</span>
+                    <tab.icon className="w-5 h-5" />
+                    <span className="hidden md:block text-[10px] font-medium text-center leading-tight break-words overflow-hidden">{tab.label}</span>
                   </TabsTrigger>
                 ))}
               </div>

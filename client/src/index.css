@@ -431,13 +431,3 @@
 ::selection {
   @apply bg-primary/20 text-foreground;
 }
-/* Feature tabs responsive flex-shrink control */
-.feature-tab {
-  flex-shrink: 0;
-}
-
-@media (min-width: 768px) {
-  .feature-tab {
-    flex-shrink: 1;
-  }
-}
