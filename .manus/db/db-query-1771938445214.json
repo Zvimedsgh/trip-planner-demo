@@ -1,0 +1,16 @@
+{
+  "query": "SELECT COUNT(*) as total_docs, \n  SUM(CASE WHEN mimeType = 'application/pdf' THEN 1 ELSE 0 END) as pdf_docs,\n  SUM(CASE WHEN fileUrl LIKE '%.pdf%' THEN 1 ELSE 0 END) as pdf_urls,\n  SUM(CASE WHEN fileUrl LIKE '%.docx%' OR mimeType LIKE '%word%' THEN 1 ELSE 0 END) as remaining_docx\nFROM documents;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT COUNT(*) as total_docs, \n  SUM(CASE WHEN mimeType = 'application/pdf' THEN 1 ELSE 0 END) as pdf_docs,\n  SUM(CASE WHEN fileUrl LIKE '%.pdf%' THEN 1 ELSE 0 END) as pdf_urls,\n  SUM(CASE WHEN fileUrl LIKE '%.docx%' OR mimeType LIKE '%word%' THEN 1 ELSE 0 END) as remaining_docx\nFROM documents;",
+  "rows": [
+    {
+      "total_docs": "468",
+      "pdf_docs": "227",
+      "pdf_urls": "81",
+      "remaining_docx": "0"
+    }
+  ],
+  "messages": [],
+  "stdout": "total_docs\tpdf_docs\tpdf_urls\tremaining_docx\n468\t227\t81\t0\n",
+  "stderr": "",
+  "execution_time_ms": 1591
+}

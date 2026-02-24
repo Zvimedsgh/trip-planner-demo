@@ -1,0 +1,154 @@
+{
+  "query": "SELECT tripId, COUNT(*) as doc_count, \n  SUM(CASE WHEN mimeType = 'application/pdf' THEN 1 ELSE 0 END) as pdf_count,\n  SUM(CASE WHEN fileUrl LIKE '%.docx%' OR mimeType LIKE '%word%' THEN 1 ELSE 0 END) as docx_count\nFROM documents \nGROUP BY tripId;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT tripId, COUNT(*) as doc_count, \n  SUM(CASE WHEN mimeType = 'application/pdf' THEN 1 ELSE 0 END) as pdf_count,\n  SUM(CASE WHEN fileUrl LIKE '%.docx%' OR mimeType LIKE '%word%' THEN 1 ELSE 0 END) as docx_count\nFROM documents \nGROUP BY tripId;",
+  "rows": [
+    {
+      "tripId": "600020",
+      "doc_count": "4",
+      "pdf_count": "4",
+      "docx_count": "0"
+    },
+    {
+      "tripId": "600008",
+      "doc_count": "32",
+      "pdf_count": "14",
+      "docx_count": "0"
+    },
+    {
+      "tripId": "600016",
+      "doc_count": "4",
+      "pdf_count": "4",
+      "docx_count": "0"
+    },
+    {
+      "tripId": "630001",
+      "doc_count": "12",
+      "pdf_count": "5",
+      "docx_count": "0"
+    },
+    {
+      "tripId": "510001",
+      "doc_count": "3",
+      "pdf_count": "3",
+      "docx_count": "0"
+    },
+    {
+      "tripId": "30001",
+      "doc_count": "34",
+      "pdf_count": "16",
+      "docx_count": "0"
+    },
+    {
+      "tripId": "600009",
+      "doc_count": "32",
+      "pdf_count": "14",
+      "docx_count": "0"
+    },
+    {
+      "tripId": "600004",
+      "doc_count": "32",
+      "pdf_count": "14",
+      "docx_count": "0"
+    },
+    {
+      "tripId": "600021",
+      "doc_count": "4",
+      "pdf_count": "4",
+      "docx_count": "0"
+    },
+    {
+      "tripId": "600006",
+      "doc_count": "32",
+      "pdf_count": "14",
+      "docx_count": "0"
+    },
+    {
+      "tripId": "600018",
+      "doc_count": "4",
+      "pdf_count": "4",
+      "docx_count": "0"
+    },
+    {
+      "tripId": "600012",
+      "doc_count": "32",
+      "pdf_count": "14",
+      "docx_count": "0"
+    },
+    {
+      "tripId": "600019",
+      "doc_count": "4",
+      "pdf_count": "4",
+      "docx_count": "0"
+    },
+    {
+      "tripId": "600010",
+      "doc_count": "32",
+      "pdf_count": "14",
+      "docx_count": "0"
+    },
+    {
+      "tripId": "600022",
+      "doc_count": "4",
+      "pdf_count": "4",
+      "docx_count": "0"
+    },
+    {
+      "tripId": "600005",
+      "doc_count": "32",
+      "pdf_count": "14",
+      "docx_count": "0"
+    },
+    {
+      "tripId": "600003",
+      "doc_count": "32",
+      "pdf_count": "14",
+      "docx_count": "0"
+    },
+    {
+      "tripId": "600015",
+      "doc_count": "4",
+      "pdf_count": "4",
+      "docx_count": "0"
+    },
+    {
+      "tripId": "600013",
+      "doc_count": "32",
+      "pdf_count": "14",
+      "docx_count": "0"
+    },
+    {
+      "tripId": "600011",
+      "doc_count": "31",
+      "pdf_count": "13",
+      "docx_count": "0"
+    },
+    {
+      "tripId": "600023",
+      "doc_count": "4",
+      "pdf_count": "4",
+      "docx_count": "0"
+    },
+    {
+      "tripId": "600007",
+      "doc_count": "32",
+      "pdf_count": "14",
+      "docx_count": "0"
+    },
+    {
+      "tripId": "600017",
+      "doc_count": "4",
+      "pdf_count": "4",
+      "docx_count": "0"
+    },
+    {
+      "tripId": "600002",
+      "doc_count": "32",
+      "pdf_count": "14",
+      "docx_count": "0"
+    }
+  ],
+  "messages": [],
+  "stdout": "tripId\tdoc_count\tpdf_count\tdocx_count\n600020\t4\t4\t0\n600008\t32\t14\t0\n600016\t4\t4\t0\n630001\t12\t5\t0\n510001\t3\t3\t0\n30001\t34\t16\t0\n600009\t32\t14\t0\n600004\t32\t14\t0\n600021\t4\t4\t0\n600006\t32\t14\t0\n600018\t4\t4\t0\n600012\t32\t14\t0\n600019\t4\t4\t0\n600010\t32\t14\t0\n600022\t4\t4\t0\n600005\t32\t14\t0\n600003\t32\t14\t0\n600015\t4\t4\t0\n600013\t32\t14\t0\n600011\t31\t13\t0\n600023\t4\t4\t0\n600007\t32\t14\t0\n600017\t4\t4\t0\n600002\t32\t14\t0\n",
+  "stderr": "",
+  "execution_time_ms": 1559
+}

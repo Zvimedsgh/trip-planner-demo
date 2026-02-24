@@ -1,0 +1,28 @@
+{
+  "query": "SELECT id, name, hotelId, fileUrl\nFROM documents \nWHERE tripId = 30001 \nAND DATE(createdAt) = '2026-02-24';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, hotelId, fileUrl\nFROM documents \nWHERE tripId = 30001 \nAND DATE(createdAt) = '2026-02-24';",
+  "rows": [
+    {
+      "id": "900001",
+      "name": "Vienna parking confirmation",
+      "hotelId": "30001",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/ST4mnlFzhCcmcubmdTrZY-Vienna parking confirmation"
+    },
+    {
+      "id": "900002",
+      "name": "הסעה מהשדה בברטיסלבה למלון בעיר",
+      "hotelId": "30003",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/ucg05mkXPdQItjftkW0mM-הסעה מהשדה בברטיסלבה למלון בעיר"
+    },
+    {
+      "id": "900003",
+      "name": "ציון קבר החתמ סופר.pdf",
+      "hotelId": "NULL",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/w1fjIHGgpZZToXudMyHYW-ציון קבר החתמ סופר.pdf"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\thotelId\tfileUrl\n900001\tVienna parking confirmation\t30001\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/ST4mnlFzhCcmcubmdTrZY-Vienna parking confirmation\n900002\tהסעה מהשדה בברטיסלבה למלון בעיר\t30003\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/ucg05mkXPdQItjftkW0mM-הסעה מהשדה בברטיסלבה למלון בעיר\n900003\tציון קבר החתמ סופר.pdf\tNULL\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/w1fjIHGgpZZToXudMyHYW-ציון קבר החתמ סופר.pdf\n",
+  "stderr": "",
+  "execution_time_ms": 1606
+}

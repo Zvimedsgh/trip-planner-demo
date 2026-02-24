@@ -527,3 +527,17 @@
 - [x] Updated comments to reflect download approach instead of conversion
 - [x] Test PDF viewing in modal (should work)
 - [x] Test .docx download interface (shows friendly download UI with clear messaging)
+
+## Update Document Links - Convert .docx to .pdf
+- [x] Query database to find all documents with .docx in fileUrl or name
+- [x] User uploaded only 3 PDFs (not all 34 documents)
+- [ ] Identify which 3 specific documents were converted
+- [ ] Update only those 3 documents in database (fileUrl, fileKey, name, mimeType)
+- [ ] Revert the mass update that changed all 55 documents
+- [ ] Test the 3 PDF documents load correctly in modal
+
+## Fix Document Selection Dialog
+- [x] Document names are truncated/cut off in DocumentLinkDialog
+- [x] User cannot read full names to select correct document
+- [x] Fix dialog to show full document names without truncation (changed truncate to break-words)
+- [x] Test dialog shows complete names for all documents (verified - names wrap properly)

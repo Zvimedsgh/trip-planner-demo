@@ -1,0 +1,45 @@
+{
+  "query": "SELECT id, name, fileUrl, fileKey, mimeType \nFROM documents \nWHERE name LIKE '%Vienna%parking%' OR name LIKE '%vienna%parking%'\nLIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, fileUrl, fileKey, mimeType \nFROM documents \nWHERE name LIKE '%Vienna%parking%' OR name LIKE '%vienna%parking%'\nLIMIT 5;",
+  "rows": [
+    {
+      "id": "120001",
+      "name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.pdf",
+      "fileKey": "documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.pdf",
+      "mimeType": "application/pdf"
+    },
+    {
+      "id": "750007",
+      "name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.pdf",
+      "fileKey": "documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.pdf",
+      "mimeType": "application/pdf"
+    },
+    {
+      "id": "750039",
+      "name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.pdf",
+      "fileKey": "documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.pdf",
+      "mimeType": "application/pdf"
+    },
+    {
+      "id": "750071",
+      "name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.pdf",
+      "fileKey": "documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.pdf",
+      "mimeType": "application/pdf"
+    },
+    {
+      "id": "750103",
+      "name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.pdf",
+      "fileKey": "documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.pdf",
+      "mimeType": "application/pdf"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tfileUrl\tfileKey\tmimeType\n120001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.pdf\tdocuments/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.pdf\tapplication/pdf\n750007\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.pdf\tdocuments/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.pdf\tapplication/pdf\n750039\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.pdf\tdocuments/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.pdf\tapplication/pdf\n750071\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.pdf\tdocuments/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.pdf\tapplication/pdf\n750103\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.pdf\tdocuments/1/30001/6RJx4bardu4_lPe6qRmMd-Vienna pating confirmation.pdf\tapplication/pdf\n",
+  "stderr": "",
+  "execution_time_ms": 1601
+}

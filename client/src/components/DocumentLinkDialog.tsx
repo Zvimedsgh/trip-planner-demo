@@ -142,7 +142,7 @@ export function DocumentLinkDialog({
                       }`}
                     />
                     <div className="flex-1 min-w-0">
-                      <div className="font-medium text-gray-900 truncate">{doc.name}</div>
+                      <div className="font-medium text-gray-900 break-words">{doc.name}</div>
                       <div className="text-sm text-gray-500">
                         {CATEGORY_LABELS[doc.category]?.[language] || doc.category}
                       </div>

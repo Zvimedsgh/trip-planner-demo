@@ -1,0 +1,31 @@
+{
+  "query": "SELECT id, name, fileUrl, mimeType, createdAt \nFROM documents \nWHERE tripId = 30001 \nAND DATE(createdAt) = '2026-02-24'\nORDER BY createdAt DESC;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, fileUrl, mimeType, createdAt \nFROM documents \nWHERE tripId = 30001 \nAND DATE(createdAt) = '2026-02-24'\nORDER BY createdAt DESC;",
+  "rows": [
+    {
+      "id": "900003",
+      "name": "ציון קבר החתמ סופר.pdf",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/w1fjIHGgpZZToXudMyHYW-ציון קבר החתמ סופר.pdf",
+      "mimeType": "application/pdf",
+      "createdAt": "2026-02-24 13:15:32"
+    },
+    {
+      "id": "900002",
+      "name": "הסעה מהשדה בברטיסלבה למלון בעיר",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/ucg05mkXPdQItjftkW0mM-הסעה מהשדה בברטיסלבה למלון בעיר",
+      "mimeType": "application/pdf",
+      "createdAt": "2026-02-24 13:14:55"
+    },
+    {
+      "id": "900001",
+      "name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/ST4mnlFzhCcmcubmdTrZY-Vienna parking confirmation",
+      "mimeType": "application/pdf",
+      "createdAt": "2026-02-24 13:14:17"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tfileUrl\tmimeType\tcreatedAt\n900003\tציון קבר החתמ סופר.pdf\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/w1fjIHGgpZZToXudMyHYW-ציון קבר החתמ סופר.pdf\tapplication/pdf\t2026-02-24 13:15:32\n900002\tהסעה מהשדה בברטיסלבה למלון בעיר\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/ucg05mkXPdQItjftkW0mM-הסעה מהשדה בברטיסלבה למלון בעיר\tapplication/pdf\t2026-02-24 13:14:55\n900001\tVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/ST4mnlFzhCcmcubmdTrZY-Vienna parking confirmation\tapplication/pdf\t2026-02-24 13:14:17\n",
+  "stderr": "",
+  "execution_time_ms": 1640
+}

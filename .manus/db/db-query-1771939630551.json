@@ -1,0 +1,60 @@
+{
+  "query": "SELECT name, fileUrl, DATE(createdAt) as date \nFROM documents \nWHERE tripId = 30001 \nAND mimeType = 'application/pdf'\nORDER BY createdAt DESC \nLIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT name, fileUrl, DATE(createdAt) as date \nFROM documents \nWHERE tripId = 30001 \nAND mimeType = 'application/pdf'\nORDER BY createdAt DESC \nLIMIT 10;",
+  "rows": [
+    {
+      "name": "ציון קבר החתמ סופר.pdf",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/w1fjIHGgpZZToXudMyHYW-ציון קבר החתמ סופר.pdf",
+      "date": "2026-02-24"
+    },
+    {
+      "name": "הסעה מהשדה בברטיסלבה למלון בעיר",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/ucg05mkXPdQItjftkW0mM-הסעה מהשדה בברטיסלבה למלון בעיר",
+      "date": "2026-02-24"
+    },
+    {
+      "name": "Vienna parking confirmation",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/ST4mnlFzhCcmcubmdTrZY-Vienna parking confirmation",
+      "date": "2026-02-24"
+    },
+    {
+      "name": "Kosice, Slovakia- All You Must Know Before You Go (2026) - Tripadvisor.pdf",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/AwI5Ws9IaPWmrSfwgMrzw-Kosice, Slovakia- All You Must Know Before You Go (2026) - Tripadvisor.pdf",
+      "date": "2026-02-21"
+    },
+    {
+      "name": "Kosice, Slovakia- All You Must Know Before You Go (2026) - Tripadvisor.pdf",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/M0bi3FjR4aV7vigR1cKPu-Kosice, Slovakia- All You Must Know Before You Go (2026) - Tripadvisor.pdf",
+      "date": "2026-02-19"
+    },
+    {
+      "name": "Ceck in instructions Vienna",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/JrC-fV8r6SGUmGbuwCpZz-Ceck in instructions Vienna",
+      "date": "2026-02-05"
+    },
+    {
+      "name": "אישור החזר במקרה ביטול חניה מלון וינה",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/4cILIU1jZWWHs_mQfLnOk-אישור החזר במקרה ביטול חניה מלון וינה",
+      "date": "2026-02-04"
+    },
+    {
+      "name": "DoubleTree By Hilton Košice",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/7eCPT3JvY85GdFOZR3fAt-DoubleTree By Hilton Košice.",
+      "date": "2026-01-27"
+    },
+    {
+      "name": "ציון קבר החתמ סופר",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/xlTsbxhtjr2_-83Z8wgxm-ציון קבר החתמ סופר",
+      "date": "2026-01-27"
+    },
+    {
+      "name": "ביטוח נסיעות לחול יונה וצבי.pdf",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/rO2ij24CRslSjhqO2_UFM-ביטוח נסיעות לחול יונה וצבי.pdf",
+      "date": "2026-01-26"
+    }
+  ],
+  "messages": [],
+  "stdout": "name\tfileUrl\tdate\nציון קבר החתמ סופר.pdf\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/w1fjIHGgpZZToXudMyHYW-ציון קבר החתמ סופר.pdf\t2026-02-24\nהסעה מהשדה בברטיסלבה למלון בעיר\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/ucg05mkXPdQItjftkW0mM-הסעה מהשדה בברטיסלבה למלון בעיר\t2026-02-24\nVienna parking confirmation\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/ST4mnlFzhCcmcubmdTrZY-Vienna parking confirmation\t2026-02-24\nKosice, Slovakia- All You Must Know Before You Go (2026) - Tripadvisor.pdf\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/AwI5Ws9IaPWmrSfwgMrzw-Kosice, Slovakia- All You Must Know Before You Go (2026) - Tripadvisor.pdf\t2026-02-21\nKosice, Slovakia- All You Must Know Before You Go (2026) - Tripadvisor.pdf\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/M0bi3FjR4aV7vigR1cKPu-Kosice, Slovakia- All You Must Know Before You Go (2026) - Tripadvisor.pdf\t2026-02-19\nCeck in instructions Vienna\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/JrC-fV8r6SGUmGbuwCpZz-Ceck in instructions Vienna\t2026-02-05\nאישור החזר במקרה ביטול חניה מלון וינה\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/4cILIU1jZWWHs_mQfLnOk-אישור החזר במקרה ביטול חניה מלון וינה\t2026-02-04\nDoubleTree By Hilton Košice\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/7eCPT3JvY85GdFOZR3fAt-DoubleTree By Hilton Košice.\t2026-01-27\nציון קבר החתמ סופר\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/xlTsbxhtjr2_-83Z8wgxm-ציון קבר החתמ סופר\t2026-01-27\nביטוח נסיעות לחול יונה וצבי.pdf\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663308289561/2rtwtAqF2DqhH9oEcii9XY/documents/1/30001/rO2ij24CRslSjhqO2_UFM-ביטוח נסיעות לחול יונה וצבי.pdf\t2026-01-26\n",
+  "stderr": "",
+  "execution_time_ms": 1588
+}
