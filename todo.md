@@ -566,3 +566,10 @@
 - [x] Verified English: "Transportation & Parking" and "Sites"
 - [x] Verified Hebrew: "תחבורה וחניה" and "אתרים"
 - [x] All 11 documents from "ברכב" now show under "תחבורה וחניה"
+
+## iPad Layout Fix - Grid Layout for Feature Tabs
+- [x] Added iPad-specific grid layout (md:grid md:grid-cols-4) for feature tabs
+- [x] Preserved mobile flex-wrap behavior (default)
+- [x] Preserved PC flex-wrap behavior (lg:flex lg:flex-wrap)
+- [x] iPad gets 2-row grid with larger icons and better spacing
+- [ ] Test on all devices after C&P
