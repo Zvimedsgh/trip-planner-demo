@@ -602,3 +602,8 @@
 ## UX - Language Switcher Icon
 - [x] Change globe icon to text: "ע" when in English, "E" when in Hebrew
 - [x] Makes it clearer which language you'll switch to
+
+## Translation Fixes
+- [x] Transportation: Changed "הסעות" to "תחבורה" (all instances in i18n)
+- [x] Route Maps: Changed "מפות מסלול" to "מפות"
+- [x] Payments tab: Changed $ icon to € (Euro icon)

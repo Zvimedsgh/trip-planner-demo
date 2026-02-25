@@ -244,7 +244,7 @@ export const translations = {
     noHotels: "לא הוזמנו מלונות עדיין",
     
     // Transportation
-    transportation: "הסעות",
+    transportation: "תחבורה",
     newTransportation: "הסעה חדשה",
     transportType: "סוג",
     flight: "טיסה",
@@ -255,7 +255,7 @@ export const translations = {
     origin: "מוצא",
     departureDate: "תאריך יציאה",
     arrivalDate: "תאריך הגעה",
-    noTransportation: "לא נוספו הסעות עדיין",
+    noTransportation: "לא נוספה תחבורה עדיין",
     
     // Car Rentals
     carRentals: "השכרת רכב",
@@ -315,7 +315,7 @@ export const translations = {
     // Budget
     totalBudget: "סה״כ תקציב",
     hotelsCost: "מלונות",
-    transportationCost: "הסעות",
+    transportationCost: "תחבורה",
     carRentalsCost: "השכרת רכב",
     totalCost: "עלות כוללת",
     
@@ -335,7 +335,7 @@ export const translations = {
     
     // Hero section
     heroTitle: "תכנן את הטיול המושלם",
-    heroSubtitle: "ארגן יעדים, מלונות, הסעות ועוד במקום אחד אלגנטי",
+    heroSubtitle: "ארגן יעדים, מלונות, תחבורה ועוד במקום אחד אלגנטי",
     getStarted: "התחל עכשיו",
     
     // Features
@@ -346,7 +346,7 @@ export const translations = {
     featureSitesDesc: "שמור ותכנן ביקורים באטרקציות ואתרים",
     featureHotels: "הזמנות מלון",
     featureHotelsDesc: "עקוב אחר כל הזמנות הלינה שלך",
-    featureTransport: "הסעות",
+    featureTransport: "תחבורה",
     featureTransportDesc: "נהל טיסות, רכבות וסידורי נסיעה אחרים",
     featureCars: "השכרת רכב",
     featureCarDesc: "ארגן הזמנות והשכרות רכב",
