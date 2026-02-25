@@ -254,10 +254,9 @@ export default function TripDetail() {
               variant="ghost"
               size="sm"
               onClick={() => setLanguage(language === "en" ? "he" : "en")}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 font-bold text-lg"
             >
-              <Globe className="w-4 h-4" />
-              <span className="hidden sm:inline">{language === "en" ? "עברית" : "English"}</span>
+              {language === "en" ? "ע" : "E"}
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

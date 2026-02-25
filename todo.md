@@ -598,3 +598,7 @@
 - [x] Header had too many buttons: Share & Collaborate, Share, Delete, Language
 - [x] Fixed: Combined Share & Delete into dropdown menu (⋮)
 - [x] Language switcher now visible as second button from right
+
+## UX - Language Switcher Icon
+- [x] Change globe icon to text: "ע" when in English, "E" when in Hebrew
+- [x] Makes it clearer which language you'll switch to
