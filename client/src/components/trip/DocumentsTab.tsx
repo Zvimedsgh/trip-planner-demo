@@ -196,6 +196,7 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
       id: editingId,
       name: name,
       category: editCategory,
+      hotelId: editHotelId,
       tags: getFormValue("editTags") || undefined,
       notes: getFormValue("editNotes") || undefined,
     });
@@ -208,6 +209,7 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
       notes: doc.notes || "",
     });
     setEditCategory(doc.category);
+    setEditHotelId(doc.hotelId);
     setEditingId(doc.id);
   };
 
@@ -538,6 +540,25 @@ export default function DocumentsTab({ tripId }: DocumentsTabProps) {
                   <SelectItem value="flights">{t("flights" as any)}</SelectItem>
                   <SelectItem value="sites">{t("sites" as any)}</SelectItem>
                   <SelectItem value="other">{t("other")}</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="grid gap-2">
+              <Label>{language === "he" ? "קישור למלון (אופציונלי)" : "Link to Hotel (Optional)"}</Label>
+              <Select 
+                value={editHotelId?.toString() || "none"} 
+                onValueChange={(v) => setEditHotelId(v === "none" ? null : Number(v))}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder={language === "he" ? "ללא קישור" : "No link"} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">{language === "he" ? "ללא קישור" : "No link"}</SelectItem>
+                  {hotels?.map((hotel) => (
+                    <SelectItem key={hotel.id} value={hotel.id.toString()}>
+                      {hotel.name}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>

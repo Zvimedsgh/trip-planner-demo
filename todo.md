@@ -585,3 +585,9 @@
 - [x] Changed back button to use browser history (window.history.back())
 - [x] Previously always went to /trips, now goes to previous page
 - [ ] Test navigation flow after C&P
+
+## Bug - Document Edit Missing Hotel Link Field
+- [x] Document create form has hotel link field
+- [x] Document edit form missing hotel link field
+- [x] Add hotel link field to edit form
+- [x] Added hotelId to update procedure schema

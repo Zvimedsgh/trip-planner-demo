@@ -496,6 +496,7 @@ export const appRouter = router({
         id: z.number(),
         name: z.string().min(1).optional(),
         category: z.enum(["passport", "visa", "insurance", "booking", "ticket", "restaurant", "hotel", "flights", "sites", "other"]).optional(),
+        hotelId: z.number().nullable().optional(),
         tags: z.string().optional(),
         notes: z.string().optional(),
       }))
