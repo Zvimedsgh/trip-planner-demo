@@ -38,14 +38,14 @@ export default function DailyView({ tripId, date, onTabChange }: DailyViewProps)
   const { data: routesData } = trpc.routes.list.useQuery({ tripId });
 
   // Filter activities for this specific day
-  // Compare dates only (midnight UTC timestamps)
+  // Compare dates only (using local timezone)
   const isOnDay = (timestamp: number) => {
     const activityDate = new Date(timestamp);
     const targetDate = new Date(date);
     return (
-      activityDate.getUTCFullYear() === targetDate.getUTCFullYear() &&
-      activityDate.getUTCMonth() === targetDate.getUTCMonth() &&
-      activityDate.getUTCDate() === targetDate.getUTCDate()
+      activityDate.getFullYear() === targetDate.getFullYear() &&
+      activityDate.getMonth() === targetDate.getMonth() &&
+      activityDate.getDate() === targetDate.getDate()
     );
   };
 

@@ -1,0 +1,60 @@
+{
+  "query": "SELECT id, type, origin, destination, departureDate, departureTime, arrivalDate, arrivalTime FROM transportation WHERE origin LIKE '%airport%' OR destination LIKE '%Hotel%' ORDER BY id LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, type, origin, destination, departureDate, departureTime, arrivalDate, arrivalTime FROM transportation WHERE origin LIKE '%airport%' OR destination LIKE '%Hotel%' ORDER BY id LIMIT 5;",
+  "rows": [
+    {
+      "id": "60003",
+      "type": "other",
+      "origin": "Bratislave airport",
+      "destination": "Hotel in Bratislava",
+      "departureDate": "1788301800000",
+      "departureTime": "01:30",
+      "arrivalDate": "1788305400000",
+      "arrivalTime": "02:30"
+    },
+    {
+      "id": "420001",
+      "type": "other",
+      "origin": "Bratislave airport",
+      "destination": "Hotel in Bratislava",
+      "departureDate": "1788301800000",
+      "departureTime": "NULL",
+      "arrivalDate": "1788305400000",
+      "arrivalTime": "NULL"
+    },
+    {
+      "id": "420005",
+      "type": "other",
+      "origin": "Bratislave airport",
+      "destination": "Hotel in Bratislava",
+      "departureDate": "1788301800000",
+      "departureTime": "NULL",
+      "arrivalDate": "1788305400000",
+      "arrivalTime": "NULL"
+    },
+    {
+      "id": "420009",
+      "type": "other",
+      "origin": "Bratislave airport",
+      "destination": "Hotel in Bratislava",
+      "departureDate": "1788301800000",
+      "departureTime": "NULL",
+      "arrivalDate": "1788305400000",
+      "arrivalTime": "NULL"
+    },
+    {
+      "id": "420013",
+      "type": "other",
+      "origin": "Bratislave airport",
+      "destination": "Hotel in Bratislava",
+      "departureDate": "1788301800000",
+      "departureTime": "NULL",
+      "arrivalDate": "1788305400000",
+      "arrivalTime": "NULL"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttype\torigin\tdestination\tdepartureDate\tdepartureTime\tarrivalDate\tarrivalTime\n60003\tother\tBratislave airport\tHotel in Bratislava\t1788301800000\t01:30\t1788305400000\t02:30\n420001\tother\tBratislave airport\tHotel in Bratislava\t1788301800000\tNULL\t1788305400000\tNULL\n420005\tother\tBratislave airport\tHotel in Bratislava\t1788301800000\tNULL\t1788305400000\tNULL\n420009\tother\tBratislave airport\tHotel in Bratislava\t1788301800000\tNULL\t1788305400000\tNULL\n420013\tother\tBratislave airport\tHotel in Bratislava\t1788301800000\tNULL\t1788305400000\tNULL\n",
+  "stderr": "",
+  "execution_time_ms": 2029
+}

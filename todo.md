@@ -574,3 +574,9 @@
 - [x] iPad gets 2-row grid with larger icons and better spacing
 - [x] Changed day tabs to show only "Day 1", "Day 2" etc. (removed dates)
 - [ ] Test on all devices after C&P
+
+## Bug - Transportation Appearing on Wrong Day
+- [x] Transfer (Sep 2, 01:30) was appearing on Day 1 instead of Day 2
+- [x] Root cause: isOnDay() used UTC methods but day tabs used local timezone
+- [x] Fixed: Changed isOnDay() to use local timezone (getFullYear/getMonth/getDate)
+- [ ] Test after C&P - transfer should only appear on Day 2
