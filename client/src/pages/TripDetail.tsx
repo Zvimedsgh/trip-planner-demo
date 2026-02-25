@@ -224,11 +224,9 @@ export default function TripDetail() {
       <header className="sticky top-0 z-50 glass border-b border-white/10">
         <div className="container flex items-center justify-between h-16">
           <div className="flex items-center gap-4">
-            <Link href="/trips">
-              <Button variant="ghost" size="icon">
-                <ArrowLeft className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />
-              </Button>
-            </Link>
+            <Button variant="ghost" size="icon" onClick={() => window.history.back()}>
+              <ArrowLeft className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />
+            </Button>
             <Link href="/">
               <div className="flex items-center gap-2 cursor-pointer">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center">

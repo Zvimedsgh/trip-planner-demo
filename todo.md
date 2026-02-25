@@ -580,3 +580,8 @@
 - [x] Root cause: isOnDay() used UTC methods but day tabs used local timezone
 - [x] Fixed: Changed isOnDay() to use local timezone (getFullYear/getMonth/getDate)
 - [ ] Test after C&P - transfer should only appear on Day 2
+
+## UX - Back Button Navigation
+- [x] Changed back button to use browser history (window.history.back())
+- [x] Previously always went to /trips, now goes to previous page
+- [ ] Test navigation flow after C&P
