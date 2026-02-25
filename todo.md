@@ -611,3 +611,8 @@
 ## Translation Fix - Location Maps
 - [x] Change "Location Maps" title to "Maps"
 - [x] Change "מפות מיקומים" to "מפות"
+
+## Bug - Route Name Parsing in Maps
+- [x] Google Maps search includes "Route 1:" or "מסלול 1:" prefix
+- [x] Need to strip both English "Route X:" and Hebrew "מסלול X:" before searching
+- [x] Fixed regex to handle Hebrew text: /^(Route|מסלול)\s*\d+:\s*/i

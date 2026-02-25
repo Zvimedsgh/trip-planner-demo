@@ -61,8 +61,8 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
   // Handle route card click - open Google Maps directly (same as RouteManager)
   const handleRouteClick = (route: any) => {
     const routeName = language === "he" && route.nameHe ? route.nameHe : route.name;
-    // Remove "Route X: " prefix
-    const cleanRouteName = routeName.replace(/^Route \d+:\s*/i, '');
+    // Remove "Route X: " or "מסלול X: " prefix
+    const cleanRouteName = routeName.replace(/^(Route|מסלול)\s*\d+:\s*/i, '');
     // Parse origin and destination from route name (format: "Origin → Destination")
     const parts = cleanRouteName.split(/→|->/).map((p: string) => p.trim());
     if (parts.length >= 2) {
