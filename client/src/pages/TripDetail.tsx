@@ -7,7 +7,7 @@ import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
 import { 
   ArrowLeft, Calendar, Car, DollarSign, FileText, Globe, 
-  Hotel, Loader2, MapPin, Plane, Utensils, Clock, ArrowRight, Share2, Copy, Check, X, Map, CheckSquare, Navigation, Trash2, Users, Star
+  Hotel, Loader2, MapPin, Plane, Utensils, Clock, ArrowRight, Share2, Copy, Check, X, Map, CheckSquare, Navigation, Trash2, Users, Star, MoreVertical
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import {
@@ -17,6 +17,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
@@ -237,32 +244,12 @@ export default function TripDetail() {
             </Link>
           </div>
           
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
             <CollaboratorsDialog 
               tripId={tripId}
               tripName={trip?.name || ""}
               isOwner={trip?.userId === user?.id}
             />
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShareDialogOpen(true)}
-              className="flex items-center gap-2"
-            >
-              <Share2 className="w-4 h-4" />
-              <span className="hidden sm:inline">{language === "he" ? "שתף" : "Share"}</span>
-            </Button>
-            {trip?.userId === user?.id && (
-              <Button
-                variant="destructive"
-                size="sm"
-                onClick={() => setDeleteDialogOpen(true)}
-                className="flex items-center gap-2"
-              >
-                <Trash2 className="w-4 h-4" />
-                <span className="hidden sm:inline">{language === "he" ? "מחק" : "Delete"}</span>
-              </Button>
-            )}
             <Button
               variant="ghost"
               size="sm"
@@ -272,6 +259,31 @@ export default function TripDetail() {
               <Globe className="w-4 h-4" />
               <span className="hidden sm:inline">{language === "en" ? "עברית" : "English"}</span>
             </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm">
+                  <MoreVertical className="w-4 h-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => setShareDialogOpen(true)}>
+                  <Share2 className="w-4 h-4 mr-2" />
+                  {language === "he" ? "שתף" : "Share"}
+                </DropdownMenuItem>
+                {trip?.userId === user?.id && (
+                  <>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem 
+                      onClick={() => setDeleteDialogOpen(true)}
+                      className="text-destructive focus:text-destructive"
+                    >
+                      <Trash2 className="w-4 h-4 mr-2" />
+                      {language === "he" ? "מחק" : "Delete"}
+                    </DropdownMenuItem>
+                  </>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </header>

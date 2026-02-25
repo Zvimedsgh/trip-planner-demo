@@ -591,3 +591,10 @@
 - [x] Document edit form missing hotel link field
 - [x] Add hotel link field to edit form
 - [x] Added hotelId to update procedure schema
+
+## UX - Language Switcher Not Visible on Mobile
+- [x] Language switcher code exists in trip detail page (lines 266-274)
+- [x] Button not visible on iPhone - overflow/crowding issue
+- [x] Header had too many buttons: Share & Collaborate, Share, Delete, Language
+- [x] Fixed: Combined Share & Delete into dropdown menu (⋮)
+- [x] Language switcher now visible as second button from right
