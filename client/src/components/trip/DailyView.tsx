@@ -26,7 +26,20 @@ type Activity = {
 };
 
 export default function DailyView({ tripId, date, onTabChange }: DailyViewProps) {
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
+  
+  // Translation map for transportation types
+  const getTransportTypeLabel = (type: string) => {
+    const labels: Record<string, string> = {
+      flight: t("flight"),
+      train: t("train"),
+      bus: t("bus"),
+      ferry: t("ferry"),
+      car_rental: language === 'he' ? 'השכרת רכב' : 'Car Rental',
+      other: t("other")
+    };
+    return labels[type] || type;
+  };
   
   // Fetch all data for this trip
   const { data: hotels } = trpc.hotels.list.useQuery({ tripId });
@@ -97,31 +110,31 @@ export default function DailyView({ tripId, date, onTabChange }: DailyViewProps)
   });
 
   // Transportation
-  transportation?.forEach(t => {
-    if (isOnDay(t.departureDate)) {
-      const depTime = t.departureTime || "00:00";
-      const arrTime = t.arrivalTime || "";
-      const linkedDoc = t.linkedDocumentId 
-        ? documents?.find(doc => doc.id === t.linkedDocumentId)
+  transportation?.forEach(trans => {
+    if (isOnDay(trans.departureDate)) {
+      const depTime = trans.departureTime || "00:00";
+      const arrTime = trans.arrivalTime || "";
+      const linkedDoc = trans.linkedDocumentId 
+        ? documents?.find(doc => doc.id === trans.linkedDocumentId)
         : null;
       const relatedDocs = linkedDoc ? [{ url: linkedDoc.fileUrl, name: linkedDoc.name }] : [];
       
       activities.push({
-        id: t.id,
+        id: trans.id,
         type: "transportation",
         time: depTime,
         displayTime: depTime,
         icon: Plane,
-        title: t.type,
-        subtitle: `${t.origin} → ${t.destination}`,
+        title: getTransportTypeLabel(trans.type),
+        subtitle: `${trans.origin} → ${trans.destination}`,
         details: [
-          t.flightNumber || "",
+          trans.flightNumber || "",
           `${language === "he" ? "המראה:" : "Departure:"} ${depTime}`,
           arrTime ? `${language === "he" ? "נחיתה:" : "Arrival:"} ${arrTime}` : ""
         ].filter(Boolean),
-        price: t.price ? { amount: parseFloat(t.price), currency: t.currency || "EUR" } : undefined,
+        price: trans.price ? { amount: parseFloat(trans.price), currency: trans.currency || "EUR" } : undefined,
         documentUrls: relatedDocs.length > 0 ? relatedDocs : undefined,
-        website: t.website || undefined
+        website: trans.website || undefined
       });
     }
   });
