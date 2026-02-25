@@ -607,3 +607,7 @@
 - [x] Transportation: Changed "הסעות" to "תחבורה" (all instances in i18n)
 - [x] Route Maps: Changed "מפות מסלול" to "מפות"
 - [x] Payments tab: Changed $ icon to € (Euro icon)
+
+## Translation Fix - Location Maps
+- [x] Change "Location Maps" title to "Maps"
+- [x] Change "מפות מיקומים" to "מפות"
