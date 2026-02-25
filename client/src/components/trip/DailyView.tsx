@@ -176,7 +176,7 @@ export default function DailyView({ tripId, date, onTabChange }: DailyViewProps)
   // Tourist Sites
   sites?.forEach(s => {
     if (s.plannedVisitDate && isOnDay(s.plannedVisitDate)) {
-      const time = s.plannedVisitTime || "00:00";
+      const time = s.plannedVisitTime || s.openingHours || "00:00";
       const linkedDoc = s.linkedDocumentId 
         ? documents?.find(doc => doc.id === s.linkedDocumentId)
         : null;
