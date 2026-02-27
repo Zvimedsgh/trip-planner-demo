@@ -4,7 +4,7 @@ import { MapView } from "../Map";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { MapPin, Calendar, Clock, Navigation, Fuel, Utensils, Landmark, Banknote, Star } from "lucide-react";
+import { MapPin, Calendar, Clock, Navigation, Fuel, Utensils, Landmark, Banknote, Star, RefreshCw, Loader2 } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
 
@@ -166,9 +166,26 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
           return (
             <Card
               key={route.id}
-              className="cursor-pointer hover:shadow-2xl transition-all duration-300 hover:scale-105 overflow-hidden group"
+              className="cursor-pointer hover:shadow-2xl transition-all duration-300 hover:scale-105 overflow-hidden group relative"
               onClick={() => handleRouteClick(route)}
             >
+              {/* Regenerate button - always visible, re-calculates distance/time */}
+              <button
+                className="absolute top-2 right-2 z-20 bg-white/80 hover:bg-white rounded-full p-1.5 shadow transition-opacity opacity-0 group-hover:opacity-100"
+                title={language === 'he' ? 'חשב מחדש מרחק וזמן' : 'Recalculate distance & time'}
+                onClick={async (e) => {
+                  e.stopPropagation();
+                  try {
+                    await generateRouteMutation.mutateAsync({ routeId: route.id });
+                    refetch();
+                    toast.success(language === 'he' ? 'חושב מחדש בהצלחה' : 'Recalculated successfully');
+                  } catch (err: any) {
+                    toast.error(language === 'he' ? 'שגיאה בחישוב' : err?.message || 'Failed to recalculate');
+                  }
+                }}
+              >
+                {generateRouteMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin text-blue-600" /> : <RefreshCw className="w-4 h-4 text-blue-600" />}
+              </button>
               <div className={`h-32 bg-gradient-to-br ${gradient} flex items-center justify-center relative overflow-hidden`}>
                 <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-all duration-300" />
                 <MapPin className="w-16 h-16 text-white drop-shadow-lg transform group-hover:scale-110 transition-transform duration-300" />

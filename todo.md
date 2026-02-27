@@ -427,3 +427,9 @@
 - [x] Fixed: Extract distance/time from mapData JSON instead of empty database fields
 - [x] Fixed: Maps tab now auto-generates mapData when clicking a route that has none
 - [x] Fixed: Maps tab route cards now show distance and time badges
+
+## Bug - Route Generation Forces Wrong Country (Slovakia)
+- [x] Fix generateRouteFromName to not blindly append ", Slovakia" to all locations
+- [x] Allow Google Maps to resolve city names without forcing wrong country
+- [x] Fixed single location geocoding too
+- [x] Added Recalculate button (refresh icon) on each route card to force re-generation

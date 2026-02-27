@@ -804,11 +804,14 @@ export const appRouter = router({
           const [origin, destination] = parts;
           
           // Call Google Maps Directions API
+          // Use city names as-is - Google Maps resolves well-known cities correctly.
+          // Only append country if the name is ambiguous (doesn't already contain a comma).
+          // Do NOT force a single country - routes may cross borders (e.g. Vienna → Bratislava).
           const directionsResult = await makeRequest<any>(
             '/maps/api/directions/json',
             {
-              origin: `${origin}, Slovakia`,
-              destination: `${destination}, Slovakia`,
+              origin,
+              destination,
               mode: 'driving',
             }
           );
@@ -848,10 +851,11 @@ export const appRouter = router({
           return { success: true, mapData };
         } else {
           // This is a SINGLE LOCATION (activity, attraction, etc.)
+          // Use location name as-is so Google resolves it correctly without forcing a country
           const geocodingResult = await makeRequest<any>(
             '/maps/api/geocode/json',
             {
-              address: `${locationName}, Slovakia`,
+              address: locationName,
             }
           );
           
