@@ -2,7 +2,7 @@ import { Card } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
-import { Hotel, Plane, Car, MapPin, Utensils, Calendar, FileText, ExternalLink, Map as MapIcon } from "lucide-react";
+import { Hotel, Plane, Car, MapPin, Utensils, Calendar, FileText, ExternalLink, Map as MapIcon, Trash2 } from "lucide-react";
 
 interface DailyViewProps {
   tripId: number;
@@ -48,6 +48,39 @@ export default function DailyView({ tripId, date, onTabChange }: DailyViewProps)
   const { data: sites } = trpc.touristSites.list.useQuery({ tripId });
   const { data: restaurants } = trpc.restaurants.list.useQuery({ tripId });
   const { data: documents } = trpc.documents.list.useQuery({ tripId });
+  
+  // Delete mutations
+  const utils = trpc.useUtils();
+  const deleteHotel = trpc.hotels.delete.useMutation({
+    onSuccess: () => {
+      utils.hotels.list.invalidate({ tripId });
+    }
+  });
+  const deleteTransportation = trpc.transportation.delete.useMutation({
+    onSuccess: () => {
+      utils.transportation.list.invalidate({ tripId });
+    }
+  });
+  const deleteCarRental = trpc.carRentals.delete.useMutation({
+    onSuccess: () => {
+      utils.carRentals.list.invalidate({ tripId });
+    }
+  });
+  const deleteSite = trpc.touristSites.delete.useMutation({
+    onSuccess: () => {
+      utils.touristSites.list.invalidate({ tripId });
+    }
+  });
+  const deleteRestaurant = trpc.restaurants.delete.useMutation({
+    onSuccess: () => {
+      utils.restaurants.list.invalidate({ tripId });
+    }
+  });
+  const deleteRoute = trpc.routes.delete.useMutation({
+    onSuccess: () => {
+      utils.routes.list.invalidate({ tripId });
+    }
+  });
   const { data: routesData } = trpc.routes.list.useQuery({ tripId });
 
   // Filter activities for this specific day
@@ -254,6 +287,37 @@ export default function DailyView({ tripId, date, onTabChange }: DailyViewProps)
   activities.sort((a, b) => a.time.localeCompare(b.time));
 
   // Get pastel background color based on activity type
+  // Handle delete for different activity types
+  const handleDelete = (activity: Activity) => {
+    const confirmMsg = language === "he" 
+      ? `האם אתה בטוח שברצונך למחוק את "${activity.title}"?`
+      : `Are you sure you want to delete "${activity.title}"?`;
+    
+    if (!confirm(confirmMsg)) return;
+    
+    // Handle different activity types
+    // For hotels, we need to get the real ID (subtract 10000 for checkout)
+    if (activity.type === "hotel-checkin") {
+      deleteHotel.mutate({ id: activity.id });
+    } else if (activity.type === "hotel-checkout") {
+      // Checkout uses id + 10000, so subtract to get real hotel ID
+      deleteHotel.mutate({ id: activity.id - 10000 });
+    } else if (activity.type === "transportation") {
+      deleteTransportation.mutate({ id: activity.id });
+    } else if (activity.type === "car-pickup") {
+      deleteCarRental.mutate({ id: activity.id });
+    } else if (activity.type === "car-return") {
+      // Car return uses id + 10000, so subtract to get real car rental ID
+      deleteCarRental.mutate({ id: activity.id - 10000 });
+    } else if (activity.type === "site") {
+      deleteSite.mutate({ id: activity.id });
+    } else if (activity.type === "restaurant") {
+      deleteRestaurant.mutate({ id: activity.id });
+    } else if (activity.type === "route") {
+      deleteRoute.mutate({ id: activity.id });
+    }
+  };
+  
   const getActivityBgColor = (type: Activity["type"]) => {
     switch (type) {
       case "hotel-checkin":
@@ -313,29 +377,39 @@ export default function DailyView({ tripId, date, onTabChange }: DailyViewProps)
                       ))}
                     </div>
                   )}
-                  <button
-                    onClick={() => {
-                      // Open Google Maps directly (same as RouteManager)
-                      const routeName = activity.title;
-                      const cleanRouteName = routeName.replace(/^Route \d+:\s*/i, '');
-                      const parts = cleanRouteName.split(/→|->/).map((p: string) => p.trim());
-                      if (parts.length >= 2) {
-                        const origin = encodeURIComponent(parts[0]);
-                        const destination = encodeURIComponent(parts[1]);
-                        const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&region=SK`;
-                        console.log('[DailyView] Opening Google Maps Directions:', googleMapsUrl);
-                        window.open(googleMapsUrl, "_blank");
-                      } else {
-                        const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cleanRouteName)}&region=SK`;
-                        console.log('[DailyView] Opening Google Maps Search (fallback):', googleMapsUrl);
-                        window.open(googleMapsUrl, "_blank");
-                      }
-                    }}
-                    className="mt-2 text-sm text-pink-600 hover:text-pink-700 font-medium flex items-center gap-1"
-                  >
-                    <MapIcon className="w-4 h-4" />
-                    {language === "he" ? "צפה במפה" : "View on map"}
-                  </button>
+                  <div className="flex items-center gap-3 mt-2">
+                    <button
+                      onClick={() => {
+                        // Open Google Maps directly (same as RouteManager)
+                        const routeName = activity.title;
+                        const cleanRouteName = routeName.replace(/^Route \d+:\s*/i, '');
+                        const parts = cleanRouteName.split(/→|->/).map((p: string) => p.trim());
+                        if (parts.length >= 2) {
+                          const origin = encodeURIComponent(parts[0]);
+                          const destination = encodeURIComponent(parts[1]);
+                          const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&region=SK`;
+                          console.log('[DailyView] Opening Google Maps Directions:', googleMapsUrl);
+                          window.open(googleMapsUrl, "_blank");
+                        } else {
+                          const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cleanRouteName)}&region=SK`;
+                          console.log('[DailyView] Opening Google Maps Search (fallback):', googleMapsUrl);
+                          window.open(googleMapsUrl, "_blank");
+                        }
+                      }}
+                      className="text-sm text-pink-600 hover:text-pink-700 font-medium flex items-center gap-1"
+                    >
+                      <MapIcon className="w-4 h-4" />
+                      {language === "he" ? "צפה במפה" : "View on map"}
+                    </button>
+                    <button
+                      onClick={() => handleDelete(activity)}
+                      className="text-sm text-red-600 hover:text-red-700 font-medium flex items-center gap-1"
+                      title={language === "he" ? "מחק" : "Delete"}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                      {language === "he" ? "מחק" : "Delete"}
+                    </button>
+                  </div>
                 </div>
               </div>
             </Card>
@@ -397,6 +471,14 @@ export default function DailyView({ tripId, date, onTabChange }: DailyViewProps)
                       ))}
                     </div>
                   )}
+                  <button
+                    onClick={() => handleDelete(activity)}
+                    className="text-sm text-red-600 hover:text-red-700 font-medium flex items-center gap-1 ml-auto"
+                    title={language === "he" ? "מחק" : "Delete"}
+                  >
+                    <Trash2 className="w-4 h-4" />
+                    {language === "he" ? "מחק" : "Delete"}
+                  </button>
                 </div>
               </div>
             </div>

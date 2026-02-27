@@ -275,10 +275,11 @@
 - [x] Add "Save to Must Visit" button on POI items
 - [x] Create Must Visit tab or section to view saved POIs
 - [x] Allow removing items from Must Visit list
+
 ## Complete Dynamic Traveler Management
 - [x] Create TravelerSettings component for managing travelers (TravelersTab already exists!)
 - [x] Add UI to add/edit/delete travelers in trip settings (fully functional)
-- [x] Update Checklist to use dynamic traveler list instead of hardcoded names (already implemented)eler management with Slovakia trip
+- [x] Update Checklist to use dynamic traveler list instead of hardcoded names (already implemented)
 
 ## Notifications System
 - [ ] Design notification data model (trips, hotels, flights, etc.)
@@ -336,268 +337,47 @@
 ## Document Redaction
 - [ ] Redact names (גורן, אפי, צבי, יונה, רות, מיכל) from all 32 Demo trip documents
 
-## Budget Calculation Bug
-- [ ] Fix budget summary to properly reflect paid vs unpaid payments - currently showing all as unpaid even when marked as paid
+## Budget Tab Enhancement
+- [ ] Add "Actual" column next to "Planned" in Budget tab
+- [ ] Allow users to enter actual expenses
+- [ ] Show difference between planned and actual
+- [ ] Add visual indicators (green/red) for under/over budget
 
-## Budget Calculation Bug
-- [x] Fix budget summary to properly reflect paid vs unpaid payments - now uses paymentStatus field instead of payments table
+## iPad Layout - Feature Tabs
+- [x] Changed feature tabs from single row flex-wrap to 2-row grid layout on iPad
+- [x] Mobile (iPhone) remains single-row horizontal scroll
+- [x] PC remains flex-wrap
+- [x] iPad shows 4 columns x 2 rows with larger icons and spacing
 
-## Document Names Cleanup in Demo Trip
-- [x] Identified document with technical ID prefix: "cYWNC1MfiJAL2nOZPCRxW-הסעה מהשדה בברטיסלבה למלון בעיר.docx"
-- [x] Cleaned up document name to: "הסעה מהשדה בברטיסלבה למלון בעיר.docx"
+## Day Tabs Simplification
+- [x] Simplified day tabs to show "Day 1", "Day 2" format without dates
+- [x] Mobile (iPhone) shows only numbers: 1, 2, 3...
+- [x] Tablet and PC show "Day 1", "Day 2" format
+- [x] Cleaner look, less crowded
 
-## User Guide Creation
-- [x] Write comprehensive user guide in Hebrew (Markdown)
-- [x] Convert guide to PDF format
-- [x] Create Help page component in website
-- [x] Add Help page route and navigation link
-- [ ] Test both PDF and web page versions
+## Bug - Timezone Issues in Day Filtering
+- [x] Fixed transportation appearing on wrong day tab
+- [x] Changed isOnDay() to use local timezone methods (getFullYear/getMonth/getDate)
+- [x] Previously used UTC methods causing items to appear on wrong days
 
-## Fix User Guide PDF RTL Direction
-- [x] Create HTML template with RTL styling
-- [x] Convert Markdown to RTL PDF
-- [x] Update PDF in public folder
+## Bug - Transportation Type Display
+- [x] Fixed DailyView to show translated transportation types
+- [x] "other" now displays as "Transportation & Parking" (English) or "תחבורה וחניה" (Hebrew)
 
-## Fix Itinerary Items Not Appearing in Day-by-Day Tab
-- [x] Investigate why itinerary items (e.g., SREBSKE on Day 4) don't appear in Day-by-Day tab
-- [x] Check database to verify itinerary dates are correct
-- [x] Fix code to properly sync itinerary items with days (changed to UTC date comparison)
-- [ ] Test the fix with Slovakia trip
+## Bug - Tourist Sites Showing 00:00
+- [x] Fixed tourist sites showing 00:00 when visit time is empty
+- [x] Now uses opening hours as fallback time if plannedVisitTime is not set
 
-## Fix Route Sorting in Day-by-Day Timeline
-- [x] Check database timestamp of transportation route (Sep 2, 01:30)
-- [x] Investigate why route at 01:30 appears last instead of first in timeline
-- [x] Fix sorting logic to properly order activities by time - Changed all setHours to setUTCHours in DailyView.tsx
-- [x] Test that transportation appears before check-in
-
-## Fix Timeline Timezone Handling - Remove UTC, Store Local Time
-- [x] Analyze current schema (timestamps vs date+time+location)
-- [x] Update database schema to store date, time, location separately for all tables
-- [x] Migrate existing Slovakia trip data to new format
-- [x] Update backend tRPC procedures for new schema (schema auto-updates)
-- [x] Update frontend components (DailyView) to use date+time directly
-- [x] Test timeline sorting works correctly (transportation 01:30 before hotel 02:30) ✅ VERIFIED
-
-## Fix Flight Times to Match Itinerary
-- [x] Check current flight times in database
-- [x] Update outbound flight (W6 7062): Depart TLV 22:30 Israel time, Arrive BTS 01:10 Slovakia time
-- [x] Update return flight (W6 7061): Depart BTS 17:05 Slovakia time, Arrive TLV 21:35 Israel time
-- [x] Verify timeline displays correct times (Day-by-day view works)
-- [x] Fix Transportation tab to display correct times from new departureTime/arrivalTime fields
-
-## Fix "Show on Map" for Routes
-- [ ] Investigate how "Show on Map" currently works for routes
-- [ ] Fix route selection to display actual route path on map instead of POIs
-- [ ] Test that clicking route shows the driving/travel path on map
-
-## Fix Route Map Layout - Map Too Small
-- [x] Increase map height from current slim size to 60vh (60% of viewport height)
-- [x] Reduce POI list max height from 96 to 64 (256px) to give more space to map
-- [x] Fix MapView to inherit parent height with className="h-full"
-- [ ] Test that route path is clearly visible on larger map
-
-## Fix Route Dialog Scrolling on Mobile
-- [x] Fix route dialog content not scrollable on mobile (iPhone)
-- [x] POI list is not accessible - no scrolling available in dialog
-- [x] Made DialogContent flex container with scrollable content area
-- [x] First fix didn't work - conflicted with grid layout
-- [x] Investigated Dialog component - uses grid not flex
-- [x] Applied second fix: overflow-hidden on dialog, maxHeight calc on content wrapper
-- [ ] Test second fix on iPhone
-
-## Add "Open in Google Maps" Button to Route Dialog
-- [x] Add button to route dialog that opens route in Google Maps app/website
-- [x] Use Google Maps directions URL with origin and destination
-- [x] Button should be prominent and easy to tap on mobile (py-4 px-6, text-lg)
-- [x] Smart URL generation: directions for routes, search for locations
-- [ ] Test that button opens Google Maps with correct route and POIs
-
-## Simplify Route Maps - Open Google Maps Directly
-- [x] Fix Google Maps link to open app directly (not browser/in-app) - using window.location.href
-- [x] Make route cards open Google Maps directly when clicked
-- [x] Hide embedded map dialog (keep code for potential future use)
-- [ ] Test that clicking route card opens Google Maps app and stays there
-
-## Fix Google Maps Opening from PWA
-- [x] window.location.href doesn't work in PWA - navigates within app
-- [x] Use programmatic <a> element click to trigger external app opening
-- [ ] Test on published site after fix
-- [ ] If still doesn't work, may need to revert to embedded map dialog
-
-## Fix Google Maps URL to Show Route Instantly
-- [x] Current URL requires user to select route and push button on intermediate page
-- [x] Fixed by using window.open() like RouteManager
-- [x] Use location names instead of coordinates
-- [x] Added &region=SK for Slovakia context
-- [ ] Test that route appears instantly when opening Google Maps
-
-## Fix Day Page "View on map" Link
-- [x] Location Maps tab works correctly with window.open()
-- [x] Day page "View on map" link still shows Trip Planner intermediate page
-- [x] Apply same fix to day page route component (DailyView.tsx)
-- [ ] Test that both locations work correctly
-
-## Fix Transportation Edit Form Time Display Bug
-- [x] Transportation shows 01:30 in display view (correct)
-- [x] Edit form shows 3:00 instead of 01:30 (wrong)
-- [x] Fixed to use stored time instead of extracting from timestamp
-- [ ] Test that edit form displays the correct saved time
-
-## Fix Hotel/Transportation Validation - Date+Time Comparison
-- [x] Hotel validation rejects same-day stays (check-in 2:30, check-out 11:00)
-- [x] Error: "Check-out date must be after check-in date" even though times are valid
-- [x] Validation only compares dates, not date+time
-- [x] Added combineDateAndTime helper and fixed validation in both create and update
-- [ ] Test that same-day hotel stays now save correctly
-
-## Bug - Transportation Arrival Time Not Saving
-- [x] User tries to change arrival time from 01:30 to 02:30
-- [x] Change doesn't save - reverts to old time (01:30)
-- [x] Investigate transportation update mutation
-- [x] Fix arrival time persistence - added departureTime/arrivalTime to router schema and frontend mutations
-- [ ] Test that arrival time changes save correctly
-
-## Bug - Action Icons Hidden on Tourist Site Cards
-- [x] Long site names push action icons off screen to the right
-- [x] Icons are present but invisible beyond screen edge
-- [x] Need to constrain site name width and ensure icons stay visible
-- [x] Fix layout in site card component - added flex-1 min-w-0 to text container and flex-shrink-0 to buttons
-- [ ] Test that all action icons are now visible on cards with long names
-
-## Bug - Action Icons Hidden on Restaurant Cards
-- [x] Same layout issue as tourist sites - long names push icons off screen
-- [x] Apply same flex layout fix to restaurant cards - added flex-1 min-w-0 and flex-shrink-0
-- [ ] Test that all action icons are now visible on restaurant cards with long names
-
-## Bug - Document Icon Opens .docx Files Incorrectly
-- [x] Vienna parking hotel has .docx file linked (Word document)
-- [x] Clicking blue document icon tries to open .docx in new tab
-- [x] Browser shows blank page with loading spinners and download prompt
-- [x] .docx files cannot be displayed in browser - need conversion
-- [x] Implement server-side .docx to PDF conversion during document upload using LibreOffice
-- [x] Store converted PDF version for consistent browser viewing
-- [ ] Test uploading new .docx file and verify it converts to PDF
-- [ ] Note: Existing .docx files remain as-is, only new uploads are converted
-
-## Feature - On-Demand Document Conversion
-- [x] Add server endpoint to convert existing .docx files to PDF when accessed
-- [x] Download .docx from S3, convert to PDF, upload PDF, update database
-- [x] Update frontend to call conversion endpoint before opening .docx files
-- [x] Cache converted PDF so future clicks don't reconvert (database updated with PDF URL)
-- [ ] Test with existing Vienna Parking .docx file
-
-## Bug - PDF Viewing on iOS Safari
-- [x] iPhone shows blank page when opening PDF
-- [x] iPad shows download prompt instead of displaying PDF
-- [x] window.open() doesn't work reliably on iOS Safari
-- [x] Create PDF viewer modal component with iframe
-- [x] Replace window.open with modal for consistent cross-device experience
-- [ ] Test on iPhone, iPad, and desktop
-
-## Bug - PDF Conversion Not Working
-- [ ] Modal opens but shows .docx file instead of PDF
-- [ ] Conversion mutation may be failing silently
-- [ ] Check server logs for LibreOffice errors
-- [ ] Verify conversion endpoint returns correct PDF URL
-- [ ] Test conversion with sample .docx file
-
-## Bug - Word Documents Not Displaying in Modal
-- [x] Vienna Parking hotel has .docx file that shows blank in modal
-- [x] iOS Safari cannot display Word documents in iframe
-- [x] Simplified PDF viewer modal to detect file type
-- [x] For PDFs: show iframe preview
-- [x] For Word/other docs: show friendly download message with button
-- [x] Removed complex on-demand conversion logic
-- [x] Cleaned up unused convertPdfMutation code
-- [ ] Test on iPhone, iPad, and desktop
-
-## Feature - Automatic .docx to PDF Conversion [REVERTED]
-- [x] Attempted auto-conversion but LibreOffice not available in production
-- [x] Reverting to download approach for reliability across all environments
-
-## Bug - Document Conversion Failing
-- [x] Modal shows "Failed to convert document" error
-- [x] LibreOffice not installed in production environment
-- [x] Conversion approach not viable for deployed site
-- [x] Reverting to download approach for .docx files
-- [x] Reverted PdfViewerModal to show download UI for .docx files
-- [x] Removed documentId prop from modal component
-- [x] Removed pdfViewerDocumentId state from HotelsTab
-- [x] Commented out convertToPdf procedure in server routers
-- [x] Updated comments to reflect download approach instead of conversion
-- [x] Test PDF viewing in modal (should work)
-- [x] Test .docx download interface (shows friendly download UI with clear messaging)
-
-## Update Document Links - Convert .docx to .pdf
-- [x] Query database to find all documents with .docx in fileUrl or name
-- [x] User uploaded only 3 PDFs (not all 34 documents)
-- [ ] Identify which 3 specific documents were converted
-- [ ] Update only those 3 documents in database (fileUrl, fileKey, name, mimeType)
-- [ ] Revert the mass update that changed all 55 documents
-- [ ] Test the 3 PDF documents load correctly in modal
-
-## Fix Document Selection Dialog
-- [x] Document names are truncated/cut off in DocumentLinkDialog
-- [x] User cannot read full names to select correct document
-- [x] Fix dialog to show full document names without truncation (changed truncate to break-words)
-- [x] Test dialog shows complete names for all documents (verified - names wrap properly)
-
-## Update Document Categories
-- [ ] Analyze where document categories are defined (schema, frontend, backend)
-- [ ] Check existing documents with "ברכב" category in database
-- [ ] Rename "ברכב" to "תחבורה וחניה" (Transportation & Parking)
-- [ ] Add new category "אתרים" (Sites)
-- [ ] Update database enum if categories are stored as enum
-- [ ] Update frontend category labels and translations
-- [ ] Test category dropdown shows new categories
-- [ ] Verify existing documents still display correctly
-
-## Update Document Categories - Rename ברכב and Add אתרים
-- [x] Confirmed "ברכב" category exists with 13 documents
-- [x] Found "ברכב" is Hebrew translation of "other" category
-- [x] Renamed category "other" translation: "ברכב" → "תחבורה וחניה"
-- [x] Added new category "sites" with Hebrew "אתרים"
-- [x] Updated category enum in drizzle/schema.ts
-- [x] Updated i18n translations (English + Hebrew)
-- [x] Updated DocumentsTab icons (MapPin), colors (teal), and dropdowns
-- [x] Updated server/routers.ts validation schemas
-- [x] Applied database migration (ALTER TABLE documents)
-- [x] Test category display, filtering, and document upload
-- [x] Verified English: "Transportation & Parking" and "Sites"
-- [x] Verified Hebrew: "תחבורה וחניה" and "אתרים"
-- [x] All 11 documents from "ברכב" now show under "תחבורה וחניה"
-
-## iPad Layout Fix - Grid Layout for Feature Tabs
-- [x] Added iPad-specific grid layout (md:grid md:grid-cols-4) for feature tabs
-- [x] Preserved mobile flex-wrap behavior (default)
-- [x] Preserved PC flex-wrap behavior (lg:flex lg:flex-wrap)
-- [x] iPad gets 2-row grid with larger icons and better spacing
-- [x] Changed day tabs to show only "Day 1", "Day 2" etc. (removed dates)
-- [ ] Test on all devices after C&P
-
-## Bug - Transportation Appearing on Wrong Day
-- [x] Transfer (Sep 2, 01:30) was appearing on Day 1 instead of Day 2
-- [x] Root cause: isOnDay() used UTC methods but day tabs used local timezone
-- [x] Fixed: Changed isOnDay() to use local timezone (getFullYear/getMonth/getDate)
-- [ ] Test after C&P - transfer should only appear on Day 2
-
-## UX - Back Button Navigation
+## Bug - Back Button Navigation
 - [x] Changed back button to use browser history (window.history.back())
-- [x] Previously always went to /trips, now goes to previous page
-- [ ] Test navigation flow after C&P
+- [x] Now returns to previous page instead of always going to /trips
 
-## Bug - Document Edit Missing Hotel Link Field
-- [x] Document create form has hotel link field
-- [x] Document edit form missing hotel link field
-- [x] Add hotel link field to edit form
-- [x] Added hotelId to update procedure schema
+## Feature - Hotel Link in Documents
+- [x] Added hotel link field to document edit dialog
+- [x] Can now change which hotel a document is linked to when editing
 
-<<<<<<< Updated upstream
-## UX - Language Switcher Not Visible on Mobile
-- [x] Language switcher code exists in trip detail page (lines 266-274)
-- [x] Button not visible on iPhone - overflow/crowding issue
-- [x] Header had too many buttons: Share & Collaborate, Share, Delete, Language
-- [x] Fixed: Combined Share & Delete into dropdown menu (⋮)
+## UX - Trip Detail Header Reorganization
+- [x] Combined Share and Delete buttons into dropdown menu (⋮ icon)
 - [x] Language switcher now visible as second button from right
 
 ## UX - Language Switcher Icon
@@ -617,9 +397,25 @@
 - [x] Google Maps search includes "Route 1:" or "מסלול 1:" prefix
 - [x] Need to strip both English "Route X:" and Hebrew "מסלול X:" before searching
 - [x] Fixed regex to handle Hebrew text: /^(Route|מסלול)\s*\d+:\s*/i
-=======
+
 ## Bug - Timeline Sorting in Daily View
 - [x] Airport transfer (BTS to hotel) appears last in timeline instead of first
 - [x] Items should be sorted by departure time chronologically
 - [x] Fixed: Added time field to transportation events in TimelineTab (was missing)
->>>>>>> Stashed changes
+
+## Feature - Delete Buttons in Daily View
+- [x] Add delete buttons to all activity cards in Daily View timeline
+- [x] Handle delete for hotels (check-in/check-out)
+- [x] Handle delete for transportation
+- [x] Handle delete for car rentals
+- [x] Handle delete for tourist sites
+- [x] Handle delete for restaurants
+- [x] Handle delete for routes
+- [x] Show confirmation dialog before deleting
+- [x] Refresh data after successful deletion
+
+## Bug - Cannot Delete Hotel Photos
+- [ ] Investigate how hotel photos are managed in HotelsTab
+- [ ] Check if delete functionality exists for individual photos
+- [ ] Add delete button or functionality to remove hotel photos
+- [ ] Test photo deletion works correctly
