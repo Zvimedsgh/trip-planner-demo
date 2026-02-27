@@ -102,6 +102,7 @@ export default function TimelineTab({ tripId }: TimelineTabProps) {
       id: `transport-${transport.id}`,
       type: "transport",
       date: transport.departureDate,
+      time: transport.departureTime || undefined,
       title: `${t(transport.type as any)}: ${transport.origin} → ${transport.destination}`,
       subtitle: transport.confirmationNumber ? `#${transport.confirmationNumber}` : undefined,
       icon: transportIcons[transport.type] || Plane,

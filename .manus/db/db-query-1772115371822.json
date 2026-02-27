@@ -1,0 +1,46 @@
+{
+  "query": "SELECT id, type, origin, destination, departureTime, arrivalTime, FROM_UNIXTIME(departureDate/1000) as departure_datetime FROM transportation WHERE tripId = (SELECT id FROM trips WHERE name LIKE '%Slovakia%') ORDER BY departureDate;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, type, origin, destination, departureTime, arrivalTime, FROM_UNIXTIME(departureDate/1000) as departure_datetime FROM transportation WHERE tripId = (SELECT id FROM trips WHERE name LIKE '%Slovakia%') ORDER BY departureDate;",
+  "rows": [
+    {
+      "id": "120005",
+      "type": "flight",
+      "origin": "Israel",
+      "destination": "Bratislava Airport (BTS)",
+      "departureTime": "22:30",
+      "arrivalTime": "01:10",
+      "departure_datetime": "2026-09-01 00:00:00.0000"
+    },
+    {
+      "id": "60003",
+      "type": "other",
+      "origin": "Bratislave airport",
+      "destination": "Hotel in Bratislava",
+      "departureTime": "01:30",
+      "arrivalTime": "02:30",
+      "departure_datetime": "2026-09-01 22:30:00.0000"
+    },
+    {
+      "id": "270001",
+      "type": "car_rental",
+      "origin": "BTS Airport",
+      "destination": "BTS Airport",
+      "departureTime": "10:00",
+      "arrivalTime": "12:00",
+      "departure_datetime": "2026-09-02 00:00:00.0000"
+    },
+    {
+      "id": "180002",
+      "type": "flight",
+      "origin": "Bratislava Airport (BTS)",
+      "destination": "Israel",
+      "departureTime": "17:05",
+      "arrivalTime": "21:35",
+      "departure_datetime": "2026-09-09 00:00:00.0000"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttype\torigin\tdestination\tdepartureTime\tarrivalTime\tdeparture_datetime\n120005\tflight\tIsrael\tBratislava Airport (BTS)\t22:30\t01:10\t2026-09-01 00:00:00.0000\n60003\tother\tBratislave airport\tHotel in Bratislava\t01:30\t02:30\t2026-09-01 22:30:00.0000\n270001\tcar_rental\tBTS Airport\tBTS Airport\t10:00\t12:00\t2026-09-02 00:00:00.0000\n180002\tflight\tBratislava Airport (BTS)\tIsrael\t17:05\t21:35\t2026-09-09 00:00:00.0000\n",
+  "stderr": "",
+  "execution_time_ms": 1679
+}

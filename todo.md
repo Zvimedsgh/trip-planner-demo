@@ -592,6 +592,7 @@
 - [x] Add hotel link field to edit form
 - [x] Added hotelId to update procedure schema
 
+<<<<<<< Updated upstream
 ## UX - Language Switcher Not Visible on Mobile
 - [x] Language switcher code exists in trip detail page (lines 266-274)
 - [x] Button not visible on iPhone - overflow/crowding issue
@@ -616,3 +617,9 @@
 - [x] Google Maps search includes "Route 1:" or "מסלול 1:" prefix
 - [x] Need to strip both English "Route X:" and Hebrew "מסלול X:" before searching
 - [x] Fixed regex to handle Hebrew text: /^(Route|מסלול)\s*\d+:\s*/i
+=======
+## Bug - Timeline Sorting in Daily View
+- [x] Airport transfer (BTS to hotel) appears last in timeline instead of first
+- [x] Items should be sorted by departure time chronologically
+- [x] Fixed: Added time field to transportation events in TimelineTab (was missing)
+>>>>>>> Stashed changes
