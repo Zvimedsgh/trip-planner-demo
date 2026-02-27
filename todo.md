@@ -425,3 +425,5 @@
 - [x] Verify mapData contains distance/duration information
 - [x] Update DailyView to display distance and time from route data
 - [x] Fixed: Extract distance/time from mapData JSON instead of empty database fields
+- [x] Fixed: Maps tab now auto-generates mapData when clicking a route that has none
+- [x] Fixed: Maps tab route cards now show distance and time badges

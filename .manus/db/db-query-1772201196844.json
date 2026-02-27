@@ -1,0 +1,40 @@
+{
+  "query": "SELECT r.id, r.name, t.name as trip_name, CHAR_LENGTH(r.mapData) as mapData_length FROM trip_routes r JOIN trips t ON r.tripId = t.id LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT r.id, r.name, t.name as trip_name, CHAR_LENGTH(r.mapData) as mapData_length FROM trip_routes r JOIN trips t ON r.tripId = t.id LIMIT 5;",
+  "rows": [
+    {
+      "id": "1",
+      "name": "Route 1: Bratislava → Liptovský Mikuláš",
+      "trip_name": "Goren Roots Trip to Slovakia",
+      "mapData_length": "1648"
+    },
+    {
+      "id": "4",
+      "name": "Route 4: Liptovský Mikuláš → Štrbské Pleso",
+      "trip_name": "Goren Roots Trip to Slovakia",
+      "mapData_length": "1662"
+    },
+    {
+      "id": "5",
+      "name": "Liptovský Mikuláš → Demänovská Ice Cave",
+      "trip_name": "Goren Roots Trip to Slovakia",
+      "mapData_length": "925"
+    },
+    {
+      "id": "6",
+      "name": "Route 6: Vienna → Bratislava Airport",
+      "trip_name": "Goren Roots Trip to Slovakia",
+      "mapData_length": "1691"
+    },
+    {
+      "id": "120013",
+      "name": "Route 6: Liptovský Mikuláš → Bešeňová",
+      "trip_name": "Goren Roots Trip to Slovakia",
+      "mapData_length": "NULL"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\ttrip_name\tmapData_length\n1\tRoute 1: Bratislava → Liptovský Mikuláš\tGoren Roots Trip to Slovakia\t1648\n4\tRoute 4: Liptovský Mikuláš → Štrbské Pleso\tGoren Roots Trip to Slovakia\t1662\n5\tLiptovský Mikuláš → Demänovská Ice Cave\tGoren Roots Trip to Slovakia\t925\n6\tRoute 6: Vienna → Bratislava Airport\tGoren Roots Trip to Slovakia\t1691\n120013\tRoute 6: Liptovský Mikuláš → Bešeňová\tGoren Roots Trip to Slovakia\tNULL\n",
+  "stderr": "",
+  "execution_time_ms": 1621
+}

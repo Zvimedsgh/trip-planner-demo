@@ -58,8 +58,18 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
     refetch();
   }, [tripId, refetch]);
   
-  // Handle route card click - open Google Maps directly (same as RouteManager)
-  const handleRouteClick = (route: any) => {
+  // Handle route card click - open Google Maps and auto-generate mapData if missing
+  const handleRouteClick = async (route: any) => {
+    // If route is missing mapData, auto-generate it first
+    if (!route.mapData) {
+      try {
+        await generateRouteMutation.mutateAsync({ routeId: route.id });
+        refetch();
+      } catch (e) {
+        // Silently continue even if generation fails
+      }
+    }
+
     const routeName = language === "he" && route.nameHe ? route.nameHe : route.name;
     // Remove "Route X: " or "מסלול X: " prefix
     const cleanRouteName = routeName.replace(/^(Route|מסלול)\s*\d+:\s*/i, '');
@@ -71,12 +81,10 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
       const destination = encodeURIComponent(parts[1]);
       // Add region=SK to force Slovakia context and show local POIs
       const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&region=SK`;
-      console.log('[AllRouteMapsTab] Opening Google Maps Directions:', googleMapsUrl);
       window.open(googleMapsUrl, "_blank");
     } else {
       // Fallback to search if format doesn't match
       const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cleanRouteName)}&region=SK`;
-      console.log('[AllRouteMapsTab] Opening Google Maps Search (fallback):', googleMapsUrl);
       window.open(googleMapsUrl, "_blank");
     }
   };
@@ -187,6 +195,34 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
                     <span>{route.time}</span>
                   </div>
                 )}
+
+                {/* Distance & Duration from mapData */}
+                {(() => {
+                  if (!route.mapData) return null;
+                  try {
+                    const mapConfig = JSON.parse(route.mapData);
+                    if (mapConfig?.distance?.text || mapConfig?.duration?.text) {
+                      return (
+                        <div className="flex items-center gap-3 text-sm font-medium text-gray-700 bg-gray-50 rounded-md px-3 py-2">
+                          {mapConfig.distance?.text && (
+                            <span className="flex items-center gap-1">
+                              <Navigation className="w-3.5 h-3.5 text-blue-500" />
+                              {mapConfig.distance.text}
+                            </span>
+                          )}
+                          {mapConfig.distance?.text && mapConfig.duration?.text && <span className="text-gray-300">|</span>}
+                          {mapConfig.duration?.text && (
+                            <span className="flex items-center gap-1">
+                              <Clock className="w-3.5 h-3.5 text-green-500" />
+                              {mapConfig.duration.text}
+                            </span>
+                          )}
+                        </div>
+                      );
+                    }
+                  } catch (e) {}
+                  return null;
+                })()}
               </CardContent>
             </Card>
           );

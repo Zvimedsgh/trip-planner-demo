@@ -1,0 +1,40 @@
+{
+  "query": "SELECT id, name, CHAR_LENGTH(mapData) as mapData_length, LEFT(mapData, 400) as mapData_sample FROM trip_routes WHERE tripId = 30001 LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2cdS9hyY6XNQUTe.root --database 2rtwtAqF2DqhH9oEcii9XY --execute SELECT id, name, CHAR_LENGTH(mapData) as mapData_length, LEFT(mapData, 400) as mapData_sample FROM trip_routes WHERE tripId = 30001 LIMIT 5;",
+  "rows": [
+    {
+      "id": "1",
+      "name": "Route 1: Bratislava → Liptovský Mikuláš",
+      "mapData_length": "1648",
+      "mapData_sample": "{\"type\":\"route\",\"origin\":{\"name\":\"Bratislava\",\"address\":\"Bratislava, Slovakia\",\"location\":{\"lat\":48.1477552,\"lng\":17.1071793}},\"destination\":{\"name\":\"Liptovský Mikuláš\",\"address\":\"Liptovský Mikuláš, Slovakia\",\"location\":{\"lat\":49.0811487,\"lng\":19.6192067}},\"distance\":{\"text\":\"280 km\",\"value\":280416},\"duration\":{\"text\":\"2 hours 52 mins\",\"value\":10320},\"polyline\":\"ozzdH{flgBhJtQzXUzm@eA~UFmD`G~CgkCg"
+    },
+    {
+      "id": "4",
+      "name": "Route 4: Liptovský Mikuláš → Štrbské Pleso",
+      "mapData_length": "1662",
+      "mapData_sample": "{\"type\":\"route\",\"origin\":{\"name\":\"Liptovský Mikuláš\",\"address\":\"Liptovský Mikuláš, Slovakia\",\"location\":{\"lat\":49.0811487,\"lng\":19.6192067}},\"destination\":{\"name\":\"Štrbské Pleso\",\"address\":\"Štrbské Pleso, 059 85 Vysoké Tatry, Slovakia\",\"location\":{\"lat\":49.1193681,\"lng\":20.0630103}},\"distance\":{\"text\":\"48.8 km\",\"value\":48805},\"duration\":{\"text\":\"37 mins\",\"value\":2213},\"polyline\":\"edqjHa{vvBWdDGtEY"
+    },
+    {
+      "id": "5",
+      "name": "Liptovský Mikuláš → Demänovská Ice Cave",
+      "mapData_length": "925",
+      "mapData_sample": "{\"type\":\"route\",\"origin\":{\"name\":\"Liptovský Mikuláš\",\"address\":\"Liptovský Mikuláš, Slovakia\",\"location\":{\"lat\":49.0811487,\"lng\":19.6192067}},\"destination\":{\"name\":\"Demänovská Ice Cave\",\"address\":\"Demänovská ľadová jaskyňa, 031 01 Liptovský Mikuláš, Slovakia\",\"location\":{\"lat\":49.015832,\"lng\":19.5812146}},\"distance\":{\"text\":\"9.5 km\",\"value\":9504},\"duration\":{\"text\":\"12 mins\",\"value\":702},\"polyline\""
+    },
+    {
+      "id": "6",
+      "name": "Route 6: Vienna → Bratislava Airport",
+      "mapData_length": "1691",
+      "mapData_sample": "{\"type\":\"route\",\"origin\":{\"name\":\"Vienna\",\"address\":\"Slovakia\",\"location\":{\"lat\":48.6742103,\"lng\":19.6903972}},\"destination\":{\"name\":\"Bratislava Airport\",\"address\":\"M. R. Štefánik Airport Bratislava (BTS), Ivanská cesta, 820 01 Bratislava, Slovakia\",\"location\":{\"lat\":48.1717929,\"lng\":17.1958354}},\"distance\":{\"text\":\"263 km\",\"value\":263000},\"duration\":{\"text\":\"2 hours 52 mins\",\"value\":10297},\"polyl"
+    },
+    {
+      "id": "120013",
+      "name": "Route 6: Liptovský Mikuláš → Bešeňová",
+      "mapData_length": "NULL",
+      "mapData_sample": "NULL"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tmapData_length\tmapData_sample\n1\tRoute 1: Bratislava → Liptovský Mikuláš\t1648\t{\"type\":\"route\",\"origin\":{\"name\":\"Bratislava\",\"address\":\"Bratislava, Slovakia\",\"location\":{\"lat\":48.1477552,\"lng\":17.1071793}},\"destination\":{\"name\":\"Liptovský Mikuláš\",\"address\":\"Liptovský Mikuláš, Slovakia\",\"location\":{\"lat\":49.0811487,\"lng\":19.6192067}},\"distance\":{\"text\":\"280 km\",\"value\":280416},\"duration\":{\"text\":\"2 hours 52 mins\",\"value\":10320},\"polyline\":\"ozzdH{flgBhJtQzXUzm@eA~UFmD`G~CgkCg\n4\tRoute 4: Liptovský Mikuláš → Štrbské Pleso\t1662\t{\"type\":\"route\",\"origin\":{\"name\":\"Liptovský Mikuláš\",\"address\":\"Liptovský Mikuláš, Slovakia\",\"location\":{\"lat\":49.0811487,\"lng\":19.6192067}},\"destination\":{\"name\":\"Štrbské Pleso\",\"address\":\"Štrbské Pleso, 059 85 Vysoké Tatry, Slovakia\",\"location\":{\"lat\":49.1193681,\"lng\":20.0630103}},\"distance\":{\"text\":\"48.8 km\",\"value\":48805},\"duration\":{\"text\":\"37 mins\",\"value\":2213},\"polyline\":\"edqjHa{vvBWdDGtEY\n5\tLiptovský Mikuláš → Demänovská Ice Cave\t925\t{\"type\":\"route\",\"origin\":{\"name\":\"Liptovský Mikuláš\",\"address\":\"Liptovský Mikuláš, Slovakia\",\"location\":{\"lat\":49.0811487,\"lng\":19.6192067}},\"destination\":{\"name\":\"Demänovská Ice Cave\",\"address\":\"Demänovská ľadová jaskyňa, 031 01 Liptovský Mikuláš, Slovakia\",\"location\":{\"lat\":49.015832,\"lng\":19.5812146}},\"distance\":{\"text\":\"9.5 km\",\"value\":9504},\"duration\":{\"text\":\"12 mins\",\"value\":702},\"polyline\"\n6\tRoute 6: Vienna → Bratislava Airport\t1691\t{\"type\":\"route\",\"origin\":{\"name\":\"Vienna\",\"address\":\"Slovakia\",\"location\":{\"lat\":48.6742103,\"lng\":19.6903972}},\"destination\":{\"name\":\"Bratislava Airport\",\"address\":\"M. R. Štefánik Airport Bratislava (BTS), Ivanská cesta, 820 01 Bratislava, Slovakia\",\"location\":{\"lat\":48.1717929,\"lng\":17.1958354}},\"distance\":{\"text\":\"263 km\",\"value\":263000},\"duration\":{\"text\":\"2 hours 52 mins\",\"value\":10297},\"polyl\n120013\tRoute 6: Liptovský Mikuláš → Bešeňová\tNULL\tNULL\n",
+  "stderr": "",
+  "execution_time_ms": 1582
+}
