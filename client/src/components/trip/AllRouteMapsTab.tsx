@@ -171,7 +171,7 @@ export function AllRouteMapsTab({ tripId }: AllRouteMapsTabProps) {
             >
               {/* Regenerate button - always visible, re-calculates distance/time */}
               <button
-                className="absolute top-2 right-2 z-20 bg-white/80 hover:bg-white rounded-full p-1.5 shadow transition-opacity opacity-0 group-hover:opacity-100"
+                className="absolute top-2 right-2 z-20 bg-white/90 hover:bg-white rounded-full p-1.5 shadow"
                 title={language === 'he' ? 'חשב מחדש מרחק וזמן' : 'Recalculate distance & time'}
                 onClick={async (e) => {
                   e.stopPropagation();
