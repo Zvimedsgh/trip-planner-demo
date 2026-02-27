@@ -275,10 +275,40 @@ export default function DailyView({ tripId, date, onTabChange }: DailyViewProps)
         return routeName.replace(/^(Route|מסלול) \d+:\s*/i, '');
       })(),
       subtitle: todayRoute.description || undefined,
-      details: [
-        todayRoute.distanceKm ? `${todayRoute.distanceKm} km` : "",
-        todayRoute.estimatedDuration ? `${Math.floor(Number(todayRoute.estimatedDuration) / 60)}h ${Number(todayRoute.estimatedDuration) % 60}m` : ""
-      ].filter(Boolean) as string[],
+      details: (() => {
+        const details: string[] = [];
+        
+        // Try to extract distance and duration from mapData
+        if (todayRoute.mapData) {
+          try {
+            const mapConfig = JSON.parse(todayRoute.mapData);
+            if (mapConfig?.distance?.text) {
+              details.push(mapConfig.distance.text);
+            }
+            if (mapConfig?.duration?.text) {
+              details.push(mapConfig.duration.text);
+            }
+          } catch (e) {
+            // If mapData parsing fails, fall back to database fields
+            if (todayRoute.distanceKm) {
+              details.push(`${todayRoute.distanceKm} km`);
+            }
+            if (todayRoute.estimatedDuration) {
+              details.push(`${Math.floor(Number(todayRoute.estimatedDuration) / 60)}h ${Number(todayRoute.estimatedDuration) % 60}m`);
+            }
+          }
+        } else {
+          // No mapData, use database fields
+          if (todayRoute.distanceKm) {
+            details.push(`${todayRoute.distanceKm} km`);
+          }
+          if (todayRoute.estimatedDuration) {
+            details.push(`${Math.floor(Number(todayRoute.estimatedDuration) / 60)}h ${Number(todayRoute.estimatedDuration) % 60}m`);
+          }
+        }
+        
+        return details;
+      })(),
       routeData: todayRoute // Store for custom rendering
     });
   });

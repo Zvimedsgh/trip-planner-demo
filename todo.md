@@ -419,3 +419,9 @@
 - [ ] Check if delete functionality exists for individual photos
 - [ ] Add delete button or functionality to remove hotel photos
 - [ ] Test photo deletion works correctly
+
+## Bug - Routes Missing Distance & Time in Daily View
+- [x] Check why some routes don't show distance and time in daily tabs
+- [x] Verify mapData contains distance/duration information
+- [x] Update DailyView to display distance and time from route data
+- [x] Fixed: Extract distance/time from mapData JSON instead of empty database fields
