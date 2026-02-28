@@ -82,6 +82,10 @@ export default function Trips() {
       toast.error(language === "he" ? "נא למלא את כל השדות החובה" : "Please fill in all required fields");
       return;
     }
+    if (formData.endDate < formData.startDate) {
+      toast.error(language === "he" ? "תאריך הסיום חייב להיות אחרי תאריך ההתחלה" : "End date must be after the start date");
+      return;
+    }
     
     createMutation.mutate({
       name: formData.name,
@@ -95,6 +99,10 @@ export default function Trips() {
   const handleUpdate = () => {
     if (!editingTrip || !formData.name || !formData.destination || !formData.startDate || !formData.endDate) {
       toast.error(language === "he" ? "נא למלא את כל השדות החובה" : "Please fill in all required fields");
+      return;
+    }
+    if (formData.endDate < formData.startDate) {
+      toast.error(language === "he" ? "תאריך הסיום חייב להיות אחרי תאריך ההתחלה" : "End date must be after the start date");
       return;
     }
     
@@ -342,7 +350,7 @@ export default function Trips() {
                       <Loader2 className="w-8 h-8 animate-spin text-white" />
                     </div>
                   )}
-                  <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="absolute top-3 right-3 flex gap-2">
                     <label className="cursor-pointer">
                       <input
                         type="file"
