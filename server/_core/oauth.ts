@@ -10,6 +10,30 @@ function getQueryParam(req: Request, key: string): string | undefined {
 }
 
 export function registerOAuthRoutes(app: Express) {
+  // Demo login: auto-login as "Demo User" when no OAuth portal is configured
+  app.get("/api/oauth/login", async (req: Request, res: Response) => {
+    const demoOpenId = "demo-user-001";
+    try {
+      await db.upsertUser({
+        openId: demoOpenId,
+        name: "Demo User",
+        email: "demo@example.com",
+        loginMethod: "demo",
+        lastSignedIn: new Date(),
+      });
+      const sessionToken = await sdk.createSessionToken(demoOpenId, {
+        name: "Demo User",
+        expiresInMs: ONE_YEAR_MS,
+      });
+      const cookieOptions = getSessionCookieOptions(req);
+      res.cookie(COOKIE_NAME, sessionToken, { ...cookieOptions, maxAge: ONE_YEAR_MS });
+      res.redirect(302, "/");
+    } catch (error) {
+      console.error("[Demo Login] Failed", error);
+      res.status(500).json({ error: "Demo login failed", details: String(error) });
+    }
+  });
+
   app.get("/api/oauth/callback", async (req: Request, res: Response) => {
     const code = getQueryParam(req, "code");
     const state = getQueryParam(req, "state");
