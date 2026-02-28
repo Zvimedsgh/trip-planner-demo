@@ -1,0 +1,26 @@
+{
+  "id": "trip-planner-pro-app",
+  "name": "Trip Planner Pro",
+  "short_name": "Trip Planner",
+  "description": "Plan and manage your trips",
+  "start_url": "/trips",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#6366f1",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/NJqvbldXCAGkFKgm.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "apple touch icon"
+    },
+    {
+      "src": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/IZlCvXJPDqQTDWql.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
