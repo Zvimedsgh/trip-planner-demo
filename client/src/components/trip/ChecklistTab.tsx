@@ -62,6 +62,7 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
 
   // Non-shared travelers (for filter buttons and auto-init)
   const personalTravelers = travelers.filter(t => t.name !== "משותף" && t.name !== "Shared" && t.identifier !== "shared");
+  const SHARED_LABEL = language === "he" ? "משותף" : "Shared";
 
   // Initialize personal essentials for each participant if they don't have any items yet
   useEffect(() => {
@@ -82,6 +83,7 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
 
     // Use traveler name as owner key (since identifier may be empty)
     const travelersToInit = travelers.filter(t => t.name !== "משותף" && t.name !== "Shared" && t.identifier !== "shared");
+    // Also ensure a "Shared" owner entry exists (no auto-items needed, just available as option)
 
     travelersToInit.forEach(traveler => {
       // Check by name since that's what we store in owner field
@@ -107,6 +109,8 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
       setSelectedOwner(personalTravelers[0].name);
     }
   }, [personalTravelers, selectedOwner]);
+
+  const sharedLabel = language === "he" ? "משותף" : "Shared";
 
   const getFormValues = () => {
     if (!formRef.current) return null;
@@ -150,6 +154,7 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
   // Filter items based on selected traveler (by name)
   const filteredItems = items?.filter(item => {
     if (viewFilter === "all") return true;
+    if (viewFilter === "shared") return !item.owner || item.owner === "משותף" || item.owner === "Shared";
     return item.owner === viewFilter;
   }) ?? [];
 
@@ -234,6 +239,9 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
                           <SelectValue placeholder={language === "he" ? "בחר נוסע" : "Select traveler"} />
                         </SelectTrigger>
                         <SelectContent>
+                          <SelectItem value={language === "he" ? "משותף" : "Shared"}>
+                            {language === "he" ? "משותף" : "Shared"}
+                          </SelectItem>
                           {personalTravelers.map(t => (
                             <SelectItem key={t.id} value={t.name}>
                               {t.name}
@@ -259,11 +267,11 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
             {/* Traveler filter buttons */}
             <div className="flex gap-2 flex-wrap">
               <Button
-                variant={viewFilter === "all" ? "default" : "outline"}
+                variant={viewFilter === "shared" ? "default" : "outline"}
                 size="sm"
-                onClick={() => setViewFilter("all")}
+                onClick={() => setViewFilter("shared")}
               >
-                {language === "he" ? "הכל" : "All"}
+                {language === "he" ? "משותף" : "Shared"}
               </Button>
               {personalTravelers.map(traveler => (
                 <Button
@@ -328,8 +336,8 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
                           <p className={`font-medium ${item.completed ? 'line-through text-muted-foreground' : ''}`}>
                             {item.title}
                           </p>
-                          {/* Show owner name when viewing "all" */}
-                          {viewFilter === "all" && item.owner && (
+                          {/* Show owner name when viewing a specific traveler's items */}
+                          {viewFilter !== "shared" && item.owner && item.owner !== (language === "he" ? "משותף" : "Shared") && (
                             <p className="text-xs text-primary/70 mt-0.5">{item.owner}</p>
                           )}
                           {item.notes && (
