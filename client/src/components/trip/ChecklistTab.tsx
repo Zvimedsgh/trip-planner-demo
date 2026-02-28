@@ -5,11 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
-import { CheckCircle2, Circle, Loader2, Plus, Trash2, Calendar as CalendarIcon, FileText, CreditCard, Package, Heart, DollarSign, MoreHorizontal, Users, Lock } from "lucide-react";
+import { CheckCircle2, Circle, Loader2, Plus, Trash2, Calendar as CalendarIcon, FileText, CreditCard, Package, Heart, DollarSign, MoreHorizontal } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { toast } from "sonner";
 
@@ -29,8 +28,9 @@ const CATEGORIES = [
 export default function ChecklistTab({ tripId }: ChecklistTabProps) {
   const { t, language, isRTL } = useLanguage();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
-  const [viewFilter, setViewFilter] = useState<string>("shared");
-  const [selectedOwner, setSelectedOwner] = useState<string>("shared");
+  // viewFilter: "all" or a traveler name
+  const [viewFilter, setViewFilter] = useState<string>("all");
+  const [selectedOwner, setSelectedOwner] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const formRef = useRef<HTMLDivElement>(null);
 
@@ -60,10 +60,13 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
     },
   });
 
+  // Non-shared travelers (for filter buttons and auto-init)
+  const personalTravelers = travelers.filter(t => t.name !== "משותף" && t.name !== "Shared" && t.identifier !== "shared");
+
   // Initialize personal essentials for each participant if they don't have any items yet
   useEffect(() => {
     if (!items || hasInitialized || isLoading || !travelers || travelers.length === 0) return;
-    
+
     const personalEssentials = [
       { title: "Passport", titleHe: "דרכון", category: "documents" as const },
       { title: "Visa (if required)", titleHe: "ויזה (אם נדרש)", category: "documents" as const },
@@ -77,26 +80,33 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
       { title: "Clothes", titleHe: "בגדים", category: "packing" as const },
     ];
 
-    // Get all non-shared travelers (skip "shared" identifier)
-    const personalTravelers = travelers.filter(t => t.identifier !== "shared");
-    
-    personalTravelers.forEach(traveler => {
-      const hasItems = items.some(item => item.owner === traveler.identifier);
+    // Use traveler name as owner key (since identifier may be empty)
+    const travelersToInit = travelers.filter(t => t.name !== "משותף" && t.name !== "Shared" && t.identifier !== "shared");
+
+    travelersToInit.forEach(traveler => {
+      // Check by name since that's what we store in owner field
+      const hasItems = items.some(item => item.owner === traveler.name);
       if (!hasItems) {
-        // Add essentials for this traveler
         personalEssentials.forEach(essential => {
           createMutation.mutate({
             tripId,
             title: language === "he" ? essential.titleHe : essential.title,
             category: essential.category,
-            owner: traveler.identifier,
+            owner: traveler.name,
           });
         });
       }
     });
-    
+
     setHasInitialized(true);
   }, [items, hasInitialized, isLoading, tripId, language, createMutation, travelers]);
+
+  // Set default owner for new tasks when travelers load
+  useEffect(() => {
+    if (personalTravelers.length > 0 && !selectedOwner) {
+      setSelectedOwner(personalTravelers[0].name);
+    }
+  }, [personalTravelers, selectedOwner]);
 
   const getFormValues = () => {
     if (!formRef.current) return null;
@@ -119,15 +129,8 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
       toast.error(language === "he" ? "נא למלא את כל השדות הנדרשים" : "Please fill in all required fields");
       return;
     }
-
-    createMutation.mutate({
-      tripId,
-      ...values,
-    });
-    
-    // Reset form
+    createMutation.mutate({ tripId, ...values });
     setSelectedCategory("");
-    setSelectedOwner("shared");
   };
 
   const toggleComplete = (id: number, completed: boolean) => {
@@ -144,20 +147,22 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
     return language === "he" ? cat?.labelHe : cat?.labelEn;
   };
 
-  // Filter items based on view
+  // Filter items based on selected traveler (by name)
   const filteredItems = items?.filter(item => {
     if (viewFilter === "all") return true;
     return item.owner === viewFilter;
-  });
+  }) ?? [];
 
-  const groupedItems = filteredItems?.reduce((acc, item) => {
+  // Group by category
+  const groupedItems = filteredItems.reduce((acc, item) => {
     if (!acc[item.category]) acc[item.category] = [];
     acc[item.category].push(item);
     return acc;
   }, {} as Record<string, typeof filteredItems>);
 
-  const completedCount = items?.filter(i => i.completed).length || 0;
-  const totalCount = items?.length || 0;
+  // Progress counts based on current filter
+  const completedCount = filteredItems.filter(i => i.completed).length;
+  const totalCount = filteredItems.length;
   const progress = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
 
   if (isLoading) {
@@ -178,10 +183,9 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
               <div>
                 <h3 className="text-lg font-semibold">{language === "he" ? "רשימת משימות לפני הטיול" : "Pre-Trip Checklist"}</h3>
                 <p className="text-sm text-muted-foreground">
-                  {language === "he" 
+                  {language === "he"
                     ? `${completedCount} מתוך ${totalCount} משימות הושלמו`
-                    : `${completedCount} of ${totalCount} tasks completed`
-                  }
+                    : `${completedCount} of ${totalCount} tasks completed`}
                 </p>
               </div>
               <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
@@ -191,96 +195,104 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
                     {language === "he" ? "הוסף משימה" : "Add Task"}
                   </Button>
                 </DialogTrigger>
-
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>{language === "he" ? "משימה חדשה" : "New Task"}</DialogTitle>
-                </DialogHeader>
-                <div ref={formRef} className="space-y-4 py-4">
-                  <div>
-                    <Label htmlFor="title">{language === "he" ? "כותרת" : "Title"} *</Label>
-                    <Input id="title" name="title" placeholder={language === "he" ? "לדוגמה: בדוק דרכון" : "e.g., Check passport"} />
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>{language === "he" ? "משימה חדשה" : "New Task"}</DialogTitle>
+                  </DialogHeader>
+                  <div ref={formRef} className="space-y-4 py-4">
+                    <div>
+                      <Label htmlFor="title">{language === "he" ? "כותרת" : "Title"} *</Label>
+                      <Input id="title" name="title" placeholder={language === "he" ? "לדוגמה: בדוק דרכון" : "e.g., Check passport"} />
+                    </div>
+                    <div>
+                      <Label htmlFor="category">{language === "he" ? "קטגוריה" : "Category"} *</Label>
+                      <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                        <SelectTrigger>
+                          <SelectValue placeholder={language === "he" ? "בחר קטגוריה" : "Select category"} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {CATEGORIES.map(cat => (
+                            <SelectItem key={cat.value} value={cat.value}>
+                              {language === "he" ? cat.labelHe : cat.labelEn}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label htmlFor="dueDate">{language === "he" ? "תאריך יעד" : "Due Date"}</Label>
+                      <Input id="dueDate" name="dueDate" type="date" />
+                    </div>
+                    <div>
+                      <Label htmlFor="notes">{language === "he" ? "הערות" : "Notes"}</Label>
+                      <Textarea id="notes" name="notes" rows={3} />
+                    </div>
+                    <div>
+                      <Label htmlFor="owner">{language === "he" ? "שייך ל" : "Belongs to"}</Label>
+                      <Select value={selectedOwner} onValueChange={setSelectedOwner}>
+                        <SelectTrigger>
+                          <SelectValue placeholder={language === "he" ? "בחר נוסע" : "Select traveler"} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {personalTravelers.map(t => (
+                            <SelectItem key={t.id} value={t.name}>
+                              {t.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
-                  <div>
-                    <Label htmlFor="category">{language === "he" ? "קטגוריה" : "Category"} *</Label>
-                    <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                      <SelectTrigger>
-                        <SelectValue placeholder={language === "he" ? "בחר קטגוריה" : "Select category"} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {CATEGORIES.map(cat => (
-                          <SelectItem key={cat.value} value={cat.value}>
-                            {language === "he" ? cat.labelHe : cat.labelEn}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <Label htmlFor="dueDate">{language === "he" ? "תאריך יעד" : "Due Date"}</Label>
-                    <Input id="dueDate" name="dueDate" type="date" />
-                  </div>
-                  <div>
-                    <Label htmlFor="notes">{language === "he" ? "הערות" : "Notes"}</Label>
-                    <Textarea id="notes" name="notes" rows={3} />
-                  </div>
-                  <div>
-                    <Label htmlFor="owner">{language === "he" ? "שייך ל" : "Belongs to"}</Label>
-                    <Select value={selectedOwner} onValueChange={(v: any) => setSelectedOwner(v)}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {travelers.map(t => (
-                          <SelectItem key={t.identifier} value={t.identifier}>
-                            {t.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-                <DialogFooter>
-                  <Button variant="outline" onClick={() => setIsCreateOpen(false)}>
-                    {language === "he" ? "ביטול" : "Cancel"}
-                  </Button>
-                  <Button onClick={handleCreate} disabled={createMutation.isPending}>
-                    {createMutation.isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-                    {language === "he" ? "הוסף" : "Add"}
-                  </Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+                  <DialogFooter>
+                    <Button variant="outline" onClick={() => setIsCreateOpen(false)}>
+                      {language === "he" ? "ביטול" : "Cancel"}
+                    </Button>
+                    <Button onClick={handleCreate} disabled={createMutation.isPending}>
+                      {createMutation.isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+                      {language === "he" ? "הוסף" : "Add"}
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
             </div>
-            
-            {/* View filter buttons */}
+
+            {/* Traveler filter buttons */}
             <div className="flex gap-2 flex-wrap">
-              {travelers.map(t => (
+              <Button
+                variant={viewFilter === "all" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setViewFilter("all")}
+              >
+                {language === "he" ? "הכל" : "All"}
+              </Button>
+              {personalTravelers.map(traveler => (
                 <Button
-                  key={t.identifier}
-                  variant={viewFilter === t.identifier ? "default" : "outline"}
+                  key={traveler.id}
+                  variant={viewFilter === traveler.name ? "default" : "outline"}
                   size="sm"
-                  onClick={() => setViewFilter(t.identifier)}
+                  onClick={() => setViewFilter(traveler.name)}
                 >
-                  {t.name}
+                  {traveler.name}
                 </Button>
               ))}
             </div>
           </div>
-          
+
           {/* Progress bar */}
-          <div className="w-full bg-muted rounded-full h-3 overflow-hidden">
-            <div 
-              className="h-full bg-gradient-to-r from-primary to-primary/80 transition-all duration-500"
-              style={{ width: `${progress}%` }}
-            />
+          <div className="mt-4">
+            <div className="w-full bg-muted rounded-full h-3 overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-primary to-primary/80 transition-all duration-500"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+            <p className="text-xs text-muted-foreground mt-2 text-center">{progress}% {language === "he" ? "הושלם" : "Complete"}</p>
           </div>
-          <p className="text-xs text-muted-foreground mt-2 text-center">{progress}% {language === "he" ? "הושלם" : "Complete"}</p>
         </CardContent>
       </Card>
 
       {/* Checklist items grouped by category */}
-      {groupedItems && Object.keys(groupedItems).length > 0 ? (
+      {Object.keys(groupedItems).length > 0 ? (
         <div className="space-y-4">
           {Object.entries(groupedItems).map(([category, categoryItems]) => {
             const Icon = getCategoryIcon(category);
@@ -296,8 +308,8 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
                   </div>
                   <div className="space-y-2">
                     {categoryItems.map(item => (
-                      <div 
-                        key={item.id} 
+                      <div
+                        key={item.id}
                         className={`flex items-start gap-3 p-3 rounded-lg border transition-all ${
                           item.completed ? 'bg-muted/50 opacity-60' : 'bg-background hover:bg-muted/30'
                         }`}
@@ -316,6 +328,10 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
                           <p className={`font-medium ${item.completed ? 'line-through text-muted-foreground' : ''}`}>
                             {item.title}
                           </p>
+                          {/* Show owner name when viewing "all" */}
+                          {viewFilter === "all" && item.owner && (
+                            <p className="text-xs text-primary/70 mt-0.5">{item.owner}</p>
+                          )}
                           {item.notes && (
                             <p className="text-sm text-muted-foreground mt-1">{item.notes}</p>
                           )}
@@ -331,10 +347,10 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
                           variant="ghost"
                           className="h-8 w-8 flex-shrink-0"
                           onClick={() => {
-                          if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את המשימה?" : "Are you sure you want to delete this task?")) {
-                            deleteMutation.mutate({ id: item.id });
-                          }
-                        }}
+                            if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את המשימה?" : "Are you sure you want to delete this task?")) {
+                              deleteMutation.mutate({ id: item.id });
+                            }
+                          }}
                         >
                           <Trash2 className="w-4 h-4 text-destructive" />
                         </Button>
@@ -351,10 +367,9 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
           <CardContent className="p-12 text-center">
             <CheckCircle2 className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
             <p className="text-muted-foreground">
-              {language === "he" 
+              {language === "he"
                 ? "אין משימות עדיין. לחץ 'הוסף משימה' כדי להתחיל."
-                : "No tasks yet. Click 'Add Task' to get started."
-              }
+                : "No tasks yet. Click 'Add Task' to get started."}
             </p>
           </CardContent>
         </Card>
