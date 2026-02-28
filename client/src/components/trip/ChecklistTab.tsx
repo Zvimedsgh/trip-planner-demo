@@ -65,8 +65,11 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
   const SHARED_LABEL = language === "he" ? "משותף" : "Shared";
 
   // Initialize personal essentials for each participant if they don't have any items yet
+  // Only run if the trip has NO checklist items at all (prevents duplicates on re-render)
   useEffect(() => {
     if (!items || hasInitialized || isLoading || !travelers || travelers.length === 0) return;
+    // If there are already items in the trip, skip initialization entirely
+    if (items.length > 0) { setHasInitialized(true); return; }
 
     const personalEssentials = [
       { title: "Passport", titleHe: "דרכון", category: "documents" as const },

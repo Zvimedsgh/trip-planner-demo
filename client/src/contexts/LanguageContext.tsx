@@ -16,10 +16,10 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("language");
       if (saved === "en" || saved === "he") return saved;
-      // Set default to English and save it to localStorage
-      localStorage.setItem("language", "en");
+      // Set default to Hebrew and save it to localStorage
+      localStorage.setItem("language", "he");
     }
-    return "en";
+    return "he";
   });
 
   const updateLanguageMutation = trpc.auth.updateLanguage.useMutation();
