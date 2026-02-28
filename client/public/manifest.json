@@ -6,18 +6,18 @@
   "start_url": "/trips",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "background_color": "#0f172a",
   "theme_color": "#6366f1",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/NJqvbldXCAGkFKgm.png",
+      "src": "/icon-180.png",
       "sizes": "180x180",
       "type": "image/png",
       "purpose": "apple touch icon"
     },
     {
-      "src": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663308289561/IZlCvXJPDqQTDWql.png",
+      "src": "/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
