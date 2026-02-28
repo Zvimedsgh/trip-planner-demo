@@ -117,10 +117,8 @@ export default function Trips() {
   };
 
   const handleDelete = (id: number) => {
-    if (confirm(t("confirmDelete"))) {
-      if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את הטיול? פעולה זו תמחק את כל המידע הקשור לטיול." : "Are you sure you want to delete this trip? This will delete all related information.")) {
+    if (window.confirm(language === "he" ? "האם אתה בטוח שברצונך למחוק את הטיול? פעולה זו תמחק את כל המידע הקשור לטיול." : "Are you sure you want to delete this trip? This will permanently delete all related information.")) {
       deleteMutation.mutate({ id });
-    }
     }
   };
 
