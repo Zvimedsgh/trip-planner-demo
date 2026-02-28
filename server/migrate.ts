@@ -1,6 +1,6 @@
 /**
  * Run Drizzle MySQL migrations at server startup.
- * Custom implementation that handles empty SQL files gracefully.
+ * Custom implementation that handles empty SQL files and DROP TABLE errors gracefully.
  */
 import mysql from "mysql2/promise";
 import { readFileSync, existsSync } from "fs";
@@ -22,6 +22,19 @@ interface Journal {
   version: string;
   dialect: string;
   entries: JournalEntry[];
+}
+
+/**
+ * Normalize a SQL statement to handle common issues:
+ * - Convert DROP TABLE to DROP TABLE IF EXISTS
+ * - Convert DROP INDEX to DROP INDEX IF EXISTS
+ */
+function normalizeStatement(stmt: string): string {
+  // Convert DROP TABLE `name` to DROP TABLE IF EXISTS `name`
+  stmt = stmt.replace(/DROP TABLE\s+(?!IF EXISTS)/gi, "DROP TABLE IF EXISTS ");
+  // Convert DROP INDEX `name` ON `table` to DROP INDEX IF EXISTS
+  stmt = stmt.replace(/DROP INDEX\s+(?!IF EXISTS)/gi, "DROP INDEX IF EXISTS ");
+  return stmt;
 }
 
 export async function runMigrations(): Promise<void> {
@@ -92,7 +105,25 @@ export async function runMigrations(): Promise<void> {
         console.log(`[Migrate] Skipping empty migration: ${entry.tag}`);
       } else {
         for (const stmt of statements) {
-          await connection.execute(stmt);
+          const normalizedStmt = normalizeStatement(stmt);
+          try {
+            await connection.execute(normalizedStmt);
+          } catch (stmtError: any) {
+            // Log the error but continue - some statements may fail if already applied
+            // Common errors: table already exists, column already exists, etc.
+            const ignoredErrors = [
+              "ER_TABLE_EXISTS_ERROR",   // Table already exists
+              "ER_DUP_FIELDNAME",        // Column already exists
+              "ER_CANT_DROP_FIELD_OR_KEY", // Index doesn't exist
+              "ER_BAD_TABLE_ERROR",      // Table doesn't exist (DROP TABLE)
+              "ER_DUP_KEYNAME",          // Duplicate key name
+            ];
+            if (ignoredErrors.includes(stmtError.code)) {
+              console.warn(`[Migrate] Warning in ${entry.tag}: ${stmtError.sqlMessage} (continuing)`);
+            } else {
+              throw stmtError;
+            }
+          }
         }
         console.log(`[Migrate] Applied migration: ${entry.tag}`);
       }
