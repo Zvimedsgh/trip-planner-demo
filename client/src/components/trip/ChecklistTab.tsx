@@ -157,7 +157,7 @@ export default function ChecklistTab({ tripId }: ChecklistTabProps) {
   // Filter items based on selected traveler (by name)
   const filteredItems = items?.filter(item => {
     if (viewFilter === "all") return true;
-    if (viewFilter === "shared") return !item.owner || item.owner === "משותף" || item.owner === "Shared";
+    if (viewFilter === "shared") return item.owner === "משותף" || item.owner === "Shared" || item.owner === "shared";
     return item.owner === viewFilter;
   }) ?? [];
 
